@@ -1,0 +1,524 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>android SQLite性能优化（二）——使用NDK优化 | jacpy&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="jacpy">
+    
+
+    
+    <meta name="description" content="在做android SQLite数据插入性能优化时，前面一篇android SQLite性能优化（一）——使用事务和预处理提到了使用事务和预处理做优化，本篇介绍使用NDK的方式进行数据插入优化。使用NDK操作数据库时，需要使用sqlite的官方源码，我这里测试使用的是官方的3.8.7.4版本的代码。同样在使用sqlite操作数据库时使用了事务和预处理。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="android SQLite性能优化（二）——使用NDK优化">
+<meta property="og:url" content="http://www.jacpy.com/2015/06/24/android-sqlite-performance-optimization-used-ndk.html">
+<meta property="og:site_name" content="jacpy's blog">
+<meta property="og:description" content="在做android SQLite数据插入性能优化时，前面一篇android SQLite性能优化（一）——使用事务和预处理提到了使用事务和预处理做优化，本篇介绍使用NDK的方式进行数据插入优化。使用NDK操作数据库时，需要使用sqlite的官方源码，我这里测试使用的是官方的3.8.7.4版本的代码。同样在使用sqlite操作数据库时使用了事务和预处理。">
+<meta property="og:updated_time" content="2016-03-12T08:06:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="android SQLite性能优化（二）——使用NDK优化">
+<meta name="twitter:description" content="在做android SQLite数据插入性能优化时，前面一篇android SQLite性能优化（一）——使用事务和预处理提到了使用事务和预处理做优化，本篇介绍使用NDK的方式进行数据插入优化。使用NDK操作数据库时，需要使用sqlite的官方源码，我这里测试使用的是官方的3.8.7.4版本的代码。同样在使用sqlite操作数据库时使用了事务和预处理。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="jacpy&#39;s blog" title="jacpy&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="jacpy&#39;s blog">jacpy&#39;s blog</a></h1>
+				<h2 class="blog-motto">enjoy mobile development</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated" style="margin-top: 0px;">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:www.jacpy.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/06/24/android-sqlite-performance-optimization-used-ndk.html" title="android SQLite性能优化（二）——使用NDK优化" itemprop="url">android SQLite性能优化（二）——使用NDK优化</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
+		
+  <p class="article-time">
+    <time datetime="2015-06-23T19:56:18.000Z" itemprop="datePublished"> 发表于 2015-06-24</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			
+		
+		</div>
+		
+		<p>在做android SQLite数据插入性能优化时，前面一篇<a href="http://www.jacpy.com/?p=47">android SQLite性能优化（一）——使用事务和预处理</a>提到了使用事务和预处理做优化，本篇介绍使用NDK的方式进行数据插入优化。<br>使用NDK操作数据库时，需要使用sqlite的官方源码，我这里测试使用的是官方的3.8.7.4版本的代码。同样在使用sqlite操作数据库时使用了事务和预处理。</p>
+<a id="more"></a>
+<p>下面是Java层的代码，主要是将List数据转换成数组数据，指定数据库文件路径，及数组数据和长度。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">insertNative</span><span class="params">(List&lt;DemoItem&gt; data)</span> </span>&#123;</span><br><span class="line">    Log.d(TAG, <span class="string">"databases path: "</span> + getCacheDir());</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> size = data.size();</span><br><span class="line">    DemoItem[] items = <span class="keyword">new</span> DemoItem[size];</span><br><span class="line">    data.toArray(items);</span><br><span class="line">    File file = <span class="keyword">new</span> File(getCacheDir(), <span class="string">"tel.db"</span>);</span><br><span class="line">    <span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line">    TelTools.insertNative(file.getAbsolutePath(), items, items.length);</span><br><span class="line">    <span class="keyword">long</span> end = System.currentTimeMillis();</span><br><span class="line">    Log.d(TAG, <span class="string">"used time: "</span> + (end - start) + <span class="string">", nums: "</span> + items.length + <span class="string">", average item: "</span> + (end - start) / items.length);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 使用预处理</span></span><br><span class="line">    <span class="comment">// used time: 2372, nums: 65536, average item: 0</span></span><br><span class="line">    <span class="comment">// used time: 2422, nums: 65536, average item: 0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p> 整个耗时2.4秒左右，是使用Java的方式耗时的一半都不到。下面是C代码，可以看出来，使用C代码操作数据库需要做很多事情，远没有Java来的方便；如果数据库结构发生修改，就更难维护了。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">JNIEXPORT jint JNICALL <span class="title">Java_com_example_sqlitedemo_TelTools_insertNative</span></span><br><span class="line">  <span class="params">(JNIEnv *env, jclass jcls, jstring jdbPath, jobjectArray jarr, jint jlen)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (jlen &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">        LOGW(<span class="string">"len must &gt; 0"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span>* sdbPath = (*env)-&gt;GetStringUTFChars(env, jdbPath, <span class="literal">NULL</span>);</span><br><span class="line">    sqlite3* db;</span><br><span class="line">    <span class="keyword">int</span> result = <span class="number">0</span>;</span><br><span class="line">    sqlite3_initialize( );</span><br><span class="line">    result = sqlite3_open_v2(sdbPath, &amp;db, SQLITE_OPEN_READWRITE|SQLITE_OPEN_CREATE, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">if</span> (SQLITE_OK != result) &#123;</span><br><span class="line">        LOGE(<span class="string">"sqlite3_open failed, result: %d, error msg: %s"</span>, result, sqlite3_errmsg(db));</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span>* createSQL = <span class="string">"CREATE TABLE tel(_id INTEGER PRIMARY KEY, id TEXT, tel TEXT, code TEXT, address TEXT, type TEXT, date INTEGER)"</span>;</span><br><span class="line">    <span class="keyword">char</span>* pErrorMsg;</span><br><span class="line">    result = sqlite3_exec(db, createSQL, <span class="literal">NULL</span>, <span class="literal">NULL</span>, &amp;pErrorMsg);</span><br><span class="line">    <span class="keyword">if</span> (SQLITE_ERROR != result &amp;&amp; SQLITE_OK != result) &#123;</span><br><span class="line">        LOGE(<span class="string">"exec sql(%s) failed, result: %d, error msg: %s"</span>, createSQL, result, pErrorMsg);</span><br><span class="line">        sqlite3_free(pErrorMsg);</span><br><span class="line">        sqlite3_close(db);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    jclass cItem = (*env)-&gt;FindClass(env, <span class="string">"com/example/sqlitedemo/mode/DemoItem"</span>);</span><br><span class="line"></span><br><span class="line">    jfieldID fID = (*env)-&gt;GetFieldID(env, cItem, <span class="string">"id"</span>, <span class="string">"Ljava/lang/String;"</span>);</span><br><span class="line">    jfieldID fTel = (*env)-&gt;GetFieldID(env, cItem, <span class="string">"tel"</span>, <span class="string">"Ljava/lang/String;"</span>);</span><br><span class="line">    jfieldID fCode = (*env)-&gt;GetFieldID(env, cItem, <span class="string">"code"</span>, <span class="string">"Ljava/lang/String;"</span>);</span><br><span class="line">    jfieldID fAddress = (*env)-&gt;GetFieldID(env, cItem, <span class="string">"address"</span>, <span class="string">"Ljava/lang/String;"</span>);</span><br><span class="line">    jfieldID fType = (*env)-&gt;GetFieldID(env, cItem, <span class="string">"type"</span>, <span class="string">"Ljava/lang/String;"</span>);</span><br><span class="line">    jfieldID fDate = (*env)-&gt;GetFieldID(env, cItem, <span class="string">"date"</span>, <span class="string">"J"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//const int sqlLen = 512;</span></span><br><span class="line">    <span class="comment">//char sql[sqlLen];</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span>* insertSQL = <span class="string">"insert into tel(id, tel, code, address, type, date) values(?,?,?,?,?,?)"</span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span>* beginSQL = <span class="string">"begin;"</span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span>* commitSQL = <span class="string">"commit;"</span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span>* rollbackSQL = <span class="string">"rollback;"</span>;</span><br><span class="line">    sqlite3_exec(db, beginSQL, <span class="literal">NULL</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="comment">//string sql;</span></span><br><span class="line">    <span class="keyword">int</span> isSuccess = <span class="number">1</span>;</span><br><span class="line">    jobject obj;</span><br><span class="line">    jstring sId, sTel, sCode, sAddress, sType;</span><br><span class="line">    sqlite3_stmt *stmt = <span class="literal">NULL</span>;</span><br><span class="line">    sqlite3_prepare_v2(db, insertSQL, <span class="built_in">strlen</span>(insertSQL) * <span class="number">2</span>, &amp;stmt, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; jlen; i++) &#123;</span><br><span class="line">        obj = (*env)-&gt;GetObjectArrayElement(env, jarr, i);</span><br><span class="line">        sId = (jstring) ((*env)-&gt;GetObjectField(env, obj, fID));</span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">char</span>* id = (*env)-&gt;GetStringUTFChars(env, sId, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">        sTel = (jstring) ((*env)-&gt;GetObjectField(env, obj, fTel));</span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">char</span>* tel = (*env)-&gt;GetStringUTFChars(env, sTel, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">        sCode = (jstring) ((*env)-&gt;GetObjectField(env, obj, fCode));</span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">char</span>* code = (*env)-&gt;GetStringUTFChars(env, sCode, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">        sAddress = (jstring) ((*env)-&gt;GetObjectField(env, obj, fAddress));</span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">char</span>* address = (*env)-&gt;GetStringUTFChars(env, sAddress, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">        sType = (jstring) ((*env)-&gt;GetObjectField(env, obj, fType));</span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">char</span>* type = (*env)-&gt;GetStringUTFChars(env, sType, <span class="literal">NULL</span>);</span><br><span class="line">        (*env)-&gt;DeleteLocalRef(env, obj);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//jstring sDate = (jstring) (env-&gt;GetObjectField(obj, fTel));</span></span><br><span class="line">        <span class="comment">//const char* tel = env-&gt;GetStringUTFChars(sTel, NULL);</span></span><br><span class="line"></span><br><span class="line">        sqlite3_bind_text(stmt, <span class="number">0</span>, id, <span class="built_in">strlen</span>(id), <span class="literal">NULL</span>);</span><br><span class="line">        sqlite3_bind_text(stmt, <span class="number">1</span>, tel, <span class="built_in">strlen</span>(tel), <span class="literal">NULL</span>);</span><br><span class="line">        sqlite3_bind_text(stmt, <span class="number">2</span>, code, <span class="built_in">strlen</span>(code), <span class="literal">NULL</span>);</span><br><span class="line">        sqlite3_bind_text(stmt, <span class="number">3</span>, address, <span class="built_in">strlen</span>(address), <span class="literal">NULL</span>);</span><br><span class="line">        sqlite3_bind_text(stmt, <span class="number">4</span>, type, <span class="built_in">strlen</span>(type), <span class="literal">NULL</span>);</span><br><span class="line">        sqlite3_bind_text(stmt, <span class="number">5</span>, <span class="string">"10000000"</span>, <span class="number">8</span>, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">        sqlite3_step(stmt);</span><br><span class="line"></span><br><span class="line">        sqlite3_reset(stmt);</span><br><span class="line">        sqlite3_clear_bindings(stmt);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//LOGD("sql: %s", sql.c_str());</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//result = sqlite3_exec(db, sql, NULL, NULL, &amp;pErrorMsg);</span></span><br><span class="line">        <span class="comment">//sql.clear();</span></span><br><span class="line"></span><br><span class="line">        (*env)-&gt;ReleaseStringUTFChars(env, sId, id);</span><br><span class="line">        (*env)-&gt;ReleaseStringUTFChars(env, sTel, tel);</span><br><span class="line">        (*env)-&gt;ReleaseStringUTFChars(env, sCode, code);</span><br><span class="line">        (*env)-&gt;ReleaseStringUTFChars(env, sAddress, address);</span><br><span class="line">        (*env)-&gt;ReleaseStringUTFChars(env, sType, type);</span><br><span class="line">        (*env)-&gt;DeleteLocalRef(env, sId);</span><br><span class="line">        (*env)-&gt;DeleteLocalRef(env, sTel);</span><br><span class="line">        (*env)-&gt;DeleteLocalRef(env, sCode);</span><br><span class="line">        (*env)-&gt;DeleteLocalRef(env, sAddress);</span><br><span class="line">        (*env)-&gt;DeleteLocalRef(env, sType);</span><br><span class="line"></span><br><span class="line"><span class="comment">//        isSuccess = result == 0;</span></span><br><span class="line"><span class="comment">//        if (!isSuccess) &#123;</span></span><br><span class="line"><span class="comment">//            break;</span></span><br><span class="line"><span class="comment">//        &#125;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (isSuccess) &#123;</span><br><span class="line">        sqlite3_exec(db, commitSQL, <span class="literal">NULL</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        sqlite3_exec(db, rollbackSQL, <span class="literal">NULL</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    (*env)-&gt;ReleaseStringUTFChars(env, jdbPath, sdbPath);</span><br><span class="line">    (*env)-&gt;DeleteLocalRef(env, jdbPath);</span><br><span class="line">    sqlite3_free(pErrorMsg);</span><br><span class="line">    sqlite3_finalize(stmt);</span><br><span class="line">    sqlite3_close(db);</span><br><span class="line">    sqlite3_shutdown();</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>So，到这一步就没能再进行优化下去了，上面测试的表结构没有加索引，加了会影响性能，但可以提高查询效率。其中要注意语言细节性能问题，因为循环有几万次，所以很小的细节都会被放大。网上还有论文优化了sqlite的查询性能，单次性能提升了10%，目测是修改了sqlite中虚拟机产生代码的处理流程，恕水平有限，没有耗更多的精力和时间在这上面，到此就结束了，如果读者感兴趣，可以接着优化。google搜索关键字《SQLite的SQL语句高速缓存技术》即可找到这篇论文。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/sqlite/">sqlite</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/SQLite性能优化/">SQLite性能优化</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.jacpy.com/2015/06/24/android-sqlite-performance-optimization-used-ndk.html" data-title="android SQLite性能优化（二）——使用NDK优化 | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/08/29/blog-width-hexo-in-github.html" title="使用hexo在github上搭建自己的博客">
+  <strong>上一篇：</strong><br/>
+  <span>
+  使用hexo在github上搭建自己的博客</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2015/06/24/android-sqlite-performance-optimization-used-transaction-and-sql-compile.html"  title="android SQLite性能优化（一）——使用事务和预处理">
+ <strong>下一篇：</strong><br/> 
+ <span>android SQLite性能优化（一）——使用事务和预处理
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2015/06/24/android-sqlite-performance-optimization-used-ndk.html" data-title="android SQLite性能优化（二）——使用NDK优化" data-url="http://www.jacpy.com/2015/06/24/android-sqlite-performance-optimization-used-ndk.html"></div>
+</section>
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/android/" title="android">android<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/dvm/" title="dvm">dvm<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/github/" title="github">github<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/sqlite/" title="sqlite">sqlite<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/SQLite性能优化/" title="SQLite性能优化">SQLite性能优化<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/No-such-device-or-address/" title="No such device or address">No such device or address<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/EOCD/" title="EOCD">EOCD<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/zlib压缩/" title="zlib压缩">zlib压缩<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gnustl/" title="gnustl">gnustl<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/stlport/" title="stlport">stlport<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Jacpy, welcome to my blog. <br/>
+			This is my blog, believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/jacpy" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:jacpy.may@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="jacpy">jacpy</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"maylian7700"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254674300'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s23.cnzz.com/z_stat.php%3Fid%3D1254674300' type='text/javascript'%3E%3C/script%3E"));</script>
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

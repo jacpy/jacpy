@@ -1,0 +1,525 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Genymotion模拟器长期使用占用大量磁盘空间解决方案 | jacpy&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="jacpy">
+    
+
+    
+    <meta name="description" content="今天下午在调应用，突然Android Studio弹出Low disk space on a Android Studio system directory partition提示，磁盘空间不够了？赶紧跑去看了磁盘用量。傻眼了，早上来还有几百M的C盘，现在只剩下几十M了。早在之前就已经注意到了C盘容量会莫名的减少，但是没有注意是哪个程序占用了更多的空间，今天决定要找找，于是就有了下文。
+1.二分法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Genymotion模拟器长期使用占用大量磁盘空间解决方案">
+<meta property="og:url" content="http://www.jacpy.com/2015/10/30/clear-genymotion-virturebox-cache-md.html">
+<meta property="og:site_name" content="jacpy's blog">
+<meta property="og:description" content="今天下午在调应用，突然Android Studio弹出Low disk space on a Android Studio system directory partition提示，磁盘空间不够了？赶紧跑去看了磁盘用量。傻眼了，早上来还有几百M的C盘，现在只剩下几十M了。早在之前就已经注意到了C盘容量会莫名的减少，但是没有注意是哪个程序占用了更多的空间，今天决定要找找，于是就有了下文。
+1.二分法">
+<meta property="og:image" content="https://raw.githubusercontent.com/jacpy/jacpy.github.io/master/images/2015/10/30/genymotion_pc.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/jacpy/jacpy.github.io/master/images/2015/10/30/genymotion_cache_file.jpg">
+<meta property="og:updated_time" content="2015-10-30T15:34:48.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Genymotion模拟器长期使用占用大量磁盘空间解决方案">
+<meta name="twitter:description" content="今天下午在调应用，突然Android Studio弹出Low disk space on a Android Studio system directory partition提示，磁盘空间不够了？赶紧跑去看了磁盘用量。傻眼了，早上来还有几百M的C盘，现在只剩下几十M了。早在之前就已经注意到了C盘容量会莫名的减少，但是没有注意是哪个程序占用了更多的空间，今天决定要找找，于是就有了下文。
+1.二分法">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/jacpy/jacpy.github.io/master/images/2015/10/30/genymotion_pc.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="jacpy&#39;s blog" title="jacpy&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="jacpy&#39;s blog">jacpy&#39;s blog</a></h1>
+				<h2 class="blog-motto">enjoy mobile development</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated" style="margin-top: 0px;">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:www.jacpy.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/10/30/clear-genymotion-virturebox-cache-md.html" title="Genymotion模拟器长期使用占用大量磁盘空间解决方案" itemprop="url">Genymotion模拟器长期使用占用大量磁盘空间解决方案</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
+		
+  <p class="article-time">
+    <time datetime="2015-10-30T12:54:28.000Z" itemprop="datePublished"> 发表于 2015-10-30</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-二分法找出磁盘占用空间最大的目录"><span class="toc-number">1.</span> <span class="toc-text">1.二分法找出磁盘占用空间最大的目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-删除Genymotion的Snapshots文件目录"><span class="toc-number">2.</span> <span class="toc-text">2.删除Genymotion的Snapshots文件目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-重新部署Genymotion模拟器"><span class="toc-number">3.</span> <span class="toc-text">3.重新部署Genymotion模拟器</span></a></li></ol>
+		
+		</div>
+		
+		<p>今天下午在调应用，突然Android Studio弹出<code>Low disk space on a Android Studio system directory partition</code>提示，磁盘空间不够了？赶紧跑去看了磁盘用量。傻眼了，早上来还有几百M的C盘，现在只剩下几十M了。早在之前就已经注意到了C盘容量会莫名的减少，但是没有注意是哪个程序占用了更多的空间，今天决定要找找，于是就有了下文。</p>
+<h3 id="1-二分法找出磁盘占用空间最大的目录"><a href="#1-二分法找出磁盘占用空间最大的目录" class="headerlink" title="1.二分法找出磁盘占用空间最大的目录"></a>1.二分法找出磁盘占用空间最大的目录</h3><p>Win 7的应用程序缓存目录是在<code>C:\Users\jacpy\AppData</code>目录中，<code>jacpy</code>为当前系统用户名。<code>AppData</code>为隐藏目录，要在目录菜单的“组织”中找到“文件夹和搜索选项”的弹出框的“查看”Tab页中修改，不会修改也没关系，打开一个目录，把上面的路径直接copy到路径框里面，把用户名换成自己的电脑用户名，回车就行了。</p>
+<a id="more"></a>
+<p><code>AppData</code>目录下面只有几个目录，所以挨个看下属性就知道，找占用空间最大的目录进去，无疑是<code>Local</code>目录，实际上应用程序的缓存大部分在这个目录中。<code>Local</code>目录中有N多目录，如果你装了很多的应用程序的话，OK，现在二分法表现的时候了。先选中目录中一半的目录，看一下属性，统计这些目录的磁盘占用的空间，也不用选择一半，差不多就行。然后在占用空间大的那部分目录里再进行同样的处理方式，传说中的logn级别的查找效率体现出来了有没有啊。很意外，找到的是Genymobile目录，通过观察其他子目录发现，也在意料之中。</p>
+<h3 id="2-删除Genymotion的Snapshots文件目录"><a href="#2-删除Genymotion的Snapshots文件目录" class="headerlink" title="2.删除Genymotion的Snapshots文件目录"></a>2.删除Genymotion的Snapshots文件目录</h3><p>通过上面的二分法在Genymobile目录中找到空间占用最多的文件，最后是在<code>Google Nexus 4 - 4.2.2 - API 17 - 768x1280</code>中的Snapshots目录中找到了一个有6个G的vdi文件，好家伙，这是什么鬼，这么大！立马删除。然后再去启动模拟器，启动不了。好吧，估计是组成的文件缺一不可吧，最后把<code>Google Nexus 4 - 4.2.2 - API 17 - 768x1280</code>整个文件夹都删除了，打算重新再下载这个模拟器。</p>
+<h3 id="3-重新部署Genymotion模拟器"><a href="#3-重新部署Genymotion模拟器" class="headerlink" title="3.重新部署Genymotion模拟器"></a>3.重新部署Genymotion模拟器</h3><p>打开Genymotion的PC端，选择还是那个模拟器镜像，然后下载，结果瞬间完成。<br><img src="https://raw.githubusercontent.com/jacpy/jacpy.github.io/master/images/2015/10/30/genymotion_pc.png" alt="Genymotion PC端截图"><br>难道本地有缓存？又在目录里面找了一圈，发现在<code>ova</code>目录中有ova缓存文件。<br><img src="https://raw.githubusercontent.com/jacpy/jacpy.github.io/master/images/2015/10/30/genymotion_cache_file.jpg" alt="缓存文件截图"></p>
+<p>究其原理肯定是VirtureBox虚拟机文件越用越大，因为最近用模拟器调试应用（既然免费用别人的工具，打一下广告，Genymotion模拟器速度确实很快，比我的物理机速度还快，尤其是调试时安装应用的速度），时间长了，用的多了，虚拟机文件就会变得很大，跟vmare一个德性。</p>
+<p>干掉那么大一个文件，C盘又空出来很多空间，心里很爽。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/android/">android</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/genymotion/">genymotion</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.jacpy.com/2015/10/30/clear-genymotion-virturebox-cache-md.html" data-title="Genymotion模拟器长期使用占用大量磁盘空间解决方案 | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/10/30/Error-Execution-failed-for-task-packageAllDebugClassesForMultiDex-duplicate-entry.html"  title="使用Gradle编译报错：Execution failed for task &#39;:packageAllDebugClassesForMultiDex&#39;  java.util.zip.ZipException duplicate entry解决方法">
+ <strong>下一篇：</strong><br/> 
+ <span>使用Gradle编译报错：Execution failed for task &#39;:packageAllDebugClassesForMultiDex&#39;  java.util.zip.ZipException duplicate entry解决方法
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2015/10/30/clear-genymotion-virturebox-cache-md.html" data-title="Genymotion模拟器长期使用占用大量磁盘空间解决方案" data-url="http://www.jacpy.com/2015/10/30/clear-genymotion-virturebox-cache-md.html"></div>
+</section>
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-二分法找出磁盘占用空间最大的目录"><span class="toc-number">1.</span> <span class="toc-text">1.二分法找出磁盘占用空间最大的目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-删除Genymotion的Snapshots文件目录"><span class="toc-number">2.</span> <span class="toc-text">2.删除Genymotion的Snapshots文件目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-重新部署Genymotion模拟器"><span class="toc-number">3.</span> <span class="toc-text">3.重新部署Genymotion模拟器</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/android/" title="android">android<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/dvm/" title="dvm">dvm<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/github/" title="github">github<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/sqlite/" title="sqlite">sqlite<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/SQLite性能优化/" title="SQLite性能优化">SQLite性能优化<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/No-such-device-or-address/" title="No such device or address">No such device or address<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/EOCD/" title="EOCD">EOCD<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/zlib压缩/" title="zlib压缩">zlib压缩<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gnustl/" title="gnustl">gnustl<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/stlport/" title="stlport">stlport<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Jacpy, welcome to my blog. <br/>
+			This is my blog, believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/jacpy" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:jacpy.may@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="jacpy">jacpy</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"maylian7700"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254674300'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s23.cnzz.com/z_stat.php%3Fid%3D1254674300' type='text/javascript'%3E%3C/script%3E"));</script>
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
