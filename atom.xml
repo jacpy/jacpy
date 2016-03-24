@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jacpy.com/"/>
-  <updated>2016-03-24T06:31:33.000Z</updated>
+  <updated>2016-03-24T06:33:56.000Z</updated>
   <id>http://www.jacpy.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.jacpy.com/2016/03/24/apkpatch-tool-analysis.html"/>
     <id>http://www.jacpy.com/2016/03/24/apkpatch-tool-analysis.html</id>
     <published>2016-03-24T05:27:17.000Z</published>
-    <updated>2016-03-24T06:31:33.000Z</updated>
+    <updated>2016-03-24T06:33:56.000Z</updated>
     
     <content type="html">&lt;h3 id=&quot;apkpatch工具实现分析&quot;&gt;&lt;a href=&quot;#apkpatch工具实现分析&quot; class=&quot;headerlink&quot; title=&quot;apkpatch工具实现分析&quot;&gt;&lt;/a&gt;apkpatch工具实现分析&lt;/h3&gt;&lt;p&gt;apkpatch工具是配套阿里AndFix框架的一个生成aptach补丁包的工具，链接地址是：&lt;a href=&quot;https://github.com/alibaba/AndFix/tree/master/tools&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/alibaba/AndFix/tree/master/tools&lt;/a&gt; 。主要包含反编译对比两个APK的类和方法、修改类名写入PACTH.MF文件、生成补丁apatch包。&lt;/p&gt;
 &lt;blockquote&gt;
@@ -32,13 +32,13 @@
 &lt;p&gt;生成补丁包的逻辑反编译代码如下图所示：&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;/images/2016/03/24/make_patch.jpg&quot; alt=&quot;生成补丁包&quot;&gt;&lt;/p&gt;
 &lt;h3 id=&quot;二、补丁包合并&quot;&gt;&lt;a href=&quot;#二、补丁包合并&quot; class=&quot;headerlink&quot; title=&quot;二、补丁包合并&quot;&gt;&lt;/a&gt;二、补丁包合并&lt;/h3&gt;&lt;p&gt;合并操作是调用com.euler.patch.MergePatch类中的doMerge()方法，其中会调用mergeCode(File)方法，将需要的合并的patch包中的classes.dex合并到一个dex文件中。合并过程是通过调用调用com.android.dx.merge.DexMerger类merge()方法完成。&lt;/p&gt;
-&lt;h3 id=&quot;三、生成补丁包&quot;&gt;&lt;a href=&quot;#三、生成补丁包&quot; class=&quot;headerlink&quot; title=&quot;三、生成补丁包&quot;&gt;&lt;/a&gt;三、生成补丁包&lt;/h3&gt;&lt;p&gt;&lt;img src=&quot;../images/2016/03/24/do_patch.jpg&quot; alt=&quot;生成补丁包&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;三、生成补丁包&quot;&gt;&lt;a href=&quot;#三、生成补丁包&quot; class=&quot;headerlink&quot; title=&quot;三、生成补丁包&quot;&gt;&lt;/a&gt;三、生成补丁包&lt;/h3&gt;&lt;p&gt;&lt;img src=&quot;/images/2016/03/24/do_patch.jpg&quot; alt=&quot;生成补丁包&quot;&gt;&lt;/p&gt;
 &lt;h4 id=&quot;3-1、对比两个APK的类和方法&quot;&gt;&lt;a href=&quot;#3-1、对比两个APK的类和方法&quot; class=&quot;headerlink&quot; title=&quot;3.1、对比两个APK的类和方法&quot;&gt;&lt;/a&gt;3.1、对比两个APK的类和方法&lt;/h4&gt;&lt;p&gt;在执行apkpatch工具时，命令参数&lt;strong&gt;-f&lt;/strong&gt;表示的是新生成的APK，&lt;strong&gt;-t&lt;/strong&gt;参数表示的是原APK包，两个APK不同的信息保存在com.euler.patch.diff.DiffInfo类实例中，其中包括，不同的类信息、方法信息以及属性信息。这些不同的信息是通过调用com.euler.patch.diff.DexDiffer类的diff()方法获取。&lt;/p&gt;
 &lt;p&gt;这里有个关键的地方是将修改的方法，也可以说是出现bug的方法会增加一个&lt;strong&gt;Lcom/alipay/euler/andfix/annotation/MethodReplace;&lt;/strong&gt;注解，在android加载补丁包的环境中，方法替换是根据方法是否有@MethodReplace注解而进行替换的。&lt;/p&gt;
 &lt;p&gt;通过调用ApkPatch类的buildCode(File, File, DiffInfo)方法，将所有新增的类或发生修改的类根据类名将类的信息转换成smali格式的文件，修改类名信息后，即加上_CF后缀，重新生成新的新的dex文件。&lt;/p&gt;
 &lt;h4 id=&quot;3-2、写入PACTH-MF文件&quot;&gt;&lt;a href=&quot;#3-2、写入PACTH-MF文件&quot; class=&quot;headerlink&quot; title=&quot;3.2、写入PACTH.MF文件&quot;&gt;&lt;/a&gt;3.2、写入PACTH.MF文件&lt;/h4&gt;&lt;p&gt;紧接着调用ApkPatch的父类，即Build类的build(File, File)方法打成APK包，同时调用getMeta()方法写入PATCH.MF文件补丁包信息。getMeta()方法具体实现是在ApkPatch类中，注意PATCH.MF文件中的Patch-Classes字段对应的内容是带_CF后缀的类名。这个在android运行环境中解析的时候会用到这个字段。&lt;/p&gt;
 &lt;p&gt;getMeta()方法反编译代码如下所示：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../images/2016/03/24/get_meta.jpg&quot; alt=&quot;写入MF信息&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2016/03/24/get_meta.jpg&quot; alt=&quot;写入MF信息&quot;&gt;&lt;/p&gt;
 &lt;p&gt;最后是调用Build类中的release()方法对打包的APK文件进行签名，生成包含签名信息的patch包。&lt;/p&gt;
 &lt;p&gt;– EOF –&lt;/p&gt;
 </content>
