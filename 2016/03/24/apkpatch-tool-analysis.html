@@ -25,7 +25,7 @@
 <meta property="og:image" content="http://www.jacpy.com/images/2016/03/24/make_patch.jpg">
 <meta property="og:image" content="http://www.jacpy.com/images/2016/03/24/do_patch.jpg">
 <meta property="og:image" content="http://www.jacpy.com/images/2016/03/24/get_meta.jpg">
-<meta property="og:updated_time" content="2016-03-24T06:33:56.000Z">
+<meta property="og:updated_time" content="2016-03-24T06:49:22.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="apkpatch工具实现分析">
 <meta name="twitter:description" content="apkpatch工具实现分析apkpatch工具是配套阿里AndFix框架的一个生成aptach补丁包的工具，链接地址是：https://github.com/alibaba/AndFix/tree/master/tools 。主要包含反编译对比两个APK的类和方法、修改类名写入PACTH.MF文件、生成补丁apatch包。
@@ -115,6 +115,7 @@
 <blockquote>
 <p>由于没有从网上找到对应的源码，以下分析过程均通过jd-gui工具反编译jar包阅读反编译代码完成。</p>
 </blockquote>
+<a id="more"></a>
 <h4 id="一、工具入口"><a href="#一、工具入口" class="headerlink" title="一、工具入口"></a>一、工具入口</h4><p>从命令行执行apkpatch命令时，调用的是com.euler.patch.Main类中的静态main()方法。通过对参数的解析，解析出两个APK的路径及签名文件相关信息。根据命令参数的不同，主要分为两个过程，第一个过程是如果参数中有<strong>-m</strong>参数，那么会执行补丁包的合并过程，即将<strong>-m</strong>参数指定的文件合并到一个merge.aptach文件中；另外一个过程是通过构造com.euler.patch.ApkPatch类对象，调用其doPatch()方法，启动生成补丁包。</p>
 <p>解析<strong>-m</strong>参数为合并代码逻辑反编译代码如下图所示：</p>
 <p><img src="/images/2016/03/24/merge_patch.jpg" alt="解析参数为合并"></p>
@@ -165,6 +166,14 @@
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2016/03/24/andfix-load-patch-analysis.html" title="AndFix加载补丁包过程分析">
+  <strong>上一篇：</strong><br/>
+  <span>
+  AndFix加载补丁包过程分析</span>
+</a>
+</div>
+
 
 <div class="next">
 <a href="/2015/10/30/clear-genymotion-virturebox-cache-md.html"  title="Genymotion模拟器长期使用占用大量磁盘空间解决方案">
@@ -240,7 +249,11 @@
 			
 		
 			
-				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
 			
 		
 			
@@ -256,11 +269,11 @@
 			
 		
 			
-				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+				<li><a href="/tags/andfix/" title="andfix">andfix<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
+				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
 			
 		
 			
