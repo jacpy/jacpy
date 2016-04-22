@@ -81,6 +81,75 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2016/04/22/android-studio-error-collection.html" title="android studio gradle编译异常小结" itemprop="url">android studio gradle编译异常小结</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
+		
+  <p class="article-time">
+    <time datetime="2016-04-22T08:22:30.000Z" itemprop="datePublished"> 发表于 2016-04-22</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <blockquote>
+<p>在使用android studio过程中，使用gradle编译的时候总会出现一些问题，下面是几个常见问题的解决方法。</p>
+</blockquote>
+<ul>
+<li>jar包冲突：<br>主要表现为编译后出现<strong>finished with non-zero exit value 2</strong>错误，原因是jar包冲突，导致的原因可能是在dependencies中使用compile files()导入一次jar包，然后有其它jar的引入方式使用compile’com.xxx’方式，正好又引用了这个jar包，所以导致了重复引用jar包的冲突。最常见的是support-v4包的重复引用。具体报错如下所示：</li>
+</ul>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2016/04/22/android-studio-error-collection.html#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/android-studio/">android studio</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/transformClassesWithDexForDebug/">transformClassesWithDexForDebug</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/2016/04/22/android-studio-error-collection.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2016/04/22/android-studio-error-collection.html" data-count-type="comments">&nbsp;</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2016/03/24/andfix-load-patch-analysis.html" title="AndFix加载补丁包过程分析" itemprop="url">AndFix加载补丁包过程分析</a>
   </h1>
   <p class="article-author">By
@@ -1045,6 +1114,10 @@
 		  
 		
 		  
+			<li><a href="/categories/android-studio/" title="android studio">android studio<sup>1</sup></a></li>
+		  
+		
+		  
 			<li><a href="/categories/dvm/" title="dvm">dvm<sup>1</sup></a></li>
 		  
 		
@@ -1090,6 +1163,10 @@
 			
 		
 			
+				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
 			
 		
@@ -1099,10 +1176,6 @@
 		
 			
 				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/No-such-device-or-address/" title="No such device or address">No such device or address<sup>1</sup></a></li>
 			
 		
 			
@@ -1119,6 +1192,10 @@
 		
 			
 				<li><a href="/tags/zlib压缩/" title="zlib压缩">zlib压缩<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/No-such-device-or-address/" title="No such device or address">No such device or address<sup>1</sup></a></li>
 			
 		
 		</ul>

@@ -114,7 +114,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * add patch at runtime</span><br><span class="line"> *</span><br><span class="line"> * <span class="doctag">@param</span> path</span><br><span class="line"> *            patch path</span><br><span class="line"> * <span class="doctag">@throws</span> IOException</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addPatch</span><span class="params">(String path)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">	File src = <span class="keyword">new</span> File(path);</span><br><span class="line">	File dest = <span class="keyword">new</span> File(mPatchDir, src.getName());</span><br><span class="line">	<span class="keyword">if</span>(!src.exists())&#123;</span><br><span class="line">		<span class="keyword">throw</span> <span class="keyword">new</span> FileNotFoundException(path);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (dest.exists()) &#123;</span><br><span class="line">		Log.d(TAG, <span class="string">"patch ["</span> + path + <span class="string">"] has be loaded."</span>);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	FileUtil.copyFile(src, dest);<span class="comment">// copy to patch's directory</span></span><br><span class="line">	Patch patch = addPatch(dest);</span><br><span class="line">	<span class="keyword">if</span> (patch != <span class="keyword">null</span>) &#123;</span><br><span class="line">		loadPatch(patch);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>patch包解析构造成Patch类对象时，主要是解析patch包中的META-INF/PATCH.MF文件，将该文件中的Patch-Classes项对应的值解析出来，在前面 <a href="/2016/03/24/apkpatch-tool-analysis.html">apkpatch工具实现分析</a> 一文中有介绍，这个字段对应的值是将修复的Class以英文逗号分隔组成。</p>
 <h4 id="二、加载补丁包中的类"><a href="#二、加载补丁包中的类" class="headerlink" title="二、加载补丁包中的类"></a>二、加载补丁包中的类</h4><p>加载补丁包中的类并替换相应的方法是通过调用PatchManager的loadPatch()方法完成的。该方法是将缓存的patch中的Class名称，通过调用AndFixManager类的fix(File, ClassLoader, List<string>)方法转换成对应的Class类。</string></p>
-<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">final</span> DexFile dexFile = DexFile.loadDex(<span class="keyword">file</span>.getAbsolutePath(),</span><br><span class="line">					optfile.getAbsolutePath(), Context.MODE_PRIVATE);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (saveFingerprint) &#123;</span><br><span class="line">	mSecurityChecker.saveOptSig(optfile);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ClassLoader patchClassLoader = <span class="keyword">new</span> ClassLoader(classLoader) &#123;</span><br><span class="line">	@Override</span><br><span class="line">	<span class="keyword">protected</span> <span class="keyword">Class</span>&lt;?&gt; findClass(String className)</span><br><span class="line">			<span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">		<span class="keyword">Class</span>&lt;?&gt; clazz = dexFile.loadClass(className, <span class="keyword">this</span>);</span><br><span class="line">		<span class="keyword">if</span> (clazz == <span class="keyword">null</span></span><br><span class="line">				&amp;&amp; className.startsWith(<span class="string">"com.alipay.euler.andfix"</span>)) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">Class</span>.forName(className);<span class="comment">// annotation’s class not found</span></span><br><span class="line"></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (clazz == <span class="keyword">null</span>) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> ClassNotFoundException(className);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> clazz;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">final DexFile dexFile = DexFile.loadDex(file.getAbsolutePath(),</span><br><span class="line">					optfile.getAbsolutePath(), Context.MODE_PRIVATE);</span><br><span class="line"></span><br><span class="line">if (saveFingerprint) &#123;</span><br><span class="line">	mSecurityChecker.saveOptSig(optfile);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ClassLoader patchClassLoader = new ClassLoader(classLoader) &#123;</span><br><span class="line">	@Override</span><br><span class="line">	protected Class&lt;?&gt; findClass(String className)</span><br><span class="line">			throws ClassNotFoundException &#123;</span><br><span class="line">		Class&lt;?&gt; clazz = dexFile.loadClass(className, this);</span><br><span class="line">		if (clazz == null</span><br><span class="line">				&amp;&amp; className.startsWith(&quot;com.alipay.euler.andfix&quot;)) &#123;</span><br><span class="line">			return Class.forName(className);// annotation’s class not found</span><br><span class="line"></span><br><span class="line">		&#125;</span><br><span class="line">		if (clazz == null) &#123;</span><br><span class="line">			throw new ClassNotFoundException(className);</span><br><span class="line">		&#125;</span><br><span class="line">		return clazz;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>在fix()方法中会进行patch包的版本支持校验和安全校验，如果不支持或者校验不通过，则不会继续执行。在这个方法中以Patch包的路径为参数创建了DexFile类对象，并构造了ClassLoader类，并重写了其findClass(String)方法，ClassLoader去查找Class的时候，实际上是调用DexFile.loadClass(String, ClassLoader)方法来完成的。</p>
 <p>最后是调用DexFile.entries()方法该patch包中所有的类名，将这些已经在Patch-Classes中的类名通过调用DexFile.loadClass(String, ClassLoader)获取对应的Class。</p>
 <p>方法替换是通过调用AndFixManager的fixClass(Class, ClassLoader)方法实现，该方法中先找出该Class中的有MethodReplace注解的方法，然后拿出该注解的clz(原方法对应的类名)和meth(原方法名称)字段的值，获取到原方法的Method对象，最后通过执行AndFix.addReplaceMethod(Method, Method)方法调用replaceMethod(Method, Method)方法进而转入native层进行方法替换操作。</p>
@@ -174,6 +174,14 @@
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2016/04/22/android-studio-error-collection.html" title="android studio gradle编译异常小结">
+  <strong>上一篇：</strong><br/>
+  <span>
+  android studio gradle编译异常小结</span>
+</a>
+</div>
+
 
 <div class="next">
 <a href="/2016/03/24/apkpatch-tool-analysis.html"  title="apkpatch工具实现分析">
@@ -217,6 +225,10 @@
 		
 		  
 			<li><a href="/categories/android/" title="android">android<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android-studio/" title="android studio">android studio<sup>1</sup></a></li>
 		  
 		
 		  
@@ -265,6 +277,10 @@
 			
 		
 			
+				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
 			
 		
@@ -274,10 +290,6 @@
 		
 			
 				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/No-such-device-or-address/" title="No such device or address">No such device or address<sup>1</sup></a></li>
 			
 		
 			
@@ -294,6 +306,10 @@
 		
 			
 				<li><a href="/tags/zlib压缩/" title="zlib压缩">zlib压缩<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/No-such-device-or-address/" title="No such device or address">No such device or address<sup>1</sup></a></li>
 			
 		
 		</ul>
