@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jacpy.com/"/>
-  <updated>2016-05-10T13:38:50.000Z</updated>
+  <updated>2016-05-11T07:06:15.000Z</updated>
   <id>http://www.jacpy.com/</id>
   
   <author>
@@ -14,6 +14,41 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>android应用开发常见的坑</title>
+    <link href="http://www.jacpy.com/2016/05/10/android-app-develop-familiar-trap.html"/>
+    <id>http://www.jacpy.com/2016/05/10/android-app-develop-familiar-trap.html</id>
+    <published>2016-05-10T13:32:56.000Z</published>
+    <updated>2016-05-11T07:06:15.000Z</updated>
+    
+    <content type="html">&lt;p&gt;android应用开发过程中，总会遇到一些坑。当遇到这些坑马上反应过来时，会很快解决。而没有反应过来时，估计是要折腾半天，下面记录一些这样的坑，防止自己遗忘再犯同样的错，自己以后再遇到类似的问题，也在这里记录下来。&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;1.&lt;code&gt;context.startActivityForResult(intent, int)&lt;/code&gt;第二个参数int值要为大于0，并且不大于Short.MAX_VALUE。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如果为不大于0，则不会回调到Activity的&lt;code&gt;onActivityResult()&lt;/code&gt;方法。如果大于&lt;code&gt;Short.MAX_VALUE&lt;/code&gt;为提示如下错误：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Caused by: java.lang.IllegalArgumentException: Can only use lower 16 bits for requestCode&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;at android.support.v4.app.FragmentActivity.startActivityForResult(FragmentActivity.java:840)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;出现这种问题只有在Activity继承了&lt;code&gt;android.support.v4.app.FragmentActivity&lt;/code&gt;的时候才会出现，而继承Activity的时候不会。所以为了不必要的麻烦，还是建议使用requestCode的值要小于&lt;code&gt;Short.MAX_VALUE&lt;/code&gt;。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;因为在同一个Activity和其中的Fragment都使用到了&lt;code&gt;onActivityResult()&lt;/code&gt;方法，为了避免Activity的requestCode不与Fragment冲突，所以就使用了&lt;code&gt;Integer.MAX_VALUE&lt;/code&gt;，结果就导致了上面的异常。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;2.重写Activity的&lt;code&gt;onActivityResult()&lt;/code&gt;方法时，如果在该Activity中使用了Fragment，并且重写了Fragment的&lt;code&gt;onActivityResult()&lt;/code&gt;方法，此时一定要在Activity的&lt;code&gt;onActivityResult()&lt;/code&gt;方法中调用&lt;code&gt;super.onActivityResult()&lt;/code&gt;，否则Fragment的&lt;code&gt;onActivityResult()&lt;/code&gt;方法不会被回调。&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;android应用开发过程中，总会遇到一些坑。当遇到这些坑马上反应过来时，会很快解决。而没有反应过来时，估计是要折腾半天，下面记录一些这样的坑，防止自己遗忘再犯同样的错，自己以后再遇到类似的问题，也在这里记录下来。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="android" scheme="http://www.jacpy.com/categories/android/"/>
+    
+    
+      <category term="android" scheme="http://www.jacpy.com/tags/android/"/>
+    
+  </entry>
   
   <entry>
     <title>微信支付返回code为-1解决方法之一</title>

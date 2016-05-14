@@ -4,23 +4,23 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>使用BaseAdapter的getItemViewType()报错解决方案 | jacpy&#39;s blog</title>
+    <title>android应用开发常见的坑 | jacpy&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="jacpy">
     
 
     
-    <meta name="description" content="前几天开发一个类似微信搜索显示搜索结果分类展示的功能，很自然的联想到了使用ListView去展示最后搜索的结果。每个分类最前面要显示一个分类的标题，就想使用getItemViewType()、getViewTypeCount()这两个方法做展示效果，结果在搜索过滤条件刷新Adapter的列表时，发生了以下错误：">
+    <meta name="description" content="android应用开发过程中，总会遇到一些坑。当遇到这些坑马上反应过来时，会很快解决。而没有反应过来时，估计是要折腾半天，下面记录一些这样的坑，防止自己遗忘再犯同样的错，自己以后再遇到类似的问题，也在这里记录下来。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用BaseAdapter的getItemViewType()报错解决方案">
-<meta property="og:url" content="http://www.jacpy.com/2015/10/22/android-BaseAdapter-getItemViewType-must-be-in-the-range-0-to-getViewTypeCount-1.html">
+<meta property="og:title" content="android应用开发常见的坑">
+<meta property="og:url" content="http://www.jacpy.com/2016/05/10/android-app-develop-familiar-trap.html">
 <meta property="og:site_name" content="jacpy's blog">
-<meta property="og:description" content="前几天开发一个类似微信搜索显示搜索结果分类展示的功能，很自然的联想到了使用ListView去展示最后搜索的结果。每个分类最前面要显示一个分类的标题，就想使用getItemViewType()、getViewTypeCount()这两个方法做展示效果，结果在搜索过滤条件刷新Adapter的列表时，发生了以下错误：">
-<meta property="og:updated_time" content="2015-10-30T15:55:46.000Z">
+<meta property="og:description" content="android应用开发过程中，总会遇到一些坑。当遇到这些坑马上反应过来时，会很快解决。而没有反应过来时，估计是要折腾半天，下面记录一些这样的坑，防止自己遗忘再犯同样的错，自己以后再遇到类似的问题，也在这里记录下来。">
+<meta property="og:updated_time" content="2016-05-11T07:06:15.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="使用BaseAdapter的getItemViewType()报错解决方案">
-<meta name="twitter:description" content="前几天开发一个类似微信搜索显示搜索结果分类展示的功能，很自然的联想到了使用ListView去展示最后搜索的结果。每个分类最前面要显示一个分类的标题，就想使用getItemViewType()、getViewTypeCount()这两个方法做展示效果，结果在搜索过滤条件刷新Adapter的列表时，发生了以下错误：">
+<meta name="twitter:title" content="android应用开发常见的坑">
+<meta name="twitter:description" content="android应用开发过程中，总会遇到一些坑。当遇到这些坑马上反应过来时，会很快解决。而没有反应过来时，估计是要折腾半天，下面记录一些这样的坑，防止自己遗忘再犯同样的错，自己以后再遇到类似的问题，也在这里记录下来。">
 
     
     <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
@@ -80,14 +80,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/10/22/android-BaseAdapter-getItemViewType-must-be-in-the-range-0-to-getViewTypeCount-1.html" title="使用BaseAdapter的getItemViewType()报错解决方案" itemprop="url">使用BaseAdapter的getItemViewType()报错解决方案</a>
+      <a href="/2016/05/10/android-app-develop-familiar-trap.html" title="android应用开发常见的坑" itemprop="url">android应用开发常见的坑</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
 		
   <p class="article-time">
-    <time datetime="2015-10-22T13:13:40.000Z" itemprop="datePublished"> 发表于 2015-10-22</time>
+    <time datetime="2016-05-10T13:32:56.000Z" itemprop="datePublished"> 发表于 2016-05-10</time>
     
   </p>
 </header>
@@ -100,14 +100,19 @@
 		
 		</div>
 		
-		<p>前几天开发一个类似微信搜索显示搜索结果分类展示的功能，很自然的联想到了使用ListView去展示最后搜索的结果。每个分类最前面要显示一个分类的标题，就想使用<code>getItemViewType()</code>、<code>getViewTypeCount()</code>这两个方法做展示效果，结果在搜索过滤条件刷新Adapter的列表时，发生了以下错误：</p>
+		<p>android应用开发过程中，总会遇到一些坑。当遇到这些坑马上反应过来时，会很快解决。而没有反应过来时，估计是要折腾半天，下面记录一些这样的坑，防止自己遗忘再犯同样的错，自己以后再遇到类似的问题，也在这里记录下来。</p>
 <a id="more"></a>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">java.lang.ArrayIndexOutOfBoundsException: length=<span class="number">2</span>; index=<span class="number">2</span></span><br><span class="line">at android.widget.AbsListView$RecycleBin.addScrapView(AbsListView.java:<span class="number">6355</span>)</span><br><span class="line">at android.widget.ListView.layoutChildren(ListView.java:<span class="number">1565</span>)</span><br><span class="line">at android.widget.AbsListView.onLayout(AbsListView.java:<span class="number">1994</span>)</span><br><span class="line">at android.view.View.layout(View.java:<span class="number">14008</span>)</span><br><span class="line">at android.view.ViewGroup.layout(ViewGroup.java:<span class="number">4373</span>)</span><br><span class="line">at android.widget.LinearLayout.setChildFrame(LinearLayout.java:<span class="number">1663</span>)</span><br><span class="line">at android.widget.LinearLayout.layoutVertical(LinearLayout.java:<span class="number">1521</span>)</span><br><span class="line">at android.widget.LinearLayout.onLayout(LinearLayout.java:<span class="number">1434</span>)</span><br><span class="line">at android.view.View.layout(View.java:<span class="number">14008</span>)</span><br><span class="line">at android.view.ViewGroup.layout(ViewGroup.java:<span class="number">4373</span>)</span><br><span class="line">at android.widget.FrameLayout.onLayout(FrameLayout.java:<span class="number">448</span>)</span><br><span class="line">at android.view.View.layout(View.java:<span class="number">14008</span>)</span><br><span class="line">at android.view.ViewGroup.layout(ViewGroup.java:<span class="number">4373</span>)</span><br><span class="line">at android.widget.LinearLayout.setChildFrame(LinearLayout.java:<span class="number">1663</span>)</span><br><span class="line">at android.widget.LinearLayout.layoutVertical(LinearLayout.java:<span class="number">1521</span>)</span><br><span class="line">at android.widget.LinearLayout.onLayout(LinearLayout.java:<span class="number">1434</span>)</span><br><span class="line">at android.view.View.layout(View.java:<span class="number">14008</span>)</span><br><span class="line">at android.view.ViewGroup.layout(ViewGroup.java:<span class="number">4373</span>)</span><br><span class="line">at android.widget.FrameLayout.onLayout(FrameLayout.java:<span class="number">448</span>)</span><br><span class="line">at android.view.View.layout(View.java:<span class="number">14008</span>)</span><br><span class="line">at android.view.ViewGroup.layout(ViewGroup.java:<span class="number">4373</span>)</span><br><span class="line">at android.view.ViewRootImpl.performLayout(ViewRootImpl.java:<span class="number">1892</span>)</span><br><span class="line">at android.view.ViewRootImpl.performTraversals(ViewRootImpl.java:<span class="number">1711</span>)</span><br><span class="line">at android.view.ViewRootImpl.doTraversal(ViewRootImpl.java:<span class="number">989</span>)</span><br><span class="line">at android.view.ViewRootImpl$TraversalRunnable.run(ViewRootImpl.java:<span class="number">4351</span>)</span><br><span class="line">at android.view.Choreographer$CallbackRecord.run(Choreographer.java:<span class="number">749</span>)</span><br><span class="line">at android.view.Choreographer.doCallbacks(Choreographer.java:<span class="number">562</span>)</span><br><span class="line">at android.view.Choreographer.doFrame(Choreographer.java:<span class="number">532</span>)</span><br><span class="line">at android.view.Choreographer$FrameDisplayEventReceiver.run(Choreographer.java:<span class="number">735</span>)</span><br><span class="line">at android.os.Handler.handleCallback(Handler.java:<span class="number">725</span>)</span><br><span class="line">at android.os.Handler.dispatchMessage(Handler.java:<span class="number">92</span>)</span><br><span class="line">at android.os.Looper.loop(Looper.java:<span class="number">137</span>)</span><br><span class="line">at android.app.ActivityThread.main(ActivityThread.java:<span class="number">5041</span>)</span><br><span class="line">at java.lang.reflect.Method.invokeNative(Native Method)</span><br><span class="line">at java.lang.reflect.Method.invoke(Method.java:<span class="number">511</span>)</span><br><span class="line">at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:<span class="number">793</span>)</span><br><span class="line">at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:<span class="number">560</span>)</span><br><span class="line">at dalvik.system.NativeStart.main(Native Method)</span><br></pre></td></tr></table></figure>
-<p>这个错误是系统内容代码报错，感觉原因就出在这两个方法上，因为没有加这两个方法，列表展示刷新OK。<br>最后通过查找官方文档说明发现，<strong><code>getItemViewType()</code>方法返回的值必须在0 ~ <code>getViewTypeCount()</code> - 1</strong>这个范围内。记录一个这个问题。下面是文档说明：</p>
+<ul>
+<li>1.<code>context.startActivityForResult(intent, int)</code>第二个参数int值要为大于0，并且不大于Short.MAX_VALUE。</li>
+</ul>
+<p>如果为不大于0，则不会回调到Activity的<code>onActivityResult()</code>方法。如果大于<code>Short.MAX_VALUE</code>为提示如下错误：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Caused by: java.lang.IllegalArgumentException: Can only use lower 16 bits for requestCode</span><br><span class="line">at android.support.v4.app.FragmentActivity.startActivityForResult(FragmentActivity.java:840)</span><br></pre></td></tr></table></figure></p>
+<p>出现这种问题只有在Activity继承了<code>android.support.v4.app.FragmentActivity</code>的时候才会出现，而继承Activity的时候不会。所以为了不必要的麻烦，还是建议使用requestCode的值要小于<code>Short.MAX_VALUE</code>。</p>
 <blockquote>
-<p>public int getItemViewType (int position)</p>
-<p>Get the type of View that will be created by getView(int, View, ViewGroup) for the specified item.<br>Parameters<br>position    The position of the item within the adapter’s data set whose view type we want.<br>Returns<br>An integer representing the type of View. Two views should share the same type if one can be converted to the other in getView(int, View, ViewGroup). <strong>Note: Integers must be in the range 0 to getViewTypeCount() - 1</strong>. IGNORE_ITEM_VIEW_TYPE can also be returned.</p>
+<p>因为在同一个Activity和其中的Fragment都使用到了<code>onActivityResult()</code>方法，为了避免Activity的requestCode不与Fragment冲突，所以就使用了<code>Integer.MAX_VALUE</code>，结果就导致了上面的异常。</p>
 </blockquote>
+<ul>
+<li>2.重写Activity的<code>onActivityResult()</code>方法时，如果在该Activity中使用了Fragment，并且重写了Fragment的<code>onActivityResult()</code>方法，此时一定要在Activity的<code>onActivityResult()</code>方法中调用<code>super.onActivityResult()</code>，否则Fragment的<code>onActivityResult()</code>方法不会被回调。</li>
+</ul>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -121,7 +126,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/getItemViewType/">getItemViewType</a><a href="/tags/getViewTypeCount/">getViewTypeCount</a>
+  <span></span> <a href="/tags/android/">android</a>
   </div>
 
 </div>
@@ -130,7 +135,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://www.jacpy.com/2015/10/22/android-BaseAdapter-getItemViewType-must-be-in-the-range-0-to-getViewTypeCount-1.html" data-title="使用BaseAdapter的getItemViewType()报错解决方案 | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
+	  <div data-url="http://www.jacpy.com/2016/05/10/android-app-develop-familiar-trap.html" data-title="android应用开发常见的坑 | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -143,19 +148,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/10/30/Error-Execution-failed-for-task-packageAllDebugClassesForMultiDex-duplicate-entry.html" title="使用Gradle编译报错：Execution failed for task &#39;:packageAllDebugClassesForMultiDex&#39;  java.util.zip.ZipException duplicate entry解决方法">
-  <strong>上一篇：</strong><br/>
-  <span>
-  使用Gradle编译报错：Execution failed for task &#39;:packageAllDebugClassesForMultiDex&#39;  java.util.zip.ZipException duplicate entry解决方法</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2015/10/08/hexo-deploy-No-such-device-or-address.html"  title="hexo-deploy-No-such-device-or-address">
+<a href="/2016/05/10/weixin-pay-return-code-1.html"  title="微信支付返回code为-1解决方法之一">
  <strong>下一篇：</strong><br/> 
- <span>hexo-deploy-No-such-device-or-address
+ <span>微信支付返回code为-1解决方法之一
 </span>
 </a>
 </div>
@@ -164,7 +161,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2015/10/22/android-BaseAdapter-getItemViewType-must-be-in-the-range-0-to-getViewTypeCount-1.html" data-title="使用BaseAdapter的getItemViewType()报错解决方案" data-url="http://www.jacpy.com/2015/10/22/android-BaseAdapter-getItemViewType-must-be-in-the-range-0-to-getViewTypeCount-1.html"></div>
+	<div class="ds-thread" data-thread-key="2016/05/10/android-app-develop-familiar-trap.html" data-title="android应用开发常见的坑" data-url="http://www.jacpy.com/2016/05/10/android-app-develop-familiar-trap.html"></div>
 </section>
 
 
