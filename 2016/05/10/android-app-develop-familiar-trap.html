@@ -17,7 +17,7 @@
 <meta property="og:url" content="http://www.jacpy.com/2016/05/10/android-app-develop-familiar-trap.html">
 <meta property="og:site_name" content="jacpy's blog">
 <meta property="og:description" content="android应用开发过程中，总会遇到一些坑。当遇到这些坑马上反应过来时，会很快解决。而没有反应过来时，估计是要折腾半天，下面记录一些这样的坑，防止自己遗忘再犯同样的错，自己以后再遇到类似的问题，也在这里记录下来。">
-<meta property="og:updated_time" content="2016-05-11T07:06:15.000Z">
+<meta property="og:updated_time" content="2016-05-14T15:57:17.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="android应用开发常见的坑">
 <meta name="twitter:description" content="android应用开发过程中，总会遇到一些坑。当遇到这些坑马上反应过来时，会很快解决。而没有反应过来时，估计是要折腾半天，下面记录一些这样的坑，防止自己遗忘再犯同样的错，自己以后再遇到类似的问题，也在这里记录下来。">
@@ -106,7 +106,7 @@
 <li>1.<code>context.startActivityForResult(intent, int)</code>第二个参数int值要为大于0，并且不大于Short.MAX_VALUE。</li>
 </ul>
 <p>如果为不大于0，则不会回调到Activity的<code>onActivityResult()</code>方法。如果大于<code>Short.MAX_VALUE</code>为提示如下错误：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Caused by: java.lang.IllegalArgumentException: Can only use lower 16 bits for requestCode</span><br><span class="line">at android.support.v4.app.FragmentActivity.startActivityForResult(FragmentActivity.java:840)</span><br></pre></td></tr></table></figure></p>
-<p>出现这种问题只有在Activity继承了<code>android.support.v4.app.FragmentActivity</code>的时候才会出现，而继承Activity的时候不会。所以为了不必要的麻烦，还是建议使用requestCode的值要小于<code>Short.MAX_VALUE</code>。</p>
+<p>出现这种问题只有在Activity继承了<code>android.support.v4.app.FragmentActivity</code>的时候才会出现，而继承<code>android.app.Activity</code>的时候不会。所以为了不必要的麻烦，还是建议使用requestCode的值要不大于<code>Short.MAX_VALUE</code>。</p>
 <blockquote>
 <p>因为在同一个Activity和其中的Fragment都使用到了<code>onActivityResult()</code>方法，为了避免Activity的requestCode不与Fragment冲突，所以就使用了<code>Integer.MAX_VALUE</code>，结果就导致了上面的异常。</p>
 </blockquote>
@@ -247,11 +247,11 @@
 			
 		
 			
-				<li><a href="/tags/andfix/" title="andfix">andfix<sup>1</sup></a></li>
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
 			
 		
 			
@@ -267,15 +267,15 @@
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/gradle-不编译-arm64-x86-64/" title="gradle 不编译 arm64 x86-64">gradle 不编译 arm64 x86-64<sup>1</sup></a></li>
+				<li><a href="/tags/andfix/" title="andfix">andfix<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gradle-不编译-arm64-x86-64/" title="gradle 不编译 arm64 x86-64">gradle 不编译 arm64 x86-64<sup>1</sup></a></li>
 			
 		
 			
