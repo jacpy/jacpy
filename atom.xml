@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jacpy.com/"/>
-  <updated>2016-05-14T15:57:17.000Z</updated>
+  <updated>2016-06-14T03:57:33.000Z</updated>
   <id>http://www.jacpy.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.jacpy.com/2016/05/10/android-app-develop-familiar-trap.html"/>
     <id>http://www.jacpy.com/2016/05/10/android-app-develop-familiar-trap.html</id>
     <published>2016-05-10T13:32:56.000Z</published>
-    <updated>2016-05-14T15:57:17.000Z</updated>
+    <updated>2016-06-14T03:57:33.000Z</updated>
     
     <content type="html">&lt;p&gt;android应用开发过程中，总会遇到一些坑。当遇到这些坑马上反应过来时，会很快解决。而没有反应过来时，估计是要折腾半天，下面记录一些这样的坑，防止自己遗忘再犯同样的错，自己以后再遇到类似的问题，也在这里记录下来。&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
@@ -33,7 +33,10 @@
 &lt;p&gt;因为在同一个Activity和其中的Fragment都使用到了&lt;code&gt;onActivityResult()&lt;/code&gt;方法，为了避免Activity的requestCode不与Fragment冲突，所以就使用了&lt;code&gt;Integer.MAX_VALUE&lt;/code&gt;，结果就导致了上面的异常。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;ul&gt;
-&lt;li&gt;2.重写Activity的&lt;code&gt;onActivityResult()&lt;/code&gt;方法时，如果在该Activity中使用了Fragment，并且重写了Fragment的&lt;code&gt;onActivityResult()&lt;/code&gt;方法，此时一定要在Activity的&lt;code&gt;onActivityResult()&lt;/code&gt;方法中调用&lt;code&gt;super.onActivityResult()&lt;/code&gt;，否则Fragment的&lt;code&gt;onActivityResult()&lt;/code&gt;方法不会被回调。&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;2.重写Activity的&lt;code&gt;onActivityResult()&lt;/code&gt;方法时，如果在该Activity中使用了Fragment，并且重写了Fragment的&lt;code&gt;onActivityResult()&lt;/code&gt;方法，此时一定要在Activity的&lt;code&gt;onActivityResult()&lt;/code&gt;方法中调用&lt;code&gt;super.onActivityResult()&lt;/code&gt;，否则Fragment的&lt;code&gt;onActivityResult()&lt;/code&gt;方法不会被回调。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;3.在Fragment切换的布局中使用了FrameLayout后，为了能切换更快，使用了&lt;code&gt;FragmentTransaction.hide()&lt;/code&gt;方法，将已经初始化的Fragment隐藏，而没有使用&lt;code&gt;FragmentTransaction.replace()&lt;/code&gt;方法。其中有一个Fragment中的布局文件中的内容没有超过一屏，在点击底部空白的地方，会点击之前已经隐藏的Fragment的中布局文件中的组件。归根倒底是由于FrameLayout布局影响的，最快的解决办法是在内容没有超过一屏的布局文件中的根ViewGroup中设置`android:clickable=”false”即可，当然网上说重写onTouchEvent()方法，可以试试。&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 </content>
     
@@ -159,13 +162,13 @@
     <link href="http://www.jacpy.com/2016/04/22/android-studio-error-collection.html"/>
     <id>http://www.jacpy.com/2016/04/22/android-studio-error-collection.html</id>
     <published>2016-04-22T08:22:30.000Z</published>
-    <updated>2016-05-10T10:21:35.000Z</updated>
+    <updated>2016-06-14T03:36:14.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;在使用android studio过程中，使用gradle编译的时候总会出现一些问题，下面是几个常见问题的解决方法。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;ul&gt;
-&lt;li&gt;1.被编译的代码或资源有问题（ finished with non-zero exit value 1）：&lt;/li&gt;
+&lt;li&gt;被编译的代码或资源有问题（ finished with non-zero exit value 1）：&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;出现这种编译异常表现是&lt;code&gt;exit value 1&lt;/code&gt;，一般会给出错误提示，所以很容易排查。这种错误很常见，错误提示有时候是在日志中明显的给出来了，如下示例所示：&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
@@ -174,15 +177,17 @@
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;:app:transformClassesWithMultidexlistForDebug UP-TO-DATE&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;:app:transformClassesWithDexForDebug FAILED&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Error:Execution failed for task &amp;apos;:app:transformClassesWithDexForDebug&amp;apos;.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt; com.android.build.api.transform.TransformException: &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;com.android.ide.common.process.ProcessException: java.util.concurrent.ExecutionException: &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;com.android.ide.common.process.ProcessException: org.gradle.process.internal.ExecException: &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Process &amp;apos;command &amp;apos;C:\Program Files\Java\jdk1.7.0_79\bin\java.exe&amp;apos;&amp;apos; finished with non-zero exit value 1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;上面这种错误没有给出很显示的提示，但是可以知道是在执行&lt;code&gt;Error:Execution failed for task &amp;#39;:app:transformClassesWithDexForDebug&amp;#39;&lt;/code&gt;这一步出错了，至少缩小了错误的排查范围，这个时候就需要经验来判断了，自己之前改过什么，自己回想一下。有时候往上面看错误日志，也会发现有很明显的错误提示。&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;2.jar包冲突（finished with non-zero exit value 2）：&lt;br&gt;主要表现为编译后出现&lt;strong&gt;finished with non-zero exit value 2&lt;/strong&gt;错误，原因是jar包冲突，导致的原因可能是在dependencies中使用compile files()导入一次jar包，然后有其它jar的引入方式使用compile’com.xxx’方式，正好又引用了这个jar包，所以导致了重复引用jar包的冲突。最常见的是support-v4包的重复引用。具体报错如下所示：&lt;/li&gt;
+&lt;li&gt;jar包冲突（finished with non-zero exit value 2）：&lt;br&gt;主要表现为编译后出现&lt;strong&gt;finished with non-zero exit value 2&lt;/strong&gt;错误，原因是jar包冲突，导致的原因可能是在dependencies中使用compile files()导入一次jar包，然后有其它jar的引入方式使用compile’com.xxx’方式，正好又引用了这个jar包，所以导致了重复引用jar包的冲突。最常见的是support-v4包的重复引用。具体报错如下所示：&lt;/li&gt;
 &lt;/ul&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Error:Execution failed for task &amp;apos;:task:transformClassesWithDexForDebug&amp;apos;.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;com.android.build.api.transform.TransformException: &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;com.android.ide.common.process.ProcessException: org.gradle.process.internal.ExecException:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Process &amp;apos;command &amp;apos;C:\Java\jdk1.7.0_79\bin\java.exe&amp;apos;&amp;apos; finished with non-zero exit value 2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;ul&gt;
-&lt;li&gt;3.编译的代码过多导致内存不足（finished with non-zero exit value 3）：&lt;br&gt;主要表现为编译后出现&lt;strong&gt;finished with non-zero exit value 3&lt;/strong&gt;错误，原因是因为编译的java代码过多，通常是方法数超过65535后使用了分包的机制，gradle在编译的时候由于编译的内存需要不能满足而导致错误。具体报错内容如下所示：&lt;/li&gt;
+&lt;li&gt;编译的代码过多导致内存不足（finished with non-zero exit value 3）：&lt;br&gt;主要表现为编译后出现&lt;strong&gt;finished with non-zero exit value 3&lt;/strong&gt;错误，原因是因为编译的java代码过多，通常是方法数超过65535后使用了分包的机制，gradle在编译的时候由于编译的内存需要不能满足而导致错误。具体报错内容如下所示：&lt;/li&gt;
 &lt;/ul&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Error:java.lang.OutOfMemoryError: GC overhead limit exceeded&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Error:Execution failed for task &amp;apos;:app:transformClassesWithDexForRelease&amp;apos;.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;com.android.build.api.transform.TransformException: &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;com.android.ide.common.process.ProcessException: java.util.concurrent.ExecutionException: &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;com.android.ide.common.process.ProcessException: org.gradle.process.internal.ExecException: &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Process &amp;apos;command &amp;apos;C:\Java\jdk1.7.0_79\bin\java.exe&amp;apos;&amp;apos; finished with non-zero exit value 3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;解决方案是在gradle文件中的android代码块内增加如下内容即可解决：&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;android &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    // ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    dexOptions &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	javaMaxHeapSize &amp;quot;4g&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;或者修改android studio的安装目录下的bin目录中的studio.vmoptions文件中的&lt;code&gt;Xms&lt;/code&gt;和&lt;code&gt;Xmx&lt;/code&gt;两项，将其值改大，如下所示：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;-Xms256m&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;-Xmx1280m&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;出现这种情况的原因是因为项目太大，编译需要更多的内存。&lt;/p&gt;
 </content>
     
     <summary type="html">
@@ -191,7 +196,7 @@
 &lt;p&gt;在使用android studio过程中，使用gradle编译的时候总会出现一些问题，下面是几个常见问题的解决方法。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;ul&gt;
-&lt;li&gt;1.被编译的代码或资源有问题（ finished with non-zero exit value 1）：&lt;/li&gt;
+&lt;li&gt;被编译的代码或资源有问题（ finished with non-zero exit value 1）：&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;出现这种编译异常表现是&lt;code&gt;exit value 1&lt;/code&gt;，一般会给出错误提示，所以很容易排查。这种错误很常见，错误提示有时候是在日志中明显的给出来了，如下示例所示：&lt;/p&gt;
     
