@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jacpy.com/"/>
-  <updated>2016-06-14T03:57:33.000Z</updated>
+  <updated>2016-06-27T05:03:56.000Z</updated>
   <id>http://www.jacpy.com/</id>
   
   <author>
@@ -16,11 +16,116 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>chrome浏览器启动android应用并传递参数</title>
+    <link href="http://www.jacpy.com/2016/06/27/chrome_open_android_app.html"/>
+    <id>http://www.jacpy.com/2016/06/27/chrome_open_android_app.html</id>
+    <published>2016-06-27T04:56:08.000Z</published>
+    <updated>2016-06-27T05:03:56.000Z</updated>
+    
+    <content type="html">&lt;blockquote&gt;
+&lt;p&gt;本文档主要介绍如何在android手机的chrome浏览器中点击一个链接，然后启动一个本地的App，并使用App中的具有浏览器功能的界面，如包信有WebView的Activity，打开一个链接。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;h2 id=&quot;协议介绍&quot;&gt;&lt;a href=&quot;#协议介绍&quot; class=&quot;headerlink&quot; title=&quot;协议介绍&quot;&gt;&lt;/a&gt;协议介绍&lt;/h2&gt;&lt;p&gt;这种打开方式要浏览器支持这种协议，比如chrome浏览器，然后浏览器根据协议来做指定的事情。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;协议格式如下所示：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;intent:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;   HOST/URI-path // Optional host &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;   #Intent; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      package=[string]; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      action=[string]; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      category=[string]; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      component=[string]; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      scheme=[string]; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;   end;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;参数说明：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;HOST: 对应intent-filter标签中的data标签中的&lt;code&gt;android:host&lt;/code&gt;属性说明；&lt;/li&gt;
+&lt;li&gt;scheme：对应intent-filter标签中的data标签中的&lt;code&gt;android:scheme&lt;/code&gt;属性说明；&lt;/li&gt;
+&lt;li&gt;package：打开的App的包名；&lt;/li&gt;
+&lt;li&gt;action：接收处理这个Intent的action，可选；&lt;/li&gt;
+&lt;li&gt;category：接收处理Intnet的category，可选；&lt;/li&gt;
+&lt;li&gt;component：接收处理Intent的component，可选；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;上面这些参数对应java的代码如下所示：&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Intent intent = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(&lt;span class=&quot;string&quot;&gt;&quot;action&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;intent.setData(Uri.pase(&lt;span class=&quot;string&quot;&gt;&quot;host&quot;&lt;/span&gt;));&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;intent.addCategory(&lt;span class=&quot;string&quot;&gt;&quot;category&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;intent.setComponent(&lt;span class=&quot;string&quot;&gt;&quot;component&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;context.startActivity(intent);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;上面部分参数对应的在AndroidManifest.xml文件中的Activity中的配置如下所示：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight xml&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;activity&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;attr&quot;&gt;android:name&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;com.jacpy.app.ui.WebViewActivity&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;attr&quot;&gt;android:screenOrientation&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;portrait&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;attr&quot;&gt;android:theme&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;@android:style/Theme.Black.NoTitleBar&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;intent-filter&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;action&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;android:name&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;android.intent.action.VIEW&quot;&lt;/span&gt; /&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;category&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;android:name&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;android.intent.category.DEFAULT&quot;&lt;/span&gt; /&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;category&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;android:name&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;android.intent.category.BROWSABLE&quot;&lt;/span&gt; /&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;android:scheme&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;scheme&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;android:host&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;host&quot;&lt;/span&gt; /&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;intent-filter&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;activity&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;上面的这些说明只是说要如何利用这些参数启动这个指定的App的Activity，接下来是说明如何将一些参数信息传递给这个指定的Activity，由这个Activity来处理一些指定的操作，比如打开一个链接。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;传递的参数类型在java中有9种类型，分别是String(S)、Boolean(B)、Byte(b)、Character(c)、Double(d)、Float(f)、Integer(i)、Long(l)、Short(s)，注意后面括号中的字母及大小写。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;比如要传一个字符串，可以写成如下所示：&lt;/p&gt;
+&lt;p&gt;S.url=&lt;a href=&quot;http://www.baidu.com&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://www.baidu.com&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;键是&lt;code&gt;url&lt;/code&gt;，值是&lt;code&gt;http://www.baidu.com&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;传一个int值，可以写成这样：&lt;/p&gt;
+&lt;p&gt;i.age=30&lt;/p&gt;
+&lt;p&gt;键是&lt;code&gt;age&lt;/code&gt;，值是&lt;code&gt;30&lt;/code&gt;。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;这种传递方式对应的java代码如下所示：&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;intent.putExtra(&lt;span class=&quot;string&quot;&gt;&quot;url&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;http://www.baidu.com&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;intnet.putExtra(&lt;span class=&quot;string&quot;&gt;&quot;age&quot;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;30&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;注意：&lt;code&gt;S.browser_fallback_url&lt;/code&gt;是chrome保留的内容，在手机安装了chrome 25以上版本，启动了包含有&lt;code&gt;S.browser_fallback_url&lt;/code&gt;信息的协议，如果手机中没有安装指定包名的App那么，就会跳转到&lt;code&gt;S.browser_fallback_url&lt;/code&gt;指定的链接，这个链接一般是放App的下载地址。在实际测试是，手机中不能安装Google Play，否则会打开google Play。而不会执行&lt;code&gt;S.browser_fallback_url&lt;/code&gt;这个跳转。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;实现&quot;&gt;&lt;a href=&quot;#实现&quot; class=&quot;headerlink&quot; title=&quot;实现&quot;&gt;&lt;/a&gt;实现&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;按照上面的协议说明可以自定义协议，如下所示：&lt;br&gt;intent://msp.url/#Intent;scheme=msp;package=com.jacpy.app;S.browser_fallback_url=&lt;a href=&quot;http://www.taobao.com/app/download;S.url=http://www.baidu.com;S.title=chrome启动应用测试;end&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://www.taobao.com/app/download;S.url=http://www.baidu.com;S.title=chrome启动应用测试;end&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;上面示例协议中，如果手机上没有安装包名为&lt;code&gt;com.jacpy.app&lt;/code&gt;的应用，并且手机上没有安装google play，那么最后页面会跳转到&lt;code&gt;http://wwww.taobao.com/app/download&lt;/code&gt;。&lt;br&gt;协议可以写在a标签中，如：&lt;/p&gt;
+&lt;figure class=&quot;highlight html&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;href&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;\&quot;intent:&lt;/span&gt;//&lt;span class=&quot;attr&quot;&gt;msp.url&lt;/span&gt;/#&lt;span class=&quot;attr&quot;&gt;Intent&lt;/span&gt;;&lt;span class=&quot;attr&quot;&gt;scheme&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;msp;package=com.jacpy.app;S.browser_fallback_url=http:&lt;/span&gt;//&lt;span class=&quot;attr&quot;&gt;www.taobao.com&lt;/span&gt;/&lt;span class=&quot;attr&quot;&gt;app&lt;/span&gt;/&lt;span class=&quot;attr&quot;&gt;download&lt;/span&gt;;&lt;span class=&quot;attr&quot;&gt;S.url&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;http:&lt;/span&gt;//&lt;span class=&quot;attr&quot;&gt;www.baidu.com&lt;/span&gt;;&lt;span class=&quot;attr&quot;&gt;S.title&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;chrome启动应用测试;end\&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;chrome启动应用测试&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;a&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;对应的Activity配置代码如下所示：&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight xml&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;manifest&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;xmlns:android&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;http://schemas.android.com/apk/res/android&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;attr&quot;&gt;package&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;com.jacpy.app&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;attr&quot;&gt;android:versionCode&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;0&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;attr&quot;&gt;android:versionName&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;2.0.0.0&quot;&lt;/span&gt; &amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;application&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;attr&quot;&gt;android:name&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;com.jacpy.app.app.App&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;attr&quot;&gt;android:allowBackup&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;true&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;attr&quot;&gt;android:icon&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;@drawable/logo&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;attr&quot;&gt;android:label&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;@string/app_name&quot;&lt;/span&gt; &amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;activity&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;attr&quot;&gt;android:name&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;com.jacpy.app.ui.WebViewActivity&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;attr&quot;&gt;android:screenOrientation&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;portrait&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;attr&quot;&gt;android:theme&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;@android:style/Theme.Black.NoTitleBar&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;intent-filter&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;action&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;android:name&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;android.intent.action.VIEW&quot;&lt;/span&gt; /&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;category&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;android:name&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;android.intent.category.DEFAULT&quot;&lt;/span&gt; /&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;category&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;android:name&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;android.intent.category.BROWSABLE&quot;&lt;/span&gt; /&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;android:scheme&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;msp&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;android:host&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;msp.url&quot;&lt;/span&gt; /&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;intent-filter&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;activity&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;application&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;manifest&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;这里要注意，如果当前应用已经启动，点击跳转链接，浏览器是不会启动相应的界面打开链接，可以对当前Activity设置&lt;code&gt;android:launchMode=&amp;quot;singleInstance&amp;quot;&lt;/code&gt;试试。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;协议传递数据解析处理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.jacpy.app.ui;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;WebViewActivity&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Activity&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onCreate&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Bundle b)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onCreate(b);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Intent data = getIntent();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        String url = data.getStringExtra(&lt;span class=&quot;string&quot;&gt;&quot;url&quot;&lt;/span&gt;); &lt;span class=&quot;comment&quot;&gt;// 要跳转的链接&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        String title = data.getStringExtra(&lt;span class=&quot;string&quot;&gt;&quot;title&quot;&lt;/span&gt;); &lt;span class=&quot;comment&quot;&gt;// 标题内容&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;最后，这种通过浏览器打开应用的方式只在实现了类似机制的浏览器上使用，如chrome浏览器。通过测试其他如QQ浏览器的6.6版本也支持该方式，但UC、Opera、海豚浏览器均不支持该操作。com.jacpy.app&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;参考：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;1.&lt;a href=&quot;https://developer.chrome.com/multidevice/android/intents&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://developer.chrome.com/multidevice/android/intents&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;2.&lt;a href=&quot;http://drops.wooyun.org/papers/2893&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://drops.wooyun.org/papers/2893&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;– EOF –&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;本文档主要介绍如何在android手机的chrome浏览器中点击一个链接，然后启动一个本地的App，并使用App中的具有浏览器功能的界面，如包信有WebView的Activity，打开一个链接。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+    
+    </summary>
+    
+      <category term="android" scheme="http://www.jacpy.com/categories/android/"/>
+    
+    
+      <category term="chrome" scheme="http://www.jacpy.com/tags/chrome/"/>
+    
+  </entry>
+  
+  <entry>
     <title>android应用开发常见的坑</title>
     <link href="http://www.jacpy.com/2016/05/10/android-app-develop-familiar-trap.html"/>
     <id>http://www.jacpy.com/2016/05/10/android-app-develop-familiar-trap.html</id>
     <published>2016-05-10T13:32:56.000Z</published>
-    <updated>2016-06-14T03:57:33.000Z</updated>
+    <updated>2016-06-27T04:54:28.000Z</updated>
     
     <content type="html">&lt;p&gt;android应用开发过程中，总会遇到一些坑。当遇到这些坑马上反应过来时，会很快解决。而没有反应过来时，估计是要折腾半天，下面记录一些这样的坑，防止自己遗忘再犯同样的错，自己以后再遇到类似的问题，也在这里记录下来。&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
@@ -37,7 +142,10 @@
 &lt;/li&gt;
 &lt;li&gt;&lt;p&gt;3.在Fragment切换的布局中使用了FrameLayout后，为了能切换更快，使用了&lt;code&gt;FragmentTransaction.hide()&lt;/code&gt;方法，将已经初始化的Fragment隐藏，而没有使用&lt;code&gt;FragmentTransaction.replace()&lt;/code&gt;方法。其中有一个Fragment中的布局文件中的内容没有超过一屏，在点击底部空白的地方，会点击之前已经隐藏的Fragment的中布局文件中的组件。归根倒底是由于FrameLayout布局影响的，最快的解决办法是在内容没有超过一屏的布局文件中的根ViewGroup中设置`android:clickable=”false”即可，当然网上说重写onTouchEvent()方法，可以试试。&lt;/p&gt;
 &lt;/li&gt;
+&lt;li&gt;&lt;p&gt;4.在给ListView调用&lt;code&gt;addHeader()&lt;/code&gt;方法添加头部时，一定要在调用&lt;code&gt;setAdapter()&lt;/code&gt;方法之前调用，否则会出现如下错误，错误提示也很明显：&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;java.lang.IllegalStateException: Cannot add header view to list -- setAdapter has already been called.at android.widget.ListView.addHeaderView(ListView.java:&lt;span class=&quot;number&quot;&gt;261&lt;/span&gt;)at android.widget.ListView.addHeaderView(ListView.java:&lt;span class=&quot;number&quot;&gt;290&lt;/span&gt;)&lt;span class=&quot;comment&quot;&gt;// ...&lt;/span&gt;at android.support.v4.app.Fragment.performCreateView(Fragment.java:&lt;span class=&quot;number&quot;&gt;1962&lt;/span&gt;)at android.support.v4.app.FragmentManagerImpl.moveToState(FragmentManager.java:&lt;span class=&quot;number&quot;&gt;1026&lt;/span&gt;)at android.support.v4.app.FragmentManagerImpl.moveToState(FragmentManager.java:&lt;span class=&quot;number&quot;&gt;1207&lt;/span&gt;)at android.support.v4.app.BackStackRecord.run(BackStackRecord.java:&lt;span class=&quot;number&quot;&gt;738&lt;/span&gt;)at android.support.v4.app.FragmentManagerImpl.execPendingActions(FragmentManager.java:&lt;span class=&quot;number&quot;&gt;1572&lt;/span&gt;)at android.support.v4.app.FragmentManagerImpl$&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;.run(FragmentManager.java:&lt;span class=&quot;number&quot;&gt;493&lt;/span&gt;)at android.os.Handler.handleCallback(Handler.java:&lt;span class=&quot;number&quot;&gt;800&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 </content>
     
     <summary type="html">
@@ -706,32 +814,6 @@
     </summary>
     
       <category term="ndk" scheme="http://www.jacpy.com/categories/ndk/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>写在最前面</title>
-    <link href="http://www.jacpy.com/2015/04/27/write-before.html"/>
-    <id>http://www.jacpy.com/2015/04/27/write-before.html</id>
-    <published>2015-04-27T13:07:55.000Z</published>
-    <updated>2015-10-30T15:32:16.000Z</updated>
-    
-    <content type="html">&lt;p&gt;这一刻准备了好久，今天终于成为了现实。&lt;/p&gt;
-&lt;p&gt;一直打算自己建一个博客，写点东西放在上面，由于各种原因未能实现，前些日子忙完了，今天正式开通了。主要打算将自己遇到的问题、解决的方案整理成博客分享出来，一来可以锻炼自己的表达能力，二来给别人提供一些参考。&lt;/p&gt;
-&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;p&gt;希望自己以后能坚持写下去，分享一些技术干货，别人写过的、重复的不会放上来，保证博客原创、有价值，每篇都是精品。希望能借博客结识更多的志同道合的伙伴，将这条路一直走下去。&lt;/p&gt;
-&lt;p&gt;毕竟已经工作快五年，得记录点什么东西，展示一下自己吧。若干年后，再回过来看看自己当年的幼稚和无知，也何尝不是一种乐趣。&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;这一刻准备了好久，今天终于成为了现实。&lt;/p&gt;
-&lt;p&gt;一直打算自己建一个博客，写点东西放在上面，由于各种原因未能实现，前些日子忙完了，今天正式开通了。主要打算将自己遇到的问题、解决的方案整理成博客分享出来，一来可以锻炼自己的表达能力，二来给别人提供一些参考。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="android" scheme="http://www.jacpy.com/categories/android/"/>
     
     
   </entry>

@@ -17,7 +17,7 @@
 <meta property="og:url" content="http://www.jacpy.com/2016/05/10/android-app-develop-familiar-trap.html">
 <meta property="og:site_name" content="jacpy's blog">
 <meta property="og:description" content="android应用开发过程中，总会遇到一些坑。当遇到这些坑马上反应过来时，会很快解决。而没有反应过来时，估计是要折腾半天，下面记录一些这样的坑，防止自己遗忘再犯同样的错，自己以后再遇到类似的问题，也在这里记录下来。">
-<meta property="og:updated_time" content="2016-06-14T03:57:33.000Z">
+<meta property="og:updated_time" content="2016-06-27T04:54:28.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="android应用开发常见的坑">
 <meta name="twitter:description" content="android应用开发过程中，总会遇到一些坑。当遇到这些坑马上反应过来时，会很快解决。而没有反应过来时，估计是要折腾半天，下面记录一些这样的坑，防止自己遗忘再犯同样的错，自己以后再遇到类似的问题，也在这里记录下来。">
@@ -115,7 +115,10 @@
 </li>
 <li><p>3.在Fragment切换的布局中使用了FrameLayout后，为了能切换更快，使用了<code>FragmentTransaction.hide()</code>方法，将已经初始化的Fragment隐藏，而没有使用<code>FragmentTransaction.replace()</code>方法。其中有一个Fragment中的布局文件中的内容没有超过一屏，在点击底部空白的地方，会点击之前已经隐藏的Fragment的中布局文件中的组件。归根倒底是由于FrameLayout布局影响的，最快的解决办法是在内容没有超过一屏的布局文件中的根ViewGroup中设置`android:clickable=”false”即可，当然网上说重写onTouchEvent()方法，可以试试。</p>
 </li>
+<li><p>4.在给ListView调用<code>addHeader()</code>方法添加头部时，一定要在调用<code>setAdapter()</code>方法之前调用，否则会出现如下错误，错误提示也很明显：</p>
+</li>
 </ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.lang.IllegalStateException: Cannot add header view to list -- setAdapter has already been called.at android.widget.ListView.addHeaderView(ListView.java:<span class="number">261</span>)at android.widget.ListView.addHeaderView(ListView.java:<span class="number">290</span>)<span class="comment">// ...</span>at android.support.v4.app.Fragment.performCreateView(Fragment.java:<span class="number">1962</span>)at android.support.v4.app.FragmentManagerImpl.moveToState(FragmentManager.java:<span class="number">1026</span>)at android.support.v4.app.FragmentManagerImpl.moveToState(FragmentManager.java:<span class="number">1207</span>)at android.support.v4.app.BackStackRecord.run(BackStackRecord.java:<span class="number">738</span>)at android.support.v4.app.FragmentManagerImpl.execPendingActions(FragmentManager.java:<span class="number">1572</span>)at android.support.v4.app.FragmentManagerImpl$<span class="number">1</span>.run(FragmentManager.java:<span class="number">493</span>)at android.os.Handler.handleCallback(Handler.java:<span class="number">800</span>)</span><br></pre></td></tr></table></figure>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -151,6 +154,14 @@
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2016/06/27/chrome_open_android_app.html" title="chrome浏览器启动android应用并传递参数">
+  <strong>上一篇：</strong><br/>
+  <span>
+  chrome浏览器启动android应用并传递参数</span>
+</a>
+</div>
+
 
 <div class="next">
 <a href="/2016/05/10/weixin-pay-return-code-1.html"  title="微信支付返回code为-1解决方法之一">
@@ -193,7 +204,7 @@
 		  
 		
 		  
-			<li><a href="/categories/android/" title="android">android<sup>5</sup></a></li>
+			<li><a href="/categories/android/" title="android">android<sup>6</sup></a></li>
 		  
 		
 		  
@@ -238,15 +249,7 @@
 			
 		
 			
-				<li><a href="/tags/No-such-device-or-address/" title="No such device or address">No such device or address<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
+				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
 			
 		
 			
@@ -254,19 +257,11 @@
 			
 		
 			
-				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
 			
 		
 			
@@ -274,7 +269,35 @@
 			
 		
 			
+				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/No-such-device-or-address/" title="No such device or address">No such device or address<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/Please-correct-the-above-warnings-first/" title="Please correct the above warnings first">Please correct the above warnings first<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gradle-不编译-arm64-x86-64/" title="gradle 不编译 arm64 x86-64">gradle 不编译 arm64 x86-64<sup>1</sup></a></li>
 			
 		
 			
@@ -294,15 +317,7 @@
 			
 		
 			
-				<li><a href="/tags/gradle-不编译-arm64-x86-64/" title="gradle 不编译 arm64 x86-64">gradle 不编译 arm64 x86-64<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/微信支付返回code为-1/" title="微信支付返回code为-1">微信支付返回code为-1<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
 			
 		
 		</ul>
