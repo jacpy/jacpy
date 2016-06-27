@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jacpy.com/"/>
-  <updated>2016-06-27T05:03:56.000Z</updated>
+  <updated>2016-06-27T05:05:31.000Z</updated>
   <id>http://www.jacpy.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.jacpy.com/2016/06/27/chrome_open_android_app.html"/>
     <id>http://www.jacpy.com/2016/06/27/chrome_open_android_app.html</id>
     <published>2016-06-27T04:56:08.000Z</published>
-    <updated>2016-06-27T05:03:56.000Z</updated>
+    <updated>2016-06-27T05:05:31.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;本文档主要介绍如何在android手机的chrome浏览器中点击一个链接，然后启动一个本地的App，并使用App中的具有浏览器功能的界面，如包信有WebView的Activity，打开一个链接。&lt;/p&gt;
@@ -94,7 +94,7 @@
 &lt;li&gt;协议传递数据解析处理&lt;/li&gt;
 &lt;/ul&gt;
 &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.jacpy.app.ui;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;WebViewActivity&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Activity&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onCreate&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Bundle b)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onCreate(b);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Intent data = getIntent();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        String url = data.getStringExtra(&lt;span class=&quot;string&quot;&gt;&quot;url&quot;&lt;/span&gt;); &lt;span class=&quot;comment&quot;&gt;// 要跳转的链接&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        String title = data.getStringExtra(&lt;span class=&quot;string&quot;&gt;&quot;title&quot;&lt;/span&gt;); &lt;span class=&quot;comment&quot;&gt;// 标题内容&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;最后，这种通过浏览器打开应用的方式只在实现了类似机制的浏览器上使用，如chrome浏览器。通过测试其他如QQ浏览器的6.6版本也支持该方式，但UC、Opera、海豚浏览器均不支持该操作。com.jacpy.app&lt;/p&gt;
+&lt;p&gt;最后，这种通过浏览器打开应用的方式只在实现了类似机制的浏览器上使用，如chrome浏览器。通过测试其他如QQ浏览器的6.6版本也支持该方式，但UC、Opera、海豚浏览器均不支持该操作。&lt;/p&gt;
 &lt;hr&gt;
 &lt;p&gt;参考：&lt;/p&gt;
 &lt;ul&gt;

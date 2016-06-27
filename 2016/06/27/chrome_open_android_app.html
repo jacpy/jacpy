@@ -17,7 +17,7 @@
 <meta property="og:url" content="http://www.jacpy.com/2016/06/27/chrome_open_android_app.html">
 <meta property="og:site_name" content="jacpy's blog">
 <meta property="og:description" content="本文档主要介绍如何在android手机的chrome浏览器中点击一个链接，然后启动一个本地的App，并使用App中的具有浏览器功能的界面，如包信有WebView的Activity，打开一个链接。">
-<meta property="og:updated_time" content="2016-06-27T05:03:56.000Z">
+<meta property="og:updated_time" content="2016-06-27T05:05:31.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="chrome浏览器启动android应用并传递参数">
 <meta name="twitter:description" content="本文档主要介绍如何在android手机的chrome浏览器中点击一个链接，然后启动一个本地的App，并使用App中的具有浏览器功能的界面，如包信有WebView的Activity，打开一个链接。">
@@ -172,7 +172,7 @@
 <li>协议传递数据解析处理</li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.jacpy.app.ui;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WebViewActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(b);</span><br><span class="line">        Intent data = getIntent();</span><br><span class="line">        String url = data.getStringExtra(<span class="string">"url"</span>); <span class="comment">// 要跳转的链接</span></span><br><span class="line">        String title = data.getStringExtra(<span class="string">"title"</span>); <span class="comment">// 标题内容</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>最后，这种通过浏览器打开应用的方式只在实现了类似机制的浏览器上使用，如chrome浏览器。通过测试其他如QQ浏览器的6.6版本也支持该方式，但UC、Opera、海豚浏览器均不支持该操作。com.jacpy.app</p>
+<p>最后，这种通过浏览器打开应用的方式只在实现了类似机制的浏览器上使用，如chrome浏览器。通过测试其他如QQ浏览器的6.6版本也支持该方式，但UC、Opera、海豚浏览器均不支持该操作。</p>
 <hr>
 <p>参考：</p>
 <ul>
@@ -302,19 +302,7 @@
 			
 		
 			
-				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
 			
 		
 			
@@ -322,11 +310,23 @@
 			
 		
 			
+				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
 			
 		
 			
@@ -334,15 +334,11 @@
 			
 		
 			
-				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/No-such-device-or-address/" title="No such device or address">No such device or address<sup>1</sup></a></li>
 			
 		
 			
@@ -351,6 +347,10 @@
 		
 			
 				<li><a href="/tags/gradle-不编译-arm64-x86-64/" title="gradle 不编译 arm64 x86-64">gradle 不编译 arm64 x86-64<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/No-such-device-or-address/" title="No such device or address">No such device or address<sup>1</sup></a></li>
 			
 		
 			
