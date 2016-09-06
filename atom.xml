@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jacpy.com/"/>
-  <updated>2016-09-06T03:56:25.000Z</updated>
+  <updated>2016-09-06T08:57:47.000Z</updated>
   <id>http://www.jacpy.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.jacpy.com/2016/09/06/react-native-ios-integrated.html"/>
     <id>http://www.jacpy.com/2016/09/06/react-native-ios-integrated.html</id>
     <published>2016-09-06T03:52:54.000Z</published>
-    <updated>2016-09-06T03:56:25.000Z</updated>
+    <updated>2016-09-06T08:57:47.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;本文主要是记录将React Native集成到现有项目的说明步骤及中间遇到的一些坑的记录。&lt;/p&gt;
@@ -65,7 +65,7 @@
       <category term="iOS" scheme="http://www.jacpy.com/categories/iOS/"/>
     
     
-      <category term="React\ Native" scheme="http://www.jacpy.com/tags/React-Native/"/>
+      <category term="React Native" scheme="http://www.jacpy.com/tags/React-Native/"/>
     
   </entry>
   
