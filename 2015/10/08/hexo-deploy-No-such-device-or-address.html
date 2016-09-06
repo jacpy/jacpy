@@ -104,7 +104,7 @@
 		</div>
 		
 		<p>前几天给博客增加评论功能，测试OK后准备将生成的文件提交到github，执行<code>hexo deploy</code>命令时报如下错：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bash: /dev/tty: No such device or address</span><br><span class="line">error: <span class="function">failed to execute prompt <span class="title">script</span> <span class="params">(exit code <span class="number">1</span>)</span></span><br><span class="line">fatal: could not read Username <span class="keyword">for</span> 'https:<span class="comment">//jacpy.github.com': No error</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">bash: /dev/tty: No such device or address</div><div class="line">error: <span class="function">failed to execute prompt <span class="title">script</span> <span class="params">(exit code <span class="number">1</span>)</span></span></div><div class="line">fatal: could not read Username <span class="keyword">for</span> 'https:<span class="comment">//jacpy.github.com': No error</span></div></pre></td></tr></table></figure>
 <a id="more"></a>
 <p>查看了一下LOG，HTML文件生成OK，然后错误就出现了，再试了一次，还是出错这个错误。回想之前提交文件时如果没出错应该是提示输入用户名和密码，突然想起前几天升级了git到2.5.3，是不是版本不兼容？创建这个博客时使用的git的版本是1.9.5，于是打算装回老版本，排查一下问题。</p>
 <p>等装了老版本重新提交时，发现OK了。果真是版本的问题？猜测出现问题的原因是git版本兼容性，但具体没有深究。</p>
@@ -209,6 +209,10 @@
 		  
 		
 		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>1</sup></a></li>
+		  
+		
+		  
 			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
 		  
 		
@@ -238,6 +242,10 @@
 			
 		
 			
+				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
 			
 		
@@ -254,10 +262,6 @@
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
 			
 		
@@ -266,15 +270,11 @@
 			
 		
 			
-				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/gradle-不编译-arm64-x86-64/" title="gradle 不编译 arm64 x86-64">gradle 不编译 arm64 x86-64<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
 			
 		
 			
@@ -286,11 +286,19 @@
 			
 		
 			
+				<li><a href="/tags/gradle-不编译-arm64-x86-64/" title="gradle 不编译 arm64 x86-64">gradle 不编译 arm64 x86-64<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/gnustl/" title="gnustl">gnustl<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/stlport/" title="stlport">stlport<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/微信支付返回code为-1/" title="微信支付返回code为-1">微信支付返回code为-1<sup>1</sup></a></li>
 			
 		
 			
@@ -302,7 +310,7 @@
 			
 		
 			
-				<li><a href="/tags/微信支付返回code为-1/" title="微信支付返回code为-1">微信支付返回code为-1<sup>1</sup></a></li>
+				<li><a href="/tags/React-Native/" title="React\ Native">React\ Native<sup>1</sup></a></li>
 			
 		
 		</ul>

@@ -109,7 +109,7 @@
 <ul>
 <li>协议格式如下所示：</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">intent:</span><br><span class="line">   HOST/URI-path // Optional host </span><br><span class="line">   #Intent; </span><br><span class="line">      package=[string]; </span><br><span class="line">      action=[string]; </span><br><span class="line">      category=[string]; </span><br><span class="line">      component=[string]; </span><br><span class="line">      scheme=[string]; </span><br><span class="line">   end;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">intent:</div><div class="line">   HOST/URI-path // Optional host </div><div class="line">   #Intent; </div><div class="line">      package=[string]; </div><div class="line">      action=[string]; </div><div class="line">      category=[string]; </div><div class="line">      component=[string]; </div><div class="line">      scheme=[string]; </div><div class="line">   end;</div></pre></td></tr></table></figure>
 <ul>
 <li><p>参数说明：</p>
 <ul>
@@ -123,11 +123,11 @@
 <p>上面这些参数对应java的代码如下所示：</p>
 </li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Intent intent = <span class="keyword">new</span> Intent(<span class="string">"action"</span>);</span><br><span class="line">intent.setData(Uri.pase(<span class="string">"host"</span>));</span><br><span class="line">intent.addCategory(<span class="string">"category"</span>);</span><br><span class="line">intent.setComponent(<span class="string">"component"</span>);</span><br><span class="line">context.startActivity(intent);</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Intent intent = <span class="keyword">new</span> Intent(<span class="string">"action"</span>);</div><div class="line">intent.setData(Uri.pase(<span class="string">"host"</span>));</div><div class="line">intent.addCategory(<span class="string">"category"</span>);</div><div class="line">intent.setComponent(<span class="string">"component"</span>);</div><div class="line">context.startActivity(intent);</div></pre></td></tr></table></figure>
 <ul>
 <li>上面部分参数对应的在AndroidManifest.xml文件中的Activity中的配置如下所示：</li>
 </ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activity</span></span><br><span class="line">    <span class="attr">android:name</span>=<span class="string">"com.jacpy.app.ui.WebViewActivity"</span></span><br><span class="line">    <span class="attr">android:screenOrientation</span>=<span class="string">"portrait"</span></span><br><span class="line">    <span class="attr">android:theme</span>=<span class="string">"@android:style/Theme.Black.NoTitleBar"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.VIEW"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.DEFAULT"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.BROWSABLE"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">data</span> <span class="attr">android:scheme</span>=<span class="string">"scheme"</span> <span class="attr">android:host</span>=<span class="string">"host"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">activity</span></span></div><div class="line">    <span class="attr">android:name</span>=<span class="string">"com.jacpy.app.ui.WebViewActivity"</span></div><div class="line">    <span class="attr">android:screenOrientation</span>=<span class="string">"portrait"</span></div><div class="line">    <span class="attr">android:theme</span>=<span class="string">"@android:style/Theme.Black.NoTitleBar"</span>&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.VIEW"</span> /&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.DEFAULT"</span> /&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.BROWSABLE"</span> /&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">data</span> <span class="attr">android:scheme</span>=<span class="string">"scheme"</span> <span class="attr">android:host</span>=<span class="string">"host"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">activity</span>&gt;</span></div></pre></td></tr></table></figure>
 <ul>
 <li><p>上面的这些说明只是说要如何利用这些参数启动这个指定的App的Activity，接下来是说明如何将一些参数信息传递给这个指定的Activity，由这个Activity来处理一些指定的操作，比如打开一个链接。</p>
 <ul>
@@ -146,7 +146,7 @@
 </ul>
 </li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">intent.putExtra(<span class="string">"url"</span>, <span class="string">"http://www.baidu.com"</span>);</span><br><span class="line">intnet.putExtra(<span class="string">"age"</span>, <span class="number">30</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">intent.putExtra(<span class="string">"url"</span>, <span class="string">"http://www.baidu.com"</span>);</div><div class="line">intnet.putExtra(<span class="string">"age"</span>, <span class="number">30</span>);</div></pre></td></tr></table></figure>
 <blockquote>
 <ul>
 <li>注意：<code>S.browser_fallback_url</code>是chrome保留的内容，在手机安装了chrome 25以上版本，启动了包含有<code>S.browser_fallback_url</code>信息的协议，如果手机中没有安装指定包名的App那么，就会跳转到<code>S.browser_fallback_url</code>指定的链接，这个链接一般是放App的下载地址。在实际测试是，手机中不能安装Google Play，否则会打开google Play。而不会执行<code>S.browser_fallback_url</code>这个跳转。</li>
@@ -156,13 +156,13 @@
 <li><p>按照上面的协议说明可以自定义协议，如下所示：<br>intent://msp.url/#Intent;scheme=msp;package=com.jacpy.app;S.browser_fallback_url=<a href="http://www.taobao.com/app/download;S.url=http://www.baidu.com;S.title=chrome启动应用测试;end" target="_blank" rel="external">http://www.taobao.com/app/download;S.url=http://www.baidu.com;S.title=chrome启动应用测试;end</a></p>
 <blockquote>
 <p>上面示例协议中，如果手机上没有安装包名为<code>com.jacpy.app</code>的应用，并且手机上没有安装google play，那么最后页面会跳转到<code>http://wwww.taobao.com/app/download</code>。<br>协议可以写在a标签中，如：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">\"intent:</span>//<span class="attr">msp.url</span>/#<span class="attr">Intent</span>;<span class="attr">scheme</span>=<span class="string">msp;package=com.jacpy.app;S.browser_fallback_url=http:</span>//<span class="attr">www.taobao.com</span>/<span class="attr">app</span>/<span class="attr">download</span>;<span class="attr">S.url</span>=<span class="string">http:</span>//<span class="attr">www.baidu.com</span>;<span class="attr">S.title</span>=<span class="string">chrome启动应用测试;end\"</span>&gt;</span>chrome启动应用测试<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">\</span>"<span class="attr">intent:</span>//<span class="attr">msp.url</span>/#<span class="attr">Intent</span>;<span class="attr">scheme</span>=<span class="string">msp;package</span>=<span class="string">com.jacpy.app;S.browser_fallback_url</span>=<span class="string">http://www.taobao.com/app/download;S.url</span>=<span class="string">http://www.baidu.com;S.title</span>=<span class="string">chrome启动应用测试;end\</span>"&gt;</span>chrome启动应用测试<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div></pre></td></tr></table></figure>
 </blockquote>
 </li>
 <li><p>对应的Activity配置代码如下所示：</p>
 </li>
 </ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">manifest</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span><br><span class="line">    <span class="attr">package</span>=<span class="string">"com.jacpy.app"</span></span><br><span class="line">    <span class="attr">android:versionCode</span>=<span class="string">"0"</span></span><br><span class="line">    <span class="attr">android:versionName</span>=<span class="string">"2.0.0.0"</span> &gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">application</span></span><br><span class="line">        <span class="attr">android:name</span>=<span class="string">"com.jacpy.app.app.App"</span></span><br><span class="line">        <span class="attr">android:allowBackup</span>=<span class="string">"true"</span></span><br><span class="line">        <span class="attr">android:icon</span>=<span class="string">"@drawable/logo"</span></span><br><span class="line">        <span class="attr">android:label</span>=<span class="string">"@string/app_name"</span> &gt;</span></span><br><span class="line">        </span><br><span class="line">        <span class="tag">&lt;<span class="name">activity</span></span><br><span class="line">            <span class="attr">android:name</span>=<span class="string">"com.jacpy.app.ui.WebViewActivity"</span></span><br><span class="line">            <span class="attr">android:screenOrientation</span>=<span class="string">"portrait"</span></span><br><span class="line">            <span class="attr">android:theme</span>=<span class="string">"@android:style/Theme.Black.NoTitleBar"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">            <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.VIEW"</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.DEFAULT"</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.BROWSABLE"</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">data</span> <span class="attr">android:scheme</span>=<span class="string">"msp"</span> <span class="attr">android:host</span>=<span class="string">"msp.url"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">application</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">manifest</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">    <span class="attr">package</span>=<span class="string">"com.jacpy.app"</span></div><div class="line">    <span class="attr">android:versionCode</span>=<span class="string">"0"</span></div><div class="line">    <span class="attr">android:versionName</span>=<span class="string">"2.0.0.0"</span> &gt;</div><div class="line">    </div><div class="line">    <span class="tag">&lt;<span class="name">application</span></span></div><div class="line">        <span class="attr">android:name</span>=<span class="string">"com.jacpy.app.app.App"</span></div><div class="line">        <span class="attr">android:allowBackup</span>=<span class="string">"true"</span></div><div class="line">        <span class="attr">android:icon</span>=<span class="string">"@drawable/logo"</span></div><div class="line">        <span class="attr">android:label</span>=<span class="string">"@string/app_name"</span> &gt;</div><div class="line">        </div><div class="line">        <span class="tag">&lt;<span class="name">activity</span></span></div><div class="line">            <span class="attr">android:name</span>=<span class="string">"com.jacpy.app.ui.WebViewActivity"</span></div><div class="line">            <span class="attr">android:screenOrientation</span>=<span class="string">"portrait"</span></div><div class="line">            <span class="attr">android:theme</span>=<span class="string">"@android:style/Theme.Black.NoTitleBar"</span>&gt;</div><div class="line"></div><div class="line">            <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.VIEW"</span> /&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.DEFAULT"</span> /&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.BROWSABLE"</span> /&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">data</span> <span class="attr">android:scheme</span>=<span class="string">"msp"</span> <span class="attr">android:host</span>=<span class="string">"msp.url"</span> /&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></div><div class="line"></div><div class="line">        <span class="tag">&lt;/<span class="name">activity</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">application</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></div></pre></td></tr></table></figure>
 <blockquote>
 <ul>
 <li>这里要注意，如果当前应用已经启动，点击跳转链接，浏览器是不会启动相应的界面打开链接，可以对当前Activity设置<code>android:launchMode=&quot;singleInstance&quot;</code>试试。</li>
@@ -171,7 +171,7 @@
 <ul>
 <li>协议传递数据解析处理</li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.jacpy.app.ui;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WebViewActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(b);</span><br><span class="line">        Intent data = getIntent();</span><br><span class="line">        String url = data.getStringExtra(<span class="string">"url"</span>); <span class="comment">// 要跳转的链接</span></span><br><span class="line">        String title = data.getStringExtra(<span class="string">"title"</span>); <span class="comment">// 标题内容</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.jacpy.app.ui;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WebViewActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle b)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(b);</div><div class="line">        Intent data = getIntent();</div><div class="line">        String url = data.getStringExtra(<span class="string">"url"</span>); <span class="comment">// 要跳转的链接</span></div><div class="line">        String title = data.getStringExtra(<span class="string">"title"</span>); <span class="comment">// 标题内容</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>最后，这种通过浏览器打开应用的方式只在实现了类似机制的浏览器上使用，如chrome浏览器。通过测试其他如QQ浏览器的6.6版本也支持该方式，但UC、Opera、海豚浏览器均不支持该操作。</p>
 <hr>
 <p>参考：</p>
@@ -215,6 +215,14 @@
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2016/09/06/react-native-ios-integrated.html" title="React Native iOS集成说明">
+  <strong>上一篇：</strong><br/>
+  <span>
+  React Native iOS集成说明</span>
+</a>
+</div>
+
 
 <div class="next">
 <a href="/2016/05/10/android-app-develop-familiar-trap.html"  title="android应用开发常见的坑">
@@ -277,6 +285,10 @@
 		  
 		
 		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>1</sup></a></li>
+		  
+		
+		  
 			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
 		  
 		
@@ -306,6 +318,10 @@
 			
 		
 			
+				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
 			
 		
@@ -322,10 +338,6 @@
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
 			
 		
@@ -334,15 +346,11 @@
 			
 		
 			
-				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/gradle-不编译-arm64-x86-64/" title="gradle 不编译 arm64 x86-64">gradle 不编译 arm64 x86-64<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
 			
 		
 			
@@ -354,11 +362,19 @@
 			
 		
 			
+				<li><a href="/tags/gradle-不编译-arm64-x86-64/" title="gradle 不编译 arm64 x86-64">gradle 不编译 arm64 x86-64<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/gnustl/" title="gnustl">gnustl<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/stlport/" title="stlport">stlport<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/微信支付返回code为-1/" title="微信支付返回code为-1">微信支付返回code为-1<sup>1</sup></a></li>
 			
 		
 			
@@ -370,7 +386,7 @@
 			
 		
 			
-				<li><a href="/tags/微信支付返回code为-1/" title="微信支付返回code为-1">微信支付返回code为-1<sup>1</sup></a></li>
+				<li><a href="/tags/React-Native/" title="React\ Native">React\ Native<sup>1</sup></a></li>
 			
 		
 		</ul>

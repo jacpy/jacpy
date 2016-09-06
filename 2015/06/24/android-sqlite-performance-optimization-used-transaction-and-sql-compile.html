@@ -122,9 +122,9 @@ SQL执行性能影响从根本原因上不外乎以下几种情况：
 <p>下面是优化的案例，数据是从网上下载的号码归属地XLS数据，总共65535行数据，老大说通讯录的数据也有几万条，正好可以用这个数据做测试，只不过XLS数据每行数据差别不大，很有规律，通过跟真实数据测试发现，差别不大。</p>
 <p>按照上面的思路，基本告别android.content.ContentValues类，得自己拼接SQL，再使用SQLiteDatabse.execSQL()执行预处理。</p>
 <p>下面代码是表结构（没有从代码中整理成表格，大概能知道有几个字段及字段的类型）：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">db.execSQL(“CREATE TABLE “ + TelColumns.TABLE_NAME + “ (“</span><br><span class="line">    + TelColumns._ID + “ INTEGER PRIMARY KEY,“</span><br><span class="line">    + TelColumns.ID + “ TEXT,“</span><br><span class="line">    + TelColumns.TEL + “ TEXT,“</span><br><span class="line">    + TelColumns.CODE + “ TEXT,“</span><br><span class="line">    + TelColumns.ADDRESS + “ TEXT,“</span><br><span class="line">    + TelColumns.TYPE + “ TEXT,“</span><br><span class="line">    + TelColumns.DATE + “ INTEGER“</span><br><span class="line">    + “);“);</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TelColumns</span> <span class="keyword">implements</span> <span class="title">BaseColumns</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String TABLE_NAME = “tel“;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ID = “id“;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String TEL = “tel“;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String CODE = “code“;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String TYPE = “name“;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ADDRESS = “depart“;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String DATE = “date“;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">db.execSQL(“CREATE TABLE “ + TelColumns.TABLE_NAME + “ (“</div><div class="line">    + TelColumns._ID + “ INTEGER PRIMARY KEY,“</div><div class="line">    + TelColumns.ID + “ TEXT,“</div><div class="line">    + TelColumns.TEL + “ TEXT,“</div><div class="line">    + TelColumns.CODE + “ TEXT,“</div><div class="line">    + TelColumns.ADDRESS + “ TEXT,“</div><div class="line">    + TelColumns.TYPE + “ TEXT,“</div><div class="line">    + TelColumns.DATE + “ INTEGER“</div><div class="line">    + “);“);</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TelColumns</span> <span class="keyword">implements</span> <span class="title">BaseColumns</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String TABLE_NAME = “tel“;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ID = “id“;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String TEL = “tel“;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String CODE = “code“;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String TYPE = “name“;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ADDRESS = “depart“;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String DATE = “date“;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>下面代码使用了事务和和预处理的SQL，data数据来源于对XLS数据的解析。在开始执行事务时开始记时，完成后关闭数据库记时结束。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">insertByRaw</span><span class="params">(List&amp;lt;DemoItem&amp;gt; data)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">final</span> <span class="keyword">int</span> size = data.size();</span><br><span class="line">	<span class="keyword">final</span> <span class="keyword">int</span> idx = size;</span><br><span class="line">	TelDatabase db = <span class="keyword">new</span> TelDatabase(getApplicationContext());</span><br><span class="line">	SQLiteDatabase sqliteDB = db.getWritableDatabase();</span><br><span class="line">	<span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line">	sqliteDB.beginTransaction(); <span class="comment">// 事务开始</span></span><br><span class="line">	DemoItem item = <span class="keyword">null</span>;</span><br><span class="line">	StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">	sb.append(“INSERT INTO “).append(TelColumns.TABLE_NAME)</span><br><span class="line">	.append(“(“)</span><br><span class="line">	.append(TelColumns.ID).append(“,“)</span><br><span class="line">	.append(TelColumns.TEL).append(“,“)</span><br><span class="line">	.append(TelColumns.CODE).append(“,“)</span><br><span class="line">	.append(TelColumns.ADDRESS).append(“,“)</span><br><span class="line">	.append(TelColumns.TYPE).append(“,“)</span><br><span class="line">	.append(TelColumns.DATE)</span><br><span class="line">	.append(“)“)</span><br><span class="line">	.append(“ VALUES(?,?,?,?,?,?)“); <span class="comment">// 预处理SQL</span></span><br><span class="line">	String sql = sb.toString();</span><br><span class="line">	SQLiteStatement stmt = sqliteDB.compileStatement(sql);</span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &amp;lt; idx; i++) &#123;</span><br><span class="line">			item = data.get(i);</span><br><span class="line">			stmt.bindString(<span class="number">1</span>, item.id);</span><br><span class="line">			stmt.bindString(<span class="number">2</span>, item.tel);</span><br><span class="line">			stmt.bindString(<span class="number">3</span>, item.code);</span><br><span class="line">			stmt.bindString(<span class="number">4</span>, item.address);</span><br><span class="line">			stmt.bindString(<span class="number">5</span>, item.type);</span><br><span class="line">			stmt.bindLong(<span class="number">6</span>, System.currentTimeMillis());</span><br><span class="line">			stmt.execute();</span><br><span class="line">		&#125;</span><br><span class="line">		sqliteDB.setTransactionSuccessful();</span><br><span class="line">	&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">		sqliteDB.endTransaction();</span><br><span class="line">		stmt.close();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">long</span> end = System.currentTimeMillis();</span><br><span class="line">	sqliteDB.close();</span><br><span class="line">	Log.d(TAG, “used time: “ + (end - start) + “, nums: “ + idx + “, average item: “ + (end - start) / size);</span><br><span class="line">	<span class="comment">// used time: 5616, nums: 65536, average item: 0</span></span><br><span class="line">	<span class="comment">// used time: 5720, nums: 65536, average item: 0</span></span><br><span class="line">	<span class="comment">// used time: 5615, nums: 65536, average item: 0</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">insertByRaw</span><span class="params">(List&amp;lt;DemoItem&amp;gt; data)</span> </span>&#123;</div><div class="line">	<span class="keyword">final</span> <span class="keyword">int</span> size = data.size();</div><div class="line">	<span class="keyword">final</span> <span class="keyword">int</span> idx = size;</div><div class="line">	TelDatabase db = <span class="keyword">new</span> TelDatabase(getApplicationContext());</div><div class="line">	SQLiteDatabase sqliteDB = db.getWritableDatabase();</div><div class="line">	<span class="keyword">long</span> start = System.currentTimeMillis();</div><div class="line">	sqliteDB.beginTransaction(); <span class="comment">// 事务开始</span></div><div class="line">	DemoItem item = <span class="keyword">null</span>;</div><div class="line">	StringBuilder sb = <span class="keyword">new</span> StringBuilder();</div><div class="line">	sb.append(“INSERT INTO “).append(TelColumns.TABLE_NAME)</div><div class="line">	.append(“(“)</div><div class="line">	.append(TelColumns.ID).append(“,“)</div><div class="line">	.append(TelColumns.TEL).append(“,“)</div><div class="line">	.append(TelColumns.CODE).append(“,“)</div><div class="line">	.append(TelColumns.ADDRESS).append(“,“)</div><div class="line">	.append(TelColumns.TYPE).append(“,“)</div><div class="line">	.append(TelColumns.DATE)</div><div class="line">	.append(“)“)</div><div class="line">	.append(“ VALUES(?,?,?,?,?,?)“); <span class="comment">// 预处理SQL</span></div><div class="line">	String sql = sb.toString();</div><div class="line">	SQLiteStatement stmt = sqliteDB.compileStatement(sql);</div><div class="line">	<span class="keyword">try</span> &#123;</div><div class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &amp;lt; idx; i++) &#123;</div><div class="line">			item = data.get(i);</div><div class="line">			stmt.bindString(<span class="number">1</span>, item.id);</div><div class="line">			stmt.bindString(<span class="number">2</span>, item.tel);</div><div class="line">			stmt.bindString(<span class="number">3</span>, item.code);</div><div class="line">			stmt.bindString(<span class="number">4</span>, item.address);</div><div class="line">			stmt.bindString(<span class="number">5</span>, item.type);</div><div class="line">			stmt.bindLong(<span class="number">6</span>, System.currentTimeMillis());</div><div class="line">			stmt.execute();</div><div class="line">		&#125;</div><div class="line">		sqliteDB.setTransactionSuccessful();</div><div class="line">	&#125; <span class="keyword">finally</span> &#123;</div><div class="line">		sqliteDB.endTransaction();</div><div class="line">		stmt.close();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="keyword">long</span> end = System.currentTimeMillis();</div><div class="line">	sqliteDB.close();</div><div class="line">	Log.d(TAG, “used time: “ + (end - start) + “, nums: “ + idx + “, average item: “ + (end - start) / size);</div><div class="line">	<span class="comment">// used time: 5616, nums: 65536, average item: 0</span></div><div class="line">	<span class="comment">// used time: 5720, nums: 65536, average item: 0</span></div><div class="line">	<span class="comment">// used time: 5615, nums: 65536, average item: 0</span></div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>上面代码在我的MOTO G XT1032手机上测试，耗时在5.6秒上下波动，上面注释的used time代码即为实际运行时间的随机值。数据插入完成后整个数据库文件有4.48M。</p>
 <p>后面用android.content.ContentValues类和SQLiteDatabase.insert()方法，同样加了事务测试了一下，运行耗时在17秒左右。很明显，慢了很多。</p>
 <p>So，测试到这儿任务结束了吗？前面的优化方法估计一般开发都能做到，那还有没有优化的空间？如果要体现自己的优势，那么就要寻找耗时更短的优化方式。后面还有性能提升的空间，请看下一篇<a href="http://www.jacpy.com/?p=53">android SQLite性能优化（二）——使用NDK优化</a>。</p>
@@ -233,6 +233,10 @@ SQL执行性能影响从根本原因上不外乎以下几种情况：
 		  
 		
 		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>1</sup></a></li>
+		  
+		
+		  
 			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
 		  
 		
@@ -262,6 +266,10 @@ SQL执行性能影响从根本原因上不外乎以下几种情况：
 			
 		
 			
+				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
 			
 		
@@ -278,10 +286,6 @@ SQL执行性能影响从根本原因上不外乎以下几种情况：
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
 			
 		
@@ -290,15 +294,11 @@ SQL执行性能影响从根本原因上不外乎以下几种情况：
 			
 		
 			
-				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/gradle-不编译-arm64-x86-64/" title="gradle 不编译 arm64 x86-64">gradle 不编译 arm64 x86-64<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
 			
 		
 			
@@ -310,11 +310,19 @@ SQL执行性能影响从根本原因上不外乎以下几种情况：
 			
 		
 			
+				<li><a href="/tags/gradle-不编译-arm64-x86-64/" title="gradle 不编译 arm64 x86-64">gradle 不编译 arm64 x86-64<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/gnustl/" title="gnustl">gnustl<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/stlport/" title="stlport">stlport<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/微信支付返回code为-1/" title="微信支付返回code为-1">微信支付返回code为-1<sup>1</sup></a></li>
 			
 		
 			
@@ -326,7 +334,7 @@ SQL执行性能影响从根本原因上不外乎以下几种情况：
 			
 		
 			
-				<li><a href="/tags/微信支付返回code为-1/" title="微信支付返回code为-1">微信支付返回code为-1<sup>1</sup></a></li>
+				<li><a href="/tags/React-Native/" title="React\ Native">React\ Native<sup>1</sup></a></li>
 			
 		
 		</ul>

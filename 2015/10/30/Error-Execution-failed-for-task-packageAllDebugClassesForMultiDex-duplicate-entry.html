@@ -100,7 +100,7 @@
 		
 		</div>
 		
-		<p>今天用Gradle编译Android项目时，报了一个错：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Error:Execution failed <span class="keyword">for</span> task <span class="string">':packageAllDebugClassesForMultiDex'</span>.</span><br><span class="line">&gt; java.util.zip.ZipException: duplicate entry: com/taobao/tae/sdk/openim/OpenWXUiApiImpl$<span class="number">3</span>$<span class="number">1</span>.class</span><br></pre></td></tr></table></figure></p>
+		<p>今天用Gradle编译Android项目时，报了一个错：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">Error:Execution failed <span class="keyword">for</span> task <span class="string">':packageAllDebugClassesForMultiDex'</span>.</div><div class="line">&gt; java.util.zip.ZipException: duplicate entry: com/taobao/tae/sdk/openim/OpenWXUiApiImpl$<span class="number">3</span>$<span class="number">1</span>.class</div></pre></td></tr></table></figure></p>
 <a id="more"></a>
 <p>由于第一次遇到这种错，看提示信息以为是项目的方法数超过65535的限制，于是google一下，看别人有没有遇到这个问题。结果在<code>stackoverflow</code>上好多人遇到这个问题，有人说是bug，有人说要求各种组合的jar包版本要一致，按上面说的修改方法在build.gradle配置文件中改了一下，编译后还是报这个错。</p>
 <p>这时心里开始犯嘀咕了，难道是新用的阿里的jar包方法数太多了？于是到libs目录看一下，这一看不要紧，发现问题了<strong>同一个jar包存在两个版本</strong>，删除老的版本。重新编译，OK了。</p>
@@ -210,6 +210,10 @@
 		  
 		
 		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>1</sup></a></li>
+		  
+		
+		  
 			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
 		  
 		
@@ -239,6 +243,10 @@
 			
 		
 			
+				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
 			
 		
@@ -255,10 +263,6 @@
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
 			
 		
@@ -267,15 +271,11 @@
 			
 		
 			
-				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/gradle-不编译-arm64-x86-64/" title="gradle 不编译 arm64 x86-64">gradle 不编译 arm64 x86-64<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
 			
 		
 			
@@ -287,11 +287,19 @@
 			
 		
 			
+				<li><a href="/tags/gradle-不编译-arm64-x86-64/" title="gradle 不编译 arm64 x86-64">gradle 不编译 arm64 x86-64<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/gnustl/" title="gnustl">gnustl<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/stlport/" title="stlport">stlport<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/微信支付返回code为-1/" title="微信支付返回code为-1">微信支付返回code为-1<sup>1</sup></a></li>
 			
 		
 			
@@ -303,7 +311,7 @@
 			
 		
 			
-				<li><a href="/tags/微信支付返回code为-1/" title="微信支付返回code为-1">微信支付返回code为-1<sup>1</sup></a></li>
+				<li><a href="/tags/React-Native/" title="React\ Native">React\ Native<sup>1</sup></a></li>
 			
 		
 		</ul>

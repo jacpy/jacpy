@@ -104,14 +104,14 @@
 		</div>
 		
 		<p>gradle在build混淆后的代码时，会出现如下错误提示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Warning: there were 2 unresolved references to library class members.</span><br><span class="line">         You probably need to update the library versions.</span><br><span class="line">         Alternatively, you may have to specify the option </span><br><span class="line">         &apos;-dontskipnonpubliclibraryclassmembers&apos;.</span><br><span class="line">         (http://proguard.sourceforge.net/manual/troubleshooting.html#unresolvedlibraryclassmember)</span><br><span class="line">Warning: Exception while processing task java.io.IOException: Please correct the above warnings first.</span><br><span class="line">:app:transformClassesAndResourcesWithProguardForRelease FAILED</span><br><span class="line"></span><br><span class="line">FAILURE: Build failed with an exception.</span><br><span class="line"></span><br><span class="line">* What went wrong:</span><br><span class="line">Execution failed for task &apos;:app:transformClassesAndResourcesWithProguardForRelease&apos;.</span><br><span class="line"> java.io.IOException: Please correct the above warnings first.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">Warning: there were 2 unresolved references to library class members.</div><div class="line">         You probably need to update the library versions.</div><div class="line">         Alternatively, you may have to specify the option </div><div class="line">         &apos;-dontskipnonpubliclibraryclassmembers&apos;.</div><div class="line">         (http://proguard.sourceforge.net/manual/troubleshooting.html#unresolvedlibraryclassmember)</div><div class="line">Warning: Exception while processing task java.io.IOException: Please correct the above warnings first.</div><div class="line">:app:transformClassesAndResourcesWithProguardForRelease FAILED</div><div class="line"></div><div class="line">FAILURE: Build failed with an exception.</div><div class="line"></div><div class="line">* What went wrong:</div><div class="line">Execution failed for task &apos;:app:transformClassesAndResourcesWithProguardForRelease&apos;.</div><div class="line"> java.io.IOException: Please correct the above warnings first.</div></pre></td></tr></table></figure>
 <a id="more"></a>
 <p>上面提示编译过程中出现了warning，要求修复，所以停止了编译。按照上面的提示在混淆配置文件<code>proguard-rules.pro</code>中增加<code>-dontskipnonpubliclibraryclassmembers</code>项，也不会起作用。只能按上面提示寻找warings，如下Log中的中间两行<code>Waring</code>：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Note: the configuration refers to the unknown class &apos;com.alipay.mobile.security.senative.APSE&apos;</span><br><span class="line">Warning: com.baidu.platform.comapi.map.e: can&apos;t find referenced method &apos;float sqrt(float)&apos; in library class android.util.FloatMath</span><br><span class="line">Warning: com.tencent.connect.avatar.c: can&apos;t find referenced method &apos;float sqrt(float)&apos; in library class android.util.FloatMath</span><br><span class="line">Note: android.support.v4.text.ICUCompatIcs: can&apos;t find dynamically referenced class libcore.icu.ICU</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Note: the configuration refers to the unknown class &apos;com.alipay.mobile.security.senative.APSE&apos;</div><div class="line">Warning: com.baidu.platform.comapi.map.e: can&apos;t find referenced method &apos;float sqrt(float)&apos; in library class android.util.FloatMath</div><div class="line">Warning: com.tencent.connect.avatar.c: can&apos;t find referenced method &apos;float sqrt(float)&apos; in library class android.util.FloatMath</div><div class="line">Note: android.support.v4.text.ICUCompatIcs: can&apos;t find dynamically referenced class libcore.icu.ICU</div></pre></td></tr></table></figure>
 <p>中间两行<code>Warning</code>是分别使用了百度地图的jar包和QQ第三方登录的jar包，其中使用了FloatMath.sqrt()这个方法后，编译时找不到，原因是使用了android 6.0的jar包去编译。通过查看源代码，发现源码里面有这个方法的实现，但反编译SDK中的<code>android.jar</code>时，发现里面没有实现，坑！</p>
 <p>之前一直没有使用android 23编译代码，现在项目要兼容6.0，就使用了6.0的编译环境，结果就出现了这样的错。唉，各种坑啊！</p>
 <p>不啰嗦了，上解决方案。</p>
-<p>在<code>proguard-rules.pro</code>文件中增加如下所示的配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-dontwarn com.baidu.**</span><br><span class="line">-dontwarn com.tencent.**</span><br></pre></td></tr></table></figure></p>
+<p>在<code>proguard-rules.pro</code>文件中增加如下所示的配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">-dontwarn com.baidu.**</div><div class="line">-dontwarn com.tencent.**</div></pre></td></tr></table></figure></p>
 <p>以后遇上这种waring，都可以这样做，<code>-dontwarn</code>是混淆参数，<code>com.xxx</code>是包名，也就是忽略这个包名下面的waring。</p>
   
 	</div>
@@ -218,6 +218,10 @@
 		  
 		
 		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>1</sup></a></li>
+		  
+		
+		  
 			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
 		  
 		
@@ -247,6 +251,10 @@
 			
 		
 			
+				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
 			
 		
@@ -263,10 +271,6 @@
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
 			
 		
@@ -275,15 +279,11 @@
 			
 		
 			
-				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/gradle-不编译-arm64-x86-64/" title="gradle 不编译 arm64 x86-64">gradle 不编译 arm64 x86-64<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
 			
 		
 			
@@ -295,11 +295,19 @@
 			
 		
 			
+				<li><a href="/tags/gradle-不编译-arm64-x86-64/" title="gradle 不编译 arm64 x86-64">gradle 不编译 arm64 x86-64<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/gnustl/" title="gnustl">gnustl<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/stlport/" title="stlport">stlport<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/微信支付返回code为-1/" title="微信支付返回code为-1">微信支付返回code为-1<sup>1</sup></a></li>
 			
 		
 			
@@ -311,7 +319,7 @@
 			
 		
 			
-				<li><a href="/tags/微信支付返回code为-1/" title="微信支付返回code为-1">微信支付返回code为-1<sup>1</sup></a></li>
+				<li><a href="/tags/React-Native/" title="React\ Native">React\ Native<sup>1</sup></a></li>
 			
 		
 		</ul>

@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.jacpy.com/2016/09/06/react-native-ios-integrated.html</loc>
+    
+    <lastmod>2016-09-06T03:56:25.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.jacpy.com/2016/05/10/gradle-compile-exclude-third-library-arm64-x86-64.html</loc>
     
     <lastmod>2016-09-06T02:53:34.000Z</lastmod>

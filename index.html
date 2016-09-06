@@ -11,15 +11,12 @@
     
 
     
-    <meta name="description">
-<meta property="og:type" content="website">
+    <meta property="og:type" content="website">
 <meta property="og:title" content="jacpy's blog">
 <meta property="og:url" content="http://www.jacpy.com/index.html">
 <meta property="og:site_name" content="jacpy's blog">
-<meta property="og:description">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="jacpy's blog">
-<meta name="twitter:description">
 
     
     <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
@@ -74,6 +71,72 @@
     </header>
     <div id="container">
       <div id="main">
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/09/06/react-native-ios-integrated.html" title="React Native iOS集成说明" itemprop="url">React Native iOS集成说明</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
+		
+  <p class="article-time">
+    <time datetime="2016-09-06T03:52:54.000Z" itemprop="datePublished"> 发表于 2016-09-06</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <blockquote>
+<p>本文主要是记录将React Native集成到现有项目的说明步骤及中间遇到的一些坑的记录。</p>
+</blockquote>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2016/09/06/react-native-ios-integrated.html#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/React-Native/">React\ Native</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/2016/09/06/react-native-ios-integrated.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2016/09/06/react-native-ios-integrated.html" data-count-type="comments">&nbsp;</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
 
    
     
@@ -226,7 +289,7 @@
     <div class="article-content">
         
         <p>这两天在集成微信支付的功能，先是客户在插件中集成支付功能，后来发现回调不起来，于是将支付功能集成到了主应用，然后暴露接口给插件使用。费劲几个小时的折腾，于是乎就有下文。</p>
-<p>我们先来看下官网对于code为-1的说明（官网说明地址<a href="http://kf.qq.com/faq/140225MveaUz150413VNj6nm.html">点这里</a>）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">开放平台配置的报名和应用签名是否一致：（android）；确认是否使用正式的keystore打包apk并安装调试；（android）；提交订单部分需要在服务器端完成。</span><br></pre></td></tr></table></figure></p>
+<p>我们先来看下官网对于code为-1的说明（官网说明地址<a href="http://kf.qq.com/faq/140225MveaUz150413VNj6nm.html">点这里</a>）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">开放平台配置的报名和应用签名是否一致：（android）；确认是否使用正式的keystore打包apk并安装调试；（android）；提交订单部分需要在服务器端完成。</div></pre></td></tr></table></figure></p>
 <p>先请仔细阅读，你遇到的问题就在这段描述中。其中注意，中间还错别字<code>报名</code>应为<code>包名</code>（鹅厂果然不一样）。</p>
         
         
@@ -292,7 +355,7 @@
     <div class="article-content">
         
         <p>gradle在build混淆后的代码时，会出现如下错误提示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Warning: there were 2 unresolved references to library class members.</span><br><span class="line">         You probably need to update the library versions.</span><br><span class="line">         Alternatively, you may have to specify the option </span><br><span class="line">         &apos;-dontskipnonpubliclibraryclassmembers&apos;.</span><br><span class="line">         (http://proguard.sourceforge.net/manual/troubleshooting.html#unresolvedlibraryclassmember)</span><br><span class="line">Warning: Exception while processing task java.io.IOException: Please correct the above warnings first.</span><br><span class="line">:app:transformClassesAndResourcesWithProguardForRelease FAILED</span><br><span class="line"></span><br><span class="line">FAILURE: Build failed with an exception.</span><br><span class="line"></span><br><span class="line">* What went wrong:</span><br><span class="line">Execution failed for task &apos;:app:transformClassesAndResourcesWithProguardForRelease&apos;.</span><br><span class="line"> java.io.IOException: Please correct the above warnings first.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">Warning: there were 2 unresolved references to library class members.</div><div class="line">         You probably need to update the library versions.</div><div class="line">         Alternatively, you may have to specify the option </div><div class="line">         &apos;-dontskipnonpubliclibraryclassmembers&apos;.</div><div class="line">         (http://proguard.sourceforge.net/manual/troubleshooting.html#unresolvedlibraryclassmember)</div><div class="line">Warning: Exception while processing task java.io.IOException: Please correct the above warnings first.</div><div class="line">:app:transformClassesAndResourcesWithProguardForRelease FAILED</div><div class="line"></div><div class="line">FAILURE: Build failed with an exception.</div><div class="line"></div><div class="line">* What went wrong:</div><div class="line">Execution failed for task &apos;:app:transformClassesAndResourcesWithProguardForRelease&apos;.</div><div class="line"> java.io.IOException: Please correct the above warnings first.</div></pre></td></tr></table></figure>
         
         
         <p class="article-more-link">
@@ -687,7 +750,7 @@
 </header>
     <div class="article-content">
         
-        <p>今天用Gradle编译Android项目时，报了一个错：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Error:Execution failed <span class="keyword">for</span> task <span class="string">':packageAllDebugClassesForMultiDex'</span>.</span><br><span class="line">&gt; java.util.zip.ZipException: duplicate entry: com/taobao/tae/sdk/openim/OpenWXUiApiImpl$<span class="number">3</span>$<span class="number">1</span>.class</span><br></pre></td></tr></table></figure></p>
+        <p>今天用Gradle编译Android项目时，报了一个错：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">Error:Execution failed <span class="keyword">for</span> task <span class="string">':packageAllDebugClassesForMultiDex'</span>.</div><div class="line">&gt; java.util.zip.ZipException: duplicate entry: com/taobao/tae/sdk/openim/OpenWXUiApiImpl$<span class="number">3</span>$<span class="number">1</span>.class</div></pre></td></tr></table></figure></p>
         
         
         <p class="article-more-link">
@@ -816,7 +879,7 @@
     <div class="article-content">
         
         <p>前几天给博客增加评论功能，测试OK后准备将生成的文件提交到github，执行<code>hexo deploy</code>命令时报如下错：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bash: /dev/tty: No such device or address</span><br><span class="line">error: <span class="function">failed to execute prompt <span class="title">script</span> <span class="params">(exit code <span class="number">1</span>)</span></span><br><span class="line">fatal: could not read Username <span class="keyword">for</span> 'https:<span class="comment">//jacpy.github.com': No error</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">bash: /dev/tty: No such device or address</div><div class="line">error: <span class="function">failed to execute prompt <span class="title">script</span> <span class="params">(exit code <span class="number">1</span>)</span></div><div class="line">fatal: could not read Username <span class="keyword">for</span> 'https:<span class="comment">//jacpy.github.com': No error</span></span></div></pre></td></tr></table></figure>
         
         
         <p class="article-more-link">
@@ -1071,7 +1134,7 @@
 </header>
     <div class="article-content">
         
-        <p>在使用NDK编译代码时，如果出现如下错误：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make.exe: *** No rule to make target `jni/jni/apk_loader.cpp<span class="string">', needed by `obj/local/armeabi-v7a/objs/hook50/jni/apk_loader.o'</span>.  Stop.</span><br></pre></td></tr></table></figure></p>
+        <p>在使用NDK编译代码时，如果出现如下错误：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">make.exe: *** No rule to make target `jni/jni/apk_loader.cpp<span class="string">', needed by `obj/local/armeabi-v7a/objs/hook50/jni/apk_loader.o'</span>.  Stop.</div></pre></td></tr></table></figure></p>
         
         
         <p class="article-more-link">
@@ -1195,7 +1258,7 @@
     <div class="article-content">
         
         <p>今天使用NDK编译ART代码时出现了这样的错：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">**art/runtime/atomic.h:21:18: fatal error: atomic: No such file or directory**</span><br><span class="line"></span><br><span class="line">** #include &lt;atomic&gt;**</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">**art/runtime/atomic.h:21:18: fatal error: atomic: No such file or directory**</div><div class="line"></div><div class="line">** #include &lt;atomic&gt;**</div></pre></td></tr></table></figure>
         
         
         <p class="article-more-link">
@@ -1299,66 +1362,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/05/10/ndk-used-cpp11-compile-dvm-occur-externalsafe-iopincludesafe-iop-h8014-error-typeof-was-not-declared-in-this-scope.html" title="NDK C++11编译DVM代码报错：external/safe-iop/include/safe_iop.h:80:14: error: &#39;typeof&#39; was not declared in this scope" itemprop="url">NDK C++11编译DVM代码报错：external/safe-iop/include/safe_iop.h:80:14: error: &#39;typeof&#39; was not declared in this scope</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
-		
-  <p class="article-time">
-    <time datetime="2015-05-10T14:44:54.000Z" itemprop="datePublished"> 发表于 2015-05-10</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>今天在使用NDK C++11编译androidDVM代码时，报了如下的错：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">external/safe-iop/include/safe_iop.h:<span class="number">80</span>:<span class="number">14</span>: error: <span class="string">'typeof'</span> was not declared in <span class="keyword">this</span> scope</span><br></pre></td></tr></table></figure>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2015/05/10/ndk-used-cpp11-compile-dvm-occur-externalsafe-iopincludesafe-iop-h8014-error-typeof-was-not-declared-in-this-scope.html#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/ndk/">ndk</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/2015/05/10/ndk-used-cpp11-compile-dvm-occur-externalsafe-iopincludesafe-iop-h8014-error-typeof-was-not-declared-in-this-scope.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2015/05/10/ndk-used-cpp11-compile-dvm-occur-externalsafe-iopincludesafe-iop-h8014-error-typeof-was-not-declared-in-this-scope.html" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next<span></span></a>
@@ -1401,6 +1404,10 @@
 		  
 		
 		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>1</sup></a></li>
+		  
+		
+		  
 			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
 		  
 		
@@ -1430,6 +1437,10 @@
 			
 		
 			
+				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
 			
 		
@@ -1446,10 +1457,6 @@
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
 			
 		
@@ -1458,15 +1465,11 @@
 			
 		
 			
-				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/gradle-不编译-arm64-x86-64/" title="gradle 不编译 arm64 x86-64">gradle 不编译 arm64 x86-64<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
 			
 		
 			
@@ -1478,11 +1481,19 @@
 			
 		
 			
+				<li><a href="/tags/gradle-不编译-arm64-x86-64/" title="gradle 不编译 arm64 x86-64">gradle 不编译 arm64 x86-64<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/gnustl/" title="gnustl">gnustl<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/stlport/" title="stlport">stlport<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/微信支付返回code为-1/" title="微信支付返回code为-1">微信支付返回code为-1<sup>1</sup></a></li>
 			
 		
 			
@@ -1494,7 +1505,7 @@
 			
 		
 			
-				<li><a href="/tags/微信支付返回code为-1/" title="微信支付返回code为-1">微信支付返回code为-1<sup>1</sup></a></li>
+				<li><a href="/tags/React-Native/" title="React\ Native">React\ Native<sup>1</sup></a></li>
 			
 		
 		</ul>
