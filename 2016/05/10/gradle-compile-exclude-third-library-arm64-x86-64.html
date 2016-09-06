@@ -17,7 +17,7 @@
 <meta property="og:url" content="http://www.jacpy.com/2016/05/10/gradle-compile-exclude-third-library-arm64-x86-64.html">
 <meta property="og:site_name" content="jacpy's blog">
 <meta property="og:description" content="在开发android应用时，一般都会用很多的第三方框架。有些框架会提供各个CPU的架构的SO库，比如arm、arm-v7a、x86、mips，有的甚至还提供64位的版本；而有的为了缩小应用包的体积只提供了一些常用的，比如arm，x86。如果应用中有的第三方框架提供了arm和x86的版本，而有的提供了arm，arm-v7a，x86三个版本，那么当运行在arm-v7a版本的CPU上，就会提示找不到只有">
-<meta property="og:updated_time" content="2016-08-24T00:44:07.000Z">
+<meta property="og:updated_time" content="2016-09-06T02:53:34.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="gardle编译排除第三方库中的arm64、x86-64中的SO库">
 <meta name="twitter:description" content="在开发android应用时，一般都会用很多的第三方框架。有些框架会提供各个CPU的架构的SO库，比如arm、arm-v7a、x86、mips，有的甚至还提供64位的版本；而有的为了缩小应用包的体积只提供了一些常用的，比如arm，x86。如果应用中有的第三方框架提供了arm和x86的版本，而有的提供了arm，arm-v7a，x86三个版本，那么当运行在arm-v7a版本的CPU上，就会提示找不到只有">
@@ -118,6 +118,8 @@
 </ul>
 <p>另外还可以使用gradle中的过滤器，可以很方便过滤SO库：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">release &#123;</span><br><span class="line">	ndk &#123;</span><br><span class="line">		abiFilters &quot;armeabi&quot;, &quot;armeabi-v7a&quot;, &quot;x86&quot; // 保留这三种架构的CPU</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>要求gradle版本不低于2.14.1(可以修改项目根目录下的gradle/wrapper/目录下的gradle-wrapper.properties文件内容，将gradle请求地址中的版本号修改)，否则会提示如下错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Gradle DSL method not found: &apos;abiFilter()&apos;</span><br><span class="line">Possible causes:The project &apos;*&apos; may be using a version of the Android Gradle plug-in that does not contain the method (e.g. &apos;testCompile&apos; was added in 1.1.0).</span><br><span class="line">Fix plugin version and sync projectThe project &apos;*&apos; may be using a version of Gradle that does not contain the method.</span><br><span class="line">Open Gradle wrapper fileThe build file may be missing a Gradle plugin.Apply Gradle plugin</span><br></pre></td></tr></table></figure>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -248,19 +250,7 @@
 			
 		
 			
-				<li><a href="/tags/gradle-不编译-arm64-x86-64/" title="gradle 不编译 arm64 x86-64">gradle 不编译 arm64 x86-64<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
+				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
 			
 		
 			
@@ -268,7 +258,11 @@
 			
 		
 			
-				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+				<li><a href="/tags/andfix/" title="andfix">andfix<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
 			
 		
 			
@@ -276,11 +270,7 @@
 			
 		
 			
-				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/andfix/" title="andfix">andfix<sup>1</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
 			
 		
 			
@@ -288,11 +278,27 @@
 			
 		
 			
-				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
+				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gradle-不编译-arm64-x86-64/" title="gradle 不编译 arm64 x86-64">gradle 不编译 arm64 x86-64<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/Please-correct-the-above-warnings-first/" title="Please correct the above warnings first">Please correct the above warnings first<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/No-such-device-or-address/" title="No such device or address">No such device or address<sup>1</sup></a></li>
 			
 		
 			
@@ -304,19 +310,15 @@
 			
 		
 			
-				<li><a href="/tags/No-such-device-or-address/" title="No such device or address">No such device or address<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/微信支付返回code为-1/" title="微信支付返回code为-1">微信支付返回code为-1<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/EOCD/" title="EOCD">EOCD<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/zlib压缩/" title="zlib压缩">zlib压缩<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/微信支付返回code为-1/" title="微信支付返回code为-1">微信支付返回code为-1<sup>1</sup></a></li>
 			
 		
 		</ul>

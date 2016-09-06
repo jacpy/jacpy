@@ -236,7 +236,7 @@
     <link href="http://www.jacpy.com/2016/05/10/gradle-compile-exclude-third-library-arm64-x86-64.html"/>
     <id>http://www.jacpy.com/2016/05/10/gradle-compile-exclude-third-library-arm64-x86-64.html</id>
     <published>2016-05-10T13:20:16.000Z</published>
-    <updated>2016-08-24T00:44:07.000Z</updated>
+    <updated>2016-09-06T02:53:34.000Z</updated>
     
     <content type="html">&lt;p&gt;在开发android应用时，一般都会用很多的第三方框架。有些框架会提供各个CPU的架构的SO库，比如arm、arm-v7a、x86、mips，有的甚至还提供64位的版本；而有的为了缩小应用包的体积只提供了一些常用的，比如arm，x86。如果应用中有的第三方框架提供了arm和x86的版本，而有的提供了arm，arm-v7a，x86三个版本，那么当运行在arm-v7a版本的CPU上，就会提示找不到只有arm和x86版本的SO库，这样很容易导致应用挂掉，报&lt;code&gt;java.lang.UnsatisfiedLinkError&lt;/code&gt;错误，提示native方法找不到实现。&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
@@ -256,6 +256,8 @@
 &lt;/ul&gt;
 &lt;p&gt;另外还可以使用gradle中的过滤器，可以很方便过滤SO库：&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;release &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	ndk &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		abiFilters &amp;quot;armeabi&amp;quot;, &amp;quot;armeabi-v7a&amp;quot;, &amp;quot;x86&amp;quot; // 保留这三种架构的CPU&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;要求gradle版本不低于2.14.1(可以修改项目根目录下的gradle/wrapper/目录下的gradle-wrapper.properties文件内容，将gradle请求地址中的版本号修改)，否则会提示如下错误：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Gradle DSL method not found: &amp;apos;abiFilter()&amp;apos;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Possible causes:The project &amp;apos;*&amp;apos; may be using a version of the Android Gradle plug-in that does not contain the method (e.g. &amp;apos;testCompile&amp;apos; was added in 1.1.0).&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Fix plugin version and sync projectThe project &amp;apos;*&amp;apos; may be using a version of Gradle that does not contain the method.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Open Gradle wrapper fileThe build file may be missing a Gradle plugin.Apply Gradle plugin&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 </content>
     
     <summary type="html">
