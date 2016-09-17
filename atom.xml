@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jacpy.com/"/>
-  <updated>2016-09-06T08:57:47.000Z</updated>
+  <updated>2016-09-17T05:18:07.000Z</updated>
   <id>http://www.jacpy.com/</id>
   
   <author>
@@ -14,6 +14,37 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>公交站点线路自定义View分享</title>
+    <link href="http://www.jacpy.com/2016/09/17/share-bus-line-custom-view.html"/>
+    <id>http://www.jacpy.com/2016/09/17/share-bus-line-custom-view.html</id>
+    <published>2016-09-17T04:23:19.000Z</published>
+    <updated>2016-09-17T05:18:07.000Z</updated>
+    
+    <content type="html">&lt;p&gt;分享一个仿《车来了》公交线路提示的自定义组件。&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;先上效果图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/jacpy/BusLine/blob/master/captures/bus_line.gif?raw=true&quot; alt=&quot;效果图&quot;&gt;&lt;/p&gt;
+&lt;p&gt;github地址：&lt;a href=&quot;https://github.com/jacpy/BusLine&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/jacpy/BusLine&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;用工具分析了官方的实现，使用的是google提供的v4包中的RecycleView来实现的，所以会看到各种View叠加。&lt;/p&gt;
+&lt;p&gt;上面View实现方式是使用自定义View的方式，使用了绘图方面的API和滑动手势控制，还实现了站点点击事件控制。所以整个就一个View，也就不存在View回收的问题。另外要注意在View中调用次数比较频繁的方法中要注意性能，比如onDraw()方法中，刷的次数非常频繁，特别是在滑动的时候，而这个方法又是一个关键的处理方法，计算特别多，所以这里要注意，否则方法运行时间超过16ms就会造成卡顿。&lt;/p&gt;
+&lt;p&gt;经过测试：在2013年的机型MOTO G XT1032机子上运行，同时刷新96个公交站点数据，onDraw()方法耗时平均7ms左右。&lt;/p&gt;
+&lt;p&gt;后面会写文章分析下实现方式及遇到的坑和解决方案。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;分享一个仿《车来了》公交线路提示的自定义组件。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="android view" scheme="http://www.jacpy.com/categories/android-view/"/>
+    
+    
+      <category term="自定义View 公交线路" scheme="http://www.jacpy.com/tags/%E8%87%AA%E5%AE%9A%E4%B9%89View-%E5%85%AC%E4%BA%A4%E7%BA%BF%E8%B7%AF/"/>
+    
+  </entry>
   
   <entry>
     <title>React Native iOS集成说明</title>
@@ -825,33 +856,6 @@
       <category term="gnustl" scheme="http://www.jacpy.com/tags/gnustl/"/>
     
       <category term="stlport" scheme="http://www.jacpy.com/tags/stlport/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>android 4.4系统调用Class.getTypeParameters()出现JNI function NewGlobalRef called with exception pending错误</title>
-    <link href="http://www.jacpy.com/2015/05/10/android-4-4-call-class-gettypeparameters-occur-jni-function-newglobalref-called-with-exception-pending.html"/>
-    <id>http://www.jacpy.com/2015/05/10/android-4-4-call-class-gettypeparameters-occur-jni-function-newglobalref-called-with-exception-pending.html</id>
-    <published>2015-05-10T15:35:49.000Z</published>
-    <updated>2015-10-30T15:48:50.000Z</updated>
-    
-    <content type="html">&lt;p&gt;先看一下异常信息：&lt;/p&gt;
-&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;15&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;16&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;17&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;18&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;19&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;20&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;21&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;22&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;23&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;24&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;25&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;26&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;27&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;28&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;29&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;30&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;31&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;32&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;33&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;34&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;35&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;36&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;37&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;38&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;39&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;40&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;41&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;42&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;43&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;44&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;45&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;46&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;47&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;48&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;49&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;50&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;51&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;JNI WARNING: JNI function NewGlobalRef called with exception pending&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;in Ljava/lang/Class;.getDex:()Lcom/android/dex/Dex; (NewGlobalRef)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;Pending exception is:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;java.lang.IndexOutOfBoundsException: index=0, limit=0&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;at java.nio.Buffer.checkIndex(Buffer.java:156)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;at java.nio.DirectByteBuffer.get(DirectByteBuffer.java:157)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;at com.android.dex.Dex.create(Dex.java:129)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;at java.lang.Class.getDex(Native Method)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;at libcore.reflect.AnnotationAccess.getSignature(AnnotationAccess.java:447)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;at java.lang.Class.getTypeParameters(Class.java:1070)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;05-11 15:14:28.285: I/dalvikvm(8083): at android.app.Activity.performCreate(Activity.java:5248)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1110)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2162)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:2257)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;at android.app.ActivityThread.access$800(ActivityThread.java:139)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1210)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;at android.os.Handler.dispatchMessage(Handler.java:102)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;at android.os.Looper.loop(Looper.java:136)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;at android.app.ActivityThread.main(ActivityThread.java:5086)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;at java.lang.reflect.Method.invokeNative(Native Method)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;at java.lang.reflect.Method.invoke(Method.java:515)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:785)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:601)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;at dalvik.system.NativeStart.main(Native Method)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&quot;main&quot; prio=5 tid=1 NATIVE&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;| group=&quot;main&quot; sCount=0 dsCount=0 obj=0x416b6e40 self=0x415d8500&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;| sysTid=8083 nice=0 sched=0/0 cgrp=apps handle=1074389332&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;| state=R schedstat=( 0 0 0 ) utm=13 stm=4 core=3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;#00 pc 0000132e /system/lib/libcorkscrew.so (unwind_backtrace_thread+29)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;#01 pc 000635ba /system/lib/libdvm.so (dvmDumpNativeStack(DebugOutputTarget const*, int)+33)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;#02 pc 00057590 /system/lib/libdvm.so (dvmDumpThreadEx(DebugOutputTarget const*, Thread*, bool)+395)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;#03 pc 000575fe /system/lib/libdvm.so (dvmDumpThread(Thread*, bool)+25)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;#04 pc 0003b554 /system/lib/libdvm.so&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;#05 pc 00043f2c /system/lib/libdvm.so&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;#06 pc 0006a4ea /system/lib/libdvm.so (Java_java_lang_Class_getDex(_JNIEnv*, _jclass*)+141)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;#07 pc 000203cc /system/lib/libdvm.so (dvmPlatformInvoke+112)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;#08 pc 00050eea /system/lib/libdvm.so (dvmCallJNIMethod(unsigned int const*, JValue*, Method const*, Thread*)+397)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;#09 pc 00029860 /system/lib/libdvm.so&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;#10 pc 00030b68 /system/lib/libdvm.so (dvmMterpStd(Thread*)+76)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;#11 pc 0002e200 /system/lib/libdvm.so (dvmInterpret(Thread*, Method const*, JValue*)+184)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;#12 pc 000637cc /system/lib/libdvm.so (dvmInvokeMethod(Object*, Method const*, ArrayObject*, ArrayObject*, ClassObject*, bool)+391)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;#13 pc 0006b6aa /system/lib/libdvm.so&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;#14 pc 00029860 /system/lib/libdvm.so&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;#15 pc 00030b68 /system/lib/libdvm.so (dvmMterpStd(Thread*)+76)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;#16 pc 0002e200 /system/lib/libdvm.so (dvmInterpret(Thread*, Method const*, JValue*)+184)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;#17 pc 000634e8 /system/lib/libdvm.so (dvmCallMethodV(Thread*, Method const*, Object*, bool, JValue*, std::__va_list)+335)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;#18 pc 0004cab6 /system/lib/libdvm.so&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;#19 pc 0004d5c0 /system/lib/libandroid_runtime.so&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;#20 pc 0004e2e6 /system/lib/libandroid_runtime.so (android::AndroidRuntime::start(char const*, char const*)+353)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;#21 pc 0000105a /system/bin/app_process&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;#22 pc 0000e510 /system/lib/libc.so (__libc_init+47)&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;很明显，是因为应用调用了 java.lang.Class.getTypeParameters()方法导致的问题，这个方法是用来获取泛型数量，在GSON或fastjson这样的第三方JSON反射框架中会出现这样的调用，出现这样的问题也正是使用这样的类库出现的。为什么只会在android4.4系统中出现这样的兼容性问题，而其他版本没有？从堆栈错误信息中可以看出来，在Java层最后调用的一个方法是Class.getDex()，这个是个native方法，只在C++代码中实现，而android其他版本却没有这个方法。查看dalvik/vm/native/java_lang_Class.cpp中的JNIEXPORT jobject JNICALL Java_java_lang_Class_getDex(JNIEnv* env, jclass javaClass)函数发现，在NDK中new一个Dex对象，而在这个对象时传的参数为空，导致在java层通过下标访问时出现了java.lang.IndexOutOfBoundsException异常，这也解释了为什么会出现NewGlobalRef pending exception。最后在源码中插入LOG，编译验证了一下，证明确实是这样。&lt;/p&gt;
-&lt;p&gt;OK，问题产生的原因找到了，怎么解决呢？&lt;/p&gt;
-&lt;p&gt;应用加载DEX文件时，调用了4.4新增了static void Dalvik_dalvik_system_DexFile_openDexFile_bytearray(const u4&lt;em&gt; args, JValue&lt;/em&gt; pResult)函数，直接将一个DEX文件的字节流传入，虚拟机自动解析并加载类相关信息。虽然这个函数是static，但因为使用到了NDK注册的方式，将Java层的方法与C++层对应的函数绑定到了一起，这样就可以使用指针遍历dvm_dalvik_system_DexFile数组找到对应的函数指针，从而可以调用。而在Java层的DexFile类中没有找到与之对应的int openDexFile(byte)方法，估计是被删了，而这个函数又没有被google官方验证，所以种种巧合，掉进了这个坑。唉，不说了，都是泪啊。&lt;/p&gt;
-&lt;p&gt;最后问题还是解决了，根本原因是RawDexFile-&amp;gt;pDvmDex-&amp;gt;memMap指针为空，分配内存赋值就O了。&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;先看一下异常信息：&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="dvm" scheme="http://www.jacpy.com/categories/dvm/"/>
-    
     
   </entry>
   
