@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jacpy.com/"/>
-  <updated>2016-09-17T05:18:07.000Z</updated>
+  <updated>2016-12-11T08:41:18.000Z</updated>
   <id>http://www.jacpy.com/</id>
   
   <author>
@@ -14,6 +14,78 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>android Activity设置为SingleTop值时的生命周期在7.0以上系统中的变化</title>
+    <link href="http://www.jacpy.com/2016/12/11/android-single-top-activity-lifecycle-changed-by-android-7.html"/>
+    <id>http://www.jacpy.com/2016/12/11/android-single-top-activity-lifecycle-changed-by-android-7.html</id>
+    <published>2016-12-11T04:13:15.000Z</published>
+    <updated>2016-12-11T08:41:18.000Z</updated>
+    
+    <content type="html">&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;前几天在解决应用中一个问题，现象是在nexus 7.0以上系统的手机上创建群组会话时，消息发送超时。然后测试了一上，发现是必现的，而4.4系统的手机上却一切正常，于是一路分析了别人写的代码。最后找到原因并解决，于是就有了本文。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;最后找到原因是在Android系统7.0以上，当把Activity的&lt;code&gt;launchMode&lt;/code&gt;属性值设置为&lt;code&gt;singleTop&lt;/code&gt;时，Activity的生命周期与以前的系统版本对应的生命周期有所不同。&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;我们都知道从Activity A启动了个Activity B，并在A中调用&lt;code&gt;finish()&lt;/code&gt;方法关闭A时，整个过程的生命周期的方法调用顺序是：先调用B的&lt;code&gt;onCreate()&lt;/code&gt;，然后再调用A的&lt;code&gt;onDestroy()&lt;/code&gt;。android系统这样做可能是为了提高系统的响应的速度，让应用以最快的速度看到UI发生变化，而不是从系统的角度考虑，先回收资源，资源回收OK了，再创建新的资源，所以就有了上面的这样生命周期方法的调用顺序。但在android 7.0系统以前有个例外情况：&lt;/p&gt;
+&lt;p&gt;假如Activity A的&lt;code&gt;launchMode&lt;/code&gt;属性值被设置为&lt;code&gt;singleTop&lt;/code&gt;时，如果Activity A启动Activity B，在B中又启动了A，同时关闭B，如下图所示：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2016/12/11/activity_single_top_flow.png&quot; alt=&quot;singleTop流程图&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;此时A的生命周期方法的调用是：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;先调用A的&lt;code&gt;onDestroy&lt;/code&gt;方法，用来关闭以前被启动的旧的Activity A，然后再调用在B中新startActivity的A的&lt;code&gt;onCreate&lt;/code&gt;方法。&lt;/p&gt;
+&lt;p&gt;那么这里所说的生命周期与前面所说的情况不一样，就因为设置了一个&lt;code&gt;singleTop&lt;/code&gt;值。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;这个是android系统7.0以前的，那么7.0以后的系统上走上述同样的流程，生命周期的方法调用顺序是：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;先调用新的Activity A的&lt;code&gt;onCreate&lt;/code&gt;方法，然后再调用旧A的&lt;code&gt;onDestroy&lt;/code&gt;方法。&lt;/p&gt;
+&lt;p&gt;发现这里与没有设置&lt;code&gt;singleTop&lt;/code&gt;值时的生命周期一致，形成了统一。&lt;/p&gt;
+&lt;p&gt;以上就是问题的原因，因为系统的差异造成的。由于使用的是google官方出的nexus系列手机测试，而又是使用原生的系统，可以认为是android官方系统这块的逻辑处理发生了变化。&lt;/p&gt;
+&lt;p&gt;好了，下面就说实际遇到的场景：&lt;/p&gt;
+&lt;p&gt;因为在Activity A中的&lt;code&gt;onDestroy&lt;/code&gt;方法中调用了关闭会话，并将一个全局的状态值修改为非法值，而在&lt;code&gt;onCreate&lt;/code&gt;方法中是重新初始化这个状态值。因为生命周期方法调用顺序在不同的系统上实现的差异，而导致这个状态值设置OK后，又被修改成非法值，从而使发送消息出去的报名格式发生变化，而服务器端在接收这个程序性错误后没有异常反馈，而终端则认为是服务器端没有响应而当作超时处理，所以发送失败。&lt;/p&gt;
+&lt;p&gt;从上面现象可以看出系统后台设计人员并没有对这些程序性非业务逻辑性错误作出错误反馈，而后台有没有Log记录呢？&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;前几天在解决应用中一个问题，现象是在nexus 7.0以上系统的手机上创建群组会话时，消息发送超时。然后测试了一上，发现是必现的，而4.4系统的手机上却一切正常，于是一路分析了别人写的代码。最后找到原因并解决，于是就有了本文。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;最后找到原因是在Android系统7.0以上，当把Activity的&lt;code&gt;launchMode&lt;/code&gt;属性值设置为&lt;code&gt;singleTop&lt;/code&gt;时，Activity的生命周期与以前的系统版本对应的生命周期有所不同。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="android" scheme="http://www.jacpy.com/categories/android/"/>
+    
+    
+      <category term="singleTop android7.0" scheme="http://www.jacpy.com/tags/singleTop-android7-0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>custom-bus-line-view-detail-1</title>
+    <link href="http://www.jacpy.com/2016/09/21/custom-bus-line-view-detail-1.html"/>
+    <id>http://www.jacpy.com/2016/09/21/custom-bus-line-view-detail-1.html</id>
+    <published>2016-09-21T05:04:26.000Z</published>
+    <updated>2016-09-21T05:26:25.000Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;自定义BusLineView详解（一）-滑动手势处理&quot;&gt;&lt;a href=&quot;#自定义BusLineView详解（一）-滑动手势处理&quot; class=&quot;headerlink&quot; title=&quot;自定义BusLineView详解（一）- 滑动手势处理&quot;&gt;&lt;/a&gt;自定义BusLineView详解（一）- 滑动手势处理&lt;/h1&gt;&lt;h2 id=&quot;处理Touch事件&quot;&gt;&lt;a href=&quot;#处理Touch事件&quot; class=&quot;headerlink&quot; title=&quot;处理Touch事件&quot;&gt;&lt;/a&gt;处理Touch事件&lt;/h2&gt;&lt;p&gt;首先从View类继承，重写两个与Touch事件想关的方法：&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@Override&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;dispatchTouchEvent&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(MotionEvent event)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	&lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.dispatchTouchEvent(event);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@Override&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onTouchEvent&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(MotionEvent event)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	&lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onTouchEvent(event);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;&lt;code&gt;dispatchTouchEvent&lt;/code&gt;方法与Touch事件分发有关，即从屏幕上获取到了触摸事件并交给当前View来处理。&lt;/p&gt;
+&lt;h2 id=&quot;滚动处理&quot;&gt;&lt;a href=&quot;#滚动处理&quot; class=&quot;headerlink&quot; title=&quot;滚动处理&quot;&gt;&lt;/a&gt;滚动处理&lt;/h2&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;自定义BusLineView详解（一）-滑动手势处理&quot;&gt;&lt;a href=&quot;#自定义BusLineView详解（一）-滑动手势处理&quot; class=&quot;headerlink&quot; title=&quot;自定义BusLineView详解（一）- 滑动手势处理&quot;&gt;&lt;/a&gt;自定义BusL
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>公交站点线路自定义View分享</title>
@@ -798,64 +870,6 @@
     
       <category term="ndk" scheme="http://www.jacpy.com/categories/ndk/"/>
     
-    
-  </entry>
-  
-  <entry>
-    <title>NDK使用zlib mini压缩报错：Zip: EOCD not found, dex is not zip</title>
-    <link href="http://www.jacpy.com/2015/05/26/ndk-used-zlib-mini-compress-occur-zip-eocd-not-found-dex-is-not-zip.html"/>
-    <id>http://www.jacpy.com/2015/05/26/ndk-used-zlib-mini-compress-occur-zip-eocd-not-found-dex-is-not-zip.html</id>
-    <published>2015-05-25T23:46:01.000Z</published>
-    <updated>2015-10-30T15:43:32.000Z</updated>
-    
-    <content type="html">&lt;p&gt;最近在对Dex文件在内存中解密后压缩成zip文件写到本地供DVM加载时出现了Zip: EOCD not found, *.dex is not zip异常，折腾了好几个小时，终于解决了。&lt;/p&gt;
-&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;p&gt;按照DVM的错误提示找到了系统源码出错的地方，在dalvik/libdex/ZipArchive.cpp文件mapCentralDirectory0(int fd, const char* debugFileName, ZipArchive* pArchive, off_t fileLength, size_t readAmount, u1* scanBuf)函数中。在解析ZIP文件时，因为缺少 EOCD(&lt;strong&gt;E&lt;/strong&gt;nd &lt;strong&gt;O&lt;/strong&gt;f &lt;strong&gt;C&lt;/strong&gt;entral &lt;strong&gt;D&lt;/strong&gt;irectory)段的内容，即没有找到50 4b 05 06这样的魔数内容，导致entry数量和目录大小及偏移地址等重要数据不能解析，所以DVM提示解析失败，这个段内容是在ZIP文件的末尾部分，所以只需要补上去就OK。对照自己使用ZIP mini写的压缩出来的文件，发现没有EOCD段，但是使用RAR解压却没有问题，纠结了好长时间，于是乎到zlib中全局搜索EOCD关键字，在zlib/src/contrib/minizip/zip.c文件中的找到了ENDHEADERMAGIC宏定义，使用是在Write_EndOfCentralDirectoryRecord(zip64_internal* zi, uLong size_centraldir, ZPOS64_T centraldir_pos_inzip)函数中使用，被&lt;strong&gt;zipClose&lt;/strong&gt; (zipFile file, const char* global_comment)函数调用。原来是自己写的压缩代码中没有调用zipClose函数，补上就OK了。&lt;/p&gt;
-&lt;p&gt;在google上搜索发现很多人也出现类似的问题，很大一部分原因是apk文件被破坏，极有可能是文件在传输过程中没有传输完整，比如USB传输中断，网络传输中断导致文件 EOCD段缺失（因为这部分内容在文件的末尾）。也发现网上的有些代码中有坑，需谨慎使用，谨记。&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;最近在对Dex文件在内存中解密后压缩成zip文件写到本地供DVM加载时出现了Zip: EOCD not found, *.dex is not zip异常，折腾了好几个小时，终于解决了。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="ndk" scheme="http://www.jacpy.com/categories/ndk/"/>
-    
-    
-      <category term="EOCD" scheme="http://www.jacpy.com/tags/EOCD/"/>
-    
-      <category term="zlib压缩" scheme="http://www.jacpy.com/tags/zlib%E5%8E%8B%E7%BC%A9/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>NDK编译ART代码出现错误：art/runtime/atomic.h:21:18: fatal error: atomic: No such file or directory</title>
-    <link href="http://www.jacpy.com/2015/05/26/ndk-compile-art-occur-artruntimeatomic-h2118-fatal-error-atomic-no-such-file-or-directory.html"/>
-    <id>http://www.jacpy.com/2015/05/26/ndk-compile-art-occur-artruntimeatomic-h2118-fatal-error-atomic-no-such-file-or-directory.html</id>
-    <published>2015-05-25T17:43:27.000Z</published>
-    <updated>2015-10-30T15:51:10.000Z</updated>
-    
-    <content type="html">&lt;p&gt;今天使用NDK编译ART代码时出现了这样的错：&lt;/p&gt;
-&lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;**art/runtime/atomic.h:21:18: fatal error: atomic: No such file or directory**&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;** #include &amp;lt;atomic&amp;gt;**&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;p&gt;stackoverflow上有人说把Application.mk文件中的APP_STL := stlport_shared换成stlport_static就行了，试了一下，发现编译还是出现同样的错。&lt;strong&gt;最后换成gnustl_shared或者gnustl_static就OK了&lt;/strong&gt;，莫非gnustl比stlport支持的功能多？不得而知，而且还有一种很让人很费解的问题：使用android4.4版本的ART的代码编译通过，而使用android5.0版本的ART的代码编译就会提示上面的错误，atomic.h文件内容都一样，mk文件中只有使用的SO库不一样，一个是4.4系统上面的libart.so，一个是5.0系统上面的libart.so，其他环境都是一样。唉，水平有限，解释不了。&lt;/p&gt;
-&lt;p&gt;知乎上解释stlport与gnustl两者的不同：&lt;a href=&quot;http://www.zhihu.com/question/20845153&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://www.zhihu.com/question/20845153&lt;/a&gt;&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;今天使用NDK编译ART代码时出现了这样的错：&lt;/p&gt;
-&lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;**art/runtime/atomic.h:21:18: fatal error: atomic: No such file or directory**&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;** #include &amp;lt;atomic&amp;gt;**&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-      <category term="ndk" scheme="http://www.jacpy.com/categories/ndk/"/>
-    
-    
-      <category term="gnustl" scheme="http://www.jacpy.com/tags/gnustl/"/>
-    
-      <category term="stlport" scheme="http://www.jacpy.com/tags/stlport/"/>
     
   </entry>
   

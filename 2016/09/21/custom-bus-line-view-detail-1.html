@@ -4,38 +4,26 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>android studio gradle编译异常小结 | jacpy&#39;s blog</title>
+    <title>custom-bus-line-view-detail-1 | jacpy&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="jacpy">
     
 
     
-    <meta name="description" content="在使用android studio过程中，使用gradle编译的时候总会出现一些问题，下面是几个常见问题的解决方法。
-
-
-被编译的代码或资源有问题（ finished with non-zero exit value 1）：
-
-出现这种编译异常表现是exit value 1，一般会给出错误提示，所以很容易排查。这种错误很常见，错误提示有时候是在日志中明显的给出来了，如下示例所示：">
+    <meta name="description" content="自定义BusLineView详解（一）- 滑动手势处理处理Touch事件首先从View类继承，重写两个与Touch事件想关的方法：
+123456789@Overridepublic boolean dispatchTouchEvent(MotionEvent event) &amp;#123;	return super.dispatchTouchEvent(event);&amp;#125;@Overridepu">
 <meta property="og:type" content="article">
-<meta property="og:title" content="android studio gradle编译异常小结">
-<meta property="og:url" content="http://www.jacpy.com/2016/04/22/android-studio-error-collection.html">
+<meta property="og:title" content="custom-bus-line-view-detail-1">
+<meta property="og:url" content="http://www.jacpy.com/2016/09/21/custom-bus-line-view-detail-1.html">
 <meta property="og:site_name" content="jacpy's blog">
-<meta property="og:description" content="在使用android studio过程中，使用gradle编译的时候总会出现一些问题，下面是几个常见问题的解决方法。
-
-
-被编译的代码或资源有问题（ finished with non-zero exit value 1）：
-
-出现这种编译异常表现是exit value 1，一般会给出错误提示，所以很容易排查。这种错误很常见，错误提示有时候是在日志中明显的给出来了，如下示例所示：">
-<meta property="og:updated_time" content="2016-06-14T03:36:14.000Z">
+<meta property="og:description" content="自定义BusLineView详解（一）- 滑动手势处理处理Touch事件首先从View类继承，重写两个与Touch事件想关的方法：
+123456789@Overridepublic boolean dispatchTouchEvent(MotionEvent event) &amp;#123;	return super.dispatchTouchEvent(event);&amp;#125;@Overridepu">
+<meta property="og:updated_time" content="2016-09-21T05:26:25.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="android studio gradle编译异常小结">
-<meta name="twitter:description" content="在使用android studio过程中，使用gradle编译的时候总会出现一些问题，下面是几个常见问题的解决方法。
-
-
-被编译的代码或资源有问题（ finished with non-zero exit value 1）：
-
-出现这种编译异常表现是exit value 1，一般会给出错误提示，所以很容易排查。这种错误很常见，错误提示有时候是在日志中明显的给出来了，如下示例所示：">
+<meta name="twitter:title" content="custom-bus-line-view-detail-1">
+<meta name="twitter:description" content="自定义BusLineView详解（一）- 滑动手势处理处理Touch事件首先从View类继承，重写两个与Touch事件想关的方法：
+123456789@Overridepublic boolean dispatchTouchEvent(MotionEvent event) &amp;#123;	return super.dispatchTouchEvent(event);&amp;#125;@Overridepu">
 
     
     <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
@@ -95,14 +83,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/04/22/android-studio-error-collection.html" title="android studio gradle编译异常小结" itemprop="url">android studio gradle编译异常小结</a>
+      <a href="/2016/09/21/custom-bus-line-view-detail-1.html" title="custom-bus-line-view-detail-1" itemprop="url">custom-bus-line-view-detail-1</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
 		
   <p class="article-time">
-    <time datetime="2016-04-22T08:22:30.000Z" itemprop="datePublished"> 发表于 2016-04-22</time>
+    <time datetime="2016-09-21T05:04:26.000Z" itemprop="datePublished"> 发表于 2016-09-21</time>
     
   </p>
 </header>
@@ -111,49 +99,18 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#自定义BusLineView详解（一）-滑动手势处理"><span class="toc-number">1.</span> <span class="toc-text">自定义BusLineView详解（一）- 滑动手势处理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#处理Touch事件"><span class="toc-number">1.1.</span> <span class="toc-text">处理Touch事件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#滚动处理"><span class="toc-number">1.2.</span> <span class="toc-text">滚动处理</span></a></li></ol></li></ol>
 		
 		</div>
 		
-		<blockquote>
-<p>在使用android studio过程中，使用gradle编译的时候总会出现一些问题，下面是几个常见问题的解决方法。</p>
-</blockquote>
-<ul>
-<li>被编译的代码或资源有问题（ finished with non-zero exit value 1）：</li>
-</ul>
-<p>出现这种编译异常表现是<code>exit value 1</code>，一般会给出错误提示，所以很容易排查。这种错误很常见，错误提示有时候是在日志中明显的给出来了，如下示例所示：</p>
-<a id="more"></a>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">:app:processDebugManifest</div><div class="line">:app:processDebugResources</div><div class="line">\app\src\main\res\layout\activity_welcome.xml</div><div class="line">Error:(42, 26) No resource found that matches the given name (at &apos;src&apos; with value &apos;@drawable/welcome_03&apos;).</div><div class="line">Error:Execution failed for task &apos;:app:processDebugResources&apos;.</div><div class="line">com.android.ide</div><div class="line">.common.process.ProcessException: org.gradle.process.internal.ExecException: </div><div class="line">Process &apos;command &apos;D:\android-sdk-windows\build-tools\22.0.1\aapt.exe&apos;&apos; finished with non-zero exit value 1</div></pre></td></tr></table></figure>
-<p>上面错误提示找不到welcome_03这个drawable资源。有时候没有明显的提示，如下面这种错误：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">:app:transformClassesWithMultidexlistForDebug UP-TO-DATE</div><div class="line">:app:transformClassesWithDexForDebug FAILED</div><div class="line">Error:Execution failed for task &apos;:app:transformClassesWithDexForDebug&apos;.</div><div class="line">&gt; com.android.build.api.transform.TransformException: </div><div class="line">com.android.ide.common.process.ProcessException: java.util.concurrent.ExecutionException: </div><div class="line">com.android.ide.common.process.ProcessException: org.gradle.process.internal.ExecException: </div><div class="line">Process &apos;command &apos;C:\Program Files\Java\jdk1.7.0_79\bin\java.exe&apos;&apos; finished with non-zero exit value 1</div></pre></td></tr></table></figure>
-<p>上面这种错误没有给出很显示的提示，但是可以知道是在执行<code>Error:Execution failed for task &#39;:app:transformClassesWithDexForDebug&#39;</code>这一步出错了，至少缩小了错误的排查范围，这个时候就需要经验来判断了，自己之前改过什么，自己回想一下。有时候往上面看错误日志，也会发现有很明显的错误提示。</p>
-<ul>
-<li>jar包冲突（finished with non-zero exit value 2）：<br>主要表现为编译后出现<strong>finished with non-zero exit value 2</strong>错误，原因是jar包冲突，导致的原因可能是在dependencies中使用compile files()导入一次jar包，然后有其它jar的引入方式使用compile’com.xxx’方式，正好又引用了这个jar包，所以导致了重复引用jar包的冲突。最常见的是support-v4包的重复引用。具体报错如下所示：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Error:Execution failed for task &apos;:task:transformClassesWithDexForDebug&apos;.</div><div class="line">com.android.build.api.transform.TransformException: </div><div class="line">com.android.ide.common.process.ProcessException: org.gradle.process.internal.ExecException:</div><div class="line">Process &apos;command &apos;C:\Java\jdk1.7.0_79\bin\java.exe&apos;&apos; finished with non-zero exit value 2</div></pre></td></tr></table></figure>
-<ul>
-<li>编译的代码过多导致内存不足（finished with non-zero exit value 3）：<br>主要表现为编译后出现<strong>finished with non-zero exit value 3</strong>错误，原因是因为编译的java代码过多，通常是方法数超过65535后使用了分包的机制，gradle在编译的时候由于编译的内存需要不能满足而导致错误。具体报错内容如下所示：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Error:java.lang.OutOfMemoryError: GC overhead limit exceeded</div><div class="line">Error:Execution failed for task &apos;:app:transformClassesWithDexForRelease&apos;.</div><div class="line">com.android.build.api.transform.TransformException: </div><div class="line">com.android.ide.common.process.ProcessException: java.util.concurrent.ExecutionException: </div><div class="line">com.android.ide.common.process.ProcessException: org.gradle.process.internal.ExecException: </div><div class="line">Process &apos;command &apos;C:\Java\jdk1.7.0_79\bin\java.exe&apos;&apos; finished with non-zero exit value 3</div></pre></td></tr></table></figure>
-<p>解决方案是在gradle文件中的android代码块内增加如下内容即可解决：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line"></div><div class="line">    // ...</div><div class="line"></div><div class="line">    dexOptions &#123;</div><div class="line">	javaMaxHeapSize &quot;4g&quot;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>或者修改android studio的安装目录下的bin目录中的studio.vmoptions文件中的<code>Xms</code>和<code>Xmx</code>两项，将其值改大，如下所示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">-Xms256m</div><div class="line">-Xmx1280m</div></pre></td></tr></table></figure></p>
-<p>出现这种情况的原因是因为项目太大，编译需要更多的内存。</p>
-  
+		<h1 id="自定义BusLineView详解（一）-滑动手势处理"><a href="#自定义BusLineView详解（一）-滑动手势处理" class="headerlink" title="自定义BusLineView详解（一）- 滑动手势处理"></a>自定义BusLineView详解（一）- 滑动手势处理</h1><h2 id="处理Touch事件"><a href="#处理Touch事件" class="headerlink" title="处理Touch事件"></a>处理Touch事件</h2><p>首先从View类继承，重写两个与Touch事件想关的方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">dispatchTouchEvent</span><span class="params">(MotionEvent event)</span> </span>&#123;</div><div class="line">	<span class="keyword">return</span> <span class="keyword">super</span>.dispatchTouchEvent(event);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onTouchEvent</span><span class="params">(MotionEvent event)</span> </span>&#123;</div><div class="line">	<span class="keyword">return</span> <span class="keyword">super</span>.onTouchEvent(event);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>dispatchTouchEvent</code>方法与Touch事件分发有关，即从屏幕上获取到了触摸事件并交给当前View来处理。</p>
+<h2 id="滚动处理"><a href="#滚动处理" class="headerlink" title="滚动处理"></a>滚动处理</h2>  
 	</div>
 		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/android-studio/">android studio</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/transformClassesWithDexForDebug/">transformClassesWithDexForDebug</a>
-  </div>
 
 </div>
 
@@ -161,7 +118,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://www.jacpy.com/2016/04/22/android-studio-error-collection.html" data-title="android studio gradle编译异常小结 | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
+	  <div data-url="http://www.jacpy.com/2016/09/21/custom-bus-line-view-detail-1.html" data-title="custom-bus-line-view-detail-1 | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -175,18 +132,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2016/05/10/gradle-compile-exclude-third-library-arm64-x86-64.html" title="gardle编译排除第三方库中的arm64、x86-64中的SO库">
+ <a href="/2016/12/11/android-single-top-activity-lifecycle-changed-by-android-7.html" title="android Activity设置为SingleTop值时的生命周期在7.0以上系统中的变化">
   <strong>上一篇：</strong><br/>
   <span>
-  gardle编译排除第三方库中的arm64、x86-64中的SO库</span>
+  android Activity设置为SingleTop值时的生命周期在7.0以上系统中的变化</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2016/03/24/andfix-load-patch-analysis.html"  title="AndFix加载补丁包过程分析">
+<a href="/2016/09/17/share-bus-line-custom-view.html"  title="公交站点线路自定义View分享">
  <strong>下一篇：</strong><br/> 
- <span>AndFix加载补丁包过程分析
+ <span>公交站点线路自定义View分享
 </span>
 </a>
 </div>
@@ -195,7 +152,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2016/04/22/android-studio-error-collection.html" data-title="android studio gradle编译异常小结" data-url="http://www.jacpy.com/2016/04/22/android-studio-error-collection.html"></div>
+	<div class="ds-thread" data-thread-key="2016/09/21/custom-bus-line-view-detail-1.html" data-title="custom-bus-line-view-detail-1" data-url="http://www.jacpy.com/2016/09/21/custom-bus-line-view-detail-1.html"></div>
 </section>
 
 
@@ -206,7 +163,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#自定义BusLineView详解（一）-滑动手势处理"><span class="toc-number">1.</span> <span class="toc-text">自定义BusLineView详解（一）- 滑动手势处理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#处理Touch事件"><span class="toc-number">1.1.</span> <span class="toc-text">处理Touch事件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#滚动处理"><span class="toc-number">1.2.</span> <span class="toc-text">滚动处理</span></a></li></ol></li></ol>
  
   </div>
 

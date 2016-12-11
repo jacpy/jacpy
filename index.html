@@ -78,6 +78,130 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2016/12/11/android-single-top-activity-lifecycle-changed-by-android-7.html" title="android Activity设置为SingleTop值时的生命周期在7.0以上系统中的变化" itemprop="url">android Activity设置为SingleTop值时的生命周期在7.0以上系统中的变化</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
+		
+  <p class="article-time">
+    <time datetime="2016-12-11T04:13:15.000Z" itemprop="datePublished"> 发表于 2016-12-11</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <blockquote>
+<ul>
+<li>前几天在解决应用中一个问题，现象是在nexus 7.0以上系统的手机上创建群组会话时，消息发送超时。然后测试了一上，发现是必现的，而4.4系统的手机上却一切正常，于是一路分析了别人写的代码。最后找到原因并解决，于是就有了本文。</li>
+</ul>
+</blockquote>
+<p>最后找到原因是在Android系统7.0以上，当把Activity的<code>launchMode</code>属性值设置为<code>singleTop</code>时，Activity的生命周期与以前的系统版本对应的生命周期有所不同。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2016/12/11/android-single-top-activity-lifecycle-changed-by-android-7.html#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/android/">android</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/singleTop-android7-0/">singleTop android7.0</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/2016/12/11/android-single-top-activity-lifecycle-changed-by-android-7.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2016/12/11/android-single-top-activity-lifecycle-changed-by-android-7.html" data-count-type="comments">&nbsp;</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/09/21/custom-bus-line-view-detail-1.html" title="custom-bus-line-view-detail-1" itemprop="url">custom-bus-line-view-detail-1</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
+		
+  <p class="article-time">
+    <time datetime="2016-09-21T05:04:26.000Z" itemprop="datePublished"> 发表于 2016-09-21</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h1 id="自定义BusLineView详解（一）-滑动手势处理"><a href="#自定义BusLineView详解（一）-滑动手势处理" class="headerlink" title="自定义BusLineView详解（一）- 滑动手势处理"></a>自定义BusLineView详解（一）- 滑动手势处理</h1><h2 id="处理Touch事件"><a href="#处理Touch事件" class="headerlink" title="处理Touch事件"></a>处理Touch事件</h2><p>首先从View类继承，重写两个与Touch事件想关的方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">dispatchTouchEvent</span><span class="params">(MotionEvent event)</span> </span>&#123;</div><div class="line">	<span class="keyword">return</span> <span class="keyword">super</span>.dispatchTouchEvent(event);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onTouchEvent</span><span class="params">(MotionEvent event)</span> </span>&#123;</div><div class="line">	<span class="keyword">return</span> <span class="keyword">super</span>.onTouchEvent(event);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>dispatchTouchEvent</code>方法与Touch事件分发有关，即从屏幕上获取到了触摸事件并交给当前View来处理。</p>
+<h2 id="滚动处理"><a href="#滚动处理" class="headerlink" title="滚动处理"></a>滚动处理</h2>
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/2016/09/21/custom-bus-line-view-detail-1.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2016/09/21/custom-bus-line-view-detail-1.html" data-count-type="comments">&nbsp;</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2016/09/17/share-bus-line-custom-view.html" title="公交站点线路自定义View分享" itemprop="url">公交站点线路自定义View分享</a>
   </h1>
   <p class="article-author">By
@@ -1238,135 +1362,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/05/26/ndk-used-zlib-mini-compress-occur-zip-eocd-not-found-dex-is-not-zip.html" title="NDK使用zlib mini压缩报错：Zip: EOCD not found, dex is not zip" itemprop="url">NDK使用zlib mini压缩报错：Zip: EOCD not found, dex is not zip</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
-		
-  <p class="article-time">
-    <time datetime="2015-05-25T23:46:01.000Z" itemprop="datePublished"> 发表于 2015-05-26</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>最近在对Dex文件在内存中解密后压缩成zip文件写到本地供DVM加载时出现了Zip: EOCD not found, *.dex is not zip异常，折腾了好几个小时，终于解决了。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2015/05/26/ndk-used-zlib-mini-compress-occur-zip-eocd-not-found-dex-is-not-zip.html#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/ndk/">ndk</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/EOCD/">EOCD</a><a href="/tags/zlib压缩/">zlib压缩</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/2015/05/26/ndk-used-zlib-mini-compress-occur-zip-eocd-not-found-dex-is-not-zip.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2015/05/26/ndk-used-zlib-mini-compress-occur-zip-eocd-not-found-dex-is-not-zip.html" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/05/26/ndk-compile-art-occur-artruntimeatomic-h2118-fatal-error-atomic-no-such-file-or-directory.html" title="NDK编译ART代码出现错误：art/runtime/atomic.h:21:18: fatal error: atomic: No such file or directory" itemprop="url">NDK编译ART代码出现错误：art/runtime/atomic.h:21:18: fatal error: atomic: No such file or directory</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
-		
-  <p class="article-time">
-    <time datetime="2015-05-25T17:43:27.000Z" itemprop="datePublished"> 发表于 2015-05-26</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>今天使用NDK编译ART代码时出现了这样的错：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">**art/runtime/atomic.h:21:18: fatal error: atomic: No such file or directory**</div><div class="line"></div><div class="line">** #include &lt;atomic&gt;**</div></pre></td></tr></table></figure>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2015/05/26/ndk-compile-art-occur-artruntimeatomic-h2118-fatal-error-atomic-no-such-file-or-directory.html#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/ndk/">ndk</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/gnustl/">gnustl</a><a href="/tags/stlport/">stlport</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/2015/05/26/ndk-compile-art-occur-artruntimeatomic-h2118-fatal-error-atomic-no-such-file-or-directory.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2015/05/26/ndk-compile-art-occur-artruntimeatomic-h2118-fatal-error-atomic-no-such-file-or-directory.html" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next<span></span></a>
@@ -1389,7 +1384,7 @@
 		  
 		
 		  
-			<li><a href="/categories/android/" title="android">android<sup>6</sup></a></li>
+			<li><a href="/categories/android/" title="android">android<sup>7</sup></a></li>
 		  
 		
 		  
@@ -1442,7 +1437,11 @@
 			
 		
 			
-				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+				<li><a href="/tags/Please-correct-the-above-warnings-first/" title="Please correct the above warnings first">Please correct the above warnings first<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
 			
 		
 			
@@ -1462,11 +1461,11 @@
 			
 		
 			
-				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
+				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
 			
 		
 			
@@ -1474,23 +1473,15 @@
 			
 		
 			
-				<li><a href="/tags/Please-correct-the-above-warnings-first/" title="Please correct the above warnings first">Please correct the above warnings first<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/andfix/" title="andfix">andfix<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/gradle-不编译-arm64-x86-64/" title="gradle 不编译 arm64 x86-64">gradle 不编译 arm64 x86-64<sup>1</sup></a></li>
+				<li><a href="/tags/singleTop-android7-0/" title="singleTop android7.0">singleTop android7.0<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/No-such-device-or-address/" title="No such device or address">No such device or address<sup>1</sup></a></li>
+				<li><a href="/tags/gradle-不编译-arm64-x86-64/" title="gradle 不编译 arm64 x86-64">gradle 不编译 arm64 x86-64<sup>1</sup></a></li>
 			
 		
 			
@@ -1502,7 +1493,7 @@
 			
 		
 			
-				<li><a href="/tags/自定义View-公交线路/" title="自定义View 公交线路">自定义View 公交线路<sup>1</sup></a></li>
+				<li><a href="/tags/No-such-device-or-address/" title="No such device or address">No such device or address<sup>1</sup></a></li>
 			
 		
 			
@@ -1511,6 +1502,10 @@
 		
 			
 				<li><a href="/tags/zlib压缩/" title="zlib压缩">zlib压缩<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/自定义View-公交线路/" title="自定义View 公交线路">自定义View 公交线路<sup>1</sup></a></li>
 			
 		
 			
