@@ -1,0 +1,625 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>android中View创建过程详解 | jacpy&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="jacpy">
+    
+
+    
+    <meta name="description" content="这几天在看View的尺寸是怎样计算出来的，于是看了整个View被初始化的过程，结合系统源码总结了一下。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="android中View创建过程详解">
+<meta property="og:url" content="http://www.jacpy.com/2016/12/13/android-view-create-detail.html">
+<meta property="og:site_name" content="jacpy's blog">
+<meta property="og:description" content="这几天在看View的尺寸是怎样计算出来的，于是看了整个View被初始化的过程，结合系统源码总结了一下。">
+<meta property="og:image" content="http://www.jacpy.com/images/2016/12/13/phonewindow_decorview.png">
+<meta property="og:image" content="http://www.jacpy.com/images/2016/12/13/layoutinflater_init.png">
+<meta property="og:updated_time" content="2016-12-17T11:12:01.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="android中View创建过程详解">
+<meta name="twitter:description" content="这几天在看View的尺寸是怎样计算出来的，于是看了整个View被初始化的过程，结合系统源码总结了一下。">
+<meta name="twitter:image" content="http://www.jacpy.com/images/2016/12/13/phonewindow_decorview.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="jacpy&#39;s blog" title="jacpy&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="jacpy&#39;s blog">jacpy&#39;s blog</a></h1>
+				<h2 class="blog-motto">enjoy mobile development</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated" style="margin-top: 0px;">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:www.jacpy.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/12/13/android-view-create-detail.html" title="android中View创建过程详解" itemprop="url">android中View创建过程详解</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
+		
+  <p class="article-time">
+    <time datetime="2016-12-13T01:46:45.000Z" itemprop="datePublished"> 发表于 2016-12-13</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#从布局文件到LayoutParams"><span class="toc-number">1.</span> <span class="toc-text">从布局文件到LayoutParams</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从布局文件到View"><span class="toc-number">2.</span> <span class="toc-text">从布局文件到View</span></a></li></ol>
+		
+		</div>
+		
+		<p>这几天在看View的尺寸是怎样计算出来的，于是看了整个View被初始化的过程，结合系统源码总结了一下。</p>
+<a id="more"></a>
+<h2 id="从布局文件到LayoutParams"><a href="#从布局文件到LayoutParams" class="headerlink" title="从布局文件到LayoutParams"></a>从布局文件到LayoutParams</h2><p>首先从Activity的<code>setContentView(int)</code>方法开始，只要设置了R.layout的布局文件，那么界面上就会显示出来对应的内容。所以以这个方法为初发点，然后往后跟踪代码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setContentView</span><span class="params">(@LayoutRes <span class="keyword">int</span> layoutResID)</span> </span>&#123;</div><div class="line">    getWindow().setContentView(layoutResID);</div><div class="line">    initWindowDecorActionBar();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>通过以上代码发现调用了Window类的<code>setContentView</code>方法，那么这个Window对象<code>mWindow</code>又是怎么初始化的？在Activity中搜索发现是在Activity的<code>attach</code>方法中初始化的，构造了一个PhoneWindow对象。如下代码所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">attach</span><span class="params">(Context context, ActivityThread aThread,</span></span></div><div class="line">        Instrumentation instr, IBinder token, <span class="keyword">int</span> ident,</div><div class="line">        Application application, Intent intent, ActivityInfo info,</div><div class="line">        CharSequence title, Activity parent, String id,</div><div class="line">        NonConfigurationInstances lastNonConfigurationInstances,</div><div class="line">        Configuration config, String referrer, IVoiceInteractor voiceInteractor) &#123;</div><div class="line">    attachBaseContext(context);</div><div class="line"></div><div class="line">    mFragments.attachHost(<span class="keyword">null</span> <span class="comment">/*parent*/</span>);</div><div class="line"></div><div class="line">    mWindow = <span class="keyword">new</span> PhoneWindow(<span class="keyword">this</span>); <span class="comment">// 这里创建了Window对象</span></div><div class="line">    mWindow.setCallback(<span class="keyword">this</span>);</div><div class="line">    mWindow.setOnWindowDismissedCallback(<span class="keyword">this</span>);</div><div class="line">    mWindow.getLayoutInflater().setPrivateFactory(<span class="keyword">this</span>);</div><div class="line">    <span class="comment">// ... 中间部分代码省略</span></div><div class="line"></div><div class="line">    mWindow.setWindowManager(</div><div class="line">            (WindowManager)context.getSystemService(Context.WINDOW_SERVICE),</div><div class="line">            mToken, mComponent.flattenToString(),</div><div class="line">            (info.flags &amp; ActivityInfo.FLAG_HARDWARE_ACCELERATED) != <span class="number">0</span>);</div><div class="line">    <span class="keyword">if</span> (mParent != <span class="keyword">null</span>) &#123;</div><div class="line">        mWindow.setContainer(mParent.getWindow());</div><div class="line">    &#125;</div><div class="line">    mWindowManager = mWindow.getWindowManager();</div><div class="line">    mCurrentConfig = config;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在PhoneWindow的<code>setContentView(int)</code>方法中，发现是调用了LayoutInflater的<code>inflate(int, View)</code>方法，对这个布局文件进行转换成View，并添加到后面View这个参数中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setContentView</span><span class="params">(<span class="keyword">int</span> layoutResID)</span> </span>&#123;</div><div class="line">    <span class="comment">// Note: FEATURE_CONTENT_TRANSITIONS may be set in the process of installing the window</span></div><div class="line">    <span class="comment">// decor, when theme attributes and the like are crystalized. Do not check the feature</span></div><div class="line">    <span class="comment">// before this happens.</span></div><div class="line">    <span class="keyword">if</span> (mContentParent == <span class="keyword">null</span>) &#123;</div><div class="line">        installDecor();</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!hasFeature(FEATURE_CONTENT_TRANSITIONS)) &#123;</div><div class="line">        mContentParent.removeAllViews();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (hasFeature(FEATURE_CONTENT_TRANSITIONS)) &#123;</div><div class="line">    	<span class="comment">// ...</span></div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        mLayoutInflater.inflate(layoutResID, mContentParent);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// ...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<ul>
+<li>这里面顺带穿插说一下View的根节点是怎样初始化出来的。</li>
+</ul>
+<p>这里有一个关键的地方是这个<code>installDecor()</code>方法，在这个方法中通过调用<code>generateDecor()</code>方法创建了这个mDecor的对象，通过调用<code>generateLayout(DecorView)</code>方法初始化出来了mContentParent对象。其中，mDecor是<code>PhoneWindow.DecorView</code>的类实例，mContentParent是展示所有内容的，是通过<code>com.android.internal.R.id.content</code>ID来找到这个View。具体代码如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> ViewGroup <span class="title">generateLayout</span><span class="params">(DecorView decor)</span> </span>&#123;</div><div class="line">	<span class="comment">// ...</span></div><div class="line">	View in = mLayoutInflater.inflate(layoutResource, <span class="keyword">null</span>); <span class="comment">// layoutResource是根据对当前显示View的Activity的theme属性值来决定由系统加载对应的布局文件</span></div><div class="line">	decor.addView(in, <span class="keyword">new</span> ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));</div><div class="line">	mContentRoot = (ViewGroup) in;</div><div class="line">	</div><div class="line">	ViewGroup contentParent = (ViewGroup)findViewById(ID_ANDROID_CONTENT);</div><div class="line">	<span class="keyword">if</span> (contentParent == <span class="keyword">null</span>) &#123;</div><div class="line">	   <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Window couldn't find content container view"</span>);</div><div class="line">	&#125;</div><div class="line">	<span class="comment">// ...</span></div><div class="line">	<span class="keyword">return</span> contentParent;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>那么在哪里面可以看到这个DecorView呢？看下面图。</p>
+<p>下面这张图是在debug模式下连接手机调试App，使用Layout Inspector工具查看得到的图：</p>
+<p><img src="/images/2016/12/13/phonewindow_decorview.png" alt="PhoneWindow.DecorView"></p>
+<p>其中从<code>1</code>位置可以看出，整个View的根节点的View是PhoneWindow.DecorView实例；从<code>2</code>位置和<code>3</code>位置的mId可以推断出来，上面的mContentParent就是ContentFrameLayout类的实例；位置<code>4</code>中的蓝色区域是mContentParent所表示的位置和大小。</p>
+<p>以上图是在AS 2.2.3版本上使用Android Monitor Tab页中的Layout Inspector工具（参考位置<code>5</code>）生成。</p>
+<hr>
+<p>紧接着跟踪上面LayoutInflater中的<code>inflate()</code>方法中调用，发现最后调用到了<br><code>inflate(@LayoutRes int resource, @Nullable ViewGroup root, boolean attachToRoot)</code>方法中，在这个方法中构造了<code>XmlResourceParser</code>对象，而这个parser对象构造代码如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div></pre></td><td class="code"><pre><div class="line"><span class="function">XmlResourceParser <span class="title">loadXmlResourceParser</span><span class="params">(<span class="keyword">int</span> id, String type)</span></span></div><div class="line">        <span class="keyword">throws</span> NotFoundException &#123;</div><div class="line">    <span class="keyword">synchronized</span> (mAccessLock) &#123;</div><div class="line">        TypedValue value = mTmpValue;</div><div class="line">        <span class="keyword">if</span> (value == <span class="keyword">null</span>) &#123;</div><div class="line">            mTmpValue = value = <span class="keyword">new</span> TypedValue();</div><div class="line">        &#125;</div><div class="line">        getValue(id, value, <span class="keyword">true</span>);</div><div class="line">        <span class="keyword">if</span> (value.type == TypedValue.TYPE_STRING) &#123;</div><div class="line">            <span class="keyword">return</span> loadXmlResourceParser(value.string.toString(), id,</div><div class="line">                    value.assetCookie, type);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NotFoundException(</div><div class="line">                <span class="string">"Resource ID #0x"</span> + Integer.toHexString(id) + <span class="string">" type #0x"</span></div><div class="line">                + Integer.toHexString(value.type) + <span class="string">" is not valid"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function">XmlResourceParser <span class="title">loadXmlResourceParser</span><span class="params">(String file, <span class="keyword">int</span> id,</span></span></div><div class="line">        <span class="keyword">int</span> assetCookie, String type) <span class="keyword">throws</span> NotFoundException &#123;</div><div class="line">    <span class="keyword">if</span> (id != <span class="number">0</span>) &#123;</div><div class="line">        <span class="comment">// ...</span></div><div class="line">        <span class="comment">// These may be compiled...</span></div><div class="line">        <span class="keyword">synchronized</span> (mCachedXmlBlockIds) &#123;</div><div class="line">            <span class="comment">// First see if this block is in our cache.</span></div><div class="line">            <span class="keyword">final</span> <span class="keyword">int</span> num = mCachedXmlBlockIds.length;</div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;num; i++) &#123;</div><div class="line">                <span class="keyword">if</span> (mCachedXmlBlockIds[i] == id) &#123;</div><div class="line">                    <span class="comment">//System.out.println("**** REUSING XML BLOCK!  id="</span></div><div class="line">                    <span class="comment">//                   + id + ", index=" + i);</span></div><div class="line">                    <span class="keyword">return</span> mCachedXmlBlocks[i].newParser();</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            <span class="comment">// Not in the cache, create a new block and put it at</span></div><div class="line">            <span class="comment">// the next slot in the cache.</span></div><div class="line">            XmlBlock block = mAssets.openXmlBlockAsset(</div><div class="line">                    assetCookie, file);</div><div class="line">            <span class="keyword">if</span> (block != <span class="keyword">null</span>) &#123;</div><div class="line">                <span class="keyword">int</span> pos = mLastCachedXmlBlockIndex+<span class="number">1</span>;</div><div class="line">                <span class="keyword">if</span> (pos &gt;= num) pos = <span class="number">0</span>;</div><div class="line">                mLastCachedXmlBlockIndex = pos;</div><div class="line">                XmlBlock oldBlock = mCachedXmlBlocks[pos];</div><div class="line">                <span class="keyword">if</span> (oldBlock != <span class="keyword">null</span>) &#123;</div><div class="line">                    oldBlock.close();</div><div class="line">                &#125;</div><div class="line">                mCachedXmlBlockIds[pos] = id;</div><div class="line">                mCachedXmlBlocks[pos] = block;</div><div class="line">                <span class="comment">//System.out.println("**** CACHING NEW XML BLOCK!  id="</span></div><div class="line">                <span class="comment">//                   + id + ", index=" + pos);</span></div><div class="line">                <span class="keyword">return</span> block.newParser();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">// ...</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// ...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其中<code>getValue()</code>方法调用到本地<code>frameworks/base/core/jni/android_util_AssetManager.cpp</code>文件中的<code>static jint android_content_AssetManager_loadResourceValue</code>函数，而在这个函数中java层的<code>TypeValue</code>的类对象value对象属性通过JNI形式被赋值。</p>
+<p>在构建这个parser时，经历了很复杂的过程，从TypeValue中的<code>assetCookie</code>属性，到XmlBlock中的<code>xmlBlock</code>属性，再到XmlBlock.Parser中的<code>mParseState</code>属性，都是用来保存JNI层的数据，因为最终操作这些资源数据是在native层，所以必不可少通过JNI这种方式，在java层和native层周旋。这里没有深入到native层去分析资源是如何被加载解析的，后面有机会再说。</p>
+<p>最后跟到了这个<code>public View inflate(XmlPullParser parser, @Nullable ViewGroup root, boolean attachToRoot)</code>方法中，代码如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> View <span class="title">inflate</span><span class="params">(XmlPullParser parser, @Nullable ViewGroup root, <span class="keyword">boolean</span> attachToRoot)</span> </span>&#123;</div><div class="line">    <span class="keyword">synchronized</span> (mConstructorArgs) &#123;</div><div class="line"></div><div class="line">    <span class="keyword">final</span> Context inflaterContext = mContext;</div><div class="line">    <span class="keyword">final</span> AttributeSet attrs = Xml.asAttributeSet(parser);</div><div class="line">    Context lastContext = (Context) mConstructorArgs[<span class="number">0</span>];</div><div class="line">    View result = root;</div><div class="line"></div><div class="line">    <span class="comment">// ...</span></div><div class="line">	</div><div class="line">	<span class="comment">// Temp is the root view that was found in the xml</span></div><div class="line">    <span class="keyword">final</span> View temp = createViewFromTag(root, name, inflaterContext, attrs); <span class="comment">// 这里将布局文件中的名称反射成具体的View类对象</span></div><div class="line"></div><div class="line">    ViewGroup.LayoutParams params = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (root != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="comment">// Create layout params that match root, if supplied</span></div><div class="line">        params = root.generateLayoutParams(attrs); <span class="comment">// 这里将尺寸转换成了LayoutParams</span></div><div class="line">        <span class="keyword">if</span> (!attachToRoot) &#123;</div><div class="line">            <span class="comment">// Set the layout params for temp if we are not</span></div><div class="line">            <span class="comment">// attaching. (If we are, we use addView, below)</span></div><div class="line">            temp.setLayoutParams(params);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// Inflate all children under temp against its context.</span></div><div class="line">    rInflateChildren(parser, temp, attrs, <span class="keyword">true</span>);</div><div class="line"></div><div class="line">    <span class="comment">// We are supposed to attach all the views we found (int temp)</span></div><div class="line">    <span class="comment">// to root. Do that now.</span></div><div class="line">    <span class="keyword">if</span> (root != <span class="keyword">null</span> &amp;&amp; attachToRoot) &#123;</div><div class="line">        root.addView(temp, params); <span class="comment">// 将布局文件中根的View添加到mContentParent中</span></div><div class="line">    &#125;</div><div class="line">        </div><div class="line">   <span class="comment">// ...</span></div><div class="line"></div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接着看View的<code>generateLayoutParams(AttributeSet)</code>方法，因为这里返回了params。查看代码最后发现LayoutParams的<code>width</code>和<code>height</code>属性赋值的代码如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">LayoutParams</span><span class="params">(Context c, AttributeSet attrs)</span> </span>&#123;</div><div class="line">    TypedArray a = c.obtainStyledAttributes(attrs, R.styleable.ViewGroup_Layout);</div><div class="line">    setBaseAttributes(a,</div><div class="line">            R.styleable.ViewGroup_Layout_layout_width,</div><div class="line">            R.styleable.ViewGroup_Layout_layout_height);</div><div class="line">    a.recycle();</div><div class="line">&#125;</div><div class="line">    </div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">setBaseAttributes</span><span class="params">(TypedArray a, <span class="keyword">int</span> widthAttr, <span class="keyword">int</span> heightAttr)</span> </span>&#123;</div><div class="line">    width = a.getLayoutDimension(widthAttr, <span class="string">"layout_width"</span>);</div><div class="line">    height = a.getLayoutDimension(heightAttr, <span class="string">"layout_height"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>通过查看TypedArray类中的<code>getLayoutDimension()</code>方法发现，获取的值是通过index在<code>mData</code>这个成员数组中获取的。这个<code>mData</code>的值是在创建TypedArray对象时被赋的值，具体参见TypedArray的<code>obtain</code>方法。这个数组是在Resources的<code>obtainStyledAttributes()</code>方法中通过调用<code>AssetManager.applyStyle()</code>方法被初始化值的。<code>applyStyle()</code>方法是一个native方法，对应<code>frameworks/base/core/jni/android_util_AssetManager.cpp</code>文件中的<code>android_content_AssetManager_applyStyle</code>函数。在这个函数中发现，传入的Resrouces类中的<code>mTheme</code>成员以及XmlBlock.Parse类的<code>mParseState</code>成员都是一个C++对象的指针，在java类中以整型或长整型值保存。</p>
+<p>至此，布局文件中的尺寸值已经被转换成了具体的int类型值。</p>
+<h2 id="从布局文件到View"><a href="#从布局文件到View" class="headerlink" title="从布局文件到View"></a>从布局文件到View</h2><p>从上面的<code>public View inflate(XmlPullParser parser, @Nullable ViewGroup root, boolean attachToRoot)</code>方法中看到View是通过这行代码<code>final View temp = createViewFromTag(root, name, inflaterContext, attrs);</code>创建出来的，而这个<code>name</code>就是XML文件在解析时遇到的标签名称，比如<code>TextView</code>。此时的<code>attrs</code>也就是上面分析的<code>XmlBlock.Parser</code>的对象。最后发现View是在<code>createViewFromTag()</code>方法中创建的，代码如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="function">View <span class="title">createViewFromTag</span><span class="params">(View parent, String name, Context context, AttributeSet attrs,</span></span></div><div class="line">        <span class="keyword">boolean</span> ignoreThemeAttr) &#123;</div><div class="line">    <span class="keyword">if</span> (name.equals(<span class="string">"view"</span>)) &#123;</div><div class="line">        name = attrs.getAttributeValue(<span class="keyword">null</span>, <span class="string">"class"</span>);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="comment">// Apply a theme wrapper, if allowed and one is specified.</span></div><div class="line">    <span class="keyword">if</span> (!ignoreThemeAttr) &#123;</div><div class="line">        <span class="keyword">final</span> TypedArray ta = context.obtainStyledAttributes(attrs, ATTRS_THEME);</div><div class="line">        <span class="keyword">final</span> <span class="keyword">int</span> themeResId = ta.getResourceId(<span class="number">0</span>, <span class="number">0</span>);</div><div class="line">        <span class="keyword">if</span> (themeResId != <span class="number">0</span>) &#123;</div><div class="line">            context = <span class="keyword">new</span> ContextThemeWrapper(context, themeResId);</div><div class="line">        &#125;</div><div class="line">        ta.recycle();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// ...</span></div><div class="line">    View view;</div><div class="line">    <span class="keyword">if</span> (mFactory2 != <span class="keyword">null</span>) &#123;</div><div class="line">        view = mFactory2.onCreateView(parent, name, context, attrs);</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (mFactory != <span class="keyword">null</span>) &#123;</div><div class="line">        view = mFactory.onCreateView(name, context, attrs);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        view = <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (view == <span class="keyword">null</span> &amp;&amp; mPrivateFactory != <span class="keyword">null</span>) &#123;</div><div class="line">        view = mPrivateFactory.onCreateView(parent, name, context, attrs);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (view == <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">final</span> Object lastContext = mConstructorArgs[<span class="number">0</span>];</div><div class="line">        mConstructorArgs[<span class="number">0</span>] = context;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="keyword">if</span> (-<span class="number">1</span> == name.indexOf(<span class="string">'.'</span>)) &#123;</div><div class="line">                view = onCreateView(parent, name, attrs);</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                view = createView(name, <span class="keyword">null</span>, attrs);</div><div class="line">            &#125;</div><div class="line">        &#125; <span class="keyword">finally</span> &#123;</div><div class="line">            mConstructorArgs[<span class="number">0</span>] = lastContext;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> view;</div><div class="line">    </div><div class="line">    <span class="comment">// ...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里要注意一下，<code>mConstructorArgs</code>的第一个值是一个Context，而这个Context有可能已经不是当前Activity的Context。</p>
+<p>看到这里，下面这样的代码片段是不是很熟悉？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (name.equals(<span class="string">"view"</span>)) &#123;</div><div class="line">    name = attrs.getAttributeValue(<span class="keyword">null</span>, <span class="string">"class"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面Factory这个接口对象在LayoutInflater类中就有三个属性，分别对应：<code>factory</code>、<code>factory2</code>、<code>mPrivateFactory</code>。很明显，弄清了这三个对象，也就知道了View的初始化流程。下面代码是对这三个属性的值的输出：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.activity_main);</div><div class="line"></div><div class="line">        LayoutInflater inflater = getLayoutInflater();</div><div class="line">        LayoutInflater inflater1 = LayoutInflater.from(<span class="keyword">this</span>);</div><div class="line">        Field f = <span class="keyword">null</span>;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            f = LayoutInflater.class.getDeclaredField(<span class="string">"mPrivateFactory"</span>);</div><div class="line">            f.setAccessible(<span class="keyword">true</span>);</div><div class="line">        &#125; <span class="keyword">catch</span> (NoSuchFieldException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">		  Log.d(<span class="string">"may"</span>, <span class="string">"the same object: "</span> + (inflater == inflater1));</div><div class="line">        Log.d(<span class="string">"may"</span>, <span class="string">"inflater factory: "</span> + inflater.getFactory() + <span class="string">", factory2: "</span> + inflater.getFactory2());</div><div class="line">        Log.d(<span class="string">"may"</span>, <span class="string">"inflater1 factory: "</span> + inflater1.getFactory() + <span class="string">", factory2: "</span> + inflater1.getFactory2());</div><div class="line">        <span class="keyword">if</span> (f != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                Log.d(<span class="string">"may"</span>, <span class="string">"inflater mPrivateFactory: "</span> + f.get(inflater));</div><div class="line">                Log.d(<span class="string">"may"</span>, <span class="string">"inflater1 mPrivateFactory: "</span> + f.get(inflater1));</div><div class="line">            &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</div><div class="line">                e.printStackTrace();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>输出的LOG如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">// 当前Activiy继承的是android.support.v7.app.AppCompatActivity</div><div class="line">the same object: true</div><div class="line">inflater factory: android.support.v4.view.LayoutInflaterCompatHC$FactoryWrapperHC&#123;android.support.v7.app.AppCompatDelegateImplV14@41fdf0b0&#125;, factory2: android.support.v4.view.LayoutInflaterCompatHC$FactoryWrapperHC&#123;android.support.v7.app.AppCompatDelegateImplV14@41fdf0b0&#125;</div><div class="line">inflater1 factory: android.support.v4.view.LayoutInflaterCompatHC$FactoryWrapperHC&#123;android.support.v7.app.AppCompatDelegateImplV14@41fdf0b0&#125;, factory2: android.support.v4.view.LayoutInflaterCompatHC$FactoryWrapperHC&#123;android.support.v7.app.AppCompatDelegateImplV14@41fdf0b0&#125;</div><div class="line">inflater mPrivateFactory: com.jacpy.sb.MainActivity@41fd9e70</div><div class="line">inflater1 mPrivateFactory: com.jacpy.sb.MainActivity@41fd9e70</div><div class="line"></div><div class="line">// 当前Activity继承的是android.app.Activity</div><div class="line">the same object: true</div><div class="line">inflater factory: null, factory2: null</div><div class="line">inflater1 factory: null, factory2: null</div><div class="line">inflater mPrivateFactory: com.jacpy.sb.MainActivity@41fd9a28</div><div class="line">inflater1 mPrivateFactory: com.jacpy.sb.MainActivity@41fd9a28</div></pre></td></tr></table></figure>
+<p>首先看到<code>mPrivateFactory</code>是当前的Activity实例，因为Activity也实现的Factory2接口。首先看LayoutInflater的创建过程，如下图所示：</p>
+<p><img src="/images/2016/12/13/layoutinflater_init.png" alt="LayoutInflater初始化流程"></p>
+<p>而生成的PhoneLayoutInflater对象是缓存在ContextImpl类的属性<code>SYSTEM_SERVICE_MAP</code>中，所以通过<code>Context.LAYOUT_INFLATER_SERVIC</code>去取，始终是同一个对象，当然仅限于当前Context中。</p>
+<p><code>mPrivateFactory</code>属性的赋值是在Activity的<code>attach()</code>方法中，通过调用<code>mWindow.getLayoutInflater().setPrivateFactory(this);</code>，因此调用Factory2的<code>onCreateView()</code>方法时，实际是调用Activity中的<code>onCreateView()</code>方法。而Activity中的<code>onCreateView()</code>实际返回的是null，所以最后创建View的是<code>if</code>判断中的<code>onCreateView(parent, name, attrs)</code>方法，最后View是在LayoutInflater类中的<code>public final View createView(String name, String prefix, AttributeSet attrs)
+            throws ClassNotFoundException, InflateException</code>方法中创建：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> View <span class="title">createView</span><span class="params">(String name, String prefix, AttributeSet attrs)</span></span></div><div class="line">        <span class="keyword">throws</span> ClassNotFoundException, InflateException &#123;</div><div class="line">    Constructor&lt;? extends View&gt; constructor = sConstructorMap.get(name);</div><div class="line">    Class&lt;? extends View&gt; clazz = <span class="keyword">null</span>;</div><div class="line">    <span class="comment">// ...</span></div><div class="line">    <span class="comment">// Class not found in the cache, see if it's real, and try to add it</span></div><div class="line">    clazz = mContext.getClassLoader().loadClass(</div><div class="line">            prefix != <span class="keyword">null</span> ? (prefix + name) : name).asSubclass(View.class); <span class="comment">// prefix传的值是android.view.</span></div><div class="line">    </div><div class="line">    <span class="comment">// ...</span></div><div class="line">    </div><div class="line">    constructor = clazz.getConstructor(mConstructorSignature); <span class="comment">// Class&lt;?&gt;[] mConstructorSignature = new Class[] &#123;</span></div><div class="line">            Context.class, AttributeSet.class&#125;;</div><div class="line">    constructor.setAccessible(<span class="keyword">true</span>);</div><div class="line">    sConstructorMap.put(name, constructor);</div><div class="line"></div><div class="line">    <span class="comment">// ...</span></div><div class="line">    Object[] args = mConstructorArgs;</div><div class="line">    args[<span class="number">1</span>] = attrs; <span class="comment">// 这个值是XmlBlock.Parser对象</span></div><div class="line"></div><div class="line">    <span class="keyword">final</span> View view = constructor.newInstance(args);</div><div class="line">    <span class="keyword">if</span> (view <span class="keyword">instanceof</span> ViewStub) &#123;</div><div class="line">        <span class="comment">// Use the same context when inflating ViewStub later.</span></div><div class="line">        <span class="keyword">final</span> ViewStub viewStub = (ViewStub) view;</div><div class="line">        viewStub.setLayoutInflater(cloneInContext((Context) args[<span class="number">0</span>]));</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> view;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里有没有发现<code>mConstructorSignature</code>数组的长度决定了调用了View的哪个构造方法？</p>
+<p>至此，View已经创建成功。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/view/">view</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/view-create-detail/">view create detail</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.jacpy.com/2016/12/13/android-view-create-detail.html" data-title="android中View创建过程详解 | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2016/12/11/android-single-top-activity-lifecycle-changed-by-android-7.html"  title="android Activity设置为SingleTop值时的生命周期在7.0以上系统中的变化">
+ <strong>下一篇：</strong><br/> 
+ <span>android Activity设置为SingleTop值时的生命周期在7.0以上系统中的变化
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2016/12/13/android-view-create-detail.html" data-title="android中View创建过程详解" data-url="http://www.jacpy.com/2016/12/13/android-view-create-detail.html"></div>
+</section>
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#从布局文件到LayoutParams"><span class="toc-number">1.</span> <span class="toc-text">从布局文件到LayoutParams</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从布局文件到View"><span class="toc-number">2.</span> <span class="toc-text">从布局文件到View</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/andfix/" title="andfix">andfix<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/" title="android">android<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android-studio/" title="android studio">android studio<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android-view/" title="android view">android view<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/dvm/" title="dvm">dvm<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/github/" title="github">github<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/gradle/" title="gradle">gradle<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/pay/" title="pay">pay<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/sqlite/" title="sqlite">sqlite<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/view/" title="view">view<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/SQLite性能优化/" title="SQLite性能优化">SQLite性能优化<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/view-create-detail/" title="view create detail">view create detail<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gradle-不编译-arm64-x86-64/" title="gradle 不编译 arm64 x86-64">gradle 不编译 arm64 x86-64<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/andfix/" title="andfix">andfix<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Please-correct-the-above-warnings-first/" title="Please correct the above warnings first">Please correct the above warnings first<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/No-such-device-or-address/" title="No such device or address">No such device or address<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gnustl/" title="gnustl">gnustl<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/stlport/" title="stlport">stlport<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/EOCD/" title="EOCD">EOCD<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/zlib压缩/" title="zlib压缩">zlib压缩<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/自定义View-公交线路/" title="自定义View 公交线路">自定义View 公交线路<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Jacpy, welcome to my blog. <br/>
+			This is my blog, believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/jacpy" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:jacpy.may@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="jacpy">jacpy</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"maylian7700"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254674300'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s23.cnzz.com/z_stat.php%3Fid%3D1254674300' type='text/javascript'%3E%3C/script%3E"));</script>
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
