@@ -4,23 +4,30 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>NDK使用zlib mini压缩报错：Zip: EOCD not found, dex is not zip | jacpy&#39;s blog</title>
+    <title>android集成华为推送总结 | jacpy&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="jacpy">
     
 
     
-    <meta name="description" content="最近在对Dex文件在内存中解密后压缩成zip文件写到本地供DVM加载时出现了Zip: EOCD not found, *.dex is not zip异常，折腾了好几个小时，终于解决了。">
+    <meta name="description" content="前段时间在应用中集成了华为推送，现在终于告一段落了，回首起来，发现一路踩的坑，都是泪啊。
+先交待下集成华为推送的背景：由于android手机上的google官方的推送GCM在中国大陆基本是残废，而大陆有些手机厂商可能会干掉这部分，造成GCM推送基本不可用。而像小米、华为等手机厂商对android系统的ROM进行了深度定制，用户可以手机桌面直接将应用程序kill，即使有后台服务，都被会一起干掉，同时">
 <meta property="og:type" content="article">
-<meta property="og:title" content="NDK使用zlib mini压缩报错：Zip: EOCD not found, dex is not zip">
-<meta property="og:url" content="http://www.jacpy.com/2015/05/26/ndk-used-zlib-mini-compress-occur-zip-eocd-not-found-dex-is-not-zip.html">
+<meta property="og:title" content="android集成华为推送总结">
+<meta property="og:url" content="http://www.jacpy.com/2017/01/20/huawei-push-summary.html">
 <meta property="og:site_name" content="jacpy's blog">
-<meta property="og:description" content="最近在对Dex文件在内存中解密后压缩成zip文件写到本地供DVM加载时出现了Zip: EOCD not found, *.dex is not zip异常，折腾了好几个小时，终于解决了。">
-<meta property="og:updated_time" content="2015-10-30T15:43:32.000Z">
+<meta property="og:description" content="前段时间在应用中集成了华为推送，现在终于告一段落了，回首起来，发现一路踩的坑，都是泪啊。
+先交待下集成华为推送的背景：由于android手机上的google官方的推送GCM在中国大陆基本是残废，而大陆有些手机厂商可能会干掉这部分，造成GCM推送基本不可用。而像小米、华为等手机厂商对android系统的ROM进行了深度定制，用户可以手机桌面直接将应用程序kill，即使有后台服务，都被会一起干掉，同时">
+<meta property="og:image" content="http://www.jacpy.com/images/2017/01/22/hw_push_merge.png">
+<meta property="og:image" content="http://developer.huawei.com/consumer/cn/wiki/images/3/3b/x04.HMS,PE5,PBC,P80,PE5,P8F,P91,PE6,P8C,P87,PE5,PAF,PBC,PE4,PB9,PA6-PUSH,PE6,P9C,P8D,PE5,P8A,PA1,PE6,P8E,PA5,PE5,P8F,PA3-,PE7,P8E,PB0,PE6,P9C,P89,PE4,PB8,P9A,PE5,P8A,PA1,PE8,PBF,P81,PE7,PA7,PBB.png.pagespeed.ic.AU0p7gImxO.webp">
+<meta property="og:image" content="http://www.jacpy.com/images/2017/01/22/hw_push_msg_arrived_ratio.png">
+<meta property="og:updated_time" content="2017-01-22T03:13:14.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="NDK使用zlib mini压缩报错：Zip: EOCD not found, dex is not zip">
-<meta name="twitter:description" content="最近在对Dex文件在内存中解密后压缩成zip文件写到本地供DVM加载时出现了Zip: EOCD not found, *.dex is not zip异常，折腾了好几个小时，终于解决了。">
+<meta name="twitter:title" content="android集成华为推送总结">
+<meta name="twitter:description" content="前段时间在应用中集成了华为推送，现在终于告一段落了，回首起来，发现一路踩的坑，都是泪啊。
+先交待下集成华为推送的背景：由于android手机上的google官方的推送GCM在中国大陆基本是残废，而大陆有些手机厂商可能会干掉这部分，造成GCM推送基本不可用。而像小米、华为等手机厂商对android系统的ROM进行了深度定制，用户可以手机桌面直接将应用程序kill，即使有后台服务，都被会一起干掉，同时">
+<meta name="twitter:image" content="http://www.jacpy.com/images/2017/01/22/hw_push_merge.png">
 
     
     <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
@@ -80,14 +87,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/05/26/ndk-used-zlib-mini-compress-occur-zip-eocd-not-found-dex-is-not-zip.html" title="NDK使用zlib mini压缩报错：Zip: EOCD not found, dex is not zip" itemprop="url">NDK使用zlib mini压缩报错：Zip: EOCD not found, dex is not zip</a>
+      <a href="/2017/01/20/huawei-push-summary.html" title="android集成华为推送总结" itemprop="url">android集成华为推送总结</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
 		
   <p class="article-time">
-    <time datetime="2015-05-25T23:46:01.000Z" itemprop="datePublished"> 发表于 2015-05-26</time>
+    <time datetime="2017-01-20T08:01:07.000Z" itemprop="datePublished"> 发表于 2017-01-20</time>
     
   </p>
 </header>
@@ -100,24 +107,46 @@
 		
 		</div>
 		
-		<p>最近在对Dex文件在内存中解密后压缩成zip文件写到本地供DVM加载时出现了Zip: EOCD not found, *.dex is not zip异常，折腾了好几个小时，终于解决了。</p>
+		<p>前段时间在应用中集成了华为推送，现在终于告一段落了，回首起来，发现一路踩的坑，都是泪啊。</p>
+<p>先交待下集成华为推送的背景：由于android手机上的google官方的推送GCM在中国大陆基本是残废，而大陆有些手机厂商可能会干掉这部分，造成GCM推送基本不可用。而像小米、华为等手机厂商对android系统的ROM进行了深度定制，用户可以手机桌面直接将应用程序kill，即使有后台服务，都被会一起干掉，同时android新的版本为了改善手机续行，在6.0开始增加了Doze机制，无疑对推送又是一大打击。综合这些因素，决定选几种推送一起集成进来，其中就有针对华为手机的华为推送。</p>
 <a id="more"></a>
-<p>按照DVM的错误提示找到了系统源码出错的地方，在dalvik/libdex/ZipArchive.cpp文件mapCentralDirectory0(int fd, const char* debugFileName, ZipArchive* pArchive, off_t fileLength, size_t readAmount, u1* scanBuf)函数中。在解析ZIP文件时，因为缺少 EOCD(<strong>E</strong>nd <strong>O</strong>f <strong>C</strong>entral <strong>D</strong>irectory)段的内容，即没有找到50 4b 05 06这样的魔数内容，导致entry数量和目录大小及偏移地址等重要数据不能解析，所以DVM提示解析失败，这个段内容是在ZIP文件的末尾部分，所以只需要补上去就OK。对照自己使用ZIP mini写的压缩出来的文件，发现没有EOCD段，但是使用RAR解压却没有问题，纠结了好长时间，于是乎到zlib中全局搜索EOCD关键字，在zlib/src/contrib/minizip/zip.c文件中的找到了ENDHEADERMAGIC宏定义，使用是在Write_EndOfCentralDirectoryRecord(zip64_internal* zi, uLong size_centraldir, ZPOS64_T centraldir_pos_inzip)函数中使用，被<strong>zipClose</strong> (zipFile file, const char* global_comment)函数调用。原来是自己写的压缩代码中没有调用zipClose函数，补上就OK了。</p>
-<p>在google上搜索发现很多人也出现类似的问题，很大一部分原因是apk文件被破坏，极有可能是文件在传输过程中没有传输完整，比如USB传输中断，网络传输中断导致文件 EOCD段缺失（因为这部分内容在文件的末尾）。也发现网上的有些代码中有坑，需谨慎使用，谨记。</p>
+<p>去华为开发者官网发现，华为推送有两种，不细心还真发现不了。一种是已经明确标识的<code>PUSH服务</code>，另一种是<code>华为移动服务（HMS）</code>。<code>PUSH服务</code>仅是提供推送服务，所以一般推送使用这种。如果华为手机没有打开<code>应用自启动</code>也可以使用这种推送，但使用这种推送如果推送多条消息，会在通知栏显示多条通知，不会自动合并成一条，如果是用在IM中作为消息推送，N条消息一过来，用户体验可想而知。而相反，小米的推送就好很多，通知栏通知会自动合并，只显示一条。另外<code>HMS</code>中不仅集成了推送，还包括支付等服务，使用<code>HMS</code>中的推送可以自定义消息通知栏，还可以自定义数据格式，官方称这种方式为透传。<code>PUSH服务</code>只能是系统弹出通知栏，应用没有控制权限，也不能额外的再传递数据，所以使用<code>HMS</code>自定义通知栏通知可以解决通知栏弹出N多通知的问题。<code>PUSH服务</code>与<code>HMS</code>在华为手机上相比，前者的通用性更强些。目前在几台华为手机上测试发现，<code>PUSH服务</code>都能注册成功，而<code>HMS</code>在有些手机上不能注册成功，需要打开应用的<code>应用自启动</code>开关，甚至有的手机上根本注册不成功，不管怎么折腾。</p>
+<p>那么想要好的推送效果，又想要好的推送体验，唯一解决办法是两种都集成，先通过<code>HMS</code>注册，如果注册不成功，则使用使用<code>PUSH服务</code>。</p>
+<p>写这篇记录的时候去官网看了一下，官方已经将<code>PUSH服务</code>与<code>HMS</code>中的推送合并，下图是官方的文档说明：</p>
+<p><img src="/images/2017/01/22/hw_push_merge.png" alt="PUSH服务与HMS推送合并"></p>
+<p>另外还有一些坑：</p>
+<ul>
+<li><p>1.华为联盟后台的账号登录后会在浏览器缓存cookie，如果切换账号，发现后台的信息还是上一个账号的，需要清除浏览器cookie缓存才OK。这是同事在使用公司的账号和个人的账号测试时发现的。</p>
+</li>
+<li><p>2.如果在推送中已经填写了Debug Key的SHA256证书指纹，再改成Release Key的指纹时，发现手机一直获取不到token，解决办法是把手机中相关华为的服务的应用缓存清除掉，特别是华为移动服务。如果还是不行，把华为商城应用升级到最新版本。</p>
+</li>
+</ul>
+<p>添加指纹的位置：</p>
+<p><img src="http://developer.huawei.com/consumer/cn/wiki/images/3/3b/x04.HMS,PE5,PBC,P80,PE5,P8F,P91,PE6,P8C,P87,PE5,PAF,PBC,PE4,PB9,PA6-PUSH,PE6,P9C,P8D,PE5,P8A,PA1,PE6,P8E,PA5,PE5,P8F,PA3-,PE7,P8E,PB0,PE6,P9C,P89,PE4,PB8,P9A,PE5,P8A,PA1,PE8,PBF,P81,PE7,PA7,PBB.png.pagespeed.ic.AU0p7gImxO.webp" alt="华为联盟后台推送添加SHA256指纹的官网截图"></p>
+<ul>
+<li><p>3.如果一直能正常获取到token，突然又不能，解决办法是重启手机再试。</p>
+</li>
+<li><p>4.如果注册成功，发现收到消息，首先排查服务器端调用华为SDK是否OK，如果服务器端调用OK，没有出现报错之类的问题，然后就是等，可能是10分钟后或者20分钟后，甚至是第二天，你就<code>基本</code>能收到消息了。</p>
+</li>
+</ul>
+<blockquote>
+<ul>
+<li>自己集成SDK测试时，出现了几次消息没收到的情况，也就是推送丢失了。但使用华为联盟后台推送比使用SDK推送，消息的到达率和准时性要好。</li>
+</ul>
+</blockquote>
+<p>下面这张截图是华为官方的服务介绍：</p>
+<p><img src="/images/2017/01/22/hw_push_msg_arrived_ratio.png" alt="基本100%送到，远远高于其他推送平台"></p>
+<p>如果还遇到其他问题解决不了，通过QQ找他们技术支持。</p>
+<p>希望能帮到一些人，以上。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/ndk/">ndk</a>
-</div>
-
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/EOCD/">EOCD</a><a href="/tags/zlib压缩/">zlib压缩</a>
+  <span></span> <a href="/tags/HMS-华为透传-华为推送/">HMS 华为透传 华为推送</a>
   </div>
 
 </div>
@@ -126,7 +155,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://www.jacpy.com/2015/05/26/ndk-used-zlib-mini-compress-occur-zip-eocd-not-found-dex-is-not-zip.html" data-title="NDK使用zlib mini压缩报错：Zip: EOCD not found, dex is not zip | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
+	  <div data-url="http://www.jacpy.com/2017/01/20/huawei-push-summary.html" data-title="android集成华为推送总结 | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -139,19 +168,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/06/05/ndk-compile-error-make-exe-no-rule-to-make-target-jnijniapk-loader-cpp-needed-by-objlocalarmeabi-v7aobjsjniapk-loader-o-stop-resolved.html" title="NDK编译时报错：make.exe: *** No rule to make target `jni/jni/apk_loader.cpp&#39;, needed by `obj/local/armeabi-v7a/objs/jni/apk_loader.o&#39;.  Stop.解决方法">
-  <strong>上一篇：</strong><br/>
-  <span>
-  NDK编译时报错：make.exe: *** No rule to make target `jni/jni/apk_loader.cpp&#39;, needed by `obj/local/armeabi-v7a/objs/jni/apk_loader.o&#39;.  Stop.解决方法</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2015/05/26/ndk-compile-art-occur-artruntimeatomic-h2118-fatal-error-atomic-no-such-file-or-directory.html"  title="NDK编译ART代码出现错误：art/runtime/atomic.h:21:18: fatal error: atomic: No such file or directory">
+<a href="/2017/01/19/huawei-hms-push-timepicker-inflate-error.html"  title="使用HMS推送定义了EMUI的样式导致TimePicker初始化失败">
  <strong>下一篇：</strong><br/> 
- <span>NDK编译ART代码出现错误：art/runtime/atomic.h:21:18: fatal error: atomic: No such file or directory
+ <span>使用HMS推送定义了EMUI的样式导致TimePicker初始化失败
 </span>
 </a>
 </div>
@@ -160,7 +181,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2015/05/26/ndk-used-zlib-mini-compress-occur-zip-eocd-not-found-dex-is-not-zip.html" data-title="NDK使用zlib mini压缩报错：Zip: EOCD not found, dex is not zip" data-url="http://www.jacpy.com/2015/05/26/ndk-used-zlib-mini-compress-occur-zip-eocd-not-found-dex-is-not-zip.html"></div>
+	<div class="ds-thread" data-thread-key="2017/01/20/huawei-push-summary.html" data-title="android集成华为推送总结" data-url="http://www.jacpy.com/2017/01/20/huawei-push-summary.html"></div>
 </section>
 
 
