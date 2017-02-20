@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jacpy.com/"/>
-  <updated>2017-01-22T03:15:21.000Z</updated>
+  <updated>2017-02-20T01:39:40.000Z</updated>
   <id>http://www.jacpy.com/</id>
   
   <author>
@@ -14,6 +14,40 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>golang抓取html转换成pdf</title>
+    <link href="http://www.jacpy.com/2017/02/19/go-html-to-pdf.html"/>
+    <id>http://www.jacpy.com/2017/02/19/go-html-to-pdf.html</id>
+    <published>2017-02-19T14:39:21.000Z</published>
+    <updated>2017-02-20T01:39:40.000Z</updated>
+    
+    <content type="html">&lt;p&gt;总结一下学习十来天go语言的成果，看了一遍语法之后，写了一个抓取HTML然后转换成PDF文件的程序，分享一下，代码点&lt;a href=&quot;https://github.com/jacpy/GoDemo/blob/master/html2pdf/html2pdf.go&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;这里&lt;/a&gt;。代码在目前go的1.7.5版本和1.8版本上运行没有问题，据说go向下兼容，而不像swift。但发现有些比较老的资料上的代码，在新的go版本上看不到效果，比如打印地址&lt;code&gt;%p&lt;/code&gt;，在新版本中必须得使用&lt;code&gt;unsafe.Pointer(p)&lt;/code&gt;转换一下，否则格式化输出指针变量不会打印出内存地址。&lt;/p&gt;
+&lt;p&gt;其中使用了两个第三方库：&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;html操作使用了&lt;a href=&quot;https://github.com/PuerkitoBio/goquery&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;goquery&lt;/a&gt;的第三方库，对html操作很方便；&lt;/li&gt;
+&lt;li&gt;html转PDF使用了&lt;a href=&quot;http://wkhtmltopdf.org/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;wkhtmltopdf&lt;/a&gt;库，到官方网站上选择相应的平台下载安装，然后在go语言中执行相应的命令即可。使用说明点&lt;a href=&quot;http://wkhtmltopdf.org/usage/wkhtmltopdf.txt&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;这里&lt;/a&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;另外还有一个去水印的功能，想具体了解请参考代码。&lt;/p&gt;
+&lt;p&gt;通过这个功能的练手，发现go语言还是相关操作都很方便。比如文件读写：不像java那样，不同的流嵌套，然后就是try-catch。go里面写起来，相比而言简单好多。goquery这个库操作HTML很方便，唯一感觉不好用的地方是修改HTML标签的属性值，没有找到类似这种&lt;code&gt;p.Find(&amp;quot;div.Part div a img&amp;quot;).RemoveAttr(&amp;quot;alt&amp;quot;)&lt;/code&gt;好用的函数。&lt;/p&gt;
+&lt;p&gt;后面希望能更深入的了解go语言。&lt;/p&gt;
+&lt;p&gt;附已经转换OK的PDF的下载地址：&lt;a href=&quot;https://github.com/jacpy/GoDemo/blob/master/html2pdf/TCP:IP%E8%AF%A6%E8%A7%A3%20%E5%8D%B71%EF%BC%9A%E5%8D%8F%E8%AE%AE.pdf&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;TCP:IP详解 卷1：协议.pdf&lt;/a&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;总结一下学习十来天go语言的成果，看了一遍语法之后，写了一个抓取HTML然后转换成PDF文件的程序，分享一下，代码点&lt;a href=&quot;https://github.com/jacpy/GoDemo/blob/master/html2pdf/html2pdf.go&quot;&gt;这里&lt;/a&gt;。代码在目前go的1.7.5版本和1.8版本上运行没有问题，据说go向下兼容，而不像swift。但发现有些比较老的资料上的代码，在新的go版本上看不到效果，比如打印地址&lt;code&gt;%p&lt;/code&gt;，在新版本中必须得使用&lt;code&gt;unsafe.Pointer(p)&lt;/code&gt;转换一下，否则格式化输出指针变量不会打印出内存地址。&lt;/p&gt;
+&lt;p&gt;其中使用了两个第三方库：&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="go" scheme="http://www.jacpy.com/categories/go/"/>
+    
+    
+      <category term="go html to pdf" scheme="http://www.jacpy.com/tags/go-html-to-pdf/"/>
+    
+  </entry>
   
   <entry>
     <title>android集成华为推送总结</title>
@@ -923,33 +957,6 @@
       <category term="getItemViewType" scheme="http://www.jacpy.com/tags/getItemViewType/"/>
     
       <category term="getViewTypeCount" scheme="http://www.jacpy.com/tags/getViewTypeCount/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>hexo-deploy-No-such-device-or-address</title>
-    <link href="http://www.jacpy.com/2015/10/08/hexo-deploy-No-such-device-or-address.html"/>
-    <id>http://www.jacpy.com/2015/10/08/hexo-deploy-No-such-device-or-address.html</id>
-    <published>2015-10-08T13:32:00.000Z</published>
-    <updated>2015-10-30T15:39:00.000Z</updated>
-    
-    <content type="html">&lt;p&gt;前几天给博客增加评论功能，测试OK后准备将生成的文件提交到github，执行&lt;code&gt;hexo deploy&lt;/code&gt;命令时报如下错：&lt;/p&gt;
-&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;bash: /dev/tty: No such device or address&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;error: &lt;span class=&quot;function&quot;&gt;failed to execute prompt &lt;span class=&quot;title&quot;&gt;script&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(exit code &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;fatal: could not read Username &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; &#39;https:&lt;span class=&quot;comment&quot;&gt;//jacpy.github.com&#39;: No error&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;p&gt;查看了一下LOG，HTML文件生成OK，然后错误就出现了，再试了一次，还是出错这个错误。回想之前提交文件时如果没出错应该是提示输入用户名和密码，突然想起前几天升级了git到2.5.3，是不是版本不兼容？创建这个博客时使用的git的版本是1.9.5，于是打算装回老版本，排查一下问题。&lt;/p&gt;
-&lt;p&gt;等装了老版本重新提交时，发现OK了。果真是版本的问题？猜测出现问题的原因是git版本兼容性，但具体没有深究。&lt;/p&gt;
-&lt;p&gt;通过以上遇到以上问题得到的教训是不要追求新版本，能满足需求即可，切记，切记。&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;前几天给博客增加评论功能，测试OK后准备将生成的文件提交到github，执行&lt;code&gt;hexo deploy&lt;/code&gt;命令时报如下错：&lt;/p&gt;
-&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;bash: /dev/tty: No such device or address&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;error: &lt;span class=&quot;function&quot;&gt;failed to execute prompt &lt;span class=&quot;title&quot;&gt;script&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(exit code &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;)&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;fatal: could not read Username &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; &#39;https:&lt;span class=&quot;comment&quot;&gt;//jacpy.github.com&#39;: No error&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-    
-      <category term="No such device or address" scheme="http://www.jacpy.com/tags/No-such-device-or-address/"/>
     
   </entry>
   

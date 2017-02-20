@@ -78,6 +78,71 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2017/02/19/go-html-to-pdf.html" title="golang抓取html转换成pdf" itemprop="url">golang抓取html转换成pdf</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
+		
+  <p class="article-time">
+    <time datetime="2017-02-19T14:39:21.000Z" itemprop="datePublished"> 发表于 2017-02-19</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>总结一下学习十来天go语言的成果，看了一遍语法之后，写了一个抓取HTML然后转换成PDF文件的程序，分享一下，代码点<a href="https://github.com/jacpy/GoDemo/blob/master/html2pdf/html2pdf.go">这里</a>。代码在目前go的1.7.5版本和1.8版本上运行没有问题，据说go向下兼容，而不像swift。但发现有些比较老的资料上的代码，在新的go版本上看不到效果，比如打印地址<code>%p</code>，在新版本中必须得使用<code>unsafe.Pointer(p)</code>转换一下，否则格式化输出指针变量不会打印出内存地址。</p>
+<p>其中使用了两个第三方库：</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2017/02/19/go-html-to-pdf.html#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/go/">go</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/go-html-to-pdf/">go html to pdf</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/2017/02/19/go-html-to-pdf.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2017/02/19/go-html-to-pdf.html" data-count-type="comments">&nbsp;</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2017/01/20/huawei-push-summary.html" title="android集成华为推送总结" itemprop="url">android集成华为推送总结</a>
   </h1>
   <p class="article-author">By
@@ -1317,66 +1382,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/10/08/hexo-deploy-No-such-device-or-address.html" title="hexo-deploy-No-such-device-or-address" itemprop="url">hexo-deploy-No-such-device-or-address</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
-		
-  <p class="article-time">
-    <time datetime="2015-10-08T13:32:00.000Z" itemprop="datePublished"> 发表于 2015-10-08</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>前几天给博客增加评论功能，测试OK后准备将生成的文件提交到github，执行<code>hexo deploy</code>命令时报如下错：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">bash: /dev/tty: No such device or address</div><div class="line">error: <span class="function">failed to execute prompt <span class="title">script</span> <span class="params">(exit code <span class="number">1</span>)</span></div><div class="line">fatal: could not read Username <span class="keyword">for</span> 'https:<span class="comment">//jacpy.github.com': No error</span></span></div></pre></td></tr></table></figure>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2015/10/08/hexo-deploy-No-such-device-or-address.html#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/No-such-device-or-address/">No such device or address</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/2015/10/08/hexo-deploy-No-such-device-or-address.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2015/10/08/hexo-deploy-No-such-device-or-address.html" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next<span></span></a>
@@ -1423,6 +1428,10 @@
 		  
 		
 		  
+			<li><a href="/categories/go/" title="go">go<sup>1</sup></a></li>
+		  
+		
+		  
 			<li><a href="/categories/gradle/" title="gradle">gradle<sup>2</sup></a></li>
 		  
 		
@@ -1464,47 +1473,7 @@
 			
 		
 			
-				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/EXACTLY-AT-MOST-UNSPECIFIED/" title="EXACTLY AT_MOST UNSPECIFIED">EXACTLY AT_MOST UNSPECIFIED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/singleTop-android7-0/" title="singleTop android7.0">singleTop android7.0<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/view-create-detail/" title="view create detail">view create detail<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
 			
 		
 			
@@ -1512,7 +1481,47 @@
 			
 		
 			
-				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+				<li><a href="/tags/EXACTLY-AT-MOST-UNSPECIFIED/" title="EXACTLY AT_MOST UNSPECIFIED">EXACTLY AT_MOST UNSPECIFIED<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/singleTop-android7-0/" title="singleTop android7.0">singleTop android7.0<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/view-create-detail/" title="view create detail">view create detail<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/go-html-to-pdf/" title="go html to pdf">go html to pdf<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
 			
 		
 			
@@ -1520,19 +1529,19 @@
 			
 		
 			
-				<li><a href="/tags/gradle-不编译-arm64-x86-64/" title="gradle 不编译 arm64 x86-64">gradle 不编译 arm64 x86-64<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/No-such-device-or-address/" title="No such device or address">No such device or address<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/推送/" title="推送">推送<sup>1</sup></a></li>
+				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/HMS-华为透传-华为推送/" title="HMS 华为透传 华为推送">HMS 华为透传 华为推送<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gradle-不编译-arm64-x86-64/" title="gradle 不编译 arm64 x86-64">gradle 不编译 arm64 x86-64<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/推送/" title="推送">推送<sup>1</sup></a></li>
 			
 		
 		</ul>

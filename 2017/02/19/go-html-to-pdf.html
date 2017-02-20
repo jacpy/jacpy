@@ -4,26 +4,23 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>写在最前面 | jacpy&#39;s blog</title>
+    <title>golang抓取html转换成pdf | jacpy&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="jacpy">
     
 
     
-    <meta name="description" content="这一刻准备了好久，今天终于成为了现实。
-一直打算自己建一个博客，写点东西放在上面，由于各种原因未能实现，前些日子忙完了，今天正式开通了。主要打算将自己遇到的问题、解决的方案整理成博客分享出来，一来可以锻炼自己的表达能力，二来给别人提供一些参考。">
+    <meta name="description" content="总结一下学习十来天go语言的成果，看了一遍语法之后，写了一个抓取HTML然后转换成PDF文件的程序，分享一下，代码点这里。代码在目前go的1.7.5版本和1.8版本上运行没有问题，据说go向下兼容，而不像swift。但发现有些比较老的资料上的代码，在新的go版本上看不到效果，比如打印地址%p，在新版本中必须得使用unsafe.Pointer(p)转换一下，否则格式化输出指针变量不会打印出内存地址。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="写在最前面">
-<meta property="og:url" content="http://www.jacpy.com/2015/04/27/write-before.html">
+<meta property="og:title" content="golang抓取html转换成pdf">
+<meta property="og:url" content="http://www.jacpy.com/2017/02/19/go-html-to-pdf.html">
 <meta property="og:site_name" content="jacpy's blog">
-<meta property="og:description" content="这一刻准备了好久，今天终于成为了现实。
-一直打算自己建一个博客，写点东西放在上面，由于各种原因未能实现，前些日子忙完了，今天正式开通了。主要打算将自己遇到的问题、解决的方案整理成博客分享出来，一来可以锻炼自己的表达能力，二来给别人提供一些参考。">
-<meta property="og:updated_time" content="2015-10-30T15:32:16.000Z">
+<meta property="og:description" content="总结一下学习十来天go语言的成果，看了一遍语法之后，写了一个抓取HTML然后转换成PDF文件的程序，分享一下，代码点这里。代码在目前go的1.7.5版本和1.8版本上运行没有问题，据说go向下兼容，而不像swift。但发现有些比较老的资料上的代码，在新的go版本上看不到效果，比如打印地址%p，在新版本中必须得使用unsafe.Pointer(p)转换一下，否则格式化输出指针变量不会打印出内存地址。">
+<meta property="og:updated_time" content="2017-02-20T01:39:40.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="写在最前面">
-<meta name="twitter:description" content="这一刻准备了好久，今天终于成为了现实。
-一直打算自己建一个博客，写点东西放在上面，由于各种原因未能实现，前些日子忙完了，今天正式开通了。主要打算将自己遇到的问题、解决的方案整理成博客分享出来，一来可以锻炼自己的表达能力，二来给别人提供一些参考。">
+<meta name="twitter:title" content="golang抓取html转换成pdf">
+<meta name="twitter:description" content="总结一下学习十来天go语言的成果，看了一遍语法之后，写了一个抓取HTML然后转换成PDF文件的程序，分享一下，代码点这里。代码在目前go的1.7.5版本和1.8版本上运行没有问题，据说go向下兼容，而不像swift。但发现有些比较老的资料上的代码，在新的go版本上看不到效果，比如打印地址%p，在新版本中必须得使用unsafe.Pointer(p)转换一下，否则格式化输出指针变量不会打印出内存地址。">
 
     
     <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
@@ -83,14 +80,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/04/27/write-before.html" title="写在最前面" itemprop="url">写在最前面</a>
+      <a href="/2017/02/19/go-html-to-pdf.html" title="golang抓取html转换成pdf" itemprop="url">golang抓取html转换成pdf</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
 		
   <p class="article-time">
-    <time datetime="2015-04-27T13:07:55.000Z" itemprop="datePublished"> 发表于 2015-04-27</time>
+    <time datetime="2017-02-19T14:39:21.000Z" itemprop="datePublished"> 发表于 2017-02-19</time>
     
   </p>
 </header>
@@ -103,11 +100,17 @@
 		
 		</div>
 		
-		<p>这一刻准备了好久，今天终于成为了现实。</p>
-<p>一直打算自己建一个博客，写点东西放在上面，由于各种原因未能实现，前些日子忙完了，今天正式开通了。主要打算将自己遇到的问题、解决的方案整理成博客分享出来，一来可以锻炼自己的表达能力，二来给别人提供一些参考。</p>
+		<p>总结一下学习十来天go语言的成果，看了一遍语法之后，写了一个抓取HTML然后转换成PDF文件的程序，分享一下，代码点<a href="https://github.com/jacpy/GoDemo/blob/master/html2pdf/html2pdf.go" target="_blank" rel="external">这里</a>。代码在目前go的1.7.5版本和1.8版本上运行没有问题，据说go向下兼容，而不像swift。但发现有些比较老的资料上的代码，在新的go版本上看不到效果，比如打印地址<code>%p</code>，在新版本中必须得使用<code>unsafe.Pointer(p)</code>转换一下，否则格式化输出指针变量不会打印出内存地址。</p>
+<p>其中使用了两个第三方库：</p>
 <a id="more"></a>
-<p>希望自己以后能坚持写下去，分享一些技术干货，别人写过的、重复的不会放上来，保证博客原创、有价值，每篇都是精品。希望能借博客结识更多的志同道合的伙伴，将这条路一直走下去。</p>
-<p>毕竟已经工作快五年，得记录点什么东西，展示一下自己吧。若干年后，再回过来看看自己当年的幼稚和无知，也何尝不是一种乐趣。</p>
+<ul>
+<li>html操作使用了<a href="https://github.com/PuerkitoBio/goquery" target="_blank" rel="external">goquery</a>的第三方库，对html操作很方便；</li>
+<li>html转PDF使用了<a href="http://wkhtmltopdf.org/" target="_blank" rel="external">wkhtmltopdf</a>库，到官方网站上选择相应的平台下载安装，然后在go语言中执行相应的命令即可。使用说明点<a href="http://wkhtmltopdf.org/usage/wkhtmltopdf.txt" target="_blank" rel="external">这里</a>。</li>
+</ul>
+<p>另外还有一个去水印的功能，想具体了解请参考代码。</p>
+<p>通过这个功能的练手，发现go语言还是相关操作都很方便。比如文件读写：不像java那样，不同的流嵌套，然后就是try-catch。go里面写起来，相比而言简单好多。goquery这个库操作HTML很方便，唯一感觉不好用的地方是修改HTML标签的属性值，没有找到类似这种<code>p.Find(&quot;div.Part div a img&quot;).RemoveAttr(&quot;alt&quot;)</code>好用的函数。</p>
+<p>后面希望能更深入的了解go语言。</p>
+<p>附已经转换OK的PDF的下载地址：<a href="https://github.com/jacpy/GoDemo/blob/master/html2pdf/TCP:IP%E8%AF%A6%E8%A7%A3%20%E5%8D%B71%EF%BC%9A%E5%8D%8F%E8%AE%AE.pdf" target="_blank" rel="external">TCP:IP详解 卷1：协议.pdf</a></p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -115,9 +118,14 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/android/">android</a>
+  <a class="article-category-link" href="/categories/go/">go</a>
 </div>
 
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/go-html-to-pdf/">go html to pdf</a>
+  </div>
 
 </div>
 
@@ -125,7 +133,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://www.jacpy.com/2015/04/27/write-before.html" data-title="写在最前面 | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
+	  <div data-url="http://www.jacpy.com/2017/02/19/go-html-to-pdf.html" data-title="golang抓取html转换成pdf | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -138,20 +146,20 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/05/10/ndk-used-cpp11-compile-dvm-occur-externalsafe-iopincludesafe-iop-h8014-error-typeof-was-not-declared-in-this-scope.html" title="NDK C++11编译DVM代码报错：external/safe-iop/include/safe_iop.h:80:14: error: &#39;typeof&#39; was not declared in this scope">
-  <strong>上一篇：</strong><br/>
-  <span>
-  NDK C++11编译DVM代码报错：external/safe-iop/include/safe_iop.h:80:14: error: &#39;typeof&#39; was not declared in this scope</span>
+
+<div class="next">
+<a href="/2017/01/20/huawei-push-summary.html"  title="android集成华为推送总结">
+ <strong>下一篇：</strong><br/> 
+ <span>android集成华为推送总结
+</span>
 </a>
 </div>
-
 
 </nav>
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2015/04/27/write-before.html" data-title="写在最前面" data-url="http://www.jacpy.com/2015/04/27/write-before.html"></div>
+	<div class="ds-thread" data-thread-key="2017/02/19/go-html-to-pdf.html" data-title="golang抓取html转换成pdf" data-url="http://www.jacpy.com/2017/02/19/go-html-to-pdf.html"></div>
 </section>
 
 
