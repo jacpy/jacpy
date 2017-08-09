@@ -1,0 +1,626 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>关于android fresco初始化的一个坑 | jacpy&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="jacpy">
+    
+
+    
+    <meta name="description" content="之前有写文章说别人对网上文章的看法，这次写的是我对网上文章的看法。一直以来对网上的文章的说法都抱有怀疑态度，一般都是把网上的东西作为参考，找准关键的地方，他的说法与自己写的有什么区别？一对比就知道哪些地方有欠缺，是什么原因。而不是直接copy过来使用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于android fresco初始化的一个坑">
+<meta property="og:url" content="http://www.jacpy.com/2017/05/02/android-fresco-init.html">
+<meta property="og:site_name" content="jacpy's blog">
+<meta property="og:description" content="之前有写文章说别人对网上文章的看法，这次写的是我对网上文章的看法。一直以来对网上的文章的说法都抱有怀疑态度，一般都是把网上的东西作为参考，找准关键的地方，他的说法与自己写的有什么区别？一对比就知道哪些地方有欠缺，是什么原因。而不是直接copy过来使用。">
+<meta property="og:updated_time" content="2017-08-02T05:21:45.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于android fresco初始化的一个坑">
+<meta name="twitter:description" content="之前有写文章说别人对网上文章的看法，这次写的是我对网上文章的看法。一直以来对网上的文章的说法都抱有怀疑态度，一般都是把网上的东西作为参考，找准关键的地方，他的说法与自己写的有什么区别？一对比就知道哪些地方有欠缺，是什么原因。而不是直接copy过来使用。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="jacpy&#39;s blog" title="jacpy&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="jacpy&#39;s blog">jacpy&#39;s blog</a></h1>
+				<h2 class="blog-motto">enjoy mobile development</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated" style="margin-top: 0px;">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:www.jacpy.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/05/02/android-fresco-init.html" title="关于android fresco初始化的一个坑" itemprop="url">关于android fresco初始化的一个坑</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
+		
+  <p class="article-time">
+    <time datetime="2017-05-02T13:42:22.000Z" itemprop="datePublished"> 发表于 2017-05-02</time>
+    
+  </p>
+</header>
+
+
+
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			
+		
+		</div>
+		
+		<p>之前有写文章说别人对网上文章的看法，这次写的是我对网上文章的看法。一直以来对网上的文章的说法都抱有怀疑态度，一般都是把网上的东西作为参考，找准关键的地方，他的说法与自己写的有什么区别？一对比就知道哪些地方有欠缺，是什么原因。而不是直接copy过来使用。</p>
+<a id="more"></a>
+<blockquote>
+<p>以下这段内容可以选择忽略。</p>
+</blockquote>
+<p>举个前几天在项目中遇到的例子。在<code>android中捕获崩溃日志</code>看到了将Throwable对象转换成字符串，写了很大一串。心想这段代码肯定来自网络，写这篇文章的时候去搜索了一下，果然。因为系统已经提供了将Throwable对象转换为字符串的方法，只需要调用就行，一行代码就可以搞定，有的甚至把<code>android.util.Log</code>输出Throwable对象的方式重新再写了一遍，解决问题的思路很赞。但如果再多看一眼，<code>Log</code>类中提供了<code>getStackTraceString(Throwable)</code>静态方法，方便处理这种事情，而且这个方法是从<code>API Level 1</code>开始就有。</p>
+<p>OK，回到主题上来。事情的起因是项目中的一个bug。</p>
+<p>项目中有一个滚动的Gallery查看大图，还有一个将图片保存到本地功能。但保存图片时会概率性失败，这个问题是测试反馈的，而且概率很高。自己测试发现进这个界面保存当前看到的这张图片能成功，后面每次保存都失败。</p>
+<p>跟踪代码发现失败的原因是从SD卡中<code>Fresco</code>库缓存取图片时，图片不存在，所以保存失败。那为什么保存当前图片成功？</p>
+<p>于是将缓存目录下面的内容都用日志打了出来。以下代码在每次图片加载完后就会把缓存内容都以LOG方式输出。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">final</span> PhotoDraweeView photoDraweeView = <span class="keyword">new</span> PhotoDraweeView(context);</div><div class="line"><span class="keyword">final</span> PipelineDraweeControllerBuilder controller = Fresco.newDraweeControllerBuilder();</div><div class="line">controller.setUri(uri); <span class="comment">// 图片请求的URL地址</span></div><div class="line">controller.setAutoPlayAnimations(<span class="keyword">true</span>);</div><div class="line">controller.setOldController(photoDraweeView.getController());</div><div class="line">controller.setControllerListener(<span class="keyword">new</span> BaseControllerListener&lt;ImageInfo&gt;() &#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFinalImageSet</span><span class="params">(String id, ImageInfo imageInfo, Animatable animatable)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onFinalImageSet(id, imageInfo, animatable);</div><div class="line">        <span class="keyword">if</span> (imageInfo == <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line">        FileBinaryResource resource = (FileBinaryResource) ImagePipelineFactory.getInstance().getMainFileCache().getResource(DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(controller.getImageRequest(), <span class="keyword">null</span>));</div><div class="line">        <span class="keyword">if</span> (BuildConfig.DEBUG) &#123;</div><div class="line">            Log.d(<span class="string">"may"</span>, <span class="string">"resource: "</span> + resource);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            List&lt;DiskStorage.DiskDumpInfoEntry&gt; list = Fresco.getImagePipelineFactory().getMainFileCache().getDumpInfo().entries;</div><div class="line">            <span class="keyword">if</span> (list != <span class="keyword">null</span> &amp;&amp; !list.isEmpty()) &#123;</div><div class="line">                <span class="keyword">for</span> (DiskStorage.DiskDumpInfoEntry info : list) &#123;</div><div class="line">                    Log.d(<span class="string">"may"</span>, <span class="string">"size: "</span> + info.size + <span class="string">", type: "</span> + info.type + <span class="string">", path: "</span> + info.path + <span class="string">", fb: "</span> + info.firstBits);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onIntermediateImageSet</span><span class="params">(String id, ImageInfo imageInfo)</span> </span>&#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFailure</span><span class="params">(String id, Throwable throwable)</span> </span>&#123;</div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>以下是输出的LOG，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[onFinalImageSet, 314]:resource: com.facebook.binaryresource.FileBinaryResource@2f8cf0a9</div><div class="line">[onFinalImageSet, 321]:size: 1580616.0, type: jpg, path: imgcache/v2.ols100.1/3/3qC9ts9ad_tJcsN1ot7Ort5YQ9A.cnt, fb: </div><div class="line">[onFinalImageSet, 314]:resource: com.facebook.binaryresource.FileBinaryResource@411bafa9</div><div class="line">[onFinalImageSet, 321]:size: 1.0461388E7, type: jpg, path: imgcache/v2.ols100.1/24/r0c37nN9TT6P-HU0hoYwm_ZU5K4.cnt, fb: </div><div class="line">[onFinalImageSet, 314]:resource: com.facebook.binaryresource.FileBinaryResource@6d7fddcf</div><div class="line">[onFinalImageSet, 321]:size: 1622679.0, type: jpg, path: imgcache/v2.ols100.1/1/BYrt44bfrnqXpdkx5x4p1W_RsTY.cnt, fb: </div><div class="line">[onFinalImageSet, 314]:resource: com.facebook.binaryresource.FileBinaryResource@bfbbc062</div><div class="line">[onFinalImageSet, 321]:size: 1127054.0, type: jpg, path: imgcache/v2.ols100.1/96/mhZk2iyqbM0iKt2RmDV0aKT0o5Q.cnt, fb:</div></pre></td></tr></table></figure>
+<p>从上面的日志中看出图片都缓存到了指定的路径，但是从文件管理器中去查看<code>v2.ols100.1</code>目录下面的对应目录基本都为空，只有一个目录中有缓存图片，整个目录大小只有几百KB。感觉图片只缓存了一张，其它的都没有缓存到外部存储空间上来。</p>
+<p>看了一下存储空间，还有几个G，不存在空间不足。与图片大小有关系？换了大图试试，也还是这样。开始怀疑与Fresco相关的代码，于是找到了Fresco初始化代码，如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">DiskCacheConfig.Builder builder = DiskCacheConfig.newBuilder(<span class="keyword">this</span>);</div><div class="line">builder.setMaxCacheSize(<span class="number">150</span>);</div><div class="line">builder.setMaxCacheSizeOnLowDiskSpace(<span class="number">100</span>);</div><div class="line">builder.setMaxCacheSizeOnVeryLowDiskSpace(<span class="number">30</span> * ByteConstants.MB);</div><div class="line">builder.setVersion(<span class="number">1</span>);</div><div class="line">builder.setBaseDirectoryName(<span class="string">"imgcache"</span>);</div><div class="line">builder.setBaseDirectoryPath(<span class="keyword">new</span> File(FileUtils.getUserWorkingFolder()));</div><div class="line">DiskCacheConfig diskCacheConfig = builder.build();</div><div class="line">ImagePipelineConfig config = ImagePipelineConfig.newBuilder(<span class="keyword">this</span>)</div><div class="line">        .setMainDiskCacheConfig(diskCacheConfig)</div><div class="line">        .build();</div><div class="line">Fresco.initialize(<span class="keyword">this</span> , config);</div></pre></td></tr></table></figure>
+<p>想知道这几个参数值表示的是什么意思，是怎么使用的。于是就查看了源码，发现这个参数初始化代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">private</span> <span class="keyword">long</span> mMaxCacheSize = <span class="number">40</span> * ByteConstants.MB;</div><div class="line"><span class="keyword">private</span> <span class="keyword">long</span> mMaxCacheSizeOnLowDiskSpace = <span class="number">10</span> * ByteConstants.MB;</div><div class="line"><span class="keyword">private</span> <span class="keyword">long</span> mMaxCacheSizeOnVeryLowDiskSpace = <span class="number">2</span> * ByteConstants.MB;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> Builder <span class="title">setMaxCacheSize</span><span class="params">(<span class="keyword">long</span> maxCacheSize)</span> </span>&#123;</div><div class="line">    mMaxCacheSize = maxCacheSize;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> Builder <span class="title">setMaxCacheSizeOnLowDiskSpace</span><span class="params">(<span class="keyword">long</span> maxCacheSizeOnLowDiskSpace)</span> </span>&#123;</div><div class="line">    mMaxCacheSizeOnLowDiskSpace = maxCacheSizeOnLowDiskSpace;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> Builder <span class="title">setMaxCacheSizeOnVeryLowDiskSpace</span><span class="params">(<span class="keyword">long</span> maxCacheSizeOnVeryLowDiskSpace)</span> </span>&#123;</div><div class="line">    mMaxCacheSizeOnVeryLowDiskSpace = maxCacheSizeOnVeryLowDiskSpace;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>看到这个代码就立马反应过来了，少了一个常量<code>ByteConstants.MB</code>？把项目中的初始化代码修改了一下，加上了这个常量，代码如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">DiskCacheConfig.Builder builder = DiskCacheConfig.newBuilder(<span class="keyword">this</span>);</div><div class="line">builder.setMaxCacheSize(<span class="number">150</span> * ByteConstants.MB);</div><div class="line">builder.setMaxCacheSizeOnLowDiskSpace(<span class="number">100</span> * ByteConstants.MB);</div><div class="line">builder.setMaxCacheSizeOnVeryLowDiskSpace(<span class="number">30</span> * ByteConstants.MB);</div></pre></td></tr></table></figure>
+<p>再来测试时，发现问题解决了，不会出现保存失败的情况。<code>v2.ols100.1</code>这个目录下缓存了很多文件，文件大小一下子就几M了。</p>
+<p>然后用上面代码中的关键字在google上搜索了一下，发现代码是copy过来的，参数值全部都一样。好吧，我认栽。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/android/">android</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/fresco初始化设置/">fresco初始化设置</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.jacpy.com/2017/05/02/android-fresco-init.html" data-title="关于android fresco初始化的一个坑 | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/05/03/android-device-or-resource-busy.html" title="android device or resource busy">
+  <strong>上一篇：</strong><br/>
+  <span>
+  android device or resource busy</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/04/28/windows-driver-donot-install.html"  title="windows 7 驱动安装成功后无法启动">
+ <strong>下一篇：</strong><br/> 
+ <span>windows 7 驱动安装成功后无法启动
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2017/05/02/android-fresco-init.html" data-title="关于android fresco初始化的一个坑" data-url="http://www.jacpy.com/2017/05/02/android-fresco-init.html"></div>
+</section>
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/andfix/" title="andfix">andfix<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/" title="android">android<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android-push/" title="android push">android push<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android-studio/" title="android studio">android studio<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android-view/" title="android view">android view<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/dvm/" title="dvm">dvm<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/github/" title="github">github<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/go/" title="go">go<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/gradle/" title="gradle">gradle<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/pay/" title="pay">pay<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/sqlite/" title="sqlite">sqlite<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/view/" title="view">view<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/windows/" title="windows">windows<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/SQLite性能优化/" title="SQLite性能优化">SQLite性能优化<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android死锁分析/" title="android死锁分析">android死锁分析<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Device-or-resource-busy/" title="Device or resource busy">Device or resource busy<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gradle配置/" title="gradle配置">gradle配置<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/singleTop-android7-0/" title="singleTop android7.0">singleTop android7.0<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/EXACTLY-AT-MOST-UNSPECIFIED/" title="EXACTLY AT_MOST UNSPECIFIED">EXACTLY AT_MOST UNSPECIFIED<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/view-create-detail/" title="view create detail">view create detail<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gradle打jar包-混淆/" title="gradle打jar包 混淆">gradle打jar包 混淆<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/andfix/" title="andfix">andfix<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.jacpy.com" target="_blank" title="jacpy">jacpy</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Jacpy, welcome to my blog. <br/>
+			This is my blog, believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/jacpy" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:jacpy.may@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		
+		<a href="/about" target="_blank" title="jacpy">jacpy</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"maylian7700"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254674300'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s23.cnzz.com/z_stat.php%3Fid%3D1254674300' type='text/javascript'%3E%3C/script%3E"));</script>
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

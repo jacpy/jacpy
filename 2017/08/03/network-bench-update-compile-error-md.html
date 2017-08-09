@@ -1,0 +1,612 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>android听云升级后编译报错 | jacpy&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="jacpy">
+    
+
+    
+    <meta name="description" content="升级遇到的问题项目中由于需要，集成了听云的SDK，最近把听云的SDK版本从2.4.4升级到2.5.7，重新运行时，在编译过程中报了如下错误：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="android听云升级后编译报错">
+<meta property="og:url" content="http://www.jacpy.com/2017/08/03/network-bench-update-compile-error-md.html">
+<meta property="og:site_name" content="jacpy's blog">
+<meta property="og:description" content="升级遇到的问题项目中由于需要，集成了听云的SDK，最近把听云的SDK版本从2.4.4升级到2.5.7，重新运行时，在编译过程中报了如下错误：">
+<meta property="og:updated_time" content="2017-08-07T05:16:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="android听云升级后编译报错">
+<meta name="twitter:description" content="升级遇到的问题项目中由于需要，集成了听云的SDK，最近把听云的SDK版本从2.4.4升级到2.5.7，重新运行时，在编译过程中报了如下错误：">
+
+    
+    <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="jacpy&#39;s blog" title="jacpy&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="jacpy&#39;s blog">jacpy&#39;s blog</a></h1>
+				<h2 class="blog-motto">enjoy mobile development</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated" style="margin-top: 0px;">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:www.jacpy.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/08/03/network-bench-update-compile-error-md.html" title="android听云升级后编译报错" itemprop="url">android听云升级后编译报错</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
+		
+  <p class="article-time">
+    <time datetime="2017-08-03T01:00:09.000Z" itemprop="datePublished"> 发表于 2017-08-03</time>
+    
+  </p>
+</header>
+
+
+
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#升级遇到的问题"><span class="toc-number">1.</span> <span class="toc-text">升级遇到的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决问题"><span class="toc-number">2.</span> <span class="toc-text">解决问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么要用听云"><span class="toc-number">3.</span> <span class="toc-text">为什么要用听云</span></a></li></ol>
+		
+		</div>
+		
+		<h2 id="升级遇到的问题"><a href="#升级遇到的问题" class="headerlink" title="升级遇到的问题"></a>升级遇到的问题</h2><p>项目中由于需要，集成了听云的SDK，最近把听云的SDK版本从<code>2.4.4</code>升级到<code>2.5.7</code>，重新运行时，在编译过程中报了如下错误：</p>
+<a id="more"></a>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">[NBSAgent.error] Error:com.networkbench.agent.compile.a: NetworkBench NewLens Android Agent Error: Your agent and class rewriter versions do not match: agent = 2.4.4 class rewriter = 2.5.7.  You probably need to update one of these components.</div><div class="line">java.lang.RuntimeException: com.networkbench.agent.compile.a: NetworkBench NewLens Android Agent Error: Your agent and class rewriter versions do not match: agent = 2.4.4 class rewriter = 2.5.7.  You probably need to update one of these components.</div><div class="line">    at com.networkbench.agent.compile.NBSStubPreMain$e.a(SourceFile:517)</div><div class="line">    at com.networkbench.agent.compile.NBSStubPreMain$e.a(SourceFile:296)</div><div class="line">    at com.networkbench.agent.compile.NBSStubPreMain$e$1$1.invoke(SourceFile:328)</div><div class="line">    at com.networkbench.agent.compile.NBSStubPreMain$e.invoke(SourceFile:425)</div><div class="line">    at com.android.dx.command.dexer.Main.processClass(Main.java)</div><div class="line">    at com.android.dx.command.dexer.Main.processFileBytes(Main.java:723)</div><div class="line">    at com.android.dx.command.dexer.Main.access$1200(Main.java:85)</div><div class="line">    at com.android.dx.command.dexer.Main$FileBytesConsumer.processFileBytes(Main.java:1653)</div><div class="line">    at com.android.dx.cf.direct.ClassPathOpener.processArchive(ClassPathOpener.java:284)</div><div class="line">    at com.android.dx.cf.direct.ClassPathOpener.processOne(ClassPathOpener.java:166)</div><div class="line">    at com.android.dx.cf.direct.ClassPathOpener.process(ClassPathOpener.java:144)</div><div class="line">    at com.android.dx.command.dexer.Main.processOne(Main.java:677)</div><div class="line">    at com.android.dx.command.dexer.Main.processAllFiles(Main.java:569)</div><div class="line">    at com.android.dx.command.dexer.Main.runMultiDex(Main.java:366)</div><div class="line">    at com.android.dx.command.dexer.Main.run(Main.java:275)</div><div class="line">    at com.android.dx.command.dexer.Main.main(Main.java:245)</div><div class="line">    at com.android.dx.command.Main.main(Main.java:106)</div><div class="line">Caused by: com.networkbench.agent.compile.a: NetworkBench NewLens Android Agent Error: Your agent and class rewriter versions do not match: agent = 2.4.4 class rewriter = 2.5.7.  You probably need to update one of these components.</div><div class="line">    at com.networkbench.agent.compile.a.e.a(SourceFile:91)</div><div class="line">    at com.networkbench.agent.compile.a.h.a(SourceFile:43)</div><div class="line">    at com.networkbench.agent.compile.b.f.a(SourceFile:644)</div><div class="line">    at com.networkbench.agent.compile.b.f.a(SourceFile:439)</div><div class="line">    at com.networkbench.agent.compile.NBSStubPreMain$e.a(SourceFile:479)</div><div class="line">    ... 16 more</div><div class="line"></div><div class="line">Dex: Error converting bytecode to dex:</div><div class="line">Cause: java.lang.RuntimeException: Exception parsing classes</div><div class="line">    UNEXPECTED TOP-LEVEL EXCEPTION:</div><div class="line">    java.lang.RuntimeException: Exception parsing classes</div><div class="line">        at com.android.dx.command.dexer.Main.processClass(Main.java:760)</div><div class="line">        at com.android.dx.command.dexer.Main.processFileBytes(Main.java:723)</div><div class="line">        at com.android.dx.command.dexer.Main.access$1200(Main.java:85)</div><div class="line">        at com.android.dx.command.dexer.Main$FileBytesConsumer.processFileBytes(Main.java:1653)</div><div class="line">        at com.android.dx.cf.direct.ClassPathOpener.processArchive(ClassPathOpener.java:284)</div><div class="line">        at com.android.dx.cf.direct.ClassPathOpener.processOne(ClassPathOpener.java:166)</div><div class="line">        at com.android.dx.cf.direct.ClassPathOpener.process(ClassPathOpener.java:144)</div><div class="line">        at com.android.dx.command.dexer.Main.processOne(Main.java:677)</div><div class="line">        at com.android.dx.command.dexer.Main.processAllFiles(Main.java:569)</div><div class="line">        at com.android.dx.command.dexer.Main.runMultiDex(Main.java:366)</div><div class="line">        at com.android.dx.command.dexer.Main.run(Main.java:275)</div><div class="line">        at com.android.dx.command.dexer.Main.main(Main.java:245)</div><div class="line">        at com.android.dx.command.Main.main(Main.java:106)</div><div class="line">    Caused by: java.lang.NullPointerException</div><div class="line">        at com.android.dx.util.ByteArray.&lt;init&gt;(ByteArray.java:76)</div><div class="line">        at com.android.dx.cf.direct.DirectClassFile.&lt;init&gt;(DirectClassFile.java:206)</div><div class="line">        at com.android.dx.command.dexer.Main.parseClass(Main.java:769)</div><div class="line">        at com.android.dx.command.dexer.Main.access$1500(Main.java:85)</div><div class="line">        at com.android.dx.command.dexer.Main$ClassParserTask.call(Main.java:1700)</div><div class="line">        at com.android.dx.command.dexer.Main.processClass(Main.java:755)</div><div class="line">        ... 12 more</div><div class="line">    </div><div class="line">1 error; aborting</div><div class="line">:app:transformClassesWithDexForDebug FAILED</div><div class="line">:app:networkBenchNewLensDeinstrumentTask</div><div class="line">[NBSAgent.debug] NetworkBench begin</div><div class="line"></div><div class="line">FAILURE: Build failed with an exception.</div><div class="line"></div><div class="line">* What went wrong:</div><div class="line">Execution failed for task &apos;:app:transformClassesWithDexForDebug&apos;.</div><div class="line">&gt; com.android.build.api.transform.TransformException: com.android.ide.common.process.ProcessException: java.util.concurrent.ExecutionException: com.android.ide.common.process.ProcessException: Error while executing java process with main class com.android.dx.command.Main with arguments &#123;--dex --num-threads=4 --multi-dex --main-dex-list /data/jenkins/workspace/app/build/intermediates/multi-dex/debug/maindexlist.txt --output /data/jenkins/workspace/app/build/intermediates/transforms/dex/debug/folders/1000/1f/main /data/jenkins/workspace/app/build/intermediates/transforms/jarMerging/debug/jars/1/1f/combined.jar&#125;</div><div class="line"></div><div class="line">* Try:</div><div class="line">Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.</div><div class="line"></div><div class="line">BUILD FAILED</div></pre></td></tr></table></figure>
+<h2 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h2><p>遇到了上面的编译错误问题，先google了一下，没有人提出了这样的错误，也没有解决方案，而且从搜索的结果来看，用的人也不多。这问题只能是自己解决了，从上面的错误提示来看，这个错误是听云中抛出来的。也就是听云干预了编译过程。从这个<code>NetworkBench NewLens Android Agent Error: Your agent and class rewriter versions do not match: agent = 2.4.4 class rewriter = 2.5.7.  You probably need to update one of these components.</code>错误提示上来看，说是版本没有对应起来。的确，听云在<code>project</code>下面的<code>build.gradle</code>中的<code>dependencies</code>块中的<code>classpath</code>中和<code>module</code>下面的<code>build.gradle</code>中的<code>dependencies</code>块中的<code>compile</code>两个地方都要指定一个版本SDK。一个是用来干预编译过程，植入代码；一个则是要植入的代码。</p>
+<p>引入方式如下代码所示：</p>
+<p><code>project</code>目录下面的<code>build.gradle</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">dependencies &#123;</div><div class="line"></div><div class="line">    classpath &apos;com.networkbench.newlens.agent.android:agent-gradle-plugin:2.5.7&apos;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>app</code>目录下面的<code>build.gradle</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">        </div><div class="line">   	compile &apos;com.networkbench.newlens.agent.android:nbs.newlens.agent:2.5.7&apos;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>那为什么会有上面有错误？按道理说两者都具备就可以了，猜是听云的版本兼容性问题，也就是<code>2.5.7</code>不兼容<code>2.4.4</code>版本。也就是上面说的<code>classpath</code>与<code>compile</code>版本要一一对应，版本号必须保持一致。但修改时的版本号是保持一致的呀？问题出在哪儿？缓存问题？</p>
+<p>于是先<code>clean</code>，然后再重新<code>build了</code>一下，再运行时，发现问题依旧。没折了，我把版本号改回去<code>2.4.4</code>总行吧？结果还是编译报错，无语了，试了几次，还是这样，现在感觉到自己进入到进退两难的地步了。最后重新启动<code>AS</code>，再重新运行了，问题解决了，编译时不报错了，真是太惊喜，太意外了。</p>
+<p>OK，本地问题解决了，服务器的自动构建上又出现问题。按照解决本地问题的思路，不可能重启服务器吧？仔细一想，还是缓存问题？问了运维，说每次构建都会自动清除<code>build</code>目录中的内容。但心想，与<code>build</code>目录的内容无关，自己解决问题时都删了好几次，问题依旧没有解决。突然想起平时经常被<code>kill</code>的<code>java.exe</code>进程，这个进程里面会缓存一些东西，编译时经常会看到<code>Starting a Gradle Daemon</code>这样的提示，<code>AS</code>要提高编译速度，肯定会在这个进程里面缓存一些东西，不然这个<code>java.exe</code>进程内存占用会有几百M甚至超过1个G？</p>
+<p>跑去跟运维说，你把这个<code>java</code>进程先<code>kill</code>，然后再重新构建。果然，<code>kill</code>进程之后再重新自动构建就OK了。后来想了一下，自己本地重启<code>AS</code>也是重新启动这个<code>java</code>进程。</p>
+<h2 id="为什么要用听云"><a href="#为什么要用听云" class="headerlink" title="为什么要用听云"></a>为什么要用听云</h2><p>听云是收费的，但也有免费的版本，免费的版本最多只能看三天的数据。我看重听云的最大一个好处是可以监控网络情况，比如说哪些接口失败率比较高、请求耗时等，这样可以做一些优化。</p>
+<p>但听云有一个不好的地方是，对代码进行侵入，有时候在报错的堆栈中看到了听云的堆栈信息。如果项目结构设计不好，用的第三方库太多，估计听云的代码会插入的到处都是，这里没有整理出数据来。</p>
+<p>另外听去的另外一个ANR日志收集的功能没有做好，把<code>traces.txt</code>日志文件中的有用的信息基本都过虑掉了，只留下一些堆栈信息。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/android/">android</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/听云/">听云</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.jacpy.com/2017/08/03/network-bench-update-compile-error-md.html" data-title="android听云升级后编译报错 | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2017/08/03/sqlite-cant-open-database-exception-unknow-error-code-14-md.html"  title="sqlite cant open database exception unknow error code 14">
+ <strong>下一篇：</strong><br/> 
+ <span>sqlite cant open database exception unknow error code 14
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2017/08/03/network-bench-update-compile-error-md.html" data-title="android听云升级后编译报错" data-url="http://www.jacpy.com/2017/08/03/network-bench-update-compile-error-md.html"></div>
+</section>
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#升级遇到的问题"><span class="toc-number">1.</span> <span class="toc-text">升级遇到的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决问题"><span class="toc-number">2.</span> <span class="toc-text">解决问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么要用听云"><span class="toc-number">3.</span> <span class="toc-text">为什么要用听云</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/andfix/" title="andfix">andfix<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/" title="android">android<sup>12</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android-push/" title="android push">android push<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android-studio/" title="android studio">android studio<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android-view/" title="android view">android view<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/dvm/" title="dvm">dvm<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/github/" title="github">github<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/go/" title="go">go<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/gradle/" title="gradle">gradle<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/pay/" title="pay">pay<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/sqlite/" title="sqlite">sqlite<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/view/" title="view">view<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/windows/" title="windows">windows<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/SQLite性能优化/" title="SQLite性能优化">SQLite性能优化<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android死锁分析/" title="android死锁分析">android死锁分析<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Device-or-resource-busy/" title="Device or resource busy">Device or resource busy<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gradle配置/" title="gradle配置">gradle配置<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/singleTop-android7-0/" title="singleTop android7.0">singleTop android7.0<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/EXACTLY-AT-MOST-UNSPECIFIED/" title="EXACTLY AT_MOST UNSPECIFIED">EXACTLY AT_MOST UNSPECIFIED<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/view-create-detail/" title="view create detail">view create detail<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gradle打jar包-混淆/" title="gradle打jar包 混淆">gradle打jar包 混淆<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/andfix/" title="andfix">andfix<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.jacpy.com" target="_blank" title="jacpy">jacpy</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Jacpy, welcome to my blog. <br/>
+			This is my blog, believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/jacpy" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:jacpy.may@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		
+		<a href="/about" target="_blank" title="jacpy">jacpy</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"maylian7700"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254674300'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s23.cnzz.com/z_stat.php%3Fid%3D1254674300' type='text/javascript'%3E%3C/script%3E"));</script>
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
