@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jacpy.com/"/>
-  <updated>2017-09-07T05:35:15.000Z</updated>
+  <updated>2017-09-07T06:29:02.000Z</updated>
   <id>http://www.jacpy.com/</id>
   
   <author>
@@ -20,11 +20,12 @@
     <link href="http://www.jacpy.com/2017/09/07/android-install-apk-INSTALL-FAILED-UID-CHANGED.html"/>
     <id>http://www.jacpy.com/2017/09/07/android-install-apk-INSTALL-FAILED-UID-CHANGED.html</id>
     <published>2017-09-07T05:13:24.000Z</published>
-    <updated>2017-09-07T05:35:15.000Z</updated>
+    <updated>2017-09-07T06:29:02.000Z</updated>
     
     <content type="html">&lt;p&gt;前几天使用命令行&lt;code&gt;adb install&lt;/code&gt;安装APK文件时，安装失败，遇到了这个错误提示：&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;INSTALL_FAILED_UID_CHANGED&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;突然反应过来了，刚刚使用手机的&lt;code&gt;root&lt;/code&gt;权限看app的缓存数据，命令行还在那个&lt;code&gt;/data/data/com.xxx.app&lt;/code&gt;目录下。赶紧退出到&lt;code&gt;/data/data/&lt;/code&gt;目录下面，&lt;code&gt;ls&lt;/code&gt;一看，这个包名路径还存在，用&lt;code&gt;rm -rf&lt;/code&gt;一删除，再安装试下，成功了。&lt;/p&gt;
+&lt;p&gt;突然反应过来了，刚刚使用手机的&lt;code&gt;root&lt;/code&gt;权限看app的缓存数据，命令行还在那个&lt;code&gt;/data/data/com.xxx.app&lt;/code&gt;目录下，由于命令行的占用，所以这个包名路径没有被删除掉。赶紧退出到&lt;code&gt;/data/data/&lt;/code&gt;目录下面，&lt;code&gt;ls&lt;/code&gt;一看，这个包名路径还存在，用&lt;code&gt;rm -rf&lt;/code&gt;一删除，再安装试下，成功了。&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
 &lt;p&gt;回想之前调试微信支付功能，调的头大，经常卸载安装微信。结果有一次就安装失败了，提示&lt;code&gt;应用已经安装&lt;/code&gt;，结果同样去&lt;code&gt;/data/data&lt;/code&gt;目录下面一看，结果微信的包名路径还在。然后执行&lt;code&gt;rm -rf&lt;/code&gt;删除，删除失败，跑去删除子目录，都能删除，最后有一个目录删除不了。心想这跟U盘一样，出现坏道了？微信不可能创建一个目录还不让删除的。结果一直提示删除失败，这&lt;code&gt;root&lt;/code&gt;权限都使不上劲。最后没办法了，只好换台手机调试。&lt;/p&gt;
 &lt;p&gt;自己的测试手机上装不了微信，这个事一直挂在心上。只要能把包名路径给删除了，就可以装微信了，想着怎么删除。突然有一天，想到看能不能把这个目录移出去，然后再来删除包名路径。于是使用&lt;code&gt;mv&lt;/code&gt;命令将这个目录移走，然后再删除包名，删除成功了，再删除那个目录，还是删除不掉，算了，不管了。一安装微信，装成功了。大喜！终于又可以装上微信了。&lt;/p&gt;
 </content>
@@ -32,7 +33,8 @@
     <summary type="html">
     
       &lt;p&gt;前几天使用命令行&lt;code&gt;adb install&lt;/code&gt;安装APK文件时，安装失败，遇到了这个错误提示：&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div clas
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;INSTALL_FAILED_UID_CHANGED&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;突然反应过来了，刚刚使用手机的&lt;code&gt;root&lt;/code&gt;权限看app的缓存数据，命令行还在那个&lt;code&gt;/data/data/com.xxx.app&lt;/code&gt;目录下，由于命令行的占用，所以这个包名路径没有被删除掉。赶紧退出到&lt;code&gt;/data/data/&lt;/code&gt;目录下面，&lt;code&gt;ls&lt;/code&gt;一看，这个包名路径还存在，用&lt;code&gt;rm -rf&lt;/code&gt;一删除，再安装试下，成功了。&lt;/p&gt;
     
     </summary>
     
@@ -48,10 +50,11 @@
     <link href="http://www.jacpy.com/2017/09/07/gradle-failed-to-create-md5-hash-for-file.html"/>
     <id>http://www.jacpy.com/2017/09/07/gradle-failed-to-create-md5-hash-for-file.html</id>
     <published>2017-09-07T05:03:59.000Z</published>
-    <updated>2017-09-07T05:11:27.000Z</updated>
+    <updated>2017-09-07T06:29:17.000Z</updated>
     
     <content type="html">&lt;p&gt;前几天在使用gradle编译项目插件，突然遇到这个错误：&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;FAILURE: Build failed with an exception.&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;* What went wrong:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;Execution failed for task &amp;apos;:compileReleaseJavaWithJavac&amp;apos;.&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;gt; Failed to create MD5 hash for file &amp;apos;E:\workspace\as\app\libs\xxx.jar&amp;apos;.&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;* Try:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;BUILD FAILED&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
 &lt;p&gt;然后在对应目录找了下这个文件，发现没有这个&lt;code&gt;jar&lt;/code&gt;文件。于是去&lt;code&gt;build.gradle&lt;/code&gt;文件中的&lt;code&gt;depenencies&lt;/code&gt;下面找到了这个&lt;code&gt;provided files&lt;/code&gt;依赖，然后把这个&lt;code&gt;provided files&lt;/code&gt;行删除，然后重新编译就OK了。&lt;/p&gt;
 &lt;p&gt;发现使用&lt;code&gt;compile files&lt;/code&gt;和&lt;code&gt;provided files&lt;/code&gt;引用文件时，如果引用的文件不存，都会报这个错误。删除就好了。&lt;/p&gt;
 </content>
@@ -59,7 +62,7 @@
     <summary type="html">
     
       &lt;p&gt;前几天在使用gradle编译项目插件，突然遇到这个错误：&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;FAILURE: Build failed with an exception.&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;* What went wrong:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;Execution failed for task &amp;apos;:compileReleaseJavaWithJavac&amp;apos;.&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;gt; Failed to create MD5 hash for file &amp;apos;E:\workspace\as\app\libs\xxx.jar&amp;apos;.&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;* Try:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;BUILD FAILED&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
     
     </summary>
     

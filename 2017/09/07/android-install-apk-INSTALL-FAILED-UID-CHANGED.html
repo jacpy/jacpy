@@ -13,23 +13,20 @@
     
     <meta name="description" content="前几天使用命令行adb install安装APK文件时，安装失败，遇到了这个错误提示：
 1INSTALL_FAILED_UID_CHANGED
-突然反应过来了，刚刚使用手机的root权限看app的缓存数据，命令行还在那个/data/data/com.xxx.app目录下。赶紧退出到/data/data/目录下面，ls一看，这个包名路径还存在，用rm -rf一删除，再安装试下，成功了。
-回想之前调试">
+突然反应过来了，刚刚使用手机的root权限看app的缓存数据，命令行还在那个/data/data/com.xxx.app目录下，由于命令行的占用，所以这个包名路径没有被删除掉。赶紧退出到/data/data/目录下面，ls一看，这个包名路径还存在，用rm">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android命令行安装APK时报错：INSTALL_FAILED_UID_CHANGED">
 <meta property="og:url" content="http://www.jacpy.com/2017/09/07/android-install-apk-INSTALL-FAILED-UID-CHANGED.html">
 <meta property="og:site_name" content="jacpy's blog">
 <meta property="og:description" content="前几天使用命令行adb install安装APK文件时，安装失败，遇到了这个错误提示：
 1INSTALL_FAILED_UID_CHANGED
-突然反应过来了，刚刚使用手机的root权限看app的缓存数据，命令行还在那个/data/data/com.xxx.app目录下。赶紧退出到/data/data/目录下面，ls一看，这个包名路径还存在，用rm -rf一删除，再安装试下，成功了。
-回想之前调试">
-<meta property="og:updated_time" content="2017-09-07T05:35:15.000Z">
+突然反应过来了，刚刚使用手机的root权限看app的缓存数据，命令行还在那个/data/data/com.xxx.app目录下，由于命令行的占用，所以这个包名路径没有被删除掉。赶紧退出到/data/data/目录下面，ls一看，这个包名路径还存在，用rm">
+<meta property="og:updated_time" content="2017-09-07T06:29:02.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android命令行安装APK时报错：INSTALL_FAILED_UID_CHANGED">
 <meta name="twitter:description" content="前几天使用命令行adb install安装APK文件时，安装失败，遇到了这个错误提示：
 1INSTALL_FAILED_UID_CHANGED
-突然反应过来了，刚刚使用手机的root权限看app的缓存数据，命令行还在那个/data/data/com.xxx.app目录下。赶紧退出到/data/data/目录下面，ls一看，这个包名路径还存在，用rm -rf一删除，再安装试下，成功了。
-回想之前调试">
+突然反应过来了，刚刚使用手机的root权限看app的缓存数据，命令行还在那个/data/data/com.xxx.app目录下，由于命令行的占用，所以这个包名路径没有被删除掉。赶紧退出到/data/data/目录下面，ls一看，这个包名路径还存在，用rm">
 
     
     <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
@@ -114,7 +111,8 @@
 		
 		<p>前几天使用命令行<code>adb install</code>安装APK文件时，安装失败，遇到了这个错误提示：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">INSTALL_FAILED_UID_CHANGED</div></pre></td></tr></table></figure>
-<p>突然反应过来了，刚刚使用手机的<code>root</code>权限看app的缓存数据，命令行还在那个<code>/data/data/com.xxx.app</code>目录下。赶紧退出到<code>/data/data/</code>目录下面，<code>ls</code>一看，这个包名路径还存在，用<code>rm -rf</code>一删除，再安装试下，成功了。</p>
+<p>突然反应过来了，刚刚使用手机的<code>root</code>权限看app的缓存数据，命令行还在那个<code>/data/data/com.xxx.app</code>目录下，由于命令行的占用，所以这个包名路径没有被删除掉。赶紧退出到<code>/data/data/</code>目录下面，<code>ls</code>一看，这个包名路径还存在，用<code>rm -rf</code>一删除，再安装试下，成功了。</p>
+<a id="more"></a>
 <p>回想之前调试微信支付功能，调的头大，经常卸载安装微信。结果有一次就安装失败了，提示<code>应用已经安装</code>，结果同样去<code>/data/data</code>目录下面一看，结果微信的包名路径还在。然后执行<code>rm -rf</code>删除，删除失败，跑去删除子目录，都能删除，最后有一个目录删除不了。心想这跟U盘一样，出现坏道了？微信不可能创建一个目录还不让删除的。结果一直提示删除失败，这<code>root</code>权限都使不上劲。最后没办法了，只好换台手机调试。</p>
 <p>自己的测试手机上装不了微信，这个事一直挂在心上。只要能把包名路径给删除了，就可以装微信了，想着怎么删除。突然有一天，想到看能不能把这个目录移出去，然后再来删除包名路径。于是使用<code>mv</code>命令将这个目录移走，然后再删除包名，删除成功了，再删除那个目录，还是删除不掉，算了，不管了。一安装微信，装成功了。大喜！终于又可以装上微信了。</p>
   
@@ -263,19 +261,11 @@
 			
 		
 			
-				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/andfix/" title="andfix">andfix<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
 			
 		
 			
@@ -287,7 +277,11 @@
 			
 		
 			
-				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
+				<li><a href="/tags/andfix/" title="andfix">andfix<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gradle配置/" title="gradle配置">gradle配置<sup>1</sup></a></li>
 			
 		
 			
@@ -295,7 +289,11 @@
 			
 		
 			
-				<li><a href="/tags/gradle配置/" title="gradle配置">gradle配置<sup>1</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
 			
 		
 			
@@ -307,6 +305,10 @@
 			
 		
 			
+				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/singleTop-android7-0/" title="singleTop android7.0">singleTop android7.0<sup>1</sup></a></li>
 			
 		
@@ -315,15 +317,11 @@
 			
 		
 			
-				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/gradle打jar包-混淆/" title="gradle打jar包 混淆">gradle打jar包 混淆<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
 			
 		
 			
@@ -331,7 +329,7 @@
 			
 		
 			
-				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
 			
 		
 			
