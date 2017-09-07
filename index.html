@@ -78,6 +78,139 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2017/09/07/android-install-apk-INSTALL-FAILED-UID-CHANGED.html" title="Android命令行安装APK时报错：INSTALL_FAILED_UID_CHANGED" itemprop="url">Android命令行安装APK时报错：INSTALL_FAILED_UID_CHANGED</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
+		
+  <p class="article-time">
+    <time datetime="2017-09-07T05:13:24.000Z" itemprop="datePublished"> 发表于 2017-09-07</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>前几天使用命令行<code>adb install</code>安装APK文件时，安装失败，遇到了这个错误提示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">INSTALL_FAILED_UID_CHANGED</div></pre></td></tr></table></figure>
+<p>突然反应过来了，刚刚使用手机的<code>root</code>权限看app的缓存数据，命令行还在那个<code>/data/data/com.xxx.app</code>目录下。赶紧退出到<code>/data/data/</code>目录下面，<code>ls</code>一看，这个包名路径还存在，用<code>rm -rf</code>一删除，再安装试下，成功了。</p>
+<p>回想之前调试微信支付功能，调的头大，经常卸载安装微信。结果有一次就安装失败了，提示<code>应用已经安装</code>，结果同样去<code>/data/data</code>目录下面一看，结果微信的包名路径还在。然后执行<code>rm -rf</code>删除，删除失败，跑去删除子目录，都能删除，最后有一个目录删除不了。心想这跟U盘一样，出现坏道了？微信不可能创建一个目录还不让删除的。结果一直提示删除失败，这<code>root</code>权限都使不上劲。最后没办法了，只好换台手机调试。</p>
+<p>自己的测试手机上装不了微信，这个事一直挂在心上。只要能把包名路径给删除了，就可以装微信了，想着怎么删除。突然有一天，想到看能不能把这个目录移出去，然后再来删除包名路径。于是使用<code>mv</code>命令将这个目录移走，然后再删除包名，删除成功了，再删除那个目录，还是删除不掉，算了，不管了。一安装微信，装成功了。大喜！终于又可以装上微信了。</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/android/">android</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/">install apk INSTALL_FAILED_UID_CHANGED</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/2017/09/07/android-install-apk-INSTALL-FAILED-UID-CHANGED.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2017/09/07/android-install-apk-INSTALL-FAILED-UID-CHANGED.html" data-count-type="comments">&nbsp;</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/09/07/gradle-failed-to-create-md5-hash-for-file.html" title="gradle failed to create MD5 hash for file" itemprop="url">gradle failed to create MD5 hash for file</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
+		
+  <p class="article-time">
+    <time datetime="2017-09-07T05:03:59.000Z" itemprop="datePublished"> 发表于 2017-09-07</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>前几天在使用gradle编译项目插件，突然遇到这个错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">FAILURE: Build failed with an exception.</div><div class="line"></div><div class="line">* What went wrong:</div><div class="line">Execution failed for task &apos;:compileReleaseJavaWithJavac&apos;.</div><div class="line">&gt; Failed to create MD5 hash for file &apos;E:\workspace\as\app\libs\xxx.jar&apos;.</div><div class="line"></div><div class="line">* Try:</div><div class="line">Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.</div><div class="line"></div><div class="line">BUILD FAILED</div></pre></td></tr></table></figure>
+<p>然后在对应目录找了下这个文件，发现没有这个<code>jar</code>文件。于是去<code>build.gradle</code>文件中的<code>depenencies</code>下面找到了这个<code>provided files</code>依赖，然后把这个<code>provided files</code>行删除，然后重新编译就OK了。</p>
+<p>发现使用<code>compile files</code>和<code>provided files</code>引用文件时，如果引用的文件不存，都会报这个错误。删除就好了。</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/gradle/">gradle</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/failed-to-create-MD5-hash-for-file/">failed to create MD5 hash for file</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/2017/09/07/gradle-failed-to-create-md5-hash-for-file.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2017/09/07/gradle-failed-to-create-md5-hash-for-file.html" data-count-type="comments">&nbsp;</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2017/08/03/network-bench-update-compile-error-md.html" title="android听云升级后编译报错" itemprop="url">android听云升级后编译报错</a>
   </h1>
   <p class="article-author">By
@@ -1243,136 +1376,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/05/10/android-app-develop-familiar-trap.html" title="android应用开发常见的坑" itemprop="url">android应用开发常见的坑</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
-		
-  <p class="article-time">
-    <time datetime="2016-05-10T13:32:56.000Z" itemprop="datePublished"> 发表于 2016-05-10</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>android应用开发过程中，总会遇到一些坑。当遇到这些坑马上反应过来时，会很快解决。而没有反应过来时，估计是要折腾半天，下面记录一些这样的坑，防止自己遗忘再犯同样的错，自己以后再遇到类似的问题，也在这里记录下来。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/05/10/android-app-develop-familiar-trap.html#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/android/">android</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/android/">android</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/2016/05/10/android-app-develop-familiar-trap.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2016/05/10/android-app-develop-familiar-trap.html" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/05/10/weixin-pay-return-code-1.html" title="微信支付返回code为-1解决方法之一" itemprop="url">微信支付返回code为-1解决方法之一</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
-		
-  <p class="article-time">
-    <time datetime="2016-05-10T13:28:57.000Z" itemprop="datePublished"> 发表于 2016-05-10</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>这两天在集成微信支付的功能，先是客户在插件中集成支付功能，后来发现回调不起来，于是将支付功能集成到了主应用，然后暴露接口给插件使用。费劲几个小时的折腾，于是乎就有下文。</p>
-<p>我们先来看下官网对于code为-1的说明（官网说明地址<a href="http://kf.qq.com/faq/140225MveaUz150413VNj6nm.html">点这里</a>）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">开放平台配置的报名和应用签名是否一致：（android）；确认是否使用正式的keystore打包apk并安装调试；（android）；提交订单部分需要在服务器端完成。</div></pre></td></tr></table></figure></p>
-<p>先请仔细阅读，你遇到的问题就在这段描述中。其中注意，中间还错别字<code>报名</code>应为<code>包名</code>（鹅厂果然不一样）。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/05/10/weixin-pay-return-code-1.html#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/pay/">pay</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/微信支付返回code为-1/">微信支付返回code为-1</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/2016/05/10/weixin-pay-return-code-1.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2016/05/10/weixin-pay-return-code-1.html" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next<span></span></a>
@@ -1395,7 +1398,7 @@
 		  
 		
 		  
-			<li><a href="/categories/android/" title="android">android<sup>12</sup></a></li>
+			<li><a href="/categories/android/" title="android">android<sup>13</sup></a></li>
 		  
 		
 		  
@@ -1423,7 +1426,7 @@
 		  
 		
 		  
-			<li><a href="/categories/gradle/" title="gradle">gradle<sup>4</sup></a></li>
+			<li><a href="/categories/gradle/" title="gradle">gradle<sup>5</sup></a></li>
 		  
 		
 		  
@@ -1464,7 +1467,19 @@
 			
 		
 			
-				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/andfix/" title="andfix">andfix<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
 			
 		
 			
@@ -1472,15 +1487,11 @@
 			
 		
 			
-				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/Device-or-resource-busy/" title="Device or resource busy">Device or resource busy<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
 			
 		
 			
@@ -1492,7 +1503,7 @@
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
+				<li><a href="/tags/EXACTLY-AT-MOST-UNSPECIFIED/" title="EXACTLY AT_MOST UNSPECIFIED">EXACTLY AT_MOST UNSPECIFIED<sup>1</sup></a></li>
 			
 		
 			
@@ -1504,23 +1515,11 @@
 			
 		
 			
-				<li><a href="/tags/EXACTLY-AT-MOST-UNSPECIFIED/" title="EXACTLY AT_MOST UNSPECIFIED">EXACTLY AT_MOST UNSPECIFIED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/view-create-detail/" title="view create detail">view create detail<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
 			
 		
 			
@@ -1528,15 +1527,19 @@
 			
 		
 			
-				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/andfix/" title="andfix">andfix<sup>1</sup></a></li>
+				<li><a href="/tags/view-create-detail/" title="view create detail">view create detail<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
+				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
 			
 		
 		</ul>

@@ -4,23 +4,32 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>gardle编译排除第三方库中的arm64、x86-64中的SO库 | jacpy&#39;s blog</title>
+    <title>Android命令行安装APK时报错：INSTALL_FAILED_UID_CHANGED | jacpy&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="jacpy">
     
 
     
-    <meta name="description" content="在开发android应用时，一般都会用很多的第三方框架。有些框架会提供各个CPU的架构的SO库，比如arm、arm-v7a、x86、mips，有的甚至还提供64位的版本；而有的为了缩小应用包的体积只提供了一些常用的，比如arm，x86。如果应用中有的第三方框架提供了arm和x86的版本，而有的提供了arm，arm-v7a，x86三个版本，那么当运行在arm-v7a版本的CPU上，就会提示找不到只有">
+    <meta name="description" content="前几天使用命令行adb install安装APK文件时，安装失败，遇到了这个错误提示：
+1INSTALL_FAILED_UID_CHANGED
+突然反应过来了，刚刚使用手机的root权限看app的缓存数据，命令行还在那个/data/data/com.xxx.app目录下。赶紧退出到/data/data/目录下面，ls一看，这个包名路径还存在，用rm -rf一删除，再安装试下，成功了。
+回想之前调试">
 <meta property="og:type" content="article">
-<meta property="og:title" content="gardle编译排除第三方库中的arm64、x86-64中的SO库">
-<meta property="og:url" content="http://www.jacpy.com/2016/05/10/gradle-compile-exclude-third-library-arm64-x86-64.html">
+<meta property="og:title" content="Android命令行安装APK时报错：INSTALL_FAILED_UID_CHANGED">
+<meta property="og:url" content="http://www.jacpy.com/2017/09/07/android-install-apk-INSTALL-FAILED-UID-CHANGED.html">
 <meta property="og:site_name" content="jacpy's blog">
-<meta property="og:description" content="在开发android应用时，一般都会用很多的第三方框架。有些框架会提供各个CPU的架构的SO库，比如arm、arm-v7a、x86、mips，有的甚至还提供64位的版本；而有的为了缩小应用包的体积只提供了一些常用的，比如arm，x86。如果应用中有的第三方框架提供了arm和x86的版本，而有的提供了arm，arm-v7a，x86三个版本，那么当运行在arm-v7a版本的CPU上，就会提示找不到只有">
-<meta property="og:updated_time" content="2016-09-06T02:53:34.000Z">
+<meta property="og:description" content="前几天使用命令行adb install安装APK文件时，安装失败，遇到了这个错误提示：
+1INSTALL_FAILED_UID_CHANGED
+突然反应过来了，刚刚使用手机的root权限看app的缓存数据，命令行还在那个/data/data/com.xxx.app目录下。赶紧退出到/data/data/目录下面，ls一看，这个包名路径还存在，用rm -rf一删除，再安装试下，成功了。
+回想之前调试">
+<meta property="og:updated_time" content="2017-09-07T05:35:15.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="gardle编译排除第三方库中的arm64、x86-64中的SO库">
-<meta name="twitter:description" content="在开发android应用时，一般都会用很多的第三方框架。有些框架会提供各个CPU的架构的SO库，比如arm、arm-v7a、x86、mips，有的甚至还提供64位的版本；而有的为了缩小应用包的体积只提供了一些常用的，比如arm，x86。如果应用中有的第三方框架提供了arm和x86的版本，而有的提供了arm，arm-v7a，x86三个版本，那么当运行在arm-v7a版本的CPU上，就会提示找不到只有">
+<meta name="twitter:title" content="Android命令行安装APK时报错：INSTALL_FAILED_UID_CHANGED">
+<meta name="twitter:description" content="前几天使用命令行adb install安装APK文件时，安装失败，遇到了这个错误提示：
+1INSTALL_FAILED_UID_CHANGED
+突然反应过来了，刚刚使用手机的root权限看app的缓存数据，命令行还在那个/data/data/com.xxx.app目录下。赶紧退出到/data/data/目录下面，ls一看，这个包名路径还存在，用rm -rf一删除，再安装试下，成功了。
+回想之前调试">
 
     
     <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
@@ -80,14 +89,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/05/10/gradle-compile-exclude-third-library-arm64-x86-64.html" title="gardle编译排除第三方库中的arm64、x86-64中的SO库" itemprop="url">gardle编译排除第三方库中的arm64、x86-64中的SO库</a>
+      <a href="/2017/09/07/android-install-apk-INSTALL-FAILED-UID-CHANGED.html" title="Android命令行安装APK时报错：INSTALL_FAILED_UID_CHANGED" itemprop="url">Android命令行安装APK时报错：INSTALL_FAILED_UID_CHANGED</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
 		
   <p class="article-time">
-    <time datetime="2016-05-10T13:20:16.000Z" itemprop="datePublished"> 发表于 2016-05-10</time>
+    <time datetime="2017-09-07T05:13:24.000Z" itemprop="datePublished"> 发表于 2017-09-07</time>
     
   </p>
 </header>
@@ -103,26 +112,11 @@
 		
 		</div>
 		
-		<p>在开发android应用时，一般都会用很多的第三方框架。有些框架会提供各个CPU的架构的SO库，比如arm、arm-v7a、x86、mips，有的甚至还提供64位的版本；而有的为了缩小应用包的体积只提供了一些常用的，比如arm，x86。如果应用中有的第三方框架提供了arm和x86的版本，而有的提供了arm，arm-v7a，x86三个版本，那么当运行在arm-v7a版本的CPU上，就会提示找不到只有arm和x86版本的SO库，这样很容易导致应用挂掉，报<code>java.lang.UnsatisfiedLinkError</code>错误，提示native方法找不到实现。</p>
-<a id="more"></a>
-<p>按道理说arm-v7a的CPU会兼容arm版本，但系统去查找SO库的时候却只会在一个目录查找，找完了arm-v7a，没找到不会再去arm目录，这样就会导致兼容性问题。解决方法有两种：</p>
-<ul>
-<li><p>一种是所有包含有SO库的第三方框架提供最新版本NDK支持的所有的CPU架构SO库，如：armeabi armeabi-v7a x86 mips arm64-v8a x86_64 mips64或者在编译时在Application.mk文件中配置<code>APP_ABI := all</code>。这样做一般不合适，这样会分散开发者的注意力。</p>
-</li>
-<li><p>第二种方法是：应用中所有的包含SO库的第三方框架只能取最小的子集，这种方法比较合适集成第三方框架。</p>
-</li>
-</ul>
-<p>下面以facebook的fresco框架为例来说明第二种方法的操作方式。</p>
-<p>fresco框架中提供了各个CPU架构的SO库，包括64位的，而自己的应用其他第三方带有SO库的框架A还没有使用64位的SO库，如果不做处理，应用运行在64位手机上，当使用框架A的时候应用就会闪退，因为框架A没有64位的库。那么解决办法只有将fresco库的64位SO库都删除，只保留框架A的相同目录下面的SO库。下面是gradle文件中的配置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">    compile &apos;com.facebook.fresco:fresco:0.8.1&apos;</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 将fresco库除armeabi和x86包以外的SO库删除</div><div class="line">def deleteSO() &#123;</div><div class="line">    def rootPath = rootProject.getRootDir().getAbsolutePath() + &apos;/&apos; + project.name</div><div class="line">    delete fileTree(dir: rootPath + &quot;/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline/&quot; + &quot;$FRESCO_LIB_VERSION&quot; + &quot;/jni/&quot;, excludes: [&apos;**/armeabi/**&apos;, &apos;**/x86/**&apos;])</div><div class="line">&#125;</div><div class="line"></div><div class="line">project.afterEvaluate&#123;</div><div class="line">    // debug模式下删除SO库</div><div class="line">    tasks.getByName(&apos;prepareDebugDependencies&apos;) &#123; // Hook prepareDebugDependencies任务</div><div class="line">        it.doLast &#123;</div><div class="line">            // prepareDebugDependencies任务执行完成后删除SO库</div><div class="line">            deleteSO()</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // 打包的时候删除SO库</div><div class="line">    tasks.getByName(&apos;prepareReleaseDependencies&apos;) &#123;</div><div class="line">        it.doLast &#123;</div><div class="line">            deleteSO()</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<hr>
-<ul>
-<li>2016-08-24修改</li>
-</ul>
-<p>另外还可以使用gradle中的过滤器，可以很方便过滤SO库：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">release &#123;</div><div class="line">	ndk &#123;</div><div class="line">		abiFilters &quot;armeabi&quot;, &quot;armeabi-v7a&quot;, &quot;x86&quot; // 保留这三种架构的CPU</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>要求gradle版本不低于2.14.1(可以修改项目根目录下的gradle/wrapper/目录下的gradle-wrapper.properties文件内容，将gradle请求地址中的版本号修改)，否则会提示如下错误：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Gradle DSL method not found: &apos;abiFilter()&apos;</div><div class="line">Possible causes:The project &apos;*&apos; may be using a version of the Android Gradle plug-in that does not contain the method (e.g. &apos;testCompile&apos; was added in 1.1.0).</div><div class="line">Fix plugin version and sync projectThe project &apos;*&apos; may be using a version of Gradle that does not contain the method.</div><div class="line">Open Gradle wrapper fileThe build file may be missing a Gradle plugin.Apply Gradle plugin</div></pre></td></tr></table></figure>
+		<p>前几天使用命令行<code>adb install</code>安装APK文件时，安装失败，遇到了这个错误提示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">INSTALL_FAILED_UID_CHANGED</div></pre></td></tr></table></figure>
+<p>突然反应过来了，刚刚使用手机的<code>root</code>权限看app的缓存数据，命令行还在那个<code>/data/data/com.xxx.app</code>目录下。赶紧退出到<code>/data/data/</code>目录下面，<code>ls</code>一看，这个包名路径还存在，用<code>rm -rf</code>一删除，再安装试下，成功了。</p>
+<p>回想之前调试微信支付功能，调的头大，经常卸载安装微信。结果有一次就安装失败了，提示<code>应用已经安装</code>，结果同样去<code>/data/data</code>目录下面一看，结果微信的包名路径还在。然后执行<code>rm -rf</code>删除，删除失败，跑去删除子目录，都能删除，最后有一个目录删除不了。心想这跟U盘一样，出现坏道了？微信不可能创建一个目录还不让删除的。结果一直提示删除失败，这<code>root</code>权限都使不上劲。最后没办法了，只好换台手机调试。</p>
+<p>自己的测试手机上装不了微信，这个事一直挂在心上。只要能把包名路径给删除了，就可以装微信了，想着怎么删除。突然有一天，想到看能不能把这个目录移出去，然后再来删除包名路径。于是使用<code>mv</code>命令将这个目录移走，然后再删除包名，删除成功了，再删除那个目录，还是删除不掉，算了，不管了。一安装微信，装成功了。大喜！终于又可以装上微信了。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -130,13 +124,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/gradle/">gradle</a>
+  <a class="article-category-link" href="/categories/android/">android</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/gradle-不编译-arm64-x86-64/">gradle 不编译 arm64 x86-64</a>
+  <span></span> <a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/">install apk INSTALL_FAILED_UID_CHANGED</a>
   </div>
 
 </div>
@@ -145,7 +139,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://www.jacpy.com/2016/05/10/gradle-compile-exclude-third-library-arm64-x86-64.html" data-title="gardle编译排除第三方库中的arm64、x86-64中的SO库 | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
+	  <div data-url="http://www.jacpy.com/2017/09/07/android-install-apk-INSTALL-FAILED-UID-CHANGED.html" data-title="Android命令行安装APK时报错：INSTALL_FAILED_UID_CHANGED | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -158,19 +152,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2016/05/10/gradle-build-Please-correct-the-above-warnings-first.html" title="gradle build报错：Please correct the above warnings first解决方案">
-  <strong>上一篇：</strong><br/>
-  <span>
-  gradle build报错：Please correct the above warnings first解决方案</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2016/04/22/android-studio-error-collection.html"  title="android studio gradle编译异常小结">
+<a href="/2017/09/07/gradle-failed-to-create-md5-hash-for-file.html"  title="gradle failed to create MD5 hash for file">
  <strong>下一篇：</strong><br/> 
- <span>android studio gradle编译异常小结
+ <span>gradle failed to create MD5 hash for file
 </span>
 </a>
 </div>
@@ -179,7 +165,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2016/05/10/gradle-compile-exclude-third-library-arm64-x86-64.html" data-title="gardle编译排除第三方库中的arm64、x86-64中的SO库" data-url="http://www.jacpy.com/2016/05/10/gradle-compile-exclude-third-library-arm64-x86-64.html"></div>
+	<div class="ds-thread" data-thread-key="2017/09/07/android-install-apk-INSTALL-FAILED-UID-CHANGED.html" data-title="Android命令行安装APK时报错：INSTALL_FAILED_UID_CHANGED" data-url="http://www.jacpy.com/2017/09/07/android-install-apk-INSTALL-FAILED-UID-CHANGED.html"></div>
 </section>
 
 

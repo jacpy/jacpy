@@ -4,23 +4,26 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>gardle编译排除第三方库中的arm64、x86-64中的SO库 | jacpy&#39;s blog</title>
+    <title>gradle failed to create MD5 hash for file | jacpy&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="jacpy">
     
 
     
-    <meta name="description" content="在开发android应用时，一般都会用很多的第三方框架。有些框架会提供各个CPU的架构的SO库，比如arm、arm-v7a、x86、mips，有的甚至还提供64位的版本；而有的为了缩小应用包的体积只提供了一些常用的，比如arm，x86。如果应用中有的第三方框架提供了arm和x86的版本，而有的提供了arm，arm-v7a，x86三个版本，那么当运行在arm-v7a版本的CPU上，就会提示找不到只有">
+    <meta name="description" content="前几天在使用gradle编译项目插件，突然遇到这个错误：
+12345678910FAILURE: Build failed with an exception.* What went wrong:Execution failed for task &amp;apos;:compileReleaseJavaWithJavac&amp;apos;.&amp;gt; Failed to create MD5 hash for">
 <meta property="og:type" content="article">
-<meta property="og:title" content="gardle编译排除第三方库中的arm64、x86-64中的SO库">
-<meta property="og:url" content="http://www.jacpy.com/2016/05/10/gradle-compile-exclude-third-library-arm64-x86-64.html">
+<meta property="og:title" content="gradle failed to create MD5 hash for file">
+<meta property="og:url" content="http://www.jacpy.com/2017/09/07/gradle-failed-to-create-md5-hash-for-file.html">
 <meta property="og:site_name" content="jacpy's blog">
-<meta property="og:description" content="在开发android应用时，一般都会用很多的第三方框架。有些框架会提供各个CPU的架构的SO库，比如arm、arm-v7a、x86、mips，有的甚至还提供64位的版本；而有的为了缩小应用包的体积只提供了一些常用的，比如arm，x86。如果应用中有的第三方框架提供了arm和x86的版本，而有的提供了arm，arm-v7a，x86三个版本，那么当运行在arm-v7a版本的CPU上，就会提示找不到只有">
-<meta property="og:updated_time" content="2016-09-06T02:53:34.000Z">
+<meta property="og:description" content="前几天在使用gradle编译项目插件，突然遇到这个错误：
+12345678910FAILURE: Build failed with an exception.* What went wrong:Execution failed for task &amp;apos;:compileReleaseJavaWithJavac&amp;apos;.&amp;gt; Failed to create MD5 hash for">
+<meta property="og:updated_time" content="2017-09-07T05:11:27.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="gardle编译排除第三方库中的arm64、x86-64中的SO库">
-<meta name="twitter:description" content="在开发android应用时，一般都会用很多的第三方框架。有些框架会提供各个CPU的架构的SO库，比如arm、arm-v7a、x86、mips，有的甚至还提供64位的版本；而有的为了缩小应用包的体积只提供了一些常用的，比如arm，x86。如果应用中有的第三方框架提供了arm和x86的版本，而有的提供了arm，arm-v7a，x86三个版本，那么当运行在arm-v7a版本的CPU上，就会提示找不到只有">
+<meta name="twitter:title" content="gradle failed to create MD5 hash for file">
+<meta name="twitter:description" content="前几天在使用gradle编译项目插件，突然遇到这个错误：
+12345678910FAILURE: Build failed with an exception.* What went wrong:Execution failed for task &amp;apos;:compileReleaseJavaWithJavac&amp;apos;.&amp;gt; Failed to create MD5 hash for">
 
     
     <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
@@ -80,14 +83,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/05/10/gradle-compile-exclude-third-library-arm64-x86-64.html" title="gardle编译排除第三方库中的arm64、x86-64中的SO库" itemprop="url">gardle编译排除第三方库中的arm64、x86-64中的SO库</a>
+      <a href="/2017/09/07/gradle-failed-to-create-md5-hash-for-file.html" title="gradle failed to create MD5 hash for file" itemprop="url">gradle failed to create MD5 hash for file</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
 		
   <p class="article-time">
-    <time datetime="2016-05-10T13:20:16.000Z" itemprop="datePublished"> 发表于 2016-05-10</time>
+    <time datetime="2017-09-07T05:03:59.000Z" itemprop="datePublished"> 发表于 2017-09-07</time>
     
   </p>
 </header>
@@ -103,26 +106,10 @@
 		
 		</div>
 		
-		<p>在开发android应用时，一般都会用很多的第三方框架。有些框架会提供各个CPU的架构的SO库，比如arm、arm-v7a、x86、mips，有的甚至还提供64位的版本；而有的为了缩小应用包的体积只提供了一些常用的，比如arm，x86。如果应用中有的第三方框架提供了arm和x86的版本，而有的提供了arm，arm-v7a，x86三个版本，那么当运行在arm-v7a版本的CPU上，就会提示找不到只有arm和x86版本的SO库，这样很容易导致应用挂掉，报<code>java.lang.UnsatisfiedLinkError</code>错误，提示native方法找不到实现。</p>
-<a id="more"></a>
-<p>按道理说arm-v7a的CPU会兼容arm版本，但系统去查找SO库的时候却只会在一个目录查找，找完了arm-v7a，没找到不会再去arm目录，这样就会导致兼容性问题。解决方法有两种：</p>
-<ul>
-<li><p>一种是所有包含有SO库的第三方框架提供最新版本NDK支持的所有的CPU架构SO库，如：armeabi armeabi-v7a x86 mips arm64-v8a x86_64 mips64或者在编译时在Application.mk文件中配置<code>APP_ABI := all</code>。这样做一般不合适，这样会分散开发者的注意力。</p>
-</li>
-<li><p>第二种方法是：应用中所有的包含SO库的第三方框架只能取最小的子集，这种方法比较合适集成第三方框架。</p>
-</li>
-</ul>
-<p>下面以facebook的fresco框架为例来说明第二种方法的操作方式。</p>
-<p>fresco框架中提供了各个CPU架构的SO库，包括64位的，而自己的应用其他第三方带有SO库的框架A还没有使用64位的SO库，如果不做处理，应用运行在64位手机上，当使用框架A的时候应用就会闪退，因为框架A没有64位的库。那么解决办法只有将fresco库的64位SO库都删除，只保留框架A的相同目录下面的SO库。下面是gradle文件中的配置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">    compile &apos;com.facebook.fresco:fresco:0.8.1&apos;</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 将fresco库除armeabi和x86包以外的SO库删除</div><div class="line">def deleteSO() &#123;</div><div class="line">    def rootPath = rootProject.getRootDir().getAbsolutePath() + &apos;/&apos; + project.name</div><div class="line">    delete fileTree(dir: rootPath + &quot;/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline/&quot; + &quot;$FRESCO_LIB_VERSION&quot; + &quot;/jni/&quot;, excludes: [&apos;**/armeabi/**&apos;, &apos;**/x86/**&apos;])</div><div class="line">&#125;</div><div class="line"></div><div class="line">project.afterEvaluate&#123;</div><div class="line">    // debug模式下删除SO库</div><div class="line">    tasks.getByName(&apos;prepareDebugDependencies&apos;) &#123; // Hook prepareDebugDependencies任务</div><div class="line">        it.doLast &#123;</div><div class="line">            // prepareDebugDependencies任务执行完成后删除SO库</div><div class="line">            deleteSO()</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // 打包的时候删除SO库</div><div class="line">    tasks.getByName(&apos;prepareReleaseDependencies&apos;) &#123;</div><div class="line">        it.doLast &#123;</div><div class="line">            deleteSO()</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<hr>
-<ul>
-<li>2016-08-24修改</li>
-</ul>
-<p>另外还可以使用gradle中的过滤器，可以很方便过滤SO库：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">release &#123;</div><div class="line">	ndk &#123;</div><div class="line">		abiFilters &quot;armeabi&quot;, &quot;armeabi-v7a&quot;, &quot;x86&quot; // 保留这三种架构的CPU</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>要求gradle版本不低于2.14.1(可以修改项目根目录下的gradle/wrapper/目录下的gradle-wrapper.properties文件内容，将gradle请求地址中的版本号修改)，否则会提示如下错误：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Gradle DSL method not found: &apos;abiFilter()&apos;</div><div class="line">Possible causes:The project &apos;*&apos; may be using a version of the Android Gradle plug-in that does not contain the method (e.g. &apos;testCompile&apos; was added in 1.1.0).</div><div class="line">Fix plugin version and sync projectThe project &apos;*&apos; may be using a version of Gradle that does not contain the method.</div><div class="line">Open Gradle wrapper fileThe build file may be missing a Gradle plugin.Apply Gradle plugin</div></pre></td></tr></table></figure>
+		<p>前几天在使用gradle编译项目插件，突然遇到这个错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">FAILURE: Build failed with an exception.</div><div class="line"></div><div class="line">* What went wrong:</div><div class="line">Execution failed for task &apos;:compileReleaseJavaWithJavac&apos;.</div><div class="line">&gt; Failed to create MD5 hash for file &apos;E:\workspace\as\app\libs\xxx.jar&apos;.</div><div class="line"></div><div class="line">* Try:</div><div class="line">Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.</div><div class="line"></div><div class="line">BUILD FAILED</div></pre></td></tr></table></figure>
+<p>然后在对应目录找了下这个文件，发现没有这个<code>jar</code>文件。于是去<code>build.gradle</code>文件中的<code>depenencies</code>下面找到了这个<code>provided files</code>依赖，然后把这个<code>provided files</code>行删除，然后重新编译就OK了。</p>
+<p>发现使用<code>compile files</code>和<code>provided files</code>引用文件时，如果引用的文件不存，都会报这个错误。删除就好了。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -136,7 +123,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/gradle-不编译-arm64-x86-64/">gradle 不编译 arm64 x86-64</a>
+  <span></span> <a href="/tags/failed-to-create-MD5-hash-for-file/">failed to create MD5 hash for file</a>
   </div>
 
 </div>
@@ -145,7 +132,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://www.jacpy.com/2016/05/10/gradle-compile-exclude-third-library-arm64-x86-64.html" data-title="gardle编译排除第三方库中的arm64、x86-64中的SO库 | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
+	  <div data-url="http://www.jacpy.com/2017/09/07/gradle-failed-to-create-md5-hash-for-file.html" data-title="gradle failed to create MD5 hash for file | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -159,18 +146,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2016/05/10/gradle-build-Please-correct-the-above-warnings-first.html" title="gradle build报错：Please correct the above warnings first解决方案">
+ <a href="/2017/09/07/android-install-apk-INSTALL-FAILED-UID-CHANGED.html" title="Android命令行安装APK时报错：INSTALL_FAILED_UID_CHANGED">
   <strong>上一篇：</strong><br/>
   <span>
-  gradle build报错：Please correct the above warnings first解决方案</span>
+  Android命令行安装APK时报错：INSTALL_FAILED_UID_CHANGED</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2016/04/22/android-studio-error-collection.html"  title="android studio gradle编译异常小结">
+<a href="/2017/08/03/network-bench-update-compile-error-md.html"  title="android听云升级后编译报错">
  <strong>下一篇：</strong><br/> 
- <span>android studio gradle编译异常小结
+ <span>android听云升级后编译报错
 </span>
 </a>
 </div>
@@ -179,7 +166,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2016/05/10/gradle-compile-exclude-third-library-arm64-x86-64.html" data-title="gardle编译排除第三方库中的arm64、x86-64中的SO库" data-url="http://www.jacpy.com/2016/05/10/gradle-compile-exclude-third-library-arm64-x86-64.html"></div>
+	<div class="ds-thread" data-thread-key="2017/09/07/gradle-failed-to-create-md5-hash-for-file.html" data-title="gradle failed to create MD5 hash for file" data-url="http://www.jacpy.com/2017/09/07/gradle-failed-to-create-md5-hash-for-file.html"></div>
 </section>
 
 

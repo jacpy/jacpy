@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jacpy.com/"/>
-  <updated>2017-08-07T05:16:41.000Z</updated>
+  <updated>2017-09-07T05:35:15.000Z</updated>
   <id>http://www.jacpy.com/</id>
   
   <author>
@@ -14,6 +14,61 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Android命令行安装APK时报错：INSTALL_FAILED_UID_CHANGED</title>
+    <link href="http://www.jacpy.com/2017/09/07/android-install-apk-INSTALL-FAILED-UID-CHANGED.html"/>
+    <id>http://www.jacpy.com/2017/09/07/android-install-apk-INSTALL-FAILED-UID-CHANGED.html</id>
+    <published>2017-09-07T05:13:24.000Z</published>
+    <updated>2017-09-07T05:35:15.000Z</updated>
+    
+    <content type="html">&lt;p&gt;前几天使用命令行&lt;code&gt;adb install&lt;/code&gt;安装APK文件时，安装失败，遇到了这个错误提示：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;INSTALL_FAILED_UID_CHANGED&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;突然反应过来了，刚刚使用手机的&lt;code&gt;root&lt;/code&gt;权限看app的缓存数据，命令行还在那个&lt;code&gt;/data/data/com.xxx.app&lt;/code&gt;目录下。赶紧退出到&lt;code&gt;/data/data/&lt;/code&gt;目录下面，&lt;code&gt;ls&lt;/code&gt;一看，这个包名路径还存在，用&lt;code&gt;rm -rf&lt;/code&gt;一删除，再安装试下，成功了。&lt;/p&gt;
+&lt;p&gt;回想之前调试微信支付功能，调的头大，经常卸载安装微信。结果有一次就安装失败了，提示&lt;code&gt;应用已经安装&lt;/code&gt;，结果同样去&lt;code&gt;/data/data&lt;/code&gt;目录下面一看，结果微信的包名路径还在。然后执行&lt;code&gt;rm -rf&lt;/code&gt;删除，删除失败，跑去删除子目录，都能删除，最后有一个目录删除不了。心想这跟U盘一样，出现坏道了？微信不可能创建一个目录还不让删除的。结果一直提示删除失败，这&lt;code&gt;root&lt;/code&gt;权限都使不上劲。最后没办法了，只好换台手机调试。&lt;/p&gt;
+&lt;p&gt;自己的测试手机上装不了微信，这个事一直挂在心上。只要能把包名路径给删除了，就可以装微信了，想着怎么删除。突然有一天，想到看能不能把这个目录移出去，然后再来删除包名路径。于是使用&lt;code&gt;mv&lt;/code&gt;命令将这个目录移走，然后再删除包名，删除成功了，再删除那个目录，还是删除不掉，算了，不管了。一安装微信，装成功了。大喜！终于又可以装上微信了。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;前几天使用命令行&lt;code&gt;adb install&lt;/code&gt;安装APK文件时，安装失败，遇到了这个错误提示：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div clas
+    
+    </summary>
+    
+      <category term="android" scheme="http://www.jacpy.com/categories/android/"/>
+    
+    
+      <category term="install apk INSTALL_FAILED_UID_CHANGED" scheme="http://www.jacpy.com/tags/install-apk-INSTALL-FAILED-UID-CHANGED/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>gradle failed to create MD5 hash for file</title>
+    <link href="http://www.jacpy.com/2017/09/07/gradle-failed-to-create-md5-hash-for-file.html"/>
+    <id>http://www.jacpy.com/2017/09/07/gradle-failed-to-create-md5-hash-for-file.html</id>
+    <published>2017-09-07T05:03:59.000Z</published>
+    <updated>2017-09-07T05:11:27.000Z</updated>
+    
+    <content type="html">&lt;p&gt;前几天在使用gradle编译项目插件，突然遇到这个错误：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;FAILURE: Build failed with an exception.&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;* What went wrong:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;Execution failed for task &amp;apos;:compileReleaseJavaWithJavac&amp;apos;.&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;gt; Failed to create MD5 hash for file &amp;apos;E:\workspace\as\app\libs\xxx.jar&amp;apos;.&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;* Try:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;BUILD FAILED&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;然后在对应目录找了下这个文件，发现没有这个&lt;code&gt;jar&lt;/code&gt;文件。于是去&lt;code&gt;build.gradle&lt;/code&gt;文件中的&lt;code&gt;depenencies&lt;/code&gt;下面找到了这个&lt;code&gt;provided files&lt;/code&gt;依赖，然后把这个&lt;code&gt;provided files&lt;/code&gt;行删除，然后重新编译就OK了。&lt;/p&gt;
+&lt;p&gt;发现使用&lt;code&gt;compile files&lt;/code&gt;和&lt;code&gt;provided files&lt;/code&gt;引用文件时，如果引用的文件不存，都会报这个错误。删除就好了。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;前几天在使用gradle编译项目插件，突然遇到这个错误：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;
+    
+    </summary>
+    
+      <category term="gradle" scheme="http://www.jacpy.com/categories/gradle/"/>
+    
+    
+      <category term="failed to create MD5 hash for file" scheme="http://www.jacpy.com/tags/failed-to-create-MD5-hash-for-file/"/>
+    
+  </entry>
   
   <entry>
     <title>android听云升级后编译报错</title>
@@ -879,84 +934,6 @@
     
     
       <category term="chrome" scheme="http://www.jacpy.com/tags/chrome/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>android应用开发常见的坑</title>
-    <link href="http://www.jacpy.com/2016/05/10/android-app-develop-familiar-trap.html"/>
-    <id>http://www.jacpy.com/2016/05/10/android-app-develop-familiar-trap.html</id>
-    <published>2016-05-10T13:32:56.000Z</published>
-    <updated>2016-07-15T06:44:15.000Z</updated>
-    
-    <content type="html">&lt;p&gt;android应用开发过程中，总会遇到一些坑。当遇到这些坑马上反应过来时，会很快解决。而没有反应过来时，估计是要折腾半天，下面记录一些这样的坑，防止自己遗忘再犯同样的错，自己以后再遇到类似的问题，也在这里记录下来。&lt;/p&gt;
-&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;1.&lt;code&gt;context.startActivityForResult(intent, int)&lt;/code&gt;第二个参数int值要为大于0，并且不大于65535。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;如果为不大于0，则不会回调到Activity的&lt;code&gt;onActivityResult()&lt;/code&gt;方法。如果大于&lt;code&gt;65535&lt;/code&gt;为提示如下错误：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;Caused by: java.lang.IllegalArgumentException: Can only use lower 16 bits for requestCode&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;at android.support.v4.app.FragmentActivity.startActivityForResult(FragmentActivity.java:840)&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;出现这种问题只有在Activity继承了&lt;code&gt;android.support.v4.app.FragmentActivity&lt;/code&gt;的时候才会出现，而继承&lt;code&gt;android.app.Activity&lt;/code&gt;的时候不会。所以为了不必要的麻烦，还是建议使用requestCode的值要不大于&lt;code&gt;65535&lt;/code&gt;。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;因为在同一个Activity和其中的Fragment都使用到了&lt;code&gt;onActivityResult()&lt;/code&gt;方法，为了避免Activity的requestCode不与Fragment冲突，所以就使用了&lt;code&gt;Integer.MAX_VALUE&lt;/code&gt;，结果就导致了上面的异常。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;2.重写Activity的&lt;code&gt;onActivityResult()&lt;/code&gt;方法时，如果在该Activity中使用了Fragment，并且重写了Fragment的&lt;code&gt;onActivityResult()&lt;/code&gt;方法，此时一定要在Activity的&lt;code&gt;onActivityResult()&lt;/code&gt;方法中调用&lt;code&gt;super.onActivityResult()&lt;/code&gt;，否则Fragment的&lt;code&gt;onActivityResult()&lt;/code&gt;方法不会被回调。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;3.在Fragment切换的布局中使用了FrameLayout后，为了能切换更快，使用了&lt;code&gt;FragmentTransaction.hide()&lt;/code&gt;方法，将已经初始化的Fragment隐藏，而没有使用&lt;code&gt;FragmentTransaction.replace()&lt;/code&gt;方法。其中有一个Fragment中的布局文件中的内容没有超过一屏，在点击底部空白的地方，会点击之前已经隐藏的Fragment的中布局文件中的组件。归根倒底是由于FrameLayout布局影响的，最快的解决办法是在内容没有超过一屏的布局文件中的根ViewGroup中设置`android:clickable=”false”即可，当然网上说重写onTouchEvent()方法，可以试试。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;4.在给ListView调用&lt;code&gt;addHeader()&lt;/code&gt;方法添加头部时，一定要在调用&lt;code&gt;setAdapter()&lt;/code&gt;方法之前调用，否则会出现如下错误， 这个错误&lt;code&gt;在android 4.4以前的系统会存在，4.4及以后的系统中修复了这个问题&lt;/code&gt;。错误提示也很明显：&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;java.lang.IllegalStateException: Cannot add header view to list -- setAdapter has already been called.at android.widget.ListView.addHeaderView(ListView.java:&lt;span class=&quot;number&quot;&gt;261&lt;/span&gt;)at android.widget.ListView.addHeaderView(ListView.java:&lt;span class=&quot;number&quot;&gt;290&lt;/span&gt;)&lt;span class=&quot;comment&quot;&gt;// ...&lt;/span&gt;at android.support.v4.app.Fragment.performCreateView(Fragment.java:&lt;span class=&quot;number&quot;&gt;1962&lt;/span&gt;)at android.support.v4.app.FragmentManagerImpl.moveToState(FragmentManager.java:&lt;span class=&quot;number&quot;&gt;1026&lt;/span&gt;)at android.support.v4.app.FragmentManagerImpl.moveToState(FragmentManager.java:&lt;span class=&quot;number&quot;&gt;1207&lt;/span&gt;)at android.support.v4.app.BackStackRecord.run(BackStackRecord.java:&lt;span class=&quot;number&quot;&gt;738&lt;/span&gt;)at android.support.v4.app.FragmentManagerImpl.execPendingActions(FragmentManager.java:&lt;span class=&quot;number&quot;&gt;1572&lt;/span&gt;)at android.support.v4.app.FragmentManagerImpl$&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;.run(FragmentManager.java:&lt;span class=&quot;number&quot;&gt;493&lt;/span&gt;)at android.os.Handler.handleCallback(Handler.java:&lt;span class=&quot;number&quot;&gt;800&lt;/span&gt;)&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;android应用开发过程中，总会遇到一些坑。当遇到这些坑马上反应过来时，会很快解决。而没有反应过来时，估计是要折腾半天，下面记录一些这样的坑，防止自己遗忘再犯同样的错，自己以后再遇到类似的问题，也在这里记录下来。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="android" scheme="http://www.jacpy.com/categories/android/"/>
-    
-    
-      <category term="android" scheme="http://www.jacpy.com/tags/android/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>微信支付返回code为-1解决方法之一</title>
-    <link href="http://www.jacpy.com/2016/05/10/weixin-pay-return-code-1.html"/>
-    <id>http://www.jacpy.com/2016/05/10/weixin-pay-return-code-1.html</id>
-    <published>2016-05-10T13:28:57.000Z</published>
-    <updated>2016-05-10T13:38:50.000Z</updated>
-    
-    <content type="html">&lt;p&gt;这两天在集成微信支付的功能，先是客户在插件中集成支付功能，后来发现回调不起来，于是将支付功能集成到了主应用，然后暴露接口给插件使用。费劲几个小时的折腾，于是乎就有下文。&lt;/p&gt;
-&lt;p&gt;我们先来看下官网对于code为-1的说明（官网说明地址&lt;a href=&quot;http://kf.qq.com/faq/140225MveaUz150413VNj6nm.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;点这里&lt;/a&gt;）：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;开放平台配置的报名和应用签名是否一致：（android）；确认是否使用正式的keystore打包apk并安装调试；（android）；提交订单部分需要在服务器端完成。&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;先请仔细阅读，你遇到的问题就在这段描述中。其中注意，中间还错别字&lt;code&gt;报名&lt;/code&gt;应为&lt;code&gt;包名&lt;/code&gt;（鹅厂果然不一样）。&lt;/p&gt;
-&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;p&gt;下面开始说说事情的经过和结果：&lt;/p&gt;
-&lt;p&gt;公司这里给客户做了一个应用，客户那边的业务扩展使用插件的方式开发，然后集成到主应用中来。由于客户业务中需要支付功能，而且在插件中支付功能不能正常运行，于是我这边就将插件中的支付集成到主应用中，然后给接口让插件调用。使用这种方式集成完后，我测试了一遍，支付宝支付OK，微信支付也OK。于是跟他们说集成好了，可以用了。&lt;/p&gt;
-&lt;p&gt;客户那边测试使用的时候反馈，微信支付只能支付成功一次，第二次就不行了。于是乎，我这边也试了下，果然，第二次支付不成功。一看输出的LOG，回调的code返回-1。&lt;/p&gt;
-&lt;p&gt;为了解决这个问题与客户进行了沟通，客户说是我集成的问题，说他们写了一个测试的demo，连续支付两次都没有问题。好吧，我自己寻找问题的解决方案。我很确信自己的代码集成没有问题，那部分代码也是来自客户写的支付代码。如果客户写的代码有问题，就不可能连续支付两次都OK。&lt;/p&gt;
-&lt;p&gt;于是找到了前面的官方回调后返回code为-1的说明，当时也只是读了一遍，没深究，因为我觉得问题原因都不是，毕竟还支付成功过一次。&lt;/p&gt;
-&lt;p&gt;最后去反编译看微信SDK的代码，支寻找为什么会返回-1，突然看到代码里面的getPackageName()时，想到了包名，回忆起之前集成微信第三方登录时绑定的包名和签名信息，突然大悟，是不是和包名有关？客户测试的demo包名和主应用的包名是不一样的。于是跟客户沟通，看了一下支付微信的后台配置，叫对方把包名改成主应用的包名，结果测试，支付两次OK。好吧，问题找到了。&lt;/p&gt;
-&lt;p&gt;回想起整个问题解决过程，还是插件开发惹的祸。但中间种种不正常让人生疑，如果包名不对，为什么还能在清除应用缓存之后能支付成功？其实当时我应该就要反应过来，有谁会做成这种支付的时候还要清除缓存就能支付成功的？体验做成这样，还叫BAT？可能这个提示是官方支付demo里面的提示，集成的时候直接拿过来用了吧。&lt;/p&gt;
-&lt;p&gt;中间客户也有叫我检查一下是不是服务器的问题，用工具抓一下微信请求的包，如果返回的code为0，就是请求成功，返回其他值就是不正常，服务器端就有问题。让我先排除一下，结果是code返回0，服务器端OK，没有问题。也就是问题还是在客户端。&lt;/p&gt;
-&lt;p&gt;刚开始是怀疑签名有问题，于是用官方的工具检测了下，发现签名最后生成的信息是一样的。这个疑问就排除了。只是当时没想到去排除包名的问题。唉，支付宝怎么就没有这样坑人的问题呢？&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;这两天在集成微信支付的功能，先是客户在插件中集成支付功能，后来发现回调不起来，于是将支付功能集成到了主应用，然后暴露接口给插件使用。费劲几个小时的折腾，于是乎就有下文。&lt;/p&gt;
-&lt;p&gt;我们先来看下官网对于code为-1的说明（官网说明地址&lt;a href=&quot;http://kf.qq.com/faq/140225MveaUz150413VNj6nm.html&quot;&gt;点这里&lt;/a&gt;）：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;开放平台配置的报名和应用签名是否一致：（android）；确认是否使用正式的keystore打包apk并安装调试；（android）；提交订单部分需要在服务器端完成。&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;先请仔细阅读，你遇到的问题就在这段描述中。其中注意，中间还错别字&lt;code&gt;报名&lt;/code&gt;应为&lt;code&gt;包名&lt;/code&gt;（鹅厂果然不一样）。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="pay" scheme="http://www.jacpy.com/categories/pay/"/>
-    
-    
-      <category term="微信支付返回code为-1" scheme="http://www.jacpy.com/tags/%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E8%BF%94%E5%9B%9Ecode%E4%B8%BA-1/"/>
     
   </entry>
   
