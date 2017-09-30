@@ -1,0 +1,633 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Fresco使用HttpURLConnection支持加载https链接图片 | jacpy&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="jacpy">
+    
+
+    
+    <meta name="description" content="前几天使用Fresco加载图片时遇到图片加载不出来的问题，然后调试了一下，发现出现如下错误：
+1javax.net.ssl.SSLException: Connection closed by peer
+debug时的截图如下图所示：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fresco使用HttpURLConnection支持加载https链接图片">
+<meta property="og:url" content="http://www.jacpy.com/2017/09/28/fresco-used-httpurlconnection-support-https-image-loader.html">
+<meta property="og:site_name" content="jacpy's blog">
+<meta property="og:description" content="前几天使用Fresco加载图片时遇到图片加载不出来的问题，然后调试了一下，发现出现如下错误：
+1javax.net.ssl.SSLException: Connection closed by peer
+debug时的截图如下图所示：">
+<meta property="og:image" content="http://www.jacpy.com/images/2017/09/javax_net_ssl_sslexception.png">
+<meta property="og:updated_time" content="2017-09-30T16:38:03.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Fresco使用HttpURLConnection支持加载https链接图片">
+<meta name="twitter:description" content="前几天使用Fresco加载图片时遇到图片加载不出来的问题，然后调试了一下，发现出现如下错误：
+1javax.net.ssl.SSLException: Connection closed by peer
+debug时的截图如下图所示：">
+<meta name="twitter:image" content="http://www.jacpy.com/images/2017/09/javax_net_ssl_sslexception.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="jacpy&#39;s blog" title="jacpy&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="jacpy&#39;s blog">jacpy&#39;s blog</a></h1>
+				<h2 class="blog-motto">enjoy mobile development</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated" style="margin-top: 0px;">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:www.jacpy.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/09/28/fresco-used-httpurlconnection-support-https-image-loader.html" title="Fresco使用HttpURLConnection支持加载https链接图片" itemprop="url">Fresco使用HttpURLConnection支持加载https链接图片</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
+		
+  <p class="article-time">
+    <time datetime="2017-09-28T07:09:41.000Z" itemprop="datePublished"> 发表于 2017-09-28</time>
+    
+  </p>
+</header>
+
+
+
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#查找原因"><span class="toc-number">1.</span> <span class="toc-text">查找原因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方法"><span class="toc-number">2.</span> <span class="toc-text">解决方法</span></a></li></ol>
+		
+		</div>
+		
+		<p>前几天使用<code>Fresco</code>加载图片时遇到图片加载不出来的问题，然后调试了一下，发现出现如下错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">javax.net.ssl.SSLException: Connection closed by peer</div></pre></td></tr></table></figure>
+<p>debug时的截图如下图所示：</p>
+<a id="more"></a>
+<p><img src="/images/2017/09/javax_net_ssl_sslexception.png" alt="SSLException截图"></p>
+<h2 id="查找原因"><a href="#查找原因" class="headerlink" title="查找原因"></a>查找原因</h2><p>上面的截图是在给<code>Fresco</code>中的展示图片的类<code>SimpleDraweeView</code>调用如下代码时出现的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// SimpileDraweeView sdv = ...;</span></div><div class="line">sdv.setController(Fresco.newDraweeControllerBuilder().setControllerListener(<span class="keyword">new</span> BaseControllerListener&lt;ImageInfo&gt;() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFinalImageSet</span><span class="params">(String id, ImageInfo imageInfo, Animatable animatable)</span> </span>&#123;</div><div class="line">            File file = getCacheFile(request);</div><div class="line">            <span class="keyword">if</span> (file != <span class="keyword">null</span> &amp;&amp; callback != <span class="keyword">null</span>) &#123;</div><div class="line">                callback.onImageLoadFinish(file);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFailure</span><span class="params">(String id, Throwable throwable)</span> </span>&#123;</div><div class="line">            <span class="comment">// 这里throwable就是javax.net.ssl.SSLException: Connection closed by peer</span></div><div class="line">            <span class="keyword">super</span>.onFailure(id, throwable);</div><div class="line">            <span class="keyword">if</span> (callback != <span class="keyword">null</span>) &#123;</div><div class="line">                callback.onFailure(uri, throwable);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;)</div><div class="line">    .setImageRequest(request)</div><div class="line">    .build());</div></pre></td></tr></table></figure>
+<p>看到上面的错误提示，马上反应是不是因为<code>https</code>证书的原因？原来请求的图片链接是<code>https</code>地址。到网上一搜，果然，<code>Fresco</code>默认不支持<code>https</code>，需要自己设置。一看网上的解决方法，都是使用<code>Okhttp</code>库来解决的，由于项目比较老，还没有使用<code>Okhttp</code>库，总不能为了解决这个问题而引入一个库吧？感觉代价太大了。所以跑去看了一下<code>Okhttp</code>默认请求加载图片的实现。</p>
+<p><code>Okhttp</code>库加载图片的网络请求处理在这个类<code>com.facebook.imagepipeline.producers.HttpUrlConnectionNetworkFetcher</code>中，关键的请求处理是在<code>downloadFrom(Uri uri, int maxRedirects)</code>这个方法中，代码如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> HttpURLConnection <span class="title">downloadFrom</span><span class="params">(Uri uri, <span class="keyword">int</span> maxRedirects)</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">  HttpURLConnection connection = openConnectionTo(uri);</div><div class="line">  <span class="keyword">int</span> responseCode = connection.getResponseCode(); <span class="comment">// 请求是在这一步发出的，在这之前设置HTTPS即可</span></div><div class="line"></div><div class="line">  <span class="keyword">if</span> (isHttpSuccess(responseCode)) &#123;</div><div class="line">      <span class="keyword">return</span> connection;</div><div class="line"></div><div class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isHttpRedirect(responseCode)) &#123;</div><div class="line">      String nextUriString = connection.getHeaderField(<span class="string">"Location"</span>);</div><div class="line">      connection.disconnect();</div><div class="line"></div><div class="line">      Uri nextUri = (nextUriString == <span class="keyword">null</span>) ? <span class="keyword">null</span> : Uri.parse(nextUriString);</div><div class="line">      String originalScheme = uri.getScheme();</div><div class="line"></div><div class="line">      <span class="keyword">if</span> (maxRedirects &gt; <span class="number">0</span> &amp;&amp; nextUri != <span class="keyword">null</span> &amp;&amp; !nextUri.getScheme().equals(originalScheme)) &#123;</div><div class="line">        <span class="keyword">return</span> downloadFrom(nextUri, maxRedirects - <span class="number">1</span>);</div><div class="line">      &#125; <span class="keyword">else</span> &#123;</div><div class="line">        String message = maxRedirects == <span class="number">0</span></div><div class="line">            ? error(<span class="string">"URL %s follows too many redirects"</span>, uri.toString())</div><div class="line">            : error(<span class="string">"URL %s returned %d without a valid redirect"</span>, uri.toString(), responseCode);</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IOException(message);</div><div class="line">      &#125;</div><div class="line"></div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">      connection.disconnect();</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> IOException(String</div><div class="line">          .format(<span class="string">"Image URL %s returned HTTP code %d"</span>, uri.toString(), responseCode));</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@VisibleForTesting</span></div><div class="line"><span class="function"><span class="keyword">static</span> HttpURLConnection <span class="title">openConnectionTo</span><span class="params">(Uri uri)</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">  URL url = <span class="keyword">new</span> URL(uri.toString());</div><div class="line">  <span class="keyword">return</span> (HttpURLConnection) url.openConnection();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>从上面的代码可以看出来，请求是从<code>int responseCode = connection.getResponseCode();</code>这行代码发出去的，但是又没有对<code>https</code>的证书进行处理，所以在这之前增加处理即可。于是想到继承这个类来扩展处理<code>https</code>的情况，结果从上面的代码来看，想从继承的角度增加<code>https</code>的处理是不可能的。干脆把整个类的代码复制一份，修改类名为<code>HttpsUrlConnectionNetworkFetcher</code>，修改<code>downloadFrom</code>这个方法，增加<code>https</code>证书处理，代码如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HttpsUrlConnectionNetworkFetcher</span> <span class="keyword">extends</span> <span class="title">BaseNetworkFetcher</span>&lt;<span class="title">FetchState</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">// 中间代码忽略...</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> HttpURLConnection <span class="title">downloadFrom</span><span class="params">(Uri uri, <span class="keyword">int</span> maxRedirects)</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">        HttpURLConnection connection = openConnectionTo(uri);</div><div class="line">        <span class="comment">// 增加https支持</span></div><div class="line">        String scheme = uri.getScheme();</div><div class="line">        <span class="keyword">if</span> (<span class="string">"https"</span>.equals(scheme)) &#123;</div><div class="line">            HttpsURLConnection httpsURLConnection = (HttpsURLConnection) connection;</div><div class="line">            SSLContext sslContext = SSLContextUtils.getSSLContext();</div><div class="line">            <span class="keyword">if</span> (sslContext != <span class="keyword">null</span>) &#123;</div><div class="line">                SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();</div><div class="line">                httpsURLConnection.setSSLSocketFactory(sslSocketFactory);</div><div class="line">                httpsURLConnection.setHostnameVerifier(SSLContextUtils.getHostnameVerifier());</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">int</span> responseCode = connection.getResponseCode(); </div><div class="line">        <span class="comment">// 其它代码忽略...</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>SSLContextUtils</code>类中忽略对证书的处理，信任所有证书，这种做法很不安全，仅供参考。代码如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> android.util.Log;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.security.SecureRandom;</div><div class="line"><span class="keyword">import</span> java.security.cert.X509Certificate;</div><div class="line"></div><div class="line"><span class="keyword">import</span> javax.net.ssl.HostnameVerifier;</div><div class="line"><span class="keyword">import</span> javax.net.ssl.SSLContext;</div><div class="line"><span class="keyword">import</span> javax.net.ssl.SSLSession;</div><div class="line"><span class="keyword">import</span> javax.net.ssl.TrustManager;</div><div class="line"><span class="keyword">import</span> javax.net.ssl.X509TrustManager;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * SSL工具类</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SSLContextUtils</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> HostnameVerifier hostnameVerifier = <span class="keyword">new</span> HostnameVerifier() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">verify</span><span class="params">(String hostname, SSLSession session)</span> </span>&#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> HostnameVerifier <span class="title">getHostnameVerifier</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> hostnameVerifier;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SSLContext <span class="title">getSSLContext</span><span class="params">()</span> </span>&#123;</div><div class="line">        SSLContext sslContext = <span class="keyword">null</span>;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            sslContext = SSLContext.getInstance(<span class="string">"TLS"</span>);</div><div class="line">            sslContext.init(<span class="keyword">null</span>, <span class="keyword">new</span> TrustManager[]&#123;<span class="keyword">new</span> X509TrustManager() &#123;</div><div class="line">                <span class="meta">@Override</span></div><div class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">checkClientTrusted</span><span class="params">(X509Certificate[] chain, String authType)</span>  </span>&#123;&#125;</div><div class="line"></div><div class="line">                <span class="meta">@Override</span></div><div class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">checkServerTrusted</span><span class="params">(X509Certificate[] chain, String authType)</span> </span>&#123;&#125;</div><div class="line"></div><div class="line">                <span class="meta">@Override</span></div><div class="line">                <span class="keyword">public</span> X509Certificate[] getAcceptedIssuers() &#123;</div><div class="line">                    <span class="keyword">return</span> <span class="keyword">new</span> X509Certificate[<span class="number">0</span>];</div><div class="line">                &#125;</div><div class="line">            &#125;&#125;, <span class="keyword">new</span> SecureRandom());</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            Log.e(<span class="string">"SSLContextUtils"</span>, e.getMessage(), e);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> sslContext;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>最后需要把这个自定义的类的通过调用<code>ImagePipelineConfig.Builder#setNetworkFetcher()</code>方法设置进来，指定加载图片时使用新的网络请求策略。具体代码如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ImagePipelineConfig config = ImagePipelineConfig.newBuilder(context)</div><div class="line">        .setDownsampleEnabled(<span class="keyword">true</span>)</div><div class="line">        .setNetworkFetcher(<span class="keyword">new</span> HttpsUrlConnectionNetworkFetcher()) <span class="comment">// 这里设置自定义类</span></div><div class="line">        .build();</div><div class="line">Fresco.initialize(context, config);</div></pre></td></tr></table></figure>
+<p>再重新运行App，图片加载出来了，问题解决。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/android/">android</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/fresco-HttpURLConnection/">fresco HttpURLConnection</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.jacpy.com/2017/09/28/fresco-used-httpurlconnection-support-https-image-loader.html" data-title="Fresco使用HttpURLConnection支持加载https链接图片 | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/09/28/okhttp-used-attentions.html" title="Okhttp使用注意事项">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Okhttp使用注意事项</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/09/22/config-4-sublime-markdownedit.html"  title="sublime使用markdownEdit设置">
+ <strong>下一篇：</strong><br/> 
+ <span>sublime使用markdownEdit设置
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2017/09/28/fresco-used-httpurlconnection-support-https-image-loader.html" data-title="Fresco使用HttpURLConnection支持加载https链接图片" data-url="http://www.jacpy.com/2017/09/28/fresco-used-httpurlconnection-support-https-image-loader.html"></div>
+</section>
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#查找原因"><span class="toc-number">1.</span> <span class="toc-text">查找原因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方法"><span class="toc-number">2.</span> <span class="toc-text">解决方法</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/andfix/" title="andfix">andfix<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/" title="android">android<sup>16</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android-push/" title="android push">android push<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android-studio/" title="android studio">android studio<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android-view/" title="android view">android view<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/dvm/" title="dvm">dvm<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/github/" title="github">github<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/go/" title="go">go<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/gradle/" title="gradle">gradle<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/pay/" title="pay">pay<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/sqlite/" title="sqlite">sqlite<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/sublime/" title="sublime">sublime<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/view/" title="view">view<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/windows/" title="windows">windows<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/SQLite性能优化/" title="SQLite性能优化">SQLite性能优化<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/fresco-HttpURLConnection/" title="fresco HttpURLConnection">fresco HttpURLConnection<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android死锁分析/" title="android死锁分析">android死锁分析<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Device-or-resource-busy/" title="Device or resource busy">Device or resource busy<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/EXACTLY-AT-MOST-UNSPECIFIED/" title="EXACTLY AT_MOST UNSPECIFIED">EXACTLY AT_MOST UNSPECIFIED<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/INSTALL-FAILED-TEST-ONLY/" title="INSTALL_FAILED_TEST_ONLY">INSTALL_FAILED_TEST_ONLY<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gradle配置/" title="gradle配置">gradle配置<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/singleTop-android7-0/" title="singleTop android7.0">singleTop android7.0<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/andfix/" title="andfix">andfix<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gradle打jar包-混淆/" title="gradle打jar包 混淆">gradle打jar包 混淆<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.jacpy.com" target="_blank" title="jacpy">jacpy</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Jacpy, welcome to my blog. <br/>
+			This is my blog, believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/jacpy" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:jacpy.may@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		
+		<a href="/about" target="_blank" title="jacpy">jacpy</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"maylian7700"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254674300'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s23.cnzz.com/z_stat.php%3Fid%3D1254674300' type='text/javascript'%3E%3C/script%3E"));</script>
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

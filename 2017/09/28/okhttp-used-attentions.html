@@ -4,23 +4,23 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>NDK编译时报错：make.exe: *** No rule to make target `jni/jni/apk_loader.cpp&#39;, needed by `obj/local/armeabi-v7a/objs/jni/apk_loader.o&#39;.  Stop.解决方法 | jacpy&#39;s blog</title>
+    <title>Okhttp使用注意事项 | jacpy&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="jacpy">
     
 
     
-    <meta name="description" content="在使用NDK编译代码时，如果出现如下错误：1make.exe: *** No rule to make target `jni/jni/apk_loader.cpp&apos;, needed by `obj/local/armeabi-v7a/objs/hook50/jni/apk_loader.o&apos;.  Stop.">
+    <meta name="description" content="前几天在使用Okhttp时遇到两个坑，这里记录一下。一个是在请求头中不需要设置Accept-Encoding为gzip，使用Okhttp默认的就好；第二个是添加到Okhttp请求头里面的键值对不能为空。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="NDK编译时报错：make.exe: *** No rule to make target `jni/jni/apk_loader.cpp', needed by `obj/local/armeabi-v7a/objs/jni/apk_loader.o'.  Stop.解决方法">
-<meta property="og:url" content="http://www.jacpy.com/2015/06/05/ndk-compile-error-make-exe-no-rule-to-make-target-jnijniapk-loader-cpp-needed-by-objlocalarmeabi-v7aobjsjniapk-loader-o-stop-resolved.html">
+<meta property="og:title" content="Okhttp使用注意事项">
+<meta property="og:url" content="http://www.jacpy.com/2017/09/28/okhttp-used-attentions.html">
 <meta property="og:site_name" content="jacpy's blog">
-<meta property="og:description" content="在使用NDK编译代码时，如果出现如下错误：1make.exe: *** No rule to make target `jni/jni/apk_loader.cpp&apos;, needed by `obj/local/armeabi-v7a/objs/hook50/jni/apk_loader.o&apos;.  Stop.">
-<meta property="og:updated_time" content="2015-10-30T15:47:54.000Z">
+<meta property="og:description" content="前几天在使用Okhttp时遇到两个坑，这里记录一下。一个是在请求头中不需要设置Accept-Encoding为gzip，使用Okhttp默认的就好；第二个是添加到Okhttp请求头里面的键值对不能为空。">
+<meta property="og:updated_time" content="2017-09-30T12:34:41.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="NDK编译时报错：make.exe: *** No rule to make target `jni/jni/apk_loader.cpp', needed by `obj/local/armeabi-v7a/objs/jni/apk_loader.o'.  Stop.解决方法">
-<meta name="twitter:description" content="在使用NDK编译代码时，如果出现如下错误：1make.exe: *** No rule to make target `jni/jni/apk_loader.cpp&apos;, needed by `obj/local/armeabi-v7a/objs/hook50/jni/apk_loader.o&apos;.  Stop.">
+<meta name="twitter:title" content="Okhttp使用注意事项">
+<meta name="twitter:description" content="前几天在使用Okhttp时遇到两个坑，这里记录一下。一个是在请求头中不需要设置Accept-Encoding为gzip，使用Okhttp默认的就好；第二个是添加到Okhttp请求头里面的键值对不能为空。">
 
     
     <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
@@ -80,14 +80,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/06/05/ndk-compile-error-make-exe-no-rule-to-make-target-jnijniapk-loader-cpp-needed-by-objlocalarmeabi-v7aobjsjniapk-loader-o-stop-resolved.html" title="NDK编译时报错：make.exe: *** No rule to make target `jni/jni/apk_loader.cpp&#39;, needed by `obj/local/armeabi-v7a/objs/jni/apk_loader.o&#39;.  Stop.解决方法" itemprop="url">NDK编译时报错：make.exe: *** No rule to make target `jni/jni/apk_loader.cpp&#39;, needed by `obj/local/armeabi-v7a/objs/jni/apk_loader.o&#39;.  Stop.解决方法</a>
+      <a href="/2017/09/28/okhttp-used-attentions.html" title="Okhttp使用注意事项" itemprop="url">Okhttp使用注意事项</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
 		
   <p class="article-time">
-    <time datetime="2015-06-04T16:38:19.000Z" itemprop="datePublished"> 发表于 2015-06-05</time>
+    <time datetime="2017-09-28T07:10:42.000Z" itemprop="datePublished"> 发表于 2017-09-28</time>
     
   </p>
 </header>
@@ -99,13 +99,20 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#默认不需要设置Accept-Encoding为gzip"><span class="toc-number">1.</span> <span class="toc-text">默认不需要设置Accept-Encoding为gzip</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#设置请求头信息时，值不能为空"><span class="toc-number">2.</span> <span class="toc-text">设置请求头信息时，值不能为空</span></a></li></ol>
 		
 		</div>
 		
-		<p>在使用NDK编译代码时，如果出现如下错误：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">make.exe: *** No rule to make target `jni/jni/apk_loader.cpp<span class="string">', needed by `obj/local/armeabi-v7a/objs/hook50/jni/apk_loader.o'</span>.  Stop.</div></pre></td></tr></table></figure></p>
+		<p>前几天在使用<code>Okhttp</code>时遇到两个坑，这里记录一下。一个是在请求头中不需要设置<code>Accept-Encoding</code>为<code>gzip</code>，使用<code>Okhttp</code>默认的就好；第二个是添加到<code>Okhttp</code>请求头里面的键值对不能为空。</p>
 <a id="more"></a>
-<p>很有可能是被编译的apk_loader.cpp在LOCAL_SRC_FILES变量中的路径有问题或者文件名不正确，仔细检查即可解决。</p>
+<h2 id="默认不需要设置Accept-Encoding为gzip"><a href="#默认不需要设置Accept-Encoding为gzip" class="headerlink" title="默认不需要设置Accept-Encoding为gzip"></a>默认不需要设置Accept-Encoding为gzip</h2><p><code>Okhttp</code>中如果外部请求没有在请求里面设置<code>Accept-Encoding</code>值和<code>Range</code>值时，会在请求头里增加设置<code>Accept-Encoding: gzip</code>，如果外部设置这个<code>Accept-Encoding</code>参数，则不会设置。如果是<code>Okhttp</code>自己设置的参数，并且服务器端响应的头里包含有<code>Content-Encoding</code>值为<code>gzip</code>，则会使用<code>Gzip</code>解压。如果是外部设置的，即使服务器端响应头里面包含有<code>Content-Encoding</code>值为<code>gzip</code>，也不会使用<code>Gzip</code>解压，需要自己去解压。</p>
+<p>下面是官方代码，在<code>okhttp3.internal.http.BridgeInterceptor#intercept(Chain chain)</code>方法中：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// If we add an "Accept-Encoding: gzip" header field we're responsible for also decompressing</span></div><div class="line">    <span class="comment">// the transfer stream.</span></div><div class="line">    <span class="keyword">boolean</span> transparentGzip = <span class="keyword">false</span>;</div><div class="line">    <span class="keyword">if</span> (userRequest.header(<span class="string">"Accept-Encoding"</span>) == <span class="keyword">null</span> &amp;&amp; userRequest.header(<span class="string">"Range"</span>) == <span class="keyword">null</span>) &#123;</div><div class="line">      transparentGzip = <span class="keyword">true</span>;</div><div class="line">      requestBuilder.header(<span class="string">"Accept-Encoding"</span>, <span class="string">"gzip"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    List&lt;Cookie&gt; cookies = cookieJar.loadForRequest(userRequest.url());</div><div class="line">    <span class="keyword">if</span> (!cookies.isEmpty()) &#123;</div><div class="line">      requestBuilder.header(<span class="string">"Cookie"</span>, cookieHeader(cookies));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (userRequest.header(<span class="string">"User-Agent"</span>) == <span class="keyword">null</span>) &#123;</div><div class="line">      requestBuilder.header(<span class="string">"User-Agent"</span>, Version.userAgent());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    Response networkResponse = chain.proceed(requestBuilder.build());</div><div class="line"></div><div class="line">    HttpHeaders.receiveHeaders(cookieJar, userRequest.url(), networkResponse.headers());</div><div class="line"></div><div class="line">    Response.Builder responseBuilder = networkResponse.newBuilder()</div><div class="line">        .request(userRequest);</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (transparentGzip</div><div class="line">        &amp;&amp; <span class="string">"gzip"</span>.equalsIgnoreCase(networkResponse.header(<span class="string">"Content-Encoding"</span>))</div><div class="line">        &amp;&amp; HttpHeaders.hasBody(networkResponse)) &#123;</div><div class="line">      GzipSource responseBody = <span class="keyword">new</span> GzipSource(networkResponse.body().source());</div><div class="line">      Headers strippedHeaders = networkResponse.headers().newBuilder()</div><div class="line">          .removeAll(<span class="string">"Content-Encoding"</span>)</div><div class="line">          .removeAll(<span class="string">"Content-Length"</span>)</div><div class="line">          .build();</div><div class="line">      responseBuilder.headers(strippedHeaders);</div><div class="line">      responseBuilder.body(<span class="keyword">new</span> RealResponseBody(strippedHeaders, Okio.buffer(responseBody)));</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>注意整个逻辑是由<code>transparentGzip</code>变量来控制的。刚开始不知道有这种逻辑，使用了<code>Okhttp</code>做请求，然后在请求头里设置了<code>Accept-Encoding</code>值为<code>gzip</code>，于是使用<code>okhttp3.ResponseBody#string()</code>方法来获取服务器端的响应字符串时，结果是乱码。去排查原因时发现上面这段逻辑。</p>
+<h2 id="设置请求头信息时，值不能为空"><a href="#设置请求头信息时，值不能为空" class="headerlink" title="设置请求头信息时，值不能为空"></a>设置请求头信息时，值不能为空</h2><p>在使用<code>Okhttp</code>请求时，由于设置请求的值为null值，所以App直接闪退，一看错误日志，发现了原因。原来源码里面有拦截操作，具体代码在<code>okhttp3.Headers#checkNameAndValue(String name, String value)</code>方法中，如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">checkNameAndValue</span><span class="params">(String name, String value)</span> </span>&#123;</div><div class="line">  <span class="keyword">if</span> (name == <span class="keyword">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException(<span class="string">"name == null"</span>);</div><div class="line">  <span class="keyword">if</span> (name.isEmpty()) <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"name is empty"</span>);</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, length = name.length(); i &lt; length; i++) &#123;</div><div class="line">    <span class="keyword">char</span> c = name.charAt(i);</div><div class="line">    <span class="keyword">if</span> (c &lt;= <span class="string">'\u0020'</span> || c &gt;= <span class="string">'\u007f'</span>) &#123;</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(Util.format(</div><div class="line">          <span class="string">"Unexpected char %#04x at %d in header name: %s"</span>, (<span class="keyword">int</span>) c, i, name));</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">if</span> (value == <span class="keyword">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException(<span class="string">"value for name "</span> + name + <span class="string">" == null"</span>);</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, length = value.length(); i &lt; length; i++) &#123;</div><div class="line">    <span class="keyword">char</span> c = value.charAt(i);</div><div class="line">    <span class="keyword">if</span> ((c &lt;= <span class="string">'\u001f'</span> &amp;&amp; c != <span class="string">'\t'</span>) || c &gt;= <span class="string">'\u007f'</span>) &#123;</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(Util.format(</div><div class="line">          <span class="string">"Unexpected char %#04x at %d in %s value: %s"</span>, (<span class="keyword">int</span>) c, i, name, value));</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果添加请求的键或值为<code>null</code>，都会抛出异常，而且还要求键的长度不能为0，值的要求是可见字符，可以是<code>\t</code>。否则都会抛出异常。</p>
+<p>解决方法是对请求时添加到头里面的内容过滤下就可以了。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -113,9 +120,14 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/ndk/">ndk</a>
+  <a class="article-category-link" href="/categories/android/">android</a>
 </div>
 
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/okhttp/">okhttp</a>
+  </div>
 
 </div>
 
@@ -123,7 +135,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://www.jacpy.com/2015/06/05/ndk-compile-error-make-exe-no-rule-to-make-target-jnijniapk-loader-cpp-needed-by-objlocalarmeabi-v7aobjsjniapk-loader-o-stop-resolved.html" data-title="NDK编译时报错：make.exe: *** No rule to make target `jni/jni/apk_loader.cpp&#39;, needed by `obj/local/armeabi-v7a/objs/jni/apk_loader.o&#39;.  Stop.解决方法 | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
+	  <div data-url="http://www.jacpy.com/2017/09/28/okhttp-used-attentions.html" data-title="Okhttp使用注意事项 | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -136,19 +148,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/06/24/android-sqlite-performance-optimization-used-transaction-and-sql-compile.html" title="android SQLite性能优化（一）——使用事务和预处理">
-  <strong>上一篇：</strong><br/>
-  <span>
-  android SQLite性能优化（一）——使用事务和预处理</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2015/05/26/ndk-used-zlib-mini-compress-occur-zip-eocd-not-found-dex-is-not-zip.html"  title="NDK使用zlib mini压缩报错：Zip: EOCD not found, dex is not zip">
+<a href="/2017/09/28/fresco-used-httpurlconnection-support-https-image-loader.html"  title="Fresco使用HttpURLConnection支持加载https链接图片">
  <strong>下一篇：</strong><br/> 
- <span>NDK使用zlib mini压缩报错：Zip: EOCD not found, dex is not zip
+ <span>Fresco使用HttpURLConnection支持加载https链接图片
 </span>
 </a>
 </div>
@@ -157,7 +161,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2015/06/05/ndk-compile-error-make-exe-no-rule-to-make-target-jnijniapk-loader-cpp-needed-by-objlocalarmeabi-v7aobjsjniapk-loader-o-stop-resolved.html" data-title="NDK编译时报错：make.exe: *** No rule to make target `jni/jni/apk_loader.cpp', needed by `obj/local/armeabi-v7a/objs/jni/apk_loader.o'.  Stop.解决方法" data-url="http://www.jacpy.com/2015/06/05/ndk-compile-error-make-exe-no-rule-to-make-target-jnijniapk-loader-cpp-needed-by-objlocalarmeabi-v7aobjsjniapk-loader-o-stop-resolved.html"></div>
+	<div class="ds-thread" data-thread-key="2017/09/28/okhttp-used-attentions.html" data-title="Okhttp使用注意事项" data-url="http://www.jacpy.com/2017/09/28/okhttp-used-attentions.html"></div>
 </section>
 
 
@@ -168,7 +172,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#默认不需要设置Accept-Encoding为gzip"><span class="toc-number">1.</span> <span class="toc-text">默认不需要设置Accept-Encoding为gzip</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#设置请求头信息时，值不能为空"><span class="toc-number">2.</span> <span class="toc-text">设置请求头信息时，值不能为空</span></a></li></ol>
  
   </div>
 

@@ -78,6 +78,136 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2017/09/28/okhttp-used-attentions.html" title="Okhttp使用注意事项" itemprop="url">Okhttp使用注意事项</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
+		
+  <p class="article-time">
+    <time datetime="2017-09-28T07:10:42.000Z" itemprop="datePublished"> 发表于 2017-09-28</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>前几天在使用<code>Okhttp</code>时遇到两个坑，这里记录一下。一个是在请求头中不需要设置<code>Accept-Encoding</code>为<code>gzip</code>，使用<code>Okhttp</code>默认的就好；第二个是添加到<code>Okhttp</code>请求头里面的键值对不能为空。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2017/09/28/okhttp-used-attentions.html#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/android/">android</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/okhttp/">okhttp</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/2017/09/28/okhttp-used-attentions.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2017/09/28/okhttp-used-attentions.html" data-count-type="comments">&nbsp;</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/09/28/fresco-used-httpurlconnection-support-https-image-loader.html" title="Fresco使用HttpURLConnection支持加载https链接图片" itemprop="url">Fresco使用HttpURLConnection支持加载https链接图片</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
+		
+  <p class="article-time">
+    <time datetime="2017-09-28T07:09:41.000Z" itemprop="datePublished"> 发表于 2017-09-28</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>前几天使用<code>Fresco</code>加载图片时遇到图片加载不出来的问题，然后调试了一下，发现出现如下错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">javax.net.ssl.SSLException: Connection closed by peer</div></pre></td></tr></table></figure>
+<p>debug时的截图如下图所示：</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2017/09/28/fresco-used-httpurlconnection-support-https-image-loader.html#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/android/">android</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/fresco-HttpURLConnection/">fresco HttpURLConnection</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/2017/09/28/fresco-used-httpurlconnection-support-https-image-loader.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2017/09/28/fresco-used-httpurlconnection-support-https-image-loader.html" data-count-type="comments">&nbsp;</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2017/09/22/config-4-sublime-markdownedit.html" title="sublime使用markdownEdit设置" itemprop="url">sublime使用markdownEdit设置</a>
   </h1>
   <p class="article-author">By
@@ -1237,139 +1367,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/12/11/android-single-top-activity-lifecycle-changed-by-android-7.html" title="android Activity设置为SingleTop值时的生命周期在7.0以上系统中的变化" itemprop="url">android Activity设置为SingleTop值时的生命周期在7.0以上系统中的变化</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
-		
-  <p class="article-time">
-    <time datetime="2016-12-11T04:13:15.000Z" itemprop="datePublished"> 发表于 2016-12-11</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <blockquote>
-<ul>
-<li>前几天在解决应用中一个问题，现象是在nexus 7.0以上系统的手机上创建群组会话时，消息发送超时。然后测试了一上，发现是必现的，而4.4系统的手机上却一切正常，于是一路分析了别人写的代码。最后找到原因并解决，于是就有了本文。</li>
-</ul>
-</blockquote>
-<p>最后找到原因是在Android系统7.0以上，当把Activity的<code>launchMode</code>属性值设置为<code>singleTop</code>时，Activity的生命周期与以前的系统版本对应的生命周期有所不同。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/12/11/android-single-top-activity-lifecycle-changed-by-android-7.html#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/android/">android</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/singleTop-android7-0/">singleTop android7.0</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/2016/12/11/android-single-top-activity-lifecycle-changed-by-android-7.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2016/12/11/android-single-top-activity-lifecycle-changed-by-android-7.html" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/09/17/share-bus-line-custom-view.html" title="公交站点线路自定义View分享" itemprop="url">公交站点线路自定义View分享</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
-		
-  <p class="article-time">
-    <time datetime="2016-09-17T04:23:19.000Z" itemprop="datePublished"> 发表于 2016-09-17</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>分享一个仿《车来了》公交线路提示的自定义组件。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/09/17/share-bus-line-custom-view.html#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/android-view/">android view</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/自定义View-公交线路/">自定义View 公交线路</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/2016/09/17/share-bus-line-custom-view.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2016/09/17/share-bus-line-custom-view.html" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next<span></span></a>
@@ -1392,7 +1389,7 @@
 		  
 		
 		  
-			<li><a href="/categories/android/" title="android">android<sup>14</sup></a></li>
+			<li><a href="/categories/android/" title="android">android<sup>16</sup></a></li>
 		  
 		
 		  
@@ -1465,19 +1462,15 @@
 			
 		
 			
-				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/android死锁分析/" title="android死锁分析">android死锁分析<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
+				<li><a href="/tags/fresco-HttpURLConnection/" title="fresco HttpURLConnection">fresco HttpURLConnection<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android死锁分析/" title="android死锁分析">android死锁分析<sup>1</sup></a></li>
 			
 		
 			
@@ -1489,7 +1482,7 @@
 			
 		
 			
-				<li><a href="/tags/INSTALL-FAILED-TEST-ONLY/" title="INSTALL_FAILED_TEST_ONLY">INSTALL_FAILED_TEST_ONLY<sup>1</sup></a></li>
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
 			
 		
 			
@@ -1505,6 +1498,10 @@
 			
 		
 			
+				<li><a href="/tags/INSTALL-FAILED-TEST-ONLY/" title="INSTALL_FAILED_TEST_ONLY">INSTALL_FAILED_TEST_ONLY<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/gradle配置/" title="gradle配置">gradle配置<sup>1</sup></a></li>
 			
 		
@@ -1517,6 +1514,10 @@
 			
 		
 			
+				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/andfix/" title="andfix">andfix<sup>1</sup></a></li>
 			
 		
@@ -1525,19 +1526,15 @@
 			
 		
 			
-				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/view-create-detail/" title="view create detail">view create detail<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/markdown设置-sublime/" title="markdown设置 sublime">markdown设置 sublime<sup>1</sup></a></li>
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
 			
 		
 		</ul>
