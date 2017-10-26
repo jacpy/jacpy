@@ -1,0 +1,626 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>golang中append函数和copy函数操作slice的不同用法 | jacpy&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="jacpy">
+    
+
+    
+    <meta name="description" content="前几天使用golang时，遇到一个很奇怪的问题，原因是对golang不熟悉，所以记录一下。
+在使用append()函数给slice中添加元素时，slice的初始大小可以为0，也就是len可以为0。每次向slice中append的时候，如果容量cap不够，会自动对slice进行扩容，也就是改变slice的cap的大小。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="golang中append函数和copy函数操作slice的不同用法">
+<meta property="og:url" content="http://www.jacpy.com/2017/10/26/golang-difference-between-append-and-copy-function.html">
+<meta property="og:site_name" content="jacpy's blog">
+<meta property="og:description" content="前几天使用golang时，遇到一个很奇怪的问题，原因是对golang不熟悉，所以记录一下。
+在使用append()函数给slice中添加元素时，slice的初始大小可以为0，也就是len可以为0。每次向slice中append的时候，如果容量cap不够，会自动对slice进行扩容，也就是改变slice的cap的大小。">
+<meta property="og:updated_time" content="2017-10-26T15:39:31.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="golang中append函数和copy函数操作slice的不同用法">
+<meta name="twitter:description" content="前几天使用golang时，遇到一个很奇怪的问题，原因是对golang不熟悉，所以记录一下。
+在使用append()函数给slice中添加元素时，slice的初始大小可以为0，也就是len可以为0。每次向slice中append的时候，如果容量cap不够，会自动对slice进行扩容，也就是改变slice的cap的大小。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="jacpy&#39;s blog" title="jacpy&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="jacpy&#39;s blog">jacpy&#39;s blog</a></h1>
+				<h2 class="blog-motto">enjoy mobile development</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated" style="margin-top: 0px;">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:www.jacpy.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/10/26/golang-difference-between-append-and-copy-function.html" title="golang中append函数和copy函数操作slice的不同用法" itemprop="url">golang中append函数和copy函数操作slice的不同用法</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
+		
+  <p class="article-time">
+    <time datetime="2017-10-26T04:50:00.000Z" itemprop="datePublished"> 发表于 2017-10-26</time>
+    
+  </p>
+</header>
+
+
+
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			
+		
+		</div>
+		
+		<p>前几天使用<code>golang</code>时，遇到一个很奇怪的问题，原因是对<code>golang</code>不熟悉，所以记录一下。</p>
+<p>在使用<code>append()</code>函数给<code>slice</code>中添加元素时，<code>slice</code>的初始大小可以为0，也就是<code>len</code>可以为0。每次向<code>slice</code>中<code>append</code>的时候，如果容量<code>cap</code>不够，会自动对<code>slice</code>进行扩容，也就是改变<code>slice</code>的<code>cap</code>的大小。</p>
+<a id="more"></a>
+<p>而在使用<code>copy()</code>函数操作<code>slice</code>时，如果<code>slice</code>的大小为0时，会不添加任何元素，不会自动增加<code>slice</code>的容量大小。这里要注意。</p>
+<p>下面是从golang官网源码库中看到的实现代码，如下所示：</p>
+<blockquote>
+<ul>
+<li>runtime/slice.go</li>
+</ul>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">slicecopy</span><span class="params">(to, fm slice, width <span class="keyword">uintptr</span>)</span> <span class="title">int</span></span> &#123;</div><div class="line">    <span class="keyword">if</span> fm.<span class="built_in">len</span> == <span class="number">0</span> || to.<span class="built_in">len</span> == <span class="number">0</span> &#123;</div><div class="line">        <span class="keyword">return</span> <span class="number">0</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    n := fm.<span class="built_in">len</span></div><div class="line">    <span class="keyword">if</span> to.<span class="built_in">len</span> &lt; n &#123;</div><div class="line">        n = to.<span class="built_in">len</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> width == <span class="number">0</span> &#123;</div><div class="line">        <span class="keyword">return</span> n</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> raceenabled &#123;</div><div class="line">        callerpc := getcallerpc(unsafe.Pointer(&amp;to))</div><div class="line">        pc := funcPC(slicecopy)</div><div class="line">        racewriterangepc(to.array, <span class="keyword">uintptr</span>(n*<span class="keyword">int</span>(width)), callerpc, pc)</div><div class="line">        racereadrangepc(fm.array, <span class="keyword">uintptr</span>(n*<span class="keyword">int</span>(width)), callerpc, pc)</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> msanenabled &#123;</div><div class="line">        msanwrite(to.array, <span class="keyword">uintptr</span>(n*<span class="keyword">int</span>(width)))</div><div class="line">        msanread(fm.array, <span class="keyword">uintptr</span>(n*<span class="keyword">int</span>(width)))</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    size := <span class="keyword">uintptr</span>(n) * width</div><div class="line">    <span class="keyword">if</span> size == <span class="number">1</span> &#123; <span class="comment">// common case worth about 2x to do here</span></div><div class="line">        <span class="comment">// <span class="doctag">TODO:</span> is this still worth it with new memmove impl?</span></div><div class="line">        *(*<span class="keyword">byte</span>)(to.array) = *(*<span class="keyword">byte</span>)(fm.array) <span class="comment">// known to be a byte pointer</span></div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        memmove(to.array, fm.array, size)</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> n</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>从上面的代码可以看出来，如果<code>slice</code>的<code>len</code>值为0，则直接<code>return</code>，不会进行复制操作。</p>
+<p>下面是示例代码，验证一下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"regexp"</span></div><div class="line">    <span class="string">"log"</span></div><div class="line">    <span class="string">"unsafe"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span>  &#123;</div><div class="line">    log.SetFlags(log.Lshortfile|log.LstdFlags)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">sliceTest</span><span class="params">(list []<span class="keyword">int</span>)</span></span>  &#123;</div><div class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(list) &gt; <span class="number">0</span> &#123;</div><div class="line">        log.Println(<span class="string">"func pos 0:"</span>, &amp;list[<span class="number">0</span>])</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    log.Println(<span class="string">"func pointer:"</span>, unsafe.Pointer(&amp;list))</div><div class="line">    log.Println(<span class="string">"------"</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">copyTest</span><span class="params">()</span></span>  &#123;</div><div class="line">    list := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">0</span>)</div><div class="line">    log.Println(<span class="string">"pointer:"</span>, unsafe.Pointer(&amp;list))</div><div class="line">    sliceTest(list)</div><div class="line">    log.Println(<span class="string">"++++++++++++++"</span>)</div><div class="line"></div><div class="line">    list = <span class="built_in">append</span>(list, <span class="number">1</span>)</div><div class="line">    log.Println(<span class="string">"pos 0:"</span>, &amp;list[<span class="number">0</span>])</div><div class="line">    log.Println(<span class="string">"pointer:"</span>, unsafe.Pointer(&amp;list))</div><div class="line">    sliceTest(list)</div><div class="line">    log.Println(<span class="string">"++++++++++++++"</span>)</div><div class="line"></div><div class="line">    list = <span class="built_in">append</span>(list, <span class="number">2</span>)</div><div class="line">    log.Println(<span class="string">"pos 0:"</span>, &amp;list[<span class="number">0</span>])</div><div class="line">    log.Println(<span class="string">"pointer:"</span>, unsafe.Pointer(&amp;list))</div><div class="line">    sliceTest(list)</div><div class="line">    log.Println(<span class="string">"++++++++++++++"</span>)</div><div class="line"></div><div class="line">    copy1 := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">0</span>)</div><div class="line">    <span class="built_in">copy</span>(copy1, list)</div><div class="line">    log.Println(<span class="string">"copy1:"</span>, copy1)</div><div class="line"></div><div class="line">    copy2 := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">2</span>)</div><div class="line">    <span class="built_in">copy</span>(copy2, list)</div><div class="line">    log.Println(<span class="string">"copy2:"</span>, copy2)</div><div class="line"></div><div class="line">    copy3 := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">0</span>, <span class="number">2</span>)</div><div class="line">    <span class="built_in">copy</span>(copy3, list)</div><div class="line">    log.Println(<span class="string">"copy3:"</span>, copy3)</div><div class="line">    log.Println()</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    copyTest()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>输出：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">pointer: 0xc42000a060</div><div class="line">func pointer: 0xc42000a080</div><div class="line">------</div><div class="line">++++++++++++++</div><div class="line">pos 0: 0xc4200160d0</div><div class="line">pointer: 0xc42000a060</div><div class="line">func pos 0: 0xc4200160d0</div><div class="line">func pointer: 0xc42000a0a0</div><div class="line">------</div><div class="line">++++++++++++++</div><div class="line">pos 0: 0xc4200160f0</div><div class="line">pointer: 0xc42000a060</div><div class="line">func pos 0: 0xc4200160f0</div><div class="line">func pointer: 0xc42000a0c0</div><div class="line">------</div><div class="line">++++++++++++++</div><div class="line">copy1: []</div><div class="line">copy2: [1 2]</div><div class="line">copy3: []</div></pre></td></tr></table></figure></p>
+<p>从上面的日志可以看出来，copy1和copy3都是空，没有进行复制操作；每次进行扩容的时候，<code>pos 0:</code>的地址都会发生变化。另外还可以看出来，当把<code>slice</code>传给一个函数时，对<code>slice</code>的结构体发生的值传递，而<code>slice</code>中指向数据内容的地址没有变，即上面<code>pos 0:</code>和<code>func pos 0:</code>输出的地址是一致。</p>
+<p>同样可以在<code>runtime/slice.go</code>源码中的<code>makeslice()</code>函数中可以看到创建的<code>slice</code>结构体，如下所示：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> slice <span class="keyword">struct</span> &#123;</div><div class="line">    array unsafe.Pointer</div><div class="line">    <span class="built_in">len</span>   <span class="keyword">int</span></div><div class="line">    <span class="built_in">cap</span>   <span class="keyword">int</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>也就是说当把<code>slice</code>直接传给函数时，会对这个<code>slice</code>结构体内容进行复制，而<code>array</code>的地址不会变，始终指向数组内容的首元素地址。</p>
+<p>另外看这个<code>runtime/slice.go</code>的源码时，还发现一个有趣的细节，代码如下所示：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">growslice</span><span class="params">(et *_type, old slice, <span class="built_in">cap</span> <span class="keyword">int</span>)</span> <span class="title">slice</span></span> &#123;</div><div class="line">    <span class="comment">// ...</span></div><div class="line"></div><div class="line">    newcap := old.<span class="built_in">cap</span></div><div class="line">    doublecap := newcap + newcap</div><div class="line">    <span class="keyword">if</span> <span class="built_in">cap</span> &gt; doublecap &#123;</div><div class="line">        newcap = <span class="built_in">cap</span></div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">if</span> old.<span class="built_in">len</span> &lt; <span class="number">1024</span> &#123;</div><div class="line">            newcap = doublecap</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="keyword">for</span> newcap &lt; <span class="built_in">cap</span> &#123;</div><div class="line">                newcap += newcap / <span class="number">4</span></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// ...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在<code>slice</code>进行扩容的时候，如果其容量小于<code>1024</code>，则容量增加一倍；否则容量以<code>1.25</code>倍的数量增加。</p>
+<p>以上golang源码是基于1.9.1版本。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/go/">go</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/append-copy-slice/">append copy slice</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.jacpy.com/2017/10/26/golang-difference-between-append-and-copy-function.html" data-title="golang中append函数和copy函数操作slice的不同用法 | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2017/09/28/okhttp-used-attentions.html"  title="Okhttp使用注意事项">
+ <strong>下一篇：</strong><br/> 
+ <span>Okhttp使用注意事项
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2017/10/26/golang-difference-between-append-and-copy-function.html" data-title="golang中append函数和copy函数操作slice的不同用法" data-url="http://www.jacpy.com/2017/10/26/golang-difference-between-append-and-copy-function.html"></div>
+</section>
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/andfix/" title="andfix">andfix<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/" title="android">android<sup>16</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android-push/" title="android push">android push<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android-studio/" title="android studio">android studio<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android-view/" title="android view">android view<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/dvm/" title="dvm">dvm<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/github/" title="github">github<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/go/" title="go">go<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/gradle/" title="gradle">gradle<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/pay/" title="pay">pay<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/sqlite/" title="sqlite">sqlite<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/sublime/" title="sublime">sublime<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/view/" title="view">view<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/windows/" title="windows">windows<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/SQLite性能优化/" title="SQLite性能优化">SQLite性能优化<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/markdown设置-sublime/" title="markdown设置 sublime">markdown设置 sublime<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android死锁分析/" title="android死锁分析">android死锁分析<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Device-or-resource-busy/" title="Device or resource busy">Device or resource busy<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/EXACTLY-AT-MOST-UNSPECIFIED/" title="EXACTLY AT_MOST UNSPECIFIED">EXACTLY AT_MOST UNSPECIFIED<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gradle配置/" title="gradle配置">gradle配置<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/INSTALL-FAILED-TEST-ONLY/" title="INSTALL_FAILED_TEST_ONLY">INSTALL_FAILED_TEST_ONLY<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/singleTop-android7-0/" title="singleTop android7.0">singleTop android7.0<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gradle打jar包-混淆/" title="gradle打jar包 混淆">gradle打jar包 混淆<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/view-create-detail/" title="view create detail">view create detail<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.jacpy.com" target="_blank" title="jacpy">jacpy</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Jacpy, welcome to my blog. <br/>
+			This is my blog, believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/jacpy" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:jacpy.may@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		
+		<a href="/about" target="_blank" title="jacpy">jacpy</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"maylian7700"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254674300'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s23.cnzz.com/z_stat.php%3Fid%3D1254674300' type='text/javascript'%3E%3C/script%3E"));</script>
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
