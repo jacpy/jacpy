@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jacpy.com/"/>
-  <updated>2017-10-27T15:52:10.000Z</updated>
+  <updated>2017-11-21T05:26:05.738Z</updated>
   <id>http://www.jacpy.com/</id>
   
   <author>
@@ -14,6 +14,47 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>boost编译和CLion配置</title>
+    <link href="http://www.jacpy.com/2017/11/11/boost-compile-and-clion-config.html"/>
+    <id>http://www.jacpy.com/2017/11/11/boost-compile-and-clion-config.html</id>
+    <published>2017-11-11T14:54:44.000Z</published>
+    <updated>2017-11-21T05:26:05.738Z</updated>
+    
+    <content type="html">&lt;p&gt;前几天编译&lt;code&gt;boost&lt;/code&gt;库&lt;code&gt;1.65.1&lt;/code&gt;版本，遇到一些问题，主要是与环境和版本有关系，如果不知道这些细节，很难找出问题。这里记录一下。&lt;/p&gt;
+&lt;h2 id=&quot;一、boost库编译&quot;&gt;&lt;a href=&quot;#一、boost库编译&quot; class=&quot;headerlink&quot; title=&quot;一、boost库编译&quot;&gt;&lt;/a&gt;一、boost库编译&lt;/h2&gt;&lt;p&gt;在windows下编译&lt;code&gt;boost&lt;/code&gt;库可以参照这里：&lt;a href=&quot;https://gist.github.com/sim642/29caef3cc8afaa273ce6&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://gist.github.com/sim642/29caef3cc8afaa273ce6&lt;/a&gt; ，整个过程配置都可以按照上面来，但是要注意下最新版本的&lt;code&gt;MinGW&lt;/code&gt;，同时还要注意是64位的还是32位的。&lt;/p&gt;
+&lt;p&gt;因使用的&lt;code&gt;boost&lt;/code&gt;版本是目前最新版本的，所以要求内置&lt;code&gt;gcc&lt;/code&gt;编译器的&lt;code&gt;MinGW&lt;/code&gt;也要是最新版本的，否则在执行&lt;code&gt;b2&lt;/code&gt;命令设置&lt;code&gt;toolset=gcc&lt;/code&gt;时，会提示找不到&lt;code&gt;gcc&lt;/code&gt;。另外还要注意系统是32位还是64位，对应的gcc也要相同的版本。&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;如果中间编译遇到如下问题：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;For MinGW make to work correctly sh.exe must NOT be in your path.&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;解决办法是，先保证&lt;code&gt;MinGW&lt;/code&gt;的环境变量配置正确，然后关闭命令行，重新执行编译命令。如果还提示这个错误，找到环境变量中&lt;code&gt;Git&lt;/code&gt;的bin目录，把这个环境配置删除。原因是&lt;code&gt;Git&lt;/code&gt;配置的环境变量中的&lt;code&gt;sh.exe&lt;/code&gt;与&lt;code&gt;MinGW&lt;/code&gt;中的&lt;code&gt;sh.exe&lt;/code&gt;冲突，去掉&lt;code&gt;Git&lt;/code&gt;的即可。&lt;/p&gt;
+&lt;h2 id=&quot;二、CLion配置&quot;&gt;&lt;a href=&quot;#二、CLion配置&quot; class=&quot;headerlink&quot; title=&quot;二、CLion配置&quot;&gt;&lt;/a&gt;二、CLion配置&lt;/h2&gt;&lt;p&gt;因为&lt;code&gt;CLion&lt;/code&gt;使用的是&lt;code&gt;CMake&lt;/code&gt;编译，所以需要配置&lt;code&gt;CMakeList.txt&lt;/code&gt;文件。使用目前最新版本&lt;code&gt;2017.2&lt;/code&gt;版本时，默认使用的&lt;code&gt;CMake&lt;/code&gt;版本是&lt;code&gt;3.8&lt;/code&gt;，而&lt;code&gt;CMake&lt;/code&gt;的官方网站上最新的版本已经是&lt;code&gt;3.10&lt;/code&gt;了。这段文字一直在强调一个–&lt;code&gt;版本&lt;/code&gt;，所以这里的版本很重要，原因是如果配置都OK，会提示下面的错误：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;Imported targets not available for Boost version&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;这个时候就要考虑换&lt;code&gt;CMake&lt;/code&gt;版本了，下面是在&lt;code&gt;stackoverflow&lt;/code&gt;上面找到的&lt;code&gt;boost&lt;/code&gt;库与&lt;code&gt;CMake&lt;/code&gt;版本的对应关系：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;Boost 1.63 requires CMake 3.7 or newer&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;Boost 1.64 requires CMake 3.8 or newer&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;Boost 1.65 and 1.65.1 require CMake 3.9.3 or newer&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;参见这里：&lt;a href=&quot;https://stackoverflow.com/questions/42123509/cmake-finds-boost-but-the-imported-targets-not-available-for-boost-version&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://stackoverflow.com/questions/42123509/cmake-finds-boost-but-the-imported-targets-not-available-for-boost-version&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;所以需要修改&lt;code&gt;CLion&lt;/code&gt;的默认&lt;code&gt;CMake&lt;/code&gt;的版本，从&lt;code&gt;CMake&lt;/code&gt;的官网上下载最新的&lt;code&gt;CMake&lt;/code&gt;，然后安装，然后在设置的&lt;code&gt;Build, Excutation, Deployment&lt;/code&gt;中的第一个&lt;code&gt;ToolChains&lt;/code&gt;中设置&lt;code&gt;CMake&lt;/code&gt;的版本。但是，但是使用&lt;code&gt;CMake executable&lt;/code&gt;的&lt;code&gt;Custom&lt;/code&gt;选择最新版本的&lt;code&gt;CMake&lt;/code&gt;路径无效。下面的&lt;code&gt;CMake&lt;/code&gt;不提示版本，显示无效。目测是&lt;code&gt;CLion&lt;/code&gt;的bug，解决办法是找到&lt;code&gt;CLion&lt;/code&gt;的安装目录，然后将&lt;code&gt;cmake&lt;/code&gt;目录下面的内容复制一份备份，然后把最新&lt;code&gt;CMake&lt;/code&gt;安装目录下面的对应内容替换&lt;code&gt;CLion&lt;/code&gt;安装目录下面的&lt;code&gt;cmake&lt;/code&gt;里面的内容。然后再切回&lt;code&gt;Bundled Cmake&lt;/code&gt;就可以使用最新版本了。&lt;/p&gt;
+&lt;p&gt;下面附一份&lt;code&gt;CMakeList.txt&lt;/code&gt;的配置：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;15&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;16&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;17&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;18&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;19&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;20&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;21&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;22&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;23&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;24&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;25&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;26&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;27&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;28&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;29&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;30&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;31&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;32&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;cmake_minimum_required(VERSION 3.9)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;project(cppDemo)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;set(CMAKE_CXX_FLAGS &amp;quot;$&amp;#123;CMAKE_CXX_FLAGS&amp;#125; -std=c++14 -static-libgcc -static-libstdc++&amp;quot;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;set(SOURCE_FILES main.cpp digital_converter.h digital_converter.cpp)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;add_executable(cppDemo $&amp;#123;SOURCE_FILES&amp;#125;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;if (WIN32)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    set(BOOST_ROOT &amp;quot;D:/programs/boost_1_65_1/boost&amp;quot;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    set(Boost_INCLUDE_DIR, $&amp;#123;BOOST_ROOT&amp;#125;/include/boost-1_65_1)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    set(BOOST_LIBRARYDIR $&amp;#123;BOOST_ROOT&amp;#125;/lib)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    set(Boost_USE_STATIC_LIBS ON)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    set(Boost_MULTITHREADED ON)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    set(Boost_USE_STATIC_RUNTIME OFF)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    set(Boost_VERSION 106501)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    set(Boost_COMPILER &amp;quot;-mgw72&amp;quot;) # 注意这里是编译后的boost库中包含的字符串，72是MinGW的版本号，根据自己的版本修改，看下自己编译出来的库的名称就知道了&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    MESSAGE(STATUS &amp;quot;boost root dir: &amp;quot; : $&amp;#123;BOOST_LIBRARYDIR&amp;#125;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    find_package(Boost 1.65.1 REQUIRED COMPONENTS&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;            filesystem) # 注意windows下面编译出来的boost库名称中间都有-mgw72，所以需要在前面指定，不然这里提示找不到filesystem&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    add_definitions($&amp;#123;Boost_LIB_DIAGNOSTIC_DEFINITIONS&amp;#125;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    include_directories($&amp;#123;Boost_INCLUDE_DIR&amp;#125;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    target_link_libraries(cppDemo $&amp;#123;Boost_LIBRARIES&amp;#125;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;endif (WIN32)&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;看来C++使用&lt;code&gt;CLion&lt;/code&gt;工具的人比较少，估计都是在windows下面用&lt;code&gt;VC&lt;/code&gt;了。但感觉&lt;code&gt;VS&lt;/code&gt;太大了，不想装，所以选择&lt;code&gt;CLion&lt;/code&gt;。用这些小众的工具，遇到问题都不好查资料，需要自己一点点的摸索，以后还不知道会遇到什么问题。&lt;/p&gt;
+&lt;p&gt;以上。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;前几天编译&lt;code&gt;boost&lt;/code&gt;库&lt;code&gt;1.65.1&lt;/code&gt;版本，遇到一些问题，主要是与环境和版本有关系，如果不知道这些细节，很难找出问题。这里记录一下。&lt;/p&gt;
+&lt;h2 id=&quot;一、boost库编译&quot;&gt;&lt;a href=&quot;#一、boost库编译&quot; class=&quot;headerlink&quot; title=&quot;一、boost库编译&quot;&gt;&lt;/a&gt;一、boost库编译&lt;/h2&gt;&lt;p&gt;在windows下编译&lt;code&gt;boost&lt;/code&gt;库可以参照这里：&lt;a href=&quot;https://gist.github.com/sim642/29caef3cc8afaa273ce6&quot;&gt;https://gist.github.com/sim642/29caef3cc8afaa273ce6&lt;/a&gt; ，整个过程配置都可以按照上面来，但是要注意下最新版本的&lt;code&gt;MinGW&lt;/code&gt;，同时还要注意是64位的还是32位的。&lt;/p&gt;
+&lt;p&gt;因使用的&lt;code&gt;boost&lt;/code&gt;版本是目前最新版本的，所以要求内置&lt;code&gt;gcc&lt;/code&gt;编译器的&lt;code&gt;MinGW&lt;/code&gt;也要是最新版本的，否则在执行&lt;code&gt;b2&lt;/code&gt;命令设置&lt;code&gt;toolset=gcc&lt;/code&gt;时，会提示找不到&lt;code&gt;gcc&lt;/code&gt;。另外还要注意系统是32位还是64位，对应的gcc也要相同的版本。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Cpp" scheme="http://www.jacpy.com/categories/Cpp/"/>
+    
+    
+      <category term="boost clion" scheme="http://www.jacpy.com/tags/boost-clion/"/>
+    
+  </entry>
   
   <entry>
     <title>android InvocationTargetException异常浅析</title>
@@ -751,44 +792,6 @@
     
     
       <category term="推送" scheme="http://www.jacpy.com/tags/%E6%8E%A8%E9%80%81/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>android点击通知栏通知启动Activity问题</title>
-    <link href="http://www.jacpy.com/2016/12/28/android-notification-launch-activity.html"/>
-    <id>http://www.jacpy.com/2016/12/28/android-notification-launch-activity.html</id>
-    <published>2016-12-28T08:36:40.000Z</published>
-    <updated>2017-01-19T09:36:41.000Z</updated>
-    
-    <content type="html">&lt;p&gt;这几天遇到一个很奇葩的问题，终于解决了，记录一下。&lt;/p&gt;
-&lt;p&gt;问题场景是：用小米手机使用小米推送一条消息，然后点击通知栏中的消息启动应用，然后进入会话的Activity。应用启动后，如果当前界面不是会话界面，那么新消息会在通知栏显示消息提醒，然后点击会话消息后却进不了会话的Activity，即点击了通知栏通知后，系统都没有启动指定Activity的意思，没有看到系统启动Activity的Log，到是会看到系统处理这个Activity的影子。&lt;/p&gt;
-&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;p&gt;这个指定的Activity不是会话的Activity，而是在AndroidManifest.xml文件中指定&lt;code&gt;android.intent.category.LAUNCHER&lt;/code&gt;的Activity A。也就是说有会话消息都是先从这个A开始，然后把数据往后面的Activity传。&lt;/p&gt;
-&lt;p&gt;这里显示通知有两种方式，一种是由手机系统在通知栏弹出，比如小米手机上使用小米推送，华为手机上使用华为推送，另外一种是由应用的远程进程弹出。&lt;/p&gt;
-&lt;p&gt;启动应用的第一个Activity A也有两种方式，一种是直接通过new来构造一个Intent，然后传入Activity A的class；另外一种是通过&lt;code&gt;context.getPackageManager().getLaunchIntentForPackage(context.getPackageName())&lt;/code&gt;来获取启动的Activity A的Intent。然后调用PendingIntent.getActivity()方法，将得到的intent传入。&lt;/p&gt;
-&lt;p&gt;那么问题来了，如果是点击系统弹出的通知栏或者远程进程弹出的通知栏，如果只是使用其中一种启动方式启动应用，那么在应用启动后，点击通知栏中由后台远程进程弹出的新消息通知，这个时候就不能进入会话的Activity。从系统的日志来看，没有启动Activity，只是对Activity做了处理。&lt;/p&gt;
-&lt;p&gt;可能有人会想到是不是要加一个&lt;code&gt;Intent.FLAG_ACTIVITY_NEW_TASK&lt;/code&gt;标识，因为在&lt;code&gt;getLaunchIntentForPackage()&lt;/code&gt;方法中加了这个标识。&lt;/p&gt;
-&lt;p&gt;最后测试发现，只要应用没有被启动，不管是点击系统弹出的通知栏还是远程进程弹出的通知栏，如果再收到新消息通知，再点击通知栏，就能进入会话Activity了。那只要判断应用中是否有Activity被启动就OK了，貌似问题可以解决了。&lt;/p&gt;
-&lt;p&gt;于是用了下面的逻辑来判断是否有前台Activity在运行。&lt;/p&gt;
-&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;/** * 判断UI进程是否正在运行 * &lt;span class=&quot;doctag&quot;&gt;@return&lt;/span&gt; 返回true表示正在运行，否则没有运行 */&lt;/span&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;isForegroundRunning&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;    ActivityManager am = (ActivityManager) EimCloud.getContext().getSystemService(Context.ACTIVITY_SERVICE);    List&amp;lt;ActivityManager.RunningAppProcessInfo&amp;gt; list = am.getRunningAppProcesses();    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (list != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) &amp;#123;        &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (ActivityManager.RunningAppProcessInfo info : list) &amp;#123;            &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (info.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND						&amp;amp;&amp;amp; EimCloud.getContext().getPackageName().equals(info.processName)) &amp;#123;					&lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;            &amp;#125;        &amp;#125;    &amp;#125;	&lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;但是上面的方法在小米手机上凑效了，但在华为手机上还是有问题，即使同样的场景。华为又坑爹了！&lt;/p&gt;
-&lt;p&gt;于是开始从上面的&lt;code&gt;ActivityManager.RunningAppProcessInfo&lt;/code&gt;类中的&lt;code&gt;importance&lt;/code&gt;变量的状态入手，然后测试各种场景可能出现的变量值，结果发现效果不尽人意，有些场景问题依旧。&lt;/p&gt;
-&lt;p&gt;最后，又换种思路：不从Activity A开始启动应用，换个Activity B，也就是在调用&lt;code&gt;PendingIntent.getActivity()&lt;/code&gt;方法传入Intent对象使用B的class。启动B会发现应用没有被初始化，则跳转到A执行初始化，然后再走正常流程。&lt;/p&gt;
-&lt;p&gt;再针对各种场景以及各种机型测试，发现问题解决。从上面可以看出，虽然不懂背后原理，但解决问题的思路一定要广，特别是在急着发版本的时候，不要在一棵树上吊死。&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;这几天遇到一个很奇葩的问题，终于解决了，记录一下。&lt;/p&gt;
-&lt;p&gt;问题场景是：用小米手机使用小米推送一条消息，然后点击通知栏中的消息启动应用，然后进入会话的Activity。应用启动后，如果当前界面不是会话界面，那么新消息会在通知栏显示消息提醒，然后点击会话消息后却进不了会话的Activity，即点击了通知栏通知后，系统都没有启动指定Activity的意思，没有看到系统启动Activity的Log，到是会看到系统处理这个Activity的影子。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="android push" scheme="http://www.jacpy.com/categories/android-push/"/>
-    
-    
-      <category term="notification" scheme="http://www.jacpy.com/tags/notification/"/>
     
   </entry>
   

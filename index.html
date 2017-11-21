@@ -78,6 +78,72 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2017/11/11/boost-compile-and-clion-config.html" title="boost编译和CLion配置" itemprop="url">boost编译和CLion配置</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
+		
+  <p class="article-time">
+    <time datetime="2017-11-11T14:54:44.000Z" itemprop="datePublished"> 发表于 2017-11-11</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>前几天编译<code>boost</code>库<code>1.65.1</code>版本，遇到一些问题，主要是与环境和版本有关系，如果不知道这些细节，很难找出问题。这里记录一下。</p>
+<h2 id="一、boost库编译"><a href="#一、boost库编译" class="headerlink" title="一、boost库编译"></a>一、boost库编译</h2><p>在windows下编译<code>boost</code>库可以参照这里：<a href="https://gist.github.com/sim642/29caef3cc8afaa273ce6">https://gist.github.com/sim642/29caef3cc8afaa273ce6</a> ，整个过程配置都可以按照上面来，但是要注意下最新版本的<code>MinGW</code>，同时还要注意是64位的还是32位的。</p>
+<p>因使用的<code>boost</code>版本是目前最新版本的，所以要求内置<code>gcc</code>编译器的<code>MinGW</code>也要是最新版本的，否则在执行<code>b2</code>命令设置<code>toolset=gcc</code>时，会提示找不到<code>gcc</code>。另外还要注意系统是32位还是64位，对应的gcc也要相同的版本。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2017/11/11/boost-compile-and-clion-config.html#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Cpp/">Cpp</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/boost-clion/">boost clion</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/2017/11/11/boost-compile-and-clion-config.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2017/11/11/boost-compile-and-clion-config.html" data-count-type="comments">&nbsp;</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2017/10/27/android-InvocationTargetException-real.html" title="android InvocationTargetException异常浅析" itemprop="url">android InvocationTargetException异常浅析</a>
   </h1>
   <p class="article-author">By
@@ -1298,71 +1364,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/12/28/android-notification-launch-activity.html" title="android点击通知栏通知启动Activity问题" itemprop="url">android点击通知栏通知启动Activity问题</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
-		
-  <p class="article-time">
-    <time datetime="2016-12-28T08:36:40.000Z" itemprop="datePublished"> 发表于 2016-12-28</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>这几天遇到一个很奇葩的问题，终于解决了，记录一下。</p>
-<p>问题场景是：用小米手机使用小米推送一条消息，然后点击通知栏中的消息启动应用，然后进入会话的Activity。应用启动后，如果当前界面不是会话界面，那么新消息会在通知栏显示消息提醒，然后点击会话消息后却进不了会话的Activity，即点击了通知栏通知后，系统都没有启动指定Activity的意思，没有看到系统启动Activity的Log，到是会看到系统处理这个Activity的影子。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/12/28/android-notification-launch-activity.html#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/android-push/">android push</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/notification/">notification</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/2016/12/28/android-notification-launch-activity.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2016/12/28/android-notification-launch-activity.html" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next<span></span></a>
@@ -1379,6 +1380,10 @@
 <div class="categorieslist">
 	<p class="asidetitle">分类</p>
 		<ul>
+		
+		  
+			<li><a href="/categories/Cpp/" title="Cpp">Cpp<sup>1</sup></a></li>
+		  
 		
 		  
 			<li><a href="/categories/andfix/" title="andfix">andfix<sup>2</sup></a></li>
@@ -1458,7 +1463,7 @@
 			
 		
 			
-				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
 			
 		
 			
@@ -1470,15 +1475,7 @@
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/InvocationTargetException-ActivityNotFoundException-android-os-FileUriExposedException/" title="InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException">InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Device-or-resource-busy/" title="Device or resource busy">Device or resource busy<sup>1</sup></a></li>
 			
 		
 			
@@ -1486,7 +1483,15 @@
 			
 		
 			
+				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/EXACTLY-AT-MOST-UNSPECIFIED/" title="EXACTLY AT_MOST UNSPECIFIED">EXACTLY AT_MOST UNSPECIFIED<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Device-or-resource-busy/" title="Device or resource busy">Device or resource busy<sup>1</sup></a></li>
 			
 		
 			
@@ -1502,15 +1507,11 @@
 			
 		
 			
-				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/INSTALL-FAILED-TEST-ONLY/" title="INSTALL_FAILED_TEST_ONLY">INSTALL_FAILED_TEST_ONLY<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
 			
 		
 			
@@ -1518,11 +1519,11 @@
 			
 		
 			
-				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
+				<li><a href="/tags/andfix/" title="andfix">andfix<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/view-create-detail/" title="view create detail">view create detail<sup>1</sup></a></li>
+				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
 			
 		
 			
@@ -1530,7 +1531,11 @@
 			
 		
 			
-				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+				<li><a href="/tags/boost-clion/" title="boost clion">boost clion<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/view-create-detail/" title="view create detail">view create detail<sup>1</sup></a></li>
 			
 		
 		</ul>
