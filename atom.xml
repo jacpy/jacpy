@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jacpy.com/"/>
-  <updated>2018-02-28T05:34:24.842Z</updated>
+  <updated>2018-02-28T09:23:00.819Z</updated>
   <id>http://www.jacpy.com/</id>
   
   <author>
@@ -20,28 +20,28 @@
     <link href="http://www.jacpy.com/2018/02/28/android-camera-out-of-memory-solution.html"/>
     <id>http://www.jacpy.com/2018/02/28/android-camera-out-of-memory-solution.html</id>
     <published>2018-02-28T00:39:15.000Z</published>
-    <updated>2018-02-28T05:34:24.842Z</updated>
+    <updated>2018-02-28T09:23:00.819Z</updated>
     
-    <content type="html">&lt;p&gt;博客好长时间没有更新了，由于前段时间疯狂赶紧项目，有些问题没有来得及时整理，后面慢慢总结一下。&lt;/p&gt;
-&lt;p&gt;前段时间在优化相机扫描二维码时，遇到了一个内存溢出问题，内存被用完了，日志中出现&lt;code&gt;E/dalvikvm-heap: Out of memory on a 2366828-byte allocation&lt;/code&gt;错误提示，App也没有崩溃，只是相机不再输出拍摄到的内容。使用&lt;code&gt;Zxing&lt;/code&gt;做过二维码扫描的都知道，被扫描到的内容会不停的被处理，并识别出二维码内容，如果有。而此时内存被用完了的现象是相应的回调处理识别二维码内容的方法没有被调用。于是迅速展开排查。&lt;/p&gt;
+    <content type="html">&lt;p&gt;博客好长时间没有更新了，由于前段时间疯狂赶项目，有些问题没有来得及时整理，后面慢慢总结一下。&lt;/p&gt;
+&lt;p&gt;前段时间在优化相机扫描二维码时，遇到了一个内存溢出问题，内存被用完了，日志中出现&lt;code&gt;E/dalvikvm-heap: Out of memory on a 2366828-byte allocation&lt;/code&gt;错误提示，App也没有崩溃，只是相机不再输出拍摄到的内容。使用&lt;code&gt;Zxing&lt;/code&gt;做过二维码扫描的同学都知道，被扫描到的内容会不停的被处理，并识别出二维码内容，如果有。而此时内存被用完了的现象是：相应的回调处理识别二维码内容的方法没有被调用。于是展开了排查。&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
 &lt;p&gt;首先打开了ADM（Android Device Monitor），然后启动应用程序，选中当前App的进程，点击上面工具栏中的&lt;code&gt;Update Heap&lt;/code&gt;按钮，在右侧的&lt;code&gt;Heap&lt;/code&gt;Tab页中就可以看到当前App的内存使用情况。如下图所示：&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;/images/2018/02/memory_analysis_1.png&quot; alt=&quot;App内存分析&quot;&gt;&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;Update Heap&lt;/code&gt;按钮即为上图中标记为&lt;code&gt;1&lt;/code&gt;的位置。&lt;/p&gt;
 &lt;p&gt;从上图中可以看出，&lt;code&gt;byte[]&lt;/code&gt;对象占用内存较多，而内存一直增长的时候也就是这里的内存在增长。如图中标记为3的位置。&lt;code&gt;byte[]&lt;/code&gt;对象一般是Bitmap对象，这个要看内存中的&lt;code&gt;Depth&lt;/code&gt;。&lt;/p&gt;
-&lt;p&gt;当App被限制的内存快要被使用完时（一般手机都会对单个App的内存使用限制，当App内无法再分配内存时，就会出现OOM），如图中标记为2的位置，点击右边的&lt;code&gt;Dump HPROF file&lt;/code&gt;按钮，即可将内存信息保存为&lt;code&gt;hprof&lt;/code&gt;文件。&lt;/p&gt;
+&lt;p&gt;当App被限制的内存快要被使用完时（一般手机都会对单个App的内存使用限制，当App内无法再分配足够内存时，就会出现OOM），如图中标记为2的位置，点击右边的&lt;code&gt;Dump HPROF file&lt;/code&gt;按钮，即可将内存信息保存为&lt;code&gt;hprof&lt;/code&gt;文件。&lt;/p&gt;
 &lt;p&gt;再在&lt;code&gt;Android Studio&lt;/code&gt;中Open保存的hprof文件，如下图所示：&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;/images/2018/02/memory_analysis_2.png&quot; alt=&quot;App内存使用情况&quot;&gt;&lt;/p&gt;
-&lt;p&gt;在左侧点击&lt;code&gt;byte[]&lt;/code&gt;，可以在右侧所有的内存中的对象，发现&lt;code&gt;byte[1382400]&lt;/code&gt;对象比较多，每个占用内存空间1M多。看到这个对象就反应过来了，扫描处理的对象是一个byte数组，而且长度是1382400。于是想到是不是JNI中内存没有释放。&lt;/p&gt;
+&lt;p&gt;在左侧点击&lt;code&gt;byte[]&lt;/code&gt;行，可以在右侧看到对应的内存中的对象，发现&lt;code&gt;byte[1382400]&lt;/code&gt;对象比较多，每个占用内存空间1M多。看到这个对象就反应过来了，扫描处理的对象是一个byte数组，而且长度是1382400。于是想到是不是JNI中内存没有释放。&lt;/p&gt;
 &lt;p&gt;到C++代码中排查了一下，byte数组从java层传到C++层时，使用&lt;code&gt;GetByteArrayElements&lt;/code&gt;获取操作的数组后，并没有调用&lt;code&gt;ReleaseByteArrayElements&lt;/code&gt;释放。修改代码如下所示：&lt;/p&gt;
-&lt;figure class=&quot;highlight cpp&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;JNIEXPORT jbyteArray JNICALL &lt;span class=&quot;title&quot;&gt;Java_zxing_utils_ImageUtils_demo&lt;/span&gt;  &lt;span class=&quot;params&quot;&gt;(JNIEnv *env, jclass jcls, jbyteArray jba, jint jlength)&lt;/span&gt; &lt;/span&gt;&amp;#123;   jbyte* raw = env-&amp;gt;GetByteArrayElements(jba, &lt;span class=&quot;literal&quot;&gt;NULL&lt;/span&gt;);	&lt;span class=&quot;comment&quot;&gt;// ...&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	&lt;span class=&quot;comment&quot;&gt;// 增加释放内存代码&lt;/span&gt;   env-&amp;gt;ReleaseByteArrayElements(jba, raw, &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight cpp&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;JNIEXPORT jbyteArray JNICALL &lt;span class=&quot;title&quot;&gt;Java_zxing_utils_ImageUtils_demo&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;params&quot;&gt;(JNIEnv *env, jclass jcls, jbyteArray jba, jint jlength)&lt;/span&gt; &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   jbyte* raw = env-&amp;gt;GetByteArrayElements(jba, &lt;span class=&quot;literal&quot;&gt;NULL&lt;/span&gt;);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// 操作raw代码省略...&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// 增加释放内存代码&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   env-&amp;gt;ReleaseByteArrayElements(jba, raw, &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;再编译运行，没有出现OOM了，问题解决。&lt;/p&gt;
 </content>
     
     <summary type="html">
     
-      &lt;p&gt;博客好长时间没有更新了，由于前段时间疯狂赶紧项目，有些问题没有来得及时整理，后面慢慢总结一下。&lt;/p&gt;
-&lt;p&gt;前段时间在优化相机扫描二维码时，遇到了一个内存溢出问题，内存被用完了，日志中出现&lt;code&gt;E/dalvikvm-heap: Out of memory on a 2366828-byte allocation&lt;/code&gt;错误提示，App也没有崩溃，只是相机不再输出拍摄到的内容。使用&lt;code&gt;Zxing&lt;/code&gt;做过二维码扫描的都知道，被扫描到的内容会不停的被处理，并识别出二维码内容，如果有。而此时内存被用完了的现象是相应的回调处理识别二维码内容的方法没有被调用。于是迅速展开排查。&lt;/p&gt;
+      &lt;p&gt;博客好长时间没有更新了，由于前段时间疯狂赶项目，有些问题没有来得及时整理，后面慢慢总结一下。&lt;/p&gt;
+&lt;p&gt;前段时间在优化相机扫描二维码时，遇到了一个内存溢出问题，内存被用完了，日志中出现&lt;code&gt;E/dalvikvm-heap: Out of memory on a 2366828-byte allocation&lt;/code&gt;错误提示，App也没有崩溃，只是相机不再输出拍摄到的内容。使用&lt;code&gt;Zxing&lt;/code&gt;做过二维码扫描的同学都知道，被扫描到的内容会不停的被处理，并识别出二维码内容，如果有。而此时内存被用完了的现象是：相应的回调处理识别二维码内容的方法没有被调用。于是展开了排查。&lt;/p&gt;
     
     </summary>
     

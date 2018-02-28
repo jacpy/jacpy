@@ -11,21 +11,21 @@
     
 
     
-    <meta name="description" content="博客好长时间没有更新了，由于前段时间疯狂赶紧项目，有些问题没有来得及时整理，后面慢慢总结一下。
-前段时间在优化相机扫描二维码时，遇到了一个内存溢出问题，内存被用完了，日志中出现E/dalvikvm-heap: Out of memory on a 2366828-byte allocation错误提示，App也没有崩溃，只是相机不再输出拍摄到的内容。使用Zxing做过二维码扫描的都知道，被扫描到的">
+    <meta name="description" content="博客好长时间没有更新了，由于前段时间疯狂赶项目，有些问题没有来得及时整理，后面慢慢总结一下。
+前段时间在优化相机扫描二维码时，遇到了一个内存溢出问题，内存被用完了，日志中出现E/dalvikvm-heap: Out of memory on a 2366828-byte allocation错误提示，App也没有崩溃，只是相机不再输出拍摄到的内容。使用Zxing做过二维码扫描的同学都知道，被扫描到">
 <meta property="og:type" content="article">
 <meta property="og:title" content="android使用相机扫描出现内存溢出解决过程">
 <meta property="og:url" content="http://www.jacpy.com/2018/02/28/android-camera-out-of-memory-solution.html">
 <meta property="og:site_name" content="jacpy's blog">
-<meta property="og:description" content="博客好长时间没有更新了，由于前段时间疯狂赶紧项目，有些问题没有来得及时整理，后面慢慢总结一下。
-前段时间在优化相机扫描二维码时，遇到了一个内存溢出问题，内存被用完了，日志中出现E/dalvikvm-heap: Out of memory on a 2366828-byte allocation错误提示，App也没有崩溃，只是相机不再输出拍摄到的内容。使用Zxing做过二维码扫描的都知道，被扫描到的">
+<meta property="og:description" content="博客好长时间没有更新了，由于前段时间疯狂赶项目，有些问题没有来得及时整理，后面慢慢总结一下。
+前段时间在优化相机扫描二维码时，遇到了一个内存溢出问题，内存被用完了，日志中出现E/dalvikvm-heap: Out of memory on a 2366828-byte allocation错误提示，App也没有崩溃，只是相机不再输出拍摄到的内容。使用Zxing做过二维码扫描的同学都知道，被扫描到">
 <meta property="og:image" content="http://www.jacpy.com/images/2018/02/memory_analysis_1.png">
 <meta property="og:image" content="http://www.jacpy.com/images/2018/02/memory_analysis_2.png">
-<meta property="og:updated_time" content="2018-02-28T05:34:24.842Z">
+<meta property="og:updated_time" content="2018-02-28T09:23:00.819Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="android使用相机扫描出现内存溢出解决过程">
-<meta name="twitter:description" content="博客好长时间没有更新了，由于前段时间疯狂赶紧项目，有些问题没有来得及时整理，后面慢慢总结一下。
-前段时间在优化相机扫描二维码时，遇到了一个内存溢出问题，内存被用完了，日志中出现E/dalvikvm-heap: Out of memory on a 2366828-byte allocation错误提示，App也没有崩溃，只是相机不再输出拍摄到的内容。使用Zxing做过二维码扫描的都知道，被扫描到的">
+<meta name="twitter:description" content="博客好长时间没有更新了，由于前段时间疯狂赶项目，有些问题没有来得及时整理，后面慢慢总结一下。
+前段时间在优化相机扫描二维码时，遇到了一个内存溢出问题，内存被用完了，日志中出现E/dalvikvm-heap: Out of memory on a 2366828-byte allocation错误提示，App也没有崩溃，只是相机不再输出拍摄到的内容。使用Zxing做过二维码扫描的同学都知道，被扫描到">
 <meta name="twitter:image" content="http://www.jacpy.com/images/2018/02/memory_analysis_1.png">
 
     
@@ -109,19 +109,19 @@
 		
 		</div>
 		
-		<p>博客好长时间没有更新了，由于前段时间疯狂赶紧项目，有些问题没有来得及时整理，后面慢慢总结一下。</p>
-<p>前段时间在优化相机扫描二维码时，遇到了一个内存溢出问题，内存被用完了，日志中出现<code>E/dalvikvm-heap: Out of memory on a 2366828-byte allocation</code>错误提示，App也没有崩溃，只是相机不再输出拍摄到的内容。使用<code>Zxing</code>做过二维码扫描的都知道，被扫描到的内容会不停的被处理，并识别出二维码内容，如果有。而此时内存被用完了的现象是相应的回调处理识别二维码内容的方法没有被调用。于是迅速展开排查。</p>
+		<p>博客好长时间没有更新了，由于前段时间疯狂赶项目，有些问题没有来得及时整理，后面慢慢总结一下。</p>
+<p>前段时间在优化相机扫描二维码时，遇到了一个内存溢出问题，内存被用完了，日志中出现<code>E/dalvikvm-heap: Out of memory on a 2366828-byte allocation</code>错误提示，App也没有崩溃，只是相机不再输出拍摄到的内容。使用<code>Zxing</code>做过二维码扫描的同学都知道，被扫描到的内容会不停的被处理，并识别出二维码内容，如果有。而此时内存被用完了的现象是：相应的回调处理识别二维码内容的方法没有被调用。于是展开了排查。</p>
 <a id="more"></a>
 <p>首先打开了ADM（Android Device Monitor），然后启动应用程序，选中当前App的进程，点击上面工具栏中的<code>Update Heap</code>按钮，在右侧的<code>Heap</code>Tab页中就可以看到当前App的内存使用情况。如下图所示：</p>
 <p><img src="/images/2018/02/memory_analysis_1.png" alt="App内存分析"></p>
 <p><code>Update Heap</code>按钮即为上图中标记为<code>1</code>的位置。</p>
 <p>从上图中可以看出，<code>byte[]</code>对象占用内存较多，而内存一直增长的时候也就是这里的内存在增长。如图中标记为3的位置。<code>byte[]</code>对象一般是Bitmap对象，这个要看内存中的<code>Depth</code>。</p>
-<p>当App被限制的内存快要被使用完时（一般手机都会对单个App的内存使用限制，当App内无法再分配内存时，就会出现OOM），如图中标记为2的位置，点击右边的<code>Dump HPROF file</code>按钮，即可将内存信息保存为<code>hprof</code>文件。</p>
+<p>当App被限制的内存快要被使用完时（一般手机都会对单个App的内存使用限制，当App内无法再分配足够内存时，就会出现OOM），如图中标记为2的位置，点击右边的<code>Dump HPROF file</code>按钮，即可将内存信息保存为<code>hprof</code>文件。</p>
 <p>再在<code>Android Studio</code>中Open保存的hprof文件，如下图所示：</p>
 <p><img src="/images/2018/02/memory_analysis_2.png" alt="App内存使用情况"></p>
-<p>在左侧点击<code>byte[]</code>，可以在右侧所有的内存中的对象，发现<code>byte[1382400]</code>对象比较多，每个占用内存空间1M多。看到这个对象就反应过来了，扫描处理的对象是一个byte数组，而且长度是1382400。于是想到是不是JNI中内存没有释放。</p>
+<p>在左侧点击<code>byte[]</code>行，可以在右侧看到对应的内存中的对象，发现<code>byte[1382400]</code>对象比较多，每个占用内存空间1M多。看到这个对象就反应过来了，扫描处理的对象是一个byte数组，而且长度是1382400。于是想到是不是JNI中内存没有释放。</p>
 <p>到C++代码中排查了一下，byte数组从java层传到C++层时，使用<code>GetByteArrayElements</code>获取操作的数组后，并没有调用<code>ReleaseByteArrayElements</code>释放。修改代码如下所示：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function">JNIEXPORT jbyteArray JNICALL <span class="title">Java_zxing_utils_ImageUtils_demo</span>  <span class="params">(JNIEnv *env, jclass jcls, jbyteArray jba, jint jlength)</span> </span>&#123;   jbyte* raw = env-&gt;GetByteArrayElements(jba, <span class="literal">NULL</span>);	<span class="comment">// ...</span></div><div class="line">	<span class="comment">// 增加释放内存代码</span>   env-&gt;ReleaseByteArrayElements(jba, raw, <span class="number">0</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function">JNIEXPORT jbyteArray JNICALL <span class="title">Java_zxing_utils_ImageUtils_demo</span></span></div><div class="line"><span class="params">(JNIEnv *env, jclass jcls, jbyteArray jba, jint jlength)</span> &#123;</div><div class="line">   jbyte* raw = env-&gt;GetByteArrayElements(jba, <span class="literal">NULL</span>);</div><div class="line">    <span class="comment">// 操作raw代码省略...</span></div><div class="line">    <span class="comment">// 增加释放内存代码</span></div><div class="line">   env-&gt;ReleaseByteArrayElements(jba, raw, <span class="number">0</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>再编译运行，没有出现OOM了，问题解决。</p>
   
 	</div>
@@ -277,7 +277,7 @@
 			
 		
 			
-				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
+				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
 			
 		
 			
@@ -309,6 +309,10 @@
 			
 		
 			
+				<li><a href="/tags/EXACTLY-AT-MOST-UNSPECIFIED/" title="EXACTLY AT_MOST UNSPECIFIED">EXACTLY AT_MOST UNSPECIFIED<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
 			
 		
@@ -321,15 +325,7 @@
 			
 		
 			
-				<li><a href="/tags/singleTop-android7-0/" title="singleTop android7.0">singleTop android7.0<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/INSTALL-FAILED-TEST-ONLY/" title="INSTALL_FAILED_TEST_ONLY">INSTALL_FAILED_TEST_ONLY<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/EXACTLY-AT-MOST-UNSPECIFIED/" title="EXACTLY AT_MOST UNSPECIFIED">EXACTLY AT_MOST UNSPECIFIED<sup>1</sup></a></li>
 			
 		
 			
@@ -337,7 +333,11 @@
 			
 		
 			
-				<li><a href="/tags/andfix/" title="andfix">andfix<sup>1</sup></a></li>
+				<li><a href="/tags/singleTop-android7-0/" title="singleTop android7.0">singleTop android7.0<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
 			
 		
 			
@@ -349,7 +349,7 @@
 			
 		
 			
-				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+				<li><a href="/tags/view-create-detail/" title="view create detail">view create detail<sup>1</sup></a></li>
 			
 		
 		</ul>
