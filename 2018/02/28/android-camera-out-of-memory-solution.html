@@ -21,7 +21,7 @@
 前段时间在优化相机扫描二维码时，遇到了一个内存溢出问题，内存被用完了，日志中出现E/dalvikvm-heap: Out of memory on a 2366828-byte allocation错误提示，App也没有崩溃，只是相机不再输出拍摄到的内容。使用Zxing做过二维码扫描的同学都知道，被扫描到">
 <meta property="og:image" content="http://www.jacpy.com/images/2018/02/memory_analysis_1.png">
 <meta property="og:image" content="http://www.jacpy.com/images/2018/02/memory_analysis_2.png">
-<meta property="og:updated_time" content="2018-02-28T09:23:00.819Z">
+<meta property="og:updated_time" content="2018-03-01T00:29:02.788Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="android使用相机扫描出现内存溢出解决过程">
 <meta name="twitter:description" content="博客好长时间没有更新了，由于前段时间疯狂赶项目，有些问题没有来得及时整理，后面慢慢总结一下。
@@ -112,7 +112,7 @@
 		<p>博客好长时间没有更新了，由于前段时间疯狂赶项目，有些问题没有来得及时整理，后面慢慢总结一下。</p>
 <p>前段时间在优化相机扫描二维码时，遇到了一个内存溢出问题，内存被用完了，日志中出现<code>E/dalvikvm-heap: Out of memory on a 2366828-byte allocation</code>错误提示，App也没有崩溃，只是相机不再输出拍摄到的内容。使用<code>Zxing</code>做过二维码扫描的同学都知道，被扫描到的内容会不停的被处理，并识别出二维码内容，如果有。而此时内存被用完了的现象是：相应的回调处理识别二维码内容的方法没有被调用。于是展开了排查。</p>
 <a id="more"></a>
-<p>首先打开了ADM（Android Device Monitor），然后启动应用程序，选中当前App的进程，点击上面工具栏中的<code>Update Heap</code>按钮，在右侧的<code>Heap</code>Tab页中就可以看到当前App的内存使用情况。如下图所示：</p>
+<p>首先打开了ADM（Android Device Monitor），如果是AS 3.0以下，可以直接打开<code>Android Monitor</code>，点击<code>Dump Java Heap</code>按钮保存即可。然后启动App，选中当前App的进程，点击上面工具栏中的<code>Update Heap</code>按钮，在右侧的<code>Heap</code>Tab页中就可以看到当前App的内存使用情况。如下图所示：</p>
 <p><img src="/images/2018/02/memory_analysis_1.png" alt="App内存分析"></p>
 <p><code>Update Heap</code>按钮即为上图中标记为<code>1</code>的位置。</p>
 <p>从上图中可以看出，<code>byte[]</code>对象占用内存较多，而内存一直增长的时候也就是这里的内存在增长。如图中标记为3的位置。<code>byte[]</code>对象一般是Bitmap对象，这个要看内存中的<code>Depth</code>。</p>
@@ -297,11 +297,11 @@
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
+				<li><a href="/tags/Out-Of-Memory/" title="Out Of Memory">Out Of Memory<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Out-Of-Memory/" title="Out Of Memory">Out Of Memory<sup>1</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
 			
 		
 			
@@ -309,11 +309,11 @@
 			
 		
 			
-				<li><a href="/tags/EXACTLY-AT-MOST-UNSPECIFIED/" title="EXACTLY AT_MOST UNSPECIFIED">EXACTLY AT_MOST UNSPECIFIED<sup>1</sup></a></li>
+				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
+				<li><a href="/tags/EXACTLY-AT-MOST-UNSPECIFIED/" title="EXACTLY AT_MOST UNSPECIFIED">EXACTLY AT_MOST UNSPECIFIED<sup>1</sup></a></li>
 			
 		
 			
