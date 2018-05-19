@@ -4,23 +4,35 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>android 4.4系统调用Class.getTypeParameters()出现JNI function NewGlobalRef called with exception pending错误 | jacpy&#39;s blog</title>
+    <title>okhttp too many follow-up requests 21 | jacpy&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="jacpy">
     
 
     
-    <meta name="description" content="先看一下异常信息：">
+    <meta name="description" content="博客好长时间没有更新了，因为年底和年初，你懂的，希望以后进入轨。
+前几天在开发过程中遇到这样一个HTTP请求错误：
+12okhttp too many follow-up requests: 21
+看到okhttp反应过来是底层请求出现问题了，以前从来没有遇到过，很好奇。在github上面okhttp库搜索了一下上面的关键字，找到下面的代码：">
 <meta property="og:type" content="article">
-<meta property="og:title" content="android 4.4系统调用Class.getTypeParameters()出现JNI function NewGlobalRef called with exception pending错误">
-<meta property="og:url" content="http://www.jacpy.com/2015/05/10/android-4-4-call-class-gettypeparameters-occur-jni-function-newglobalref-called-with-exception-pending.html">
+<meta property="og:title" content="okhttp too many follow-up requests 21">
+<meta property="og:url" content="http://www.jacpy.com/2018/05/18/okhttp-too-many-follow-up-requests-21.html">
 <meta property="og:site_name" content="jacpy's blog">
-<meta property="og:description" content="先看一下异常信息：">
-<meta property="og:updated_time" content="2015-10-30T15:48:50.000Z">
+<meta property="og:description" content="博客好长时间没有更新了，因为年底和年初，你懂的，希望以后进入轨。
+前几天在开发过程中遇到这样一个HTTP请求错误：
+12okhttp too many follow-up requests: 21
+看到okhttp反应过来是底层请求出现问题了，以前从来没有遇到过，很好奇。在github上面okhttp库搜索了一下上面的关键字，找到下面的代码：">
+<meta property="og:image" content="http://www.jacpy.com/images/2018/05/okhttp_too_many_follow_up_requests.png">
+<meta property="og:image" content="http://www.jacpy.com/images/2018/05/http_dead_recycle.png">
+<meta property="og:updated_time" content="2018-05-19T00:38:08.600Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="android 4.4系统调用Class.getTypeParameters()出现JNI function NewGlobalRef called with exception pending错误">
-<meta name="twitter:description" content="先看一下异常信息：">
+<meta name="twitter:title" content="okhttp too many follow-up requests 21">
+<meta name="twitter:description" content="博客好长时间没有更新了，因为年底和年初，你懂的，希望以后进入轨。
+前几天在开发过程中遇到这样一个HTTP请求错误：
+12okhttp too many follow-up requests: 21
+看到okhttp反应过来是底层请求出现问题了，以前从来没有遇到过，很好奇。在github上面okhttp库搜索了一下上面的关键字，找到下面的代码：">
+<meta name="twitter:image" content="http://www.jacpy.com/images/2018/05/okhttp_too_many_follow_up_requests.png">
 
     
     <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
@@ -80,14 +92,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/05/10/android-4-4-call-class-gettypeparameters-occur-jni-function-newglobalref-called-with-exception-pending.html" title="android 4.4系统调用Class.getTypeParameters()出现JNI function NewGlobalRef called with exception pending错误" itemprop="url">android 4.4系统调用Class.getTypeParameters()出现JNI function NewGlobalRef called with exception pending错误</a>
+      <a href="/2018/05/18/okhttp-too-many-follow-up-requests-21.html" title="okhttp too many follow-up requests 21" itemprop="url">okhttp too many follow-up requests 21</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
 		
   <p class="article-time">
-    <time datetime="2015-05-10T15:35:49.000Z" itemprop="datePublished"> 发表于 2015-05-10</time>
+    <time datetime="2018-05-18T05:12:17.000Z" itemprop="datePublished"> 发表于 2018-05-18</time>
     
   </p>
 </header>
@@ -103,13 +115,21 @@
 		
 		</div>
 		
-		<p>先看一下异常信息：</p>
+		<p>博客好长时间没有更新了，因为年底和年初，你懂的，希望以后进入轨。</p>
+<p>前几天在开发过程中遇到这样一个HTTP请求错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">okhttp too many follow-up requests: 21</div></pre></td></tr></table></figure>
+<p>看到<code>okhttp</code>反应过来是底层请求出现问题了，以前从来没有遇到过，很好奇。在github上面<a href="https://github.com/square/okhttp" target="_blank" rel="external">okhttp</a>库搜索了一下上面的关键字，找到下面的代码：</p>
 <a id="more"></a>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line">JNI WARNING: JNI function NewGlobalRef called with exception pending</div><div class="line">in Ljava/lang/Class;.getDex:()Lcom/android/dex/Dex; (NewGlobalRef)</div><div class="line">Pending exception is:</div><div class="line">java.lang.IndexOutOfBoundsException: index=0, limit=0</div><div class="line">at java.nio.Buffer.checkIndex(Buffer.java:156)</div><div class="line">at java.nio.DirectByteBuffer.get(DirectByteBuffer.java:157)</div><div class="line">at com.android.dex.Dex.create(Dex.java:129)</div><div class="line">at java.lang.Class.getDex(Native Method)</div><div class="line">at libcore.reflect.AnnotationAccess.getSignature(AnnotationAccess.java:447)</div><div class="line">at java.lang.Class.getTypeParameters(Class.java:1070)</div><div class="line">05-11 15:14:28.285: I/dalvikvm(8083): at android.app.Activity.performCreate(Activity.java:5248)</div><div class="line">at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1110)</div><div class="line">at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2162)</div><div class="line">at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:2257)</div><div class="line">at android.app.ActivityThread.access$800(ActivityThread.java:139)</div><div class="line">at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1210)</div><div class="line">at android.os.Handler.dispatchMessage(Handler.java:102)</div><div class="line">at android.os.Looper.loop(Looper.java:136)</div><div class="line">at android.app.ActivityThread.main(ActivityThread.java:5086)</div><div class="line">at java.lang.reflect.Method.invokeNative(Native Method)</div><div class="line">at java.lang.reflect.Method.invoke(Method.java:515)</div><div class="line">at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:785)</div><div class="line">at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:601)</div><div class="line">at dalvik.system.NativeStart.main(Native Method)</div><div class="line">"main" prio=5 tid=1 NATIVE</div><div class="line">| group="main" sCount=0 dsCount=0 obj=0x416b6e40 self=0x415d8500</div><div class="line">| sysTid=8083 nice=0 sched=0/0 cgrp=apps handle=1074389332</div><div class="line">| state=R schedstat=( 0 0 0 ) utm=13 stm=4 core=3</div><div class="line">#00 pc 0000132e /system/lib/libcorkscrew.so (unwind_backtrace_thread+29)</div><div class="line">#01 pc 000635ba /system/lib/libdvm.so (dvmDumpNativeStack(DebugOutputTarget const*, int)+33)</div><div class="line">#02 pc 00057590 /system/lib/libdvm.so (dvmDumpThreadEx(DebugOutputTarget const*, Thread*, bool)+395)</div><div class="line">#03 pc 000575fe /system/lib/libdvm.so (dvmDumpThread(Thread*, bool)+25)</div><div class="line">#04 pc 0003b554 /system/lib/libdvm.so</div><div class="line">#05 pc 00043f2c /system/lib/libdvm.so</div><div class="line">#06 pc 0006a4ea /system/lib/libdvm.so (Java_java_lang_Class_getDex(_JNIEnv*, _jclass*)+141)</div><div class="line">#07 pc 000203cc /system/lib/libdvm.so (dvmPlatformInvoke+112)</div><div class="line">#08 pc 00050eea /system/lib/libdvm.so (dvmCallJNIMethod(unsigned int const*, JValue*, Method const*, Thread*)+397)</div><div class="line">#09 pc 00029860 /system/lib/libdvm.so</div><div class="line">#10 pc 00030b68 /system/lib/libdvm.so (dvmMterpStd(Thread*)+76)</div><div class="line">#11 pc 0002e200 /system/lib/libdvm.so (dvmInterpret(Thread*, Method const*, JValue*)+184)</div><div class="line">#12 pc 000637cc /system/lib/libdvm.so (dvmInvokeMethod(Object*, Method const*, ArrayObject*, ArrayObject*, ClassObject*, bool)+391)</div><div class="line">#13 pc 0006b6aa /system/lib/libdvm.so</div><div class="line">#14 pc 00029860 /system/lib/libdvm.so</div><div class="line">#15 pc 00030b68 /system/lib/libdvm.so (dvmMterpStd(Thread*)+76)</div><div class="line">#16 pc 0002e200 /system/lib/libdvm.so (dvmInterpret(Thread*, Method const*, JValue*)+184)</div><div class="line">#17 pc 000634e8 /system/lib/libdvm.so (dvmCallMethodV(Thread*, Method const*, Object*, bool, JValue*, std::__va_list)+335)</div><div class="line">#18 pc 0004cab6 /system/lib/libdvm.so</div><div class="line">#19 pc 0004d5c0 /system/lib/libandroid_runtime.so</div><div class="line">#20 pc 0004e2e6 /system/lib/libandroid_runtime.so (android::AndroidRuntime::start(char const*, char const*)+353)</div><div class="line">#21 pc 0000105a /system/bin/app_process</div><div class="line">#22 pc 0000e510 /system/lib/libc.so (__libc_init+47)</div></pre></td></tr></table></figure>
-<p>很明显，是因为应用调用了 java.lang.Class.getTypeParameters()方法导致的问题，这个方法是用来获取泛型数量，在GSON或fastjson这样的第三方JSON反射框架中会出现这样的调用，出现这样的问题也正是使用这样的类库出现的。为什么只会在android4.4系统中出现这样的兼容性问题，而其他版本没有？从堆栈错误信息中可以看出来，在Java层最后调用的一个方法是Class.getDex()，这个是个native方法，只在C++代码中实现，而android其他版本却没有这个方法。查看dalvik/vm/native/java_lang_Class.cpp中的JNIEXPORT jobject JNICALL Java_java_lang_Class_getDex(JNIEnv* env, jclass javaClass)函数发现，在NDK中new一个Dex对象，而在这个对象时传的参数为空，导致在java层通过下标访问时出现了java.lang.IndexOutOfBoundsException异常，这也解释了为什么会出现NewGlobalRef pending exception。最后在源码中插入LOG，编译验证了一下，证明确实是这样。</p>
-<p>OK，问题产生的原因找到了，怎么解决呢？</p>
-<p>应用加载DEX文件时，调用了4.4新增了static void Dalvik_dalvik_system_DexFile_openDexFile_bytearray(const u4<em> args, JValue</em> pResult)函数，直接将一个DEX文件的字节流传入，虚拟机自动解析并加载类相关信息。虽然这个函数是static，但因为使用到了NDK注册的方式，将Java层的方法与C++层对应的函数绑定到了一起，这样就可以使用指针遍历dvm_dalvik_system_DexFile数组找到对应的函数指针，从而可以调用。而在Java层的DexFile类中没有找到与之对应的int openDexFile(byte)方法，估计是被删了，而这个函数又没有被google官方验证，所以种种巧合，掉进了这个坑。唉，不说了，都是泪啊。</p>
-<p>最后问题还是解决了，根本原因是RawDexFile-&gt;pDvmDex-&gt;memMap指针为空，分配内存赋值就O了。</p>
+<p><img src="/images/2018/05/okhttp_too_many_follow_up_requests.png" alt="too many follow-up requests exception"></p>
+<p>其中<code>MAX_FOLLOW_UPS</code>常量的值为<code>20</code>，代码如下所示，并且还有注释说明：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * How many redirects and auth challenges should we attempt? Chrome follows 21 redirects; Firefox,</div><div class="line"> * curl, and wget follow 20; Safari follows 16; and HTTP/1.0 recommends 5.</div><div class="line"> */</div><div class="line">private static final int MAX_FOLLOW_UPS = 20;</div></pre></td></tr></table></figure>
+<p>上面描述各种浏览器重定向次数说明，<code>okhttp</code>里面使用的是最多允许20次。</p>
+<p>google上搜索发现有人说是<code>okhttp</code>的bug，低版本会出现这个bug，高版本已经修复，一看自己的版本，已经是最新版本。</p>
+<p>用<code>Fiddler</code>抓了下包，看到如下请求：</p>
+<p><img src="/images/2018/05/http_dead_recycle.png" alt="循环302请求"></p>
+<p>一直302跳转，每三个一循环，也就是说客户端<code>okhttp</code>请求302跳转超过20次就抛出异常，如果不是<code>okhttp</code>异常处理，估计是死循环了。</p>
+<p>问服务器端开发，说要先调用一次授权接口，最近才加的功能。</p>
+<p>话说出现这种问题不是服务器端逻辑有问题？一直允许这个死循环的302跳转？如果把okhttp的源码修改一下，无限循环下去，不会造成安全性问题？跟服务器端沟通，无果。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -117,9 +137,14 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/dvm/">dvm</a>
+  <a class="article-category-link" href="/categories/android/">android</a>
 </div>
 
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/okhttp/">okhttp</a>
+  </div>
 
 </div>
 
@@ -127,7 +152,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://www.jacpy.com/2015/05/10/android-4-4-call-class-gettypeparameters-occur-jni-function-newglobalref-called-with-exception-pending.html" data-title="android 4.4系统调用Class.getTypeParameters()出现JNI function NewGlobalRef called with exception pending错误 | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
+	  <div data-url="http://www.jacpy.com/2018/05/18/okhttp-too-many-follow-up-requests-21.html" data-title="okhttp too many follow-up requests 21 | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -140,19 +165,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/05/26/ndk-compile-art-occur-artruntimeatomic-h2118-fatal-error-atomic-no-such-file-or-directory.html" title="NDK编译ART代码出现错误：art/runtime/atomic.h:21:18: fatal error: atomic: No such file or directory">
-  <strong>上一篇：</strong><br/>
-  <span>
-  NDK编译ART代码出现错误：art/runtime/atomic.h:21:18: fatal error: atomic: No such file or directory</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2015/05/10/ndk-used-cpp11-compile-dvm-occur-externalsafe-iopincludesafe-iop-h8014-error-typeof-was-not-declared-in-this-scope.html"  title="NDK C++11编译DVM代码报错：external/safe-iop/include/safe_iop.h:80:14: error: &#39;typeof&#39; was not declared in this scope">
+<a href="/2018/02/28/android-camera-out-of-memory-solution.html"  title="android使用相机扫描出现内存溢出解决过程">
  <strong>下一篇：</strong><br/> 
- <span>NDK C++11编译DVM代码报错：external/safe-iop/include/safe_iop.h:80:14: error: &#39;typeof&#39; was not declared in this scope
+ <span>android使用相机扫描出现内存溢出解决过程
 </span>
 </a>
 </div>
@@ -161,7 +178,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2015/05/10/android-4-4-call-class-gettypeparameters-occur-jni-function-newglobalref-called-with-exception-pending.html" data-title="android 4.4系统调用Class.getTypeParameters()出现JNI function NewGlobalRef called with exception pending错误" data-url="http://www.jacpy.com/2015/05/10/android-4-4-call-class-gettypeparameters-occur-jni-function-newglobalref-called-with-exception-pending.html"></div>
+	<div class="ds-thread" data-thread-key="2018/05/18/okhttp-too-many-follow-up-requests-21.html" data-title="okhttp too many follow-up requests 21" data-url="http://www.jacpy.com/2018/05/18/okhttp-too-many-follow-up-requests-21.html"></div>
 </section>
 
 
