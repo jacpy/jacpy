@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jacpy.com/"/>
-  <updated>2018-05-19T00:38:08.600Z</updated>
+  <updated>2018-07-06T05:16:03.707Z</updated>
   <id>http://www.jacpy.com/</id>
   
   <author>
@@ -14,6 +14,71 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>android 安全检测工具drozer环境搭建</title>
+    <link href="http://www.jacpy.com/2018/07/05/android-security-check-tool-drozer.html"/>
+    <id>http://www.jacpy.com/2018/07/05/android-security-check-tool-drozer.html</id>
+    <published>2018-07-05T00:52:47.000Z</published>
+    <updated>2018-07-06T05:16:03.707Z</updated>
+    
+    <content type="html">&lt;p&gt;最近在处理公司App的安全问题，跟第三方公司人员沟通，提到有使用&lt;code&gt;drozer&lt;/code&gt;工具检测。装了下这个工具，在这里记录一些坑。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;drozer&lt;/code&gt;是一个python编写的开源工具，在&lt;code&gt;github&lt;/code&gt;上面有源码，地址：&lt;a href=&quot;https://github.com/mwrlabs/drozer&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/mwrlabs/drozer&lt;/a&gt;。其功能很强大，可以检测App中的四大组件的导出情况、Intent拒绝服务、SQL注入风险以及可以自定义Module等。尤其是自定义Module功能，自己按格式编写一个Module功能，就可以获取终端设备及App的信息。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;drozer&lt;/code&gt;工具有两部分：一是PC端，另一部分是终端APK。&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;环境搭建步骤有两种方式，一种是使用github上面的源码自己编译安装；另一种是官方提供了一些常用操作系统的安装包，可以直接安装。 下面以windows环境编译为例：&lt;/p&gt;
+&lt;h2 id=&quot;一、源码编译安装&quot;&gt;&lt;a href=&quot;#一、源码编译安装&quot; class=&quot;headerlink&quot; title=&quot;一、源码编译安装&quot;&gt;&lt;/a&gt;一、源码编译安装&lt;/h2&gt;&lt;h3 id=&quot;1-1-编译环境搭建&quot;&gt;&lt;a href=&quot;#1-1-编译环境搭建&quot; class=&quot;headerlink&quot; title=&quot;1.1 编译环境搭建&quot;&gt;&lt;/a&gt;1.1 编译环境搭建&lt;/h3&gt;&lt;p&gt;编译前安装的环境与&lt;code&gt;github&lt;/code&gt;上README所说的环境要一致，一定要一致！！！&lt;/p&gt;
+&lt;h4 id=&quot;1-1-1-jdk版本问题&quot;&gt;&lt;a href=&quot;#1-1-1-jdk版本问题&quot; class=&quot;headerlink&quot; title=&quot;1.1.1 jdk版本问题&quot;&gt;&lt;/a&gt;1.1.1 jdk版本问题&lt;/h4&gt;&lt;p&gt;如果JDK版本不一致，编译时会提示以下错误，导致编译APK失败。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;15&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;16&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;17&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;18&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;19&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;UNEXPECTED TOP-LEVEL EXCEPTION:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;com.android.dx.cf.iface.ParseException: bad class file magic (cafebabe) or version (0034.0000)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        at com.android.dx.cf.direct.DirectClassFile.parse0(DirectClassFile.java:472)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        at com.android.dx.cf.direct.DirectClassFile.parse(DirectClassFile.java:406)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        at com.android.dx.cf.direct.DirectClassFile.parseToInterfacesIfNecessary(DirectClassFile.java:388)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        at com.android.dx.cf.direct.DirectClassFile.getMagic(DirectClassFile.java:251)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        at com.android.dx.command.dexer.Main.processClass(Main.java:665)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        at com.android.dx.command.dexer.Main.processFileBytes(Main.java:634)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        at com.android.dx.command.dexer.Main.access$600(Main.java:78)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        at com.android.dx.command.dexer.Main$1.processFileBytes(Main.java:572)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        at com.android.dx.cf.direct.ClassPathOpener.processOne(ClassPathOpener.java:170)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        at com.android.dx.cf.direct.ClassPathOpener.process(ClassPathOpener.java:144)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        at com.android.dx.command.dexer.Main.processOne(Main.java:596)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        at com.android.dx.command.dexer.Main.processAllFiles(Main.java:498)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        at com.android.dx.command.dexer.Main.runMonoDex(Main.java:264)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        at com.android.dx.command.dexer.Main.run(Main.java:230)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        at com.android.dx.command.dexer.Main.main(Main.java:199)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        at com.android.dx.command.Main.main(Main.java:103)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;...while parsing ByteStreamReader.class&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;目前编译的版本是&lt;code&gt;2.4.3&lt;/code&gt;，github网站&lt;code&gt;README&lt;/code&gt;说明使用JDK版本为1.7。但官方网站上的说明文档还是老版本，使用的是JDK 1.6。所以这里要注意一下。&lt;/p&gt;
+&lt;h4 id=&quot;1-1-2-安装pip&quot;&gt;&lt;a href=&quot;#1-1-2-安装pip&quot; class=&quot;headerlink&quot; title=&quot;1.1.2 安装pip&quot;&gt;&lt;/a&gt;1.1.2 安装pip&lt;/h4&gt;&lt;p&gt;pip是python库的管理工具，通过它可以很方便下载一些其他库，编译&lt;code&gt;drozer&lt;/code&gt;所需要的&lt;code&gt;Protobuf&lt;/code&gt;、&lt;code&gt;Pyopenssl&lt;/code&gt;、&lt;code&gt;Twisted&lt;/code&gt;等库都可以通过它来下载。&lt;/p&gt;
+&lt;p&gt;下载地址是：&lt;a href=&quot;https://pypi.python.org/pypi/pip#downloads&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://pypi.python.org/pypi/pip#downloads&lt;/a&gt;，下载后解压，在命令行&lt;code&gt;cd&lt;/code&gt;到解压目录，然后执行&lt;code&gt;python setup.py install&lt;/code&gt;即可以安装&lt;code&gt;pip&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;安装成功后，将&lt;code&gt;C:\Python27\Scripts&lt;/code&gt;目录配置到系统的环境变量中。重新启动命令行， 执行&lt;code&gt;pip install protobuf&lt;/code&gt;命令就可以安装&lt;code&gt;protobuf&lt;/code&gt;库，其他库类似。&lt;/p&gt;
+&lt;h3 id=&quot;1-2-安装工具&quot;&gt;&lt;a href=&quot;#1-2-安装工具&quot; class=&quot;headerlink&quot; title=&quot;1.2 安装工具&quot;&gt;&lt;/a&gt;1.2 安装工具&lt;/h3&gt;&lt;p&gt;上述过程编译成功后，会在&lt;code&gt;dist&lt;/code&gt;目录生成&lt;code&gt;msi&lt;/code&gt;文件。&lt;/p&gt;
+&lt;h4 id=&quot;1-2-1-安装msi&quot;&gt;&lt;a href=&quot;#1-2-1-安装msi&quot; class=&quot;headerlink&quot; title=&quot;1.2.1 安装msi&quot;&gt;&lt;/a&gt;1.2.1 安装msi&lt;/h4&gt;&lt;p&gt;安装&lt;code&gt;msi&lt;/code&gt;文件下一步就可以，但下面这个页面不要选错，否则都不知道上哪儿找&lt;code&gt;drozer.bat&lt;/code&gt;文件。如果找到源码中的这个文件，在后面连接成功后，执行&lt;code&gt;list&lt;/code&gt;命令会显示空白，即没有命令工具可以使用。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2018/07/drozer_setup_path_select.png&quot; alt=&quot;安装选项&quot;&gt;&lt;/p&gt;
+&lt;h4 id=&quot;1-2-2-安装APK&quot;&gt;&lt;a href=&quot;#1-2-2-安装APK&quot; class=&quot;headerlink&quot; title=&quot;1.2.2 安装APK&quot;&gt;&lt;/a&gt;1.2.2 安装APK&lt;/h4&gt;&lt;p&gt;APK官方直接给出了下载地址：&lt;a href=&quot;https://github.com/mwrlabs/drozer/releases/download/2.3.4/drozer-agent-2.3.4.apk&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/mwrlabs/drozer/releases/download/2.3.4/drozer-agent-2.3.4.apk&lt;/a&gt;，下载下来后，直接使用&lt;code&gt;adb install drozer-agent-2.3.4.apk&lt;/code&gt;。这一步没什么好说的，只要将&lt;code&gt;adb&lt;/code&gt;命令配置到环境变量，就可以直接执行&lt;code&gt;adb&lt;/code&gt;命令。&lt;/p&gt;
+&lt;h3 id=&quot;1-3-工具使用&quot;&gt;&lt;a href=&quot;#1-3-工具使用&quot; class=&quot;headerlink&quot; title=&quot;1.3 工具使用&quot;&gt;&lt;/a&gt;1.3 工具使用&lt;/h3&gt;&lt;h4 id=&quot;1-3-1-启动APK&quot;&gt;&lt;a href=&quot;#1-3-1-启动APK&quot; class=&quot;headerlink&quot; title=&quot;1.3.1 启动APK&quot;&gt;&lt;/a&gt;1.3.1 启动APK&lt;/h4&gt;&lt;p&gt;工具使用之前，要先启动在终端安装的App&lt;code&gt;drozer Agent&lt;/code&gt;，点击底部的&lt;code&gt;Embedded Server&lt;/code&gt;，进入到新页面后滑动顶部的控件，将其置为&lt;code&gt;Enabled&lt;/code&gt;状态。如下图所示：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2018/07/drozer_app_enabled.png&quot; alt=&quot;Enabled状态&quot;&gt;&lt;/p&gt;
+&lt;h4 id=&quot;1-3-2-PC连接远程服务&quot;&gt;&lt;a href=&quot;#1-3-2-PC连接远程服务&quot; class=&quot;headerlink&quot; title=&quot;1.3.2 PC连接远程服务&quot;&gt;&lt;/a&gt;1.3.2 PC连接远程服务&lt;/h4&gt;&lt;p&gt;这一步按官方说明来：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;转发端口&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;adb forward tcp:31415 tcp:31415&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;连接应用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如果是模拟器，直接执行：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;drozer.bat console connect&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;如果是物理机，需要知道连接Wi-Fi的IP地址，启动命令的PC端网络要和物理机的网络在同一内网中。执行命令需要带上IP：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;drozer.bat console connect --server 192.168.0.10&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;我用物理机没有连接成功，用模拟就OK，所以如果网络环境复杂，建议使用模拟器。&lt;/p&gt;
+&lt;p&gt;连接成功如下图所示：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2018/07/drozer_console_connect.png&quot; alt=&quot;drozer连接成功&quot;&gt;&lt;/p&gt;
+&lt;p&gt;执行&lt;code&gt;list&lt;/code&gt;命令显示的部分命令列表如下图所示：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2018/07/drozer_console_list.png&quot; alt=&quot;drozer list&quot;&gt;&lt;/p&gt;
+&lt;p&gt;如果&lt;code&gt;drozer.bat console connect&lt;/code&gt;执行失败，出现如下提示：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;Traceback (most recent call last):&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;File &amp;quot;bin/drozer&amp;quot;, line 30, in &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;import(&amp;quot;drozer.cli.%s&amp;quot; % (sys.argv[1]))&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;ImportError: No module named drozer.cli.console&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;则是python找不到&lt;code&gt;drozer.cli.console&lt;/code&gt;库，在系统的环境变量中增加&lt;code&gt;PYTHONPATH&lt;/code&gt;变量，路径为上面安装&lt;code&gt;msi&lt;/code&gt;文件时指定的路径中的子目录&lt;code&gt;site-packages&lt;/code&gt;路径。如果环境变量中已经有这个变量，则增加一个路径，中间使用英文逗号分隔。如下所示：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2018/07/drozer_python_path.png&quot; alt=&quot;PYTHONPATH环境变量&quot;&gt;&lt;/p&gt;
+&lt;h4 id=&quot;1-3-3-执行命令&quot;&gt;&lt;a href=&quot;#1-3-3-执行命令&quot; class=&quot;headerlink&quot; title=&quot;1.3.3 执行命令&quot;&gt;&lt;/a&gt;1.3.3 执行命令&lt;/h4&gt;&lt;p&gt;命令执行可以参考&lt;a href=&quot;https://www.cnblogs.com/goodhacker/p/3906180.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;利用drozer进行Android渗透测试&lt;/a&gt;。&lt;/p&gt;
+&lt;h2 id=&quot;二、可执行文件安装&quot;&gt;&lt;a href=&quot;#二、可执行文件安装&quot; class=&quot;headerlink&quot; title=&quot;二、可执行文件安装&quot;&gt;&lt;/a&gt;二、可执行文件安装&lt;/h2&gt;&lt;p&gt;如果不想自己编译，PC端可执行文件以及APK可以从这个官方地址&lt;a href=&quot;https://labs.mwrinfosecurity.com/tools/drozer&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://labs.mwrinfosecurity.com/tools/drozer&lt;/a&gt;下载。其他安装步骤和操作步骤与上面步骤一样，要注意一下编译生成的&lt;code&gt;msi&lt;/code&gt;文件的安装路径。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近在处理公司App的安全问题，跟第三方公司人员沟通，提到有使用&lt;code&gt;drozer&lt;/code&gt;工具检测。装了下这个工具，在这里记录一些坑。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;drozer&lt;/code&gt;是一个python编写的开源工具，在&lt;code&gt;github&lt;/code&gt;上面有源码，地址：&lt;a href=&quot;https://github.com/mwrlabs/drozer&quot;&gt;https://github.com/mwrlabs/drozer&lt;/a&gt;。其功能很强大，可以检测App中的四大组件的导出情况、Intent拒绝服务、SQL注入风险以及可以自定义Module等。尤其是自定义Module功能，自己按格式编写一个Module功能，就可以获取终端设备及App的信息。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;drozer&lt;/code&gt;工具有两部分：一是PC端，另一部分是终端APK。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="android" scheme="http://www.jacpy.com/categories/android/"/>
+    
+    
+      <category term="android security" scheme="http://www.jacpy.com/tags/android-security/"/>
+    
+  </entry>
   
   <entry>
     <title>okhttp too many follow-up requests 21</title>
@@ -746,40 +811,6 @@
     
     
       <category term="gradle打jar包 混淆" scheme="http://www.jacpy.com/tags/gradle%E6%89%93jar%E5%8C%85-%E6%B7%B7%E6%B7%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>golang抓取html转换成pdf</title>
-    <link href="http://www.jacpy.com/2017/02/19/go-html-to-pdf.html"/>
-    <id>http://www.jacpy.com/2017/02/19/go-html-to-pdf.html</id>
-    <published>2017-02-19T14:39:21.000Z</published>
-    <updated>2017-03-05T14:01:34.000Z</updated>
-    
-    <content type="html">&lt;p&gt;总结一下学习十来天go语言的成果，看了一遍语法之后，写了一个抓取HTML然后转换成PDF文件的程序，分享一下，代码点&lt;a href=&quot;https://github.com/jacpy/GoDemo/blob/master/html2pdf/html2pdf.go&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;这里&lt;/a&gt;。代码在目前go的1.7.5版本和1.8版本上运行没有问题，据说go向下兼容，而不像swift。但发现有些比较老的资料上的代码，在新的go版本上看不到效果，比如打印地址&lt;code&gt;%p&lt;/code&gt;，在新版本中必须得使用&lt;code&gt;unsafe.Pointer(p)&lt;/code&gt;转换一下，否则格式化输出指针变量不会打印出内存地址。&lt;/p&gt;
-&lt;p&gt;其中使用了两个第三方库：&lt;/p&gt;
-&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;html操作使用了&lt;a href=&quot;https://github.com/PuerkitoBio/goquery&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;goquery&lt;/a&gt;的第三方库，对html操作很方便；&lt;/li&gt;
-&lt;li&gt;html转PDF使用了&lt;a href=&quot;http://wkhtmltopdf.org/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;wkhtmltopdf&lt;/a&gt;库，到官方网站上选择相应的平台下载安装，然后在go语言中执行相应的命令即可。使用说明点&lt;a href=&quot;http://wkhtmltopdf.org/usage/wkhtmltopdf.txt&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;这里&lt;/a&gt;。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;另外还有一个去水印的功能，想具体了解请参考代码。&lt;/p&gt;
-&lt;p&gt;通过这个功能的练手，发现go语言还是相关操作都很方便。比如文件读写：不像java那样，不同的流嵌套，然后就是try-catch。go里面写起来，相比而言简单好多。goquery这个库操作HTML很方便，唯一感觉不好用的地方是修改HTML标签的属性值，没有找到类似这种&lt;code&gt;p.Find(&amp;quot;div.Part div a img&amp;quot;).RemoveAttr(&amp;quot;alt&amp;quot;)&lt;/code&gt;好用的函数。&lt;/p&gt;
-&lt;p&gt;后面希望能更深入的了解go语言。&lt;/p&gt;
-&lt;p&gt;附已经转换OK的PDF的下载地址：&lt;a href=&quot;https://github.com/jacpy/GoDemo/blob/master/html2pdf/TCP:IP%E8%AF%A6%E8%A7%A3%20%E5%8D%B71%EF%BC%9A%E5%8D%8F%E8%AE%AE.pdf&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;TCP:IP详解 卷1：协议.pdf&lt;/a&gt;&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;总结一下学习十来天go语言的成果，看了一遍语法之后，写了一个抓取HTML然后转换成PDF文件的程序，分享一下，代码点&lt;a href=&quot;https://github.com/jacpy/GoDemo/blob/master/html2pdf/html2pdf.go&quot;&gt;这里&lt;/a&gt;。代码在目前go的1.7.5版本和1.8版本上运行没有问题，据说go向下兼容，而不像swift。但发现有些比较老的资料上的代码，在新的go版本上看不到效果，比如打印地址&lt;code&gt;%p&lt;/code&gt;，在新版本中必须得使用&lt;code&gt;unsafe.Pointer(p)&lt;/code&gt;转换一下，否则格式化输出指针变量不会打印出内存地址。&lt;/p&gt;
-&lt;p&gt;其中使用了两个第三方库：&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="go" scheme="http://www.jacpy.com/categories/go/"/>
-    
-    
-      <category term="go html to pdf" scheme="http://www.jacpy.com/tags/go-html-to-pdf/"/>
     
   </entry>
   
