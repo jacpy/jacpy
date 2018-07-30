@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jacpy.com/"/>
-  <updated>2018-07-30T09:11:41.279Z</updated>
+  <updated>2018-07-30T12:51:45.013Z</updated>
   <id>http://www.jacpy.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.jacpy.com/2018/07/26/eventbus-implement-analysis-2.html"/>
     <id>http://www.jacpy.com/2018/07/26/eventbus-implement-analysis-2.html</id>
     <published>2018-07-26T01:45:13.000Z</published>
-    <updated>2018-07-30T09:11:41.279Z</updated>
+    <updated>2018-07-30T12:51:45.013Z</updated>
     
     <content type="html">&lt;p&gt;&lt;a href=&quot;/2018/07/23/eventbus-implement-analysis-1.html&quot;&gt;EventBus实现分析（上）&lt;/a&gt;中介绍了&lt;code&gt;EventBus&lt;/code&gt;的&lt;code&gt;简单使用&lt;/code&gt;和&lt;code&gt;解决什么问题&lt;/code&gt;，这一节介绍EventBus的实现细节。&lt;/p&gt;
 &lt;h2 id=&quot;三、实现细节&quot;&gt;&lt;a href=&quot;#三、实现细节&quot; class=&quot;headerlink&quot; title=&quot;三、实现细节&quot;&gt;&lt;/a&gt;三、实现细节&lt;/h2&gt;&lt;p&gt;前面在介绍EventBus的使用时，也顺带着讲了一些细节。下面先从两个流程开始，一个是注册流程，另一个是发送消息并且处理的流程。&lt;/p&gt;
@@ -65,6 +65,7 @@
 &lt;h5 id=&quot;5-1-2-旧版本的继承问题&quot;&gt;&lt;a href=&quot;#5-1-2-旧版本的继承问题&quot; class=&quot;headerlink&quot; title=&quot;5.1.2 旧版本的继承问题&quot;&gt;&lt;/a&gt;5.1.2 旧版本的继承问题&lt;/h5&gt;&lt;p&gt;旧版本解析订阅方法都是以&lt;code&gt;onEvent&lt;/code&gt;开头的，规则更简单一点，override方法完全按照java多态语法来。&lt;/p&gt;
 &lt;h3 id=&quot;5-2-订阅方法重载问题&quot;&gt;&lt;a href=&quot;#5-2-订阅方法重载问题&quot; class=&quot;headerlink&quot; title=&quot;5.2 订阅方法重载问题&quot;&gt;&lt;/a&gt;5.2 订阅方法重载问题&lt;/h3&gt;&lt;p&gt;重载的方法如果也标记为订阅方法，消息类型都兼容，则都会执行。什么意思呢？就像前面的举例，如果post的是&lt;code&gt;String&lt;/code&gt;类型，重载的参数是&lt;code&gt;String&lt;/code&gt;和&lt;code&gt;Object&lt;/code&gt;类型，则&lt;code&gt;Object&lt;/code&gt;类型的方法也会执行。如果post的是&lt;code&gt;Object&lt;/code&gt;类型，那么&lt;code&gt;String&lt;/code&gt;参数的订阅方法不会被执行，&lt;code&gt;Object&lt;/code&gt;参数的订阅方法会被执行。&lt;/p&gt;
 &lt;p&gt;为什么都订阅的重载方法都会执行呢？因为它们都订阅了啊，我是认真的。&lt;/p&gt;
+&lt;h2 id=&quot;六、写在最后&quot;&gt;&lt;a href=&quot;#六、写在最后&quot; class=&quot;headerlink&quot; title=&quot;六、写在最后&quot;&gt;&lt;/a&gt;六、写在最后&lt;/h2&gt;&lt;p&gt;最后总结一下，用&lt;code&gt;EventBus&lt;/code&gt;要注意&lt;code&gt;register&lt;/code&gt;方法和&lt;code&gt;unregister&lt;/code&gt;方法配对使用，否则容易导致内存泄露。&lt;code&gt;EventBus&lt;/code&gt;要灵活使用，建议在项目某一解耦层使用，如果大面积使用会导致项目缺乏逻辑性，使用不当会导致代码臃肿，所以注意使用场景。&lt;/p&gt;
 &lt;p&gt;（全文完）&lt;/p&gt;
 </content>
     
