@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-CN">
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
   
     <title>golang中append函数和copy函数操作slice的不同用法 | jacpy&#39;s blog</title>
@@ -11,19 +11,18 @@
     
 
     
-    <meta name="description" content="前几天使用golang时，遇到一个很奇怪的问题，原因是对golang不熟悉，所以记录一下。
-在使用append()函数给slice中添加元素时，slice的初始大小可以为0，也就是len可以为0。每次向slice中append的时候，如果容量cap不够，会自动对slice进行扩容，也就是改变slice的cap的大小。">
+    <meta name="description" content="前几天使用golang时，遇到一个很奇怪的问题，原因是对golang不熟悉，所以记录一下。 在使用append()函数给slice中添加元素时，slice的初始大小可以为0，也就是len可以为0。每次向slice中append的时候，如果容量cap不够，会自动对slice进行扩容，也就是改变slice的cap的大小。">
+<meta name="keywords" content="append copy slice">
 <meta property="og:type" content="article">
 <meta property="og:title" content="golang中append函数和copy函数操作slice的不同用法">
 <meta property="og:url" content="http://www.jacpy.com/2017/10/26/golang-difference-between-append-and-copy-function.html">
-<meta property="og:site_name" content="jacpy's blog">
-<meta property="og:description" content="前几天使用golang时，遇到一个很奇怪的问题，原因是对golang不熟悉，所以记录一下。
-在使用append()函数给slice中添加元素时，slice的初始大小可以为0，也就是len可以为0。每次向slice中append的时候，如果容量cap不够，会自动对slice进行扩容，也就是改变slice的cap的大小。">
+<meta property="og:site_name" content="jacpy&#39;s blog">
+<meta property="og:description" content="前几天使用golang时，遇到一个很奇怪的问题，原因是对golang不熟悉，所以记录一下。 在使用append()函数给slice中添加元素时，slice的初始大小可以为0，也就是len可以为0。每次向slice中append的时候，如果容量cap不够，会自动对slice进行扩容，也就是改变slice的cap的大小。">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-10-26T15:39:31.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="golang中append函数和copy函数操作slice的不同用法">
-<meta name="twitter:description" content="前几天使用golang时，遇到一个很奇怪的问题，原因是对golang不熟悉，所以记录一下。
-在使用append()函数给slice中添加元素时，slice的初始大小可以为0，也就是len可以为0。每次向slice中append的时候，如果容量cap不够，会自动对slice进行扩容，也就是改变slice的cap的大小。">
+<meta name="twitter:description" content="前几天使用golang时，遇到一个很奇怪的问题，原因是对golang不熟悉，所以记录一下。 在使用append()函数给slice中添加元素时，slice的初始大小可以为0，也就是len可以为0。每次向slice中append的时候，如果容量cap不够，会自动对slice进行扩容，也就是改变slice的cap的大小。">
 
     
     <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
@@ -37,7 +36,7 @@
     
     <link rel="stylesheet" href="/css/style.css">
 </head>
-
+</html>
   <body>
     <header>
       
@@ -116,17 +115,17 @@
 <li>runtime/slice.go</li>
 </ul>
 </blockquote>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">slicecopy</span><span class="params">(to, fm slice, width <span class="keyword">uintptr</span>)</span> <span class="title">int</span></span> &#123;</div><div class="line">    <span class="keyword">if</span> fm.<span class="built_in">len</span> == <span class="number">0</span> || to.<span class="built_in">len</span> == <span class="number">0</span> &#123;</div><div class="line">        <span class="keyword">return</span> <span class="number">0</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    n := fm.<span class="built_in">len</span></div><div class="line">    <span class="keyword">if</span> to.<span class="built_in">len</span> &lt; n &#123;</div><div class="line">        n = to.<span class="built_in">len</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> width == <span class="number">0</span> &#123;</div><div class="line">        <span class="keyword">return</span> n</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> raceenabled &#123;</div><div class="line">        callerpc := getcallerpc(unsafe.Pointer(&amp;to))</div><div class="line">        pc := funcPC(slicecopy)</div><div class="line">        racewriterangepc(to.array, <span class="keyword">uintptr</span>(n*<span class="keyword">int</span>(width)), callerpc, pc)</div><div class="line">        racereadrangepc(fm.array, <span class="keyword">uintptr</span>(n*<span class="keyword">int</span>(width)), callerpc, pc)</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> msanenabled &#123;</div><div class="line">        msanwrite(to.array, <span class="keyword">uintptr</span>(n*<span class="keyword">int</span>(width)))</div><div class="line">        msanread(fm.array, <span class="keyword">uintptr</span>(n*<span class="keyword">int</span>(width)))</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    size := <span class="keyword">uintptr</span>(n) * width</div><div class="line">    <span class="keyword">if</span> size == <span class="number">1</span> &#123; <span class="comment">// common case worth about 2x to do here</span></div><div class="line">        <span class="comment">// <span class="doctag">TODO:</span> is this still worth it with new memmove impl?</span></div><div class="line">        *(*<span class="keyword">byte</span>)(to.array) = *(*<span class="keyword">byte</span>)(fm.array) <span class="comment">// known to be a byte pointer</span></div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        memmove(to.array, fm.array, size)</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> n</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">slicecopy</span><span class="params">(to, fm slice, width <span class="keyword">uintptr</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> fm.<span class="built_in">len</span> == <span class="number">0</span> || to.<span class="built_in">len</span> == <span class="number">0</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    n := fm.<span class="built_in">len</span></span><br><span class="line">    <span class="keyword">if</span> to.<span class="built_in">len</span> &lt; n &#123;</span><br><span class="line">        n = to.<span class="built_in">len</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> width == <span class="number">0</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> n</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> raceenabled &#123;</span><br><span class="line">        callerpc := getcallerpc(unsafe.Pointer(&amp;to))</span><br><span class="line">        pc := funcPC(slicecopy)</span><br><span class="line">        racewriterangepc(to.array, <span class="keyword">uintptr</span>(n*<span class="keyword">int</span>(width)), callerpc, pc)</span><br><span class="line">        racereadrangepc(fm.array, <span class="keyword">uintptr</span>(n*<span class="keyword">int</span>(width)), callerpc, pc)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> msanenabled &#123;</span><br><span class="line">        msanwrite(to.array, <span class="keyword">uintptr</span>(n*<span class="keyword">int</span>(width)))</span><br><span class="line">        msanread(fm.array, <span class="keyword">uintptr</span>(n*<span class="keyword">int</span>(width)))</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    size := <span class="keyword">uintptr</span>(n) * width</span><br><span class="line">    <span class="keyword">if</span> size == <span class="number">1</span> &#123; <span class="comment">// common case worth about 2x to do here</span></span><br><span class="line">        <span class="comment">// <span class="doctag">TODO:</span> is this still worth it with new memmove impl?</span></span><br><span class="line">        *(*<span class="keyword">byte</span>)(to.array) = *(*<span class="keyword">byte</span>)(fm.array) <span class="comment">// known to be a byte pointer</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        memmove(to.array, fm.array, size)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> n</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>从上面的代码可以看出来，如果<code>slice</code>的<code>len</code>值为0，则直接<code>return</code>，不会进行复制操作。</p>
 <p>下面是示例代码，验证一下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="keyword">import</span> (</div><div class="line">    <span class="string">"regexp"</span></div><div class="line">    <span class="string">"log"</span></div><div class="line">    <span class="string">"unsafe"</span></div><div class="line">)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span>  &#123;</div><div class="line">    log.SetFlags(log.Lshortfile|log.LstdFlags)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">sliceTest</span><span class="params">(list []<span class="keyword">int</span>)</span></span>  &#123;</div><div class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(list) &gt; <span class="number">0</span> &#123;</div><div class="line">        log.Println(<span class="string">"func pos 0:"</span>, &amp;list[<span class="number">0</span>])</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    log.Println(<span class="string">"func pointer:"</span>, unsafe.Pointer(&amp;list))</div><div class="line">    log.Println(<span class="string">"------"</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">copyTest</span><span class="params">()</span></span>  &#123;</div><div class="line">    list := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">0</span>)</div><div class="line">    log.Println(<span class="string">"pointer:"</span>, unsafe.Pointer(&amp;list))</div><div class="line">    sliceTest(list)</div><div class="line">    log.Println(<span class="string">"++++++++++++++"</span>)</div><div class="line"></div><div class="line">    list = <span class="built_in">append</span>(list, <span class="number">1</span>)</div><div class="line">    log.Println(<span class="string">"pos 0:"</span>, &amp;list[<span class="number">0</span>])</div><div class="line">    log.Println(<span class="string">"pointer:"</span>, unsafe.Pointer(&amp;list))</div><div class="line">    sliceTest(list)</div><div class="line">    log.Println(<span class="string">"++++++++++++++"</span>)</div><div class="line"></div><div class="line">    list = <span class="built_in">append</span>(list, <span class="number">2</span>)</div><div class="line">    log.Println(<span class="string">"pos 0:"</span>, &amp;list[<span class="number">0</span>])</div><div class="line">    log.Println(<span class="string">"pointer:"</span>, unsafe.Pointer(&amp;list))</div><div class="line">    sliceTest(list)</div><div class="line">    log.Println(<span class="string">"++++++++++++++"</span>)</div><div class="line"></div><div class="line">    copy1 := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">0</span>)</div><div class="line">    <span class="built_in">copy</span>(copy1, list)</div><div class="line">    log.Println(<span class="string">"copy1:"</span>, copy1)</div><div class="line"></div><div class="line">    copy2 := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">2</span>)</div><div class="line">    <span class="built_in">copy</span>(copy2, list)</div><div class="line">    log.Println(<span class="string">"copy2:"</span>, copy2)</div><div class="line"></div><div class="line">    copy3 := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">0</span>, <span class="number">2</span>)</div><div class="line">    <span class="built_in">copy</span>(copy3, list)</div><div class="line">    log.Println(<span class="string">"copy3:"</span>, copy3)</div><div class="line">    log.Println()</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    copyTest()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>输出：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">pointer: 0xc42000a060</div><div class="line">func pointer: 0xc42000a080</div><div class="line">------</div><div class="line">++++++++++++++</div><div class="line">pos 0: 0xc4200160d0</div><div class="line">pointer: 0xc42000a060</div><div class="line">func pos 0: 0xc4200160d0</div><div class="line">func pointer: 0xc42000a0a0</div><div class="line">------</div><div class="line">++++++++++++++</div><div class="line">pos 0: 0xc4200160f0</div><div class="line">pointer: 0xc42000a060</div><div class="line">func pos 0: 0xc4200160f0</div><div class="line">func pointer: 0xc42000a0c0</div><div class="line">------</div><div class="line">++++++++++++++</div><div class="line">copy1: []</div><div class="line">copy2: [1 2]</div><div class="line">copy3: []</div></pre></td></tr></table></figure></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"regexp"</span></span><br><span class="line">    <span class="string">"log"</span></span><br><span class="line">    <span class="string">"unsafe"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span>  &#123;</span><br><span class="line">    log.SetFlags(log.Lshortfile|log.LstdFlags)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sliceTest</span><span class="params">(list []<span class="keyword">int</span>)</span></span>  &#123;</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(list) &gt; <span class="number">0</span> &#123;</span><br><span class="line">        log.Println(<span class="string">"func pos 0:"</span>, &amp;list[<span class="number">0</span>])</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    log.Println(<span class="string">"func pointer:"</span>, unsafe.Pointer(&amp;list))</span><br><span class="line">    log.Println(<span class="string">"------"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">copyTest</span><span class="params">()</span></span>  &#123;</span><br><span class="line">    list := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">0</span>)</span><br><span class="line">    log.Println(<span class="string">"pointer:"</span>, unsafe.Pointer(&amp;list))</span><br><span class="line">    sliceTest(list)</span><br><span class="line">    log.Println(<span class="string">"++++++++++++++"</span>)</span><br><span class="line"></span><br><span class="line">    list = <span class="built_in">append</span>(list, <span class="number">1</span>)</span><br><span class="line">    log.Println(<span class="string">"pos 0:"</span>, &amp;list[<span class="number">0</span>])</span><br><span class="line">    log.Println(<span class="string">"pointer:"</span>, unsafe.Pointer(&amp;list))</span><br><span class="line">    sliceTest(list)</span><br><span class="line">    log.Println(<span class="string">"++++++++++++++"</span>)</span><br><span class="line"></span><br><span class="line">    list = <span class="built_in">append</span>(list, <span class="number">2</span>)</span><br><span class="line">    log.Println(<span class="string">"pos 0:"</span>, &amp;list[<span class="number">0</span>])</span><br><span class="line">    log.Println(<span class="string">"pointer:"</span>, unsafe.Pointer(&amp;list))</span><br><span class="line">    sliceTest(list)</span><br><span class="line">    log.Println(<span class="string">"++++++++++++++"</span>)</span><br><span class="line"></span><br><span class="line">    copy1 := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">0</span>)</span><br><span class="line">    <span class="built_in">copy</span>(copy1, list)</span><br><span class="line">    log.Println(<span class="string">"copy1:"</span>, copy1)</span><br><span class="line"></span><br><span class="line">    copy2 := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">2</span>)</span><br><span class="line">    <span class="built_in">copy</span>(copy2, list)</span><br><span class="line">    log.Println(<span class="string">"copy2:"</span>, copy2)</span><br><span class="line"></span><br><span class="line">    copy3 := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">0</span>, <span class="number">2</span>)</span><br><span class="line">    <span class="built_in">copy</span>(copy3, list)</span><br><span class="line">    log.Println(<span class="string">"copy3:"</span>, copy3)</span><br><span class="line">    log.Println()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    copyTest()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">pointer: 0xc42000a060</span><br><span class="line">func pointer: 0xc42000a080</span><br><span class="line">------</span><br><span class="line">++++++++++++++</span><br><span class="line">pos 0: 0xc4200160d0</span><br><span class="line">pointer: 0xc42000a060</span><br><span class="line">func pos 0: 0xc4200160d0</span><br><span class="line">func pointer: 0xc42000a0a0</span><br><span class="line">------</span><br><span class="line">++++++++++++++</span><br><span class="line">pos 0: 0xc4200160f0</span><br><span class="line">pointer: 0xc42000a060</span><br><span class="line">func pos 0: 0xc4200160f0</span><br><span class="line">func pointer: 0xc42000a0c0</span><br><span class="line">------</span><br><span class="line">++++++++++++++</span><br><span class="line">copy1: []</span><br><span class="line">copy2: [1 2]</span><br><span class="line">copy3: []</span><br></pre></td></tr></table></figure></p>
 <p>从上面的日志可以看出来，copy1和copy3都是空，没有进行复制操作；每次进行扩容的时候，<code>pos 0:</code>的地址都会发生变化。另外还可以看出来，当把<code>slice</code>传给一个函数时，对<code>slice</code>的结构体发生的值传递，而<code>slice</code>中指向数据内容的地址没有变，即上面<code>pos 0:</code>和<code>func pos 0:</code>输出的地址是一致。</p>
 <p>同样可以在<code>runtime/slice.go</code>源码中的<code>makeslice()</code>函数中可以看到创建的<code>slice</code>结构体，如下所示：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> slice <span class="keyword">struct</span> &#123;</div><div class="line">    array unsafe.Pointer</div><div class="line">    <span class="built_in">len</span>   <span class="keyword">int</span></div><div class="line">    <span class="built_in">cap</span>   <span class="keyword">int</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> slice <span class="keyword">struct</span> &#123;</span><br><span class="line">    array unsafe.Pointer</span><br><span class="line">    <span class="built_in">len</span>   <span class="keyword">int</span></span><br><span class="line">    <span class="built_in">cap</span>   <span class="keyword">int</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>也就是说当把<code>slice</code>直接传给函数时，会对这个<code>slice</code>结构体内容进行复制，而<code>array</code>的地址不会变，始终指向数组内容的首元素地址。</p>
 <p>另外看这个<code>runtime/slice.go</code>的源码时，还发现一个有趣的细节，代码如下所示：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">growslice</span><span class="params">(et *_type, old slice, <span class="built_in">cap</span> <span class="keyword">int</span>)</span> <span class="title">slice</span></span> &#123;</div><div class="line">    <span class="comment">// ...</span></div><div class="line"></div><div class="line">    newcap := old.<span class="built_in">cap</span></div><div class="line">    doublecap := newcap + newcap</div><div class="line">    <span class="keyword">if</span> <span class="built_in">cap</span> &gt; doublecap &#123;</div><div class="line">        newcap = <span class="built_in">cap</span></div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">if</span> old.<span class="built_in">len</span> &lt; <span class="number">1024</span> &#123;</div><div class="line">            newcap = doublecap</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="keyword">for</span> newcap &lt; <span class="built_in">cap</span> &#123;</div><div class="line">                newcap += newcap / <span class="number">4</span></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// ...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">growslice</span><span class="params">(et *_type, old slice, <span class="built_in">cap</span> <span class="keyword">int</span>)</span> <span class="title">slice</span></span> &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">    newcap := old.<span class="built_in">cap</span></span><br><span class="line">    doublecap := newcap + newcap</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">cap</span> &gt; doublecap &#123;</span><br><span class="line">        newcap = <span class="built_in">cap</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> old.<span class="built_in">len</span> &lt; <span class="number">1024</span> &#123;</span><br><span class="line">            newcap = doublecap</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> newcap &lt; <span class="built_in">cap</span> &#123;</span><br><span class="line">                newcap += newcap / <span class="number">4</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在<code>slice</code>进行扩容的时候，如果其容量小于<code>1024</code>，则容量增加一倍；否则容量以<code>1.25</code>倍的数量增加。</p>
 <p>以上golang源码是基于1.9.1版本。</p>
   
@@ -254,6 +253,10 @@
 		  
 		
 		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
 			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
 		  
 		
@@ -287,10 +290,6 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/SQLite性能优化/" title="SQLite性能优化">SQLite性能优化<sup>2</sup></a></li>
 			
 		
@@ -299,19 +298,15 @@
 			
 		
 			
-				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
+				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/InvocationTargetException-ActivityNotFoundException-android-os-FileUriExposedException/" title="InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException">InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException<sup>1</sup></a></li>
+				<li><a href="/tags/append-copy-slice/" title="append copy slice">append copy slice<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/android死锁分析/" title="android死锁分析">android死锁分析<sup>1</sup></a></li>
 			
 		
 			
@@ -323,15 +318,7 @@
 			
 		
 			
-				<li><a href="/tags/EXACTLY-AT-MOST-UNSPECIFIED/" title="EXACTLY AT_MOST UNSPECIFIED">EXACTLY AT_MOST UNSPECIFIED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/gradle配置/" title="gradle配置">gradle配置<sup>1</sup></a></li>
+				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
 			
 		
 			
@@ -339,11 +326,7 @@
 			
 		
 			
-				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
+				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
 			
 		
 			
@@ -351,7 +334,7 @@
 			
 		
 			
-				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
 			
 		
 			
@@ -359,11 +342,31 @@
 			
 		
 			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/gradle打jar包-混淆/" title="gradle打jar包 混淆">gradle打jar包 混淆<sup>1</sup></a></li>
+				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/boost-clion/" title="boost clion">boost clion<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
 			
 		
 		</ul>
@@ -426,7 +429,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2018 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
 		
 		<a href="/about" target="_blank" title="jacpy">jacpy</a>
 		

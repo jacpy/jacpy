@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-CN">
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
   
     <title>android听云升级后编译报错 | jacpy&#39;s blog</title>
@@ -12,11 +12,13 @@
 
     
     <meta name="description" content="升级遇到的问题项目中由于需要，集成了听云的SDK，最近把听云的SDK版本从2.4.4升级到2.5.7，重新运行时，在编译过程中报了如下错误：">
+<meta name="keywords" content="听云">
 <meta property="og:type" content="article">
 <meta property="og:title" content="android听云升级后编译报错">
 <meta property="og:url" content="http://www.jacpy.com/2017/08/03/network-bench-update-compile-error-md.html">
-<meta property="og:site_name" content="jacpy's blog">
+<meta property="og:site_name" content="jacpy&#39;s blog">
 <meta property="og:description" content="升级遇到的问题项目中由于需要，集成了听云的SDK，最近把听云的SDK版本从2.4.4升级到2.5.7，重新运行时，在编译过程中报了如下错误：">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-08-07T05:16:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="android听云升级后编译报错">
@@ -34,7 +36,7 @@
     
     <link rel="stylesheet" href="/css/style.css">
 </head>
-
+</html>
   <body>
     <header>
       
@@ -105,13 +107,13 @@
 		
 		<h2 id="升级遇到的问题"><a href="#升级遇到的问题" class="headerlink" title="升级遇到的问题"></a>升级遇到的问题</h2><p>项目中由于需要，集成了听云的SDK，最近把听云的SDK版本从<code>2.4.4</code>升级到<code>2.5.7</code>，重新运行时，在编译过程中报了如下错误：</p>
 <a id="more"></a>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">[NBSAgent.error] Error:com.networkbench.agent.compile.a: NetworkBench NewLens Android Agent Error: Your agent and class rewriter versions do not match: agent = 2.4.4 class rewriter = 2.5.7.  You probably need to update one of these components.</div><div class="line">java.lang.RuntimeException: com.networkbench.agent.compile.a: NetworkBench NewLens Android Agent Error: Your agent and class rewriter versions do not match: agent = 2.4.4 class rewriter = 2.5.7.  You probably need to update one of these components.</div><div class="line">    at com.networkbench.agent.compile.NBSStubPreMain$e.a(SourceFile:517)</div><div class="line">    at com.networkbench.agent.compile.NBSStubPreMain$e.a(SourceFile:296)</div><div class="line">    at com.networkbench.agent.compile.NBSStubPreMain$e$1$1.invoke(SourceFile:328)</div><div class="line">    at com.networkbench.agent.compile.NBSStubPreMain$e.invoke(SourceFile:425)</div><div class="line">    at com.android.dx.command.dexer.Main.processClass(Main.java)</div><div class="line">    at com.android.dx.command.dexer.Main.processFileBytes(Main.java:723)</div><div class="line">    at com.android.dx.command.dexer.Main.access$1200(Main.java:85)</div><div class="line">    at com.android.dx.command.dexer.Main$FileBytesConsumer.processFileBytes(Main.java:1653)</div><div class="line">    at com.android.dx.cf.direct.ClassPathOpener.processArchive(ClassPathOpener.java:284)</div><div class="line">    at com.android.dx.cf.direct.ClassPathOpener.processOne(ClassPathOpener.java:166)</div><div class="line">    at com.android.dx.cf.direct.ClassPathOpener.process(ClassPathOpener.java:144)</div><div class="line">    at com.android.dx.command.dexer.Main.processOne(Main.java:677)</div><div class="line">    at com.android.dx.command.dexer.Main.processAllFiles(Main.java:569)</div><div class="line">    at com.android.dx.command.dexer.Main.runMultiDex(Main.java:366)</div><div class="line">    at com.android.dx.command.dexer.Main.run(Main.java:275)</div><div class="line">    at com.android.dx.command.dexer.Main.main(Main.java:245)</div><div class="line">    at com.android.dx.command.Main.main(Main.java:106)</div><div class="line">Caused by: com.networkbench.agent.compile.a: NetworkBench NewLens Android Agent Error: Your agent and class rewriter versions do not match: agent = 2.4.4 class rewriter = 2.5.7.  You probably need to update one of these components.</div><div class="line">    at com.networkbench.agent.compile.a.e.a(SourceFile:91)</div><div class="line">    at com.networkbench.agent.compile.a.h.a(SourceFile:43)</div><div class="line">    at com.networkbench.agent.compile.b.f.a(SourceFile:644)</div><div class="line">    at com.networkbench.agent.compile.b.f.a(SourceFile:439)</div><div class="line">    at com.networkbench.agent.compile.NBSStubPreMain$e.a(SourceFile:479)</div><div class="line">    ... 16 more</div><div class="line"></div><div class="line">Dex: Error converting bytecode to dex:</div><div class="line">Cause: java.lang.RuntimeException: Exception parsing classes</div><div class="line">    UNEXPECTED TOP-LEVEL EXCEPTION:</div><div class="line">    java.lang.RuntimeException: Exception parsing classes</div><div class="line">        at com.android.dx.command.dexer.Main.processClass(Main.java:760)</div><div class="line">        at com.android.dx.command.dexer.Main.processFileBytes(Main.java:723)</div><div class="line">        at com.android.dx.command.dexer.Main.access$1200(Main.java:85)</div><div class="line">        at com.android.dx.command.dexer.Main$FileBytesConsumer.processFileBytes(Main.java:1653)</div><div class="line">        at com.android.dx.cf.direct.ClassPathOpener.processArchive(ClassPathOpener.java:284)</div><div class="line">        at com.android.dx.cf.direct.ClassPathOpener.processOne(ClassPathOpener.java:166)</div><div class="line">        at com.android.dx.cf.direct.ClassPathOpener.process(ClassPathOpener.java:144)</div><div class="line">        at com.android.dx.command.dexer.Main.processOne(Main.java:677)</div><div class="line">        at com.android.dx.command.dexer.Main.processAllFiles(Main.java:569)</div><div class="line">        at com.android.dx.command.dexer.Main.runMultiDex(Main.java:366)</div><div class="line">        at com.android.dx.command.dexer.Main.run(Main.java:275)</div><div class="line">        at com.android.dx.command.dexer.Main.main(Main.java:245)</div><div class="line">        at com.android.dx.command.Main.main(Main.java:106)</div><div class="line">    Caused by: java.lang.NullPointerException</div><div class="line">        at com.android.dx.util.ByteArray.&lt;init&gt;(ByteArray.java:76)</div><div class="line">        at com.android.dx.cf.direct.DirectClassFile.&lt;init&gt;(DirectClassFile.java:206)</div><div class="line">        at com.android.dx.command.dexer.Main.parseClass(Main.java:769)</div><div class="line">        at com.android.dx.command.dexer.Main.access$1500(Main.java:85)</div><div class="line">        at com.android.dx.command.dexer.Main$ClassParserTask.call(Main.java:1700)</div><div class="line">        at com.android.dx.command.dexer.Main.processClass(Main.java:755)</div><div class="line">        ... 12 more</div><div class="line">    </div><div class="line">1 error; aborting</div><div class="line">:app:transformClassesWithDexForDebug FAILED</div><div class="line">:app:networkBenchNewLensDeinstrumentTask</div><div class="line">[NBSAgent.debug] NetworkBench begin</div><div class="line"></div><div class="line">FAILURE: Build failed with an exception.</div><div class="line"></div><div class="line">* What went wrong:</div><div class="line">Execution failed for task &apos;:app:transformClassesWithDexForDebug&apos;.</div><div class="line">&gt; com.android.build.api.transform.TransformException: com.android.ide.common.process.ProcessException: java.util.concurrent.ExecutionException: com.android.ide.common.process.ProcessException: Error while executing java process with main class com.android.dx.command.Main with arguments &#123;--dex --num-threads=4 --multi-dex --main-dex-list /data/jenkins/workspace/app/build/intermediates/multi-dex/debug/maindexlist.txt --output /data/jenkins/workspace/app/build/intermediates/transforms/dex/debug/folders/1000/1f/main /data/jenkins/workspace/app/build/intermediates/transforms/jarMerging/debug/jars/1/1f/combined.jar&#125;</div><div class="line"></div><div class="line">* Try:</div><div class="line">Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.</div><div class="line"></div><div class="line">BUILD FAILED</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[NBSAgent.error] Error:com.networkbench.agent.compile.a: NetworkBench NewLens Android Agent Error: Your agent and class rewriter versions do not match: agent = 2.4.4 class rewriter = 2.5.7.  You probably need to update one of these components.</span><br><span class="line">java.lang.RuntimeException: com.networkbench.agent.compile.a: NetworkBench NewLens Android Agent Error: Your agent and class rewriter versions do not match: agent = 2.4.4 class rewriter = 2.5.7.  You probably need to update one of these components.</span><br><span class="line">    at com.networkbench.agent.compile.NBSStubPreMain$e.a(SourceFile:517)</span><br><span class="line">    at com.networkbench.agent.compile.NBSStubPreMain$e.a(SourceFile:296)</span><br><span class="line">    at com.networkbench.agent.compile.NBSStubPreMain$e$1$1.invoke(SourceFile:328)</span><br><span class="line">    at com.networkbench.agent.compile.NBSStubPreMain$e.invoke(SourceFile:425)</span><br><span class="line">    at com.android.dx.command.dexer.Main.processClass(Main.java)</span><br><span class="line">    at com.android.dx.command.dexer.Main.processFileBytes(Main.java:723)</span><br><span class="line">    at com.android.dx.command.dexer.Main.access$1200(Main.java:85)</span><br><span class="line">    at com.android.dx.command.dexer.Main$FileBytesConsumer.processFileBytes(Main.java:1653)</span><br><span class="line">    at com.android.dx.cf.direct.ClassPathOpener.processArchive(ClassPathOpener.java:284)</span><br><span class="line">    at com.android.dx.cf.direct.ClassPathOpener.processOne(ClassPathOpener.java:166)</span><br><span class="line">    at com.android.dx.cf.direct.ClassPathOpener.process(ClassPathOpener.java:144)</span><br><span class="line">    at com.android.dx.command.dexer.Main.processOne(Main.java:677)</span><br><span class="line">    at com.android.dx.command.dexer.Main.processAllFiles(Main.java:569)</span><br><span class="line">    at com.android.dx.command.dexer.Main.runMultiDex(Main.java:366)</span><br><span class="line">    at com.android.dx.command.dexer.Main.run(Main.java:275)</span><br><span class="line">    at com.android.dx.command.dexer.Main.main(Main.java:245)</span><br><span class="line">    at com.android.dx.command.Main.main(Main.java:106)</span><br><span class="line">Caused by: com.networkbench.agent.compile.a: NetworkBench NewLens Android Agent Error: Your agent and class rewriter versions do not match: agent = 2.4.4 class rewriter = 2.5.7.  You probably need to update one of these components.</span><br><span class="line">    at com.networkbench.agent.compile.a.e.a(SourceFile:91)</span><br><span class="line">    at com.networkbench.agent.compile.a.h.a(SourceFile:43)</span><br><span class="line">    at com.networkbench.agent.compile.b.f.a(SourceFile:644)</span><br><span class="line">    at com.networkbench.agent.compile.b.f.a(SourceFile:439)</span><br><span class="line">    at com.networkbench.agent.compile.NBSStubPreMain$e.a(SourceFile:479)</span><br><span class="line">    ... 16 more</span><br><span class="line"></span><br><span class="line">Dex: Error converting bytecode to dex:</span><br><span class="line">Cause: java.lang.RuntimeException: Exception parsing classes</span><br><span class="line">    UNEXPECTED TOP-LEVEL EXCEPTION:</span><br><span class="line">    java.lang.RuntimeException: Exception parsing classes</span><br><span class="line">        at com.android.dx.command.dexer.Main.processClass(Main.java:760)</span><br><span class="line">        at com.android.dx.command.dexer.Main.processFileBytes(Main.java:723)</span><br><span class="line">        at com.android.dx.command.dexer.Main.access$1200(Main.java:85)</span><br><span class="line">        at com.android.dx.command.dexer.Main$FileBytesConsumer.processFileBytes(Main.java:1653)</span><br><span class="line">        at com.android.dx.cf.direct.ClassPathOpener.processArchive(ClassPathOpener.java:284)</span><br><span class="line">        at com.android.dx.cf.direct.ClassPathOpener.processOne(ClassPathOpener.java:166)</span><br><span class="line">        at com.android.dx.cf.direct.ClassPathOpener.process(ClassPathOpener.java:144)</span><br><span class="line">        at com.android.dx.command.dexer.Main.processOne(Main.java:677)</span><br><span class="line">        at com.android.dx.command.dexer.Main.processAllFiles(Main.java:569)</span><br><span class="line">        at com.android.dx.command.dexer.Main.runMultiDex(Main.java:366)</span><br><span class="line">        at com.android.dx.command.dexer.Main.run(Main.java:275)</span><br><span class="line">        at com.android.dx.command.dexer.Main.main(Main.java:245)</span><br><span class="line">        at com.android.dx.command.Main.main(Main.java:106)</span><br><span class="line">    Caused by: java.lang.NullPointerException</span><br><span class="line">        at com.android.dx.util.ByteArray.&lt;init&gt;(ByteArray.java:76)</span><br><span class="line">        at com.android.dx.cf.direct.DirectClassFile.&lt;init&gt;(DirectClassFile.java:206)</span><br><span class="line">        at com.android.dx.command.dexer.Main.parseClass(Main.java:769)</span><br><span class="line">        at com.android.dx.command.dexer.Main.access$1500(Main.java:85)</span><br><span class="line">        at com.android.dx.command.dexer.Main$ClassParserTask.call(Main.java:1700)</span><br><span class="line">        at com.android.dx.command.dexer.Main.processClass(Main.java:755)</span><br><span class="line">        ... 12 more</span><br><span class="line">    </span><br><span class="line">1 error; aborting</span><br><span class="line">:app:transformClassesWithDexForDebug FAILED</span><br><span class="line">:app:networkBenchNewLensDeinstrumentTask</span><br><span class="line">[NBSAgent.debug] NetworkBench begin</span><br><span class="line"></span><br><span class="line">FAILURE: Build failed with an exception.</span><br><span class="line"></span><br><span class="line">* What went wrong:</span><br><span class="line">Execution failed for task &apos;:app:transformClassesWithDexForDebug&apos;.</span><br><span class="line">&gt; com.android.build.api.transform.TransformException: com.android.ide.common.process.ProcessException: java.util.concurrent.ExecutionException: com.android.ide.common.process.ProcessException: Error while executing java process with main class com.android.dx.command.Main with arguments &#123;--dex --num-threads=4 --multi-dex --main-dex-list /data/jenkins/workspace/app/build/intermediates/multi-dex/debug/maindexlist.txt --output /data/jenkins/workspace/app/build/intermediates/transforms/dex/debug/folders/1000/1f/main /data/jenkins/workspace/app/build/intermediates/transforms/jarMerging/debug/jars/1/1f/combined.jar&#125;</span><br><span class="line"></span><br><span class="line">* Try:</span><br><span class="line">Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.</span><br><span class="line"></span><br><span class="line">BUILD FAILED</span><br></pre></td></tr></table></figure>
 <h2 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h2><p>遇到了上面的编译错误问题，先google了一下，没有人提出了这样的错误，也没有解决方案，而且从搜索的结果来看，用的人也不多。这问题只能是自己解决了，从上面的错误提示来看，这个错误是听云中抛出来的。也就是听云干预了编译过程。从这个<code>NetworkBench NewLens Android Agent Error: Your agent and class rewriter versions do not match: agent = 2.4.4 class rewriter = 2.5.7.  You probably need to update one of these components.</code>错误提示上来看，说是版本没有对应起来。的确，听云在<code>project</code>下面的<code>build.gradle</code>中的<code>dependencies</code>块中的<code>classpath</code>中和<code>module</code>下面的<code>build.gradle</code>中的<code>dependencies</code>块中的<code>compile</code>两个地方都要指定一个版本SDK。一个是用来干预编译过程，植入代码；一个则是要植入的代码。</p>
 <p>引入方式如下代码所示：</p>
 <p><code>project</code>目录下面的<code>build.gradle</code>：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">dependencies &#123;</div><div class="line"></div><div class="line">    classpath &apos;com.networkbench.newlens.agent.android:agent-gradle-plugin:2.5.7&apos;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line"></span><br><span class="line">    classpath &apos;com.networkbench.newlens.agent.android:agent-gradle-plugin:2.5.7&apos;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><code>app</code>目录下面的<code>build.gradle</code>：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">        </div><div class="line">   	compile &apos;com.networkbench.newlens.agent.android:nbs.newlens.agent:2.5.7&apos;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">        </span><br><span class="line">   	compile &apos;com.networkbench.newlens.agent.android:nbs.newlens.agent:2.5.7&apos;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>那为什么会有上面有错误？按道理说两者都具备就可以了，猜是听云的版本兼容性问题，也就是<code>2.5.7</code>不兼容<code>2.4.4</code>版本。也就是上面说的<code>classpath</code>与<code>compile</code>版本要一一对应，版本号必须保持一致。但修改时的版本号是保持一致的呀？问题出在哪儿？缓存问题？</p>
 <p>于是先<code>clean</code>，然后再重新<code>build了</code>一下，再运行时，发现问题依旧。没折了，我把版本号改回去<code>2.4.4</code>总行吧？结果还是编译报错，无语了，试了几次，还是这样，现在感觉到自己进入到进退两难的地步了。最后重新启动<code>AS</code>，再重新运行了，问题解决了，编译时不报错了，真是太惊喜，太意外了。</p>
 <p>OK，本地问题解决了，服务器的自动构建上又出现问题。按照解决本地问题的思路，不可能重启服务器吧？仔细一想，还是缓存问题？问了运维，说每次构建都会自动清除<code>build</code>目录中的内容。但心想，与<code>build</code>目录的内容无关，自己解决问题时都删了好几次，问题依旧没有解决。突然想起平时经常被<code>kill</code>的<code>java.exe</code>进程，这个进程里面会缓存一些东西，编译时经常会看到<code>Starting a Gradle Daemon</code>这样的提示，<code>AS</code>要提高编译速度，肯定会在这个进程里面缓存一些东西，不然这个<code>java.exe</code>进程内存占用会有几百M甚至超过1个G？</p>
@@ -244,6 +246,10 @@
 		  
 		
 		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
 			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
 		  
 		
@@ -277,10 +283,6 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/SQLite性能优化/" title="SQLite性能优化">SQLite性能优化<sup>2</sup></a></li>
 			
 		
@@ -289,19 +291,15 @@
 			
 		
 			
-				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
+				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/InvocationTargetException-ActivityNotFoundException-android-os-FileUriExposedException/" title="InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException">InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException<sup>1</sup></a></li>
+				<li><a href="/tags/append-copy-slice/" title="append copy slice">append copy slice<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/android死锁分析/" title="android死锁分析">android死锁分析<sup>1</sup></a></li>
 			
 		
 			
@@ -313,15 +311,7 @@
 			
 		
 			
-				<li><a href="/tags/EXACTLY-AT-MOST-UNSPECIFIED/" title="EXACTLY AT_MOST UNSPECIFIED">EXACTLY AT_MOST UNSPECIFIED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/gradle配置/" title="gradle配置">gradle配置<sup>1</sup></a></li>
+				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
 			
 		
 			
@@ -329,11 +319,7 @@
 			
 		
 			
-				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
+				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
 			
 		
 			
@@ -341,7 +327,7 @@
 			
 		
 			
-				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
 			
 		
 			
@@ -349,11 +335,31 @@
 			
 		
 			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/gradle打jar包-混淆/" title="gradle打jar包 混淆">gradle打jar包 混淆<sup>1</sup></a></li>
+				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/boost-clion/" title="boost clion">boost clion<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
 			
 		
 		</ul>
@@ -416,7 +422,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2018 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
 		
 		<a href="/about" target="_blank" title="jacpy">jacpy</a>
 		

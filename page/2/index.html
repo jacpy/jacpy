@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-CN">
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
   
     <title>jacpy&#39;s blog</title>
@@ -12,11 +12,12 @@
 
     
     <meta property="og:type" content="website">
-<meta property="og:title" content="jacpy's blog">
+<meta property="og:title" content="jacpy&#39;s blog">
 <meta property="og:url" content="http://www.jacpy.com/page/2/index.html">
-<meta property="og:site_name" content="jacpy's blog">
+<meta property="og:site_name" content="jacpy&#39;s blog">
+<meta property="og:locale" content="zh-CN">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="jacpy's blog">
+<meta name="twitter:title" content="jacpy&#39;s blog">
 
     
     <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
@@ -30,7 +31,7 @@
     
     <link rel="stylesheet" href="/css/style.css">
 </head>
-
+</html>
   <body>
     <header>
       
@@ -71,6 +72,71 @@
     </header>
     <div id="container">
       <div id="main">
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/04/24/android-anr-thread-lock-analysis.html" title="android ANR——线程死锁分析" itemprop="url">android ANR——线程死锁分析</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
+		
+  <p class="article-time">
+    <time datetime="2017-04-24T01:55:18.000Z" itemprop="datePublished"> 发表于 2017-04-24</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>前几天遇到了线程死锁问题，导致系统<code>ANR</code>。然后拿到系统<code>/data/anr/traces.txt</code>日志文件后，进行分析，然后找到原因，并解决了问题。</p>
+<p>java线程产生死锁的原因，要么同时满足死锁的四个条件，要么是android系统机制的原因，认为发生了类似死锁的情况而导致系统<code>ANR</code>。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2017/04/24/android-anr-thread-lock-analysis.html#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/android/">android</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/android死锁分析/">android死锁分析</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/2017/04/24/android-anr-thread-lock-analysis.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2017/04/24/android-anr-thread-lock-analysis.html" data-count-type="comments">&nbsp;</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
 
    
     
@@ -156,7 +222,7 @@
     <div class="article-content">
         
         <p>昨天准备把写好的代码使用gradle打jar包出来，并打算加混淆。打jar包容易，结果在混淆上走了弯路。</p>
-<p>首先打jar包的配置很简单，使用jar的task，可以参考<a href="https://docs.gradle.org/3.3/dsl/org.gradle.api.tasks.bundling.Jar.html">gradle官方文档</a>，具体代码如下：</p>
+<p>首先打jar包的配置很简单，使用jar的task，可以参考<a href="https://docs.gradle.org/3.3/dsl/org.gradle.api.tasks.bundling.Jar.html" target="_blank" rel="noopener">gradle官方文档</a>，具体代码如下：</p>
         
         
         <p class="article-more-link">
@@ -220,7 +286,7 @@
 </header>
     <div class="article-content">
         
-        <p>总结一下学习十来天go语言的成果，看了一遍语法之后，写了一个抓取HTML然后转换成PDF文件的程序，分享一下，代码点<a href="https://github.com/jacpy/GoDemo/blob/master/html2pdf/html2pdf.go">这里</a>。代码在目前go的1.7.5版本和1.8版本上运行没有问题，据说go向下兼容，而不像swift。但发现有些比较老的资料上的代码，在新的go版本上看不到效果，比如打印地址<code>%p</code>，在新版本中必须得使用<code>unsafe.Pointer(p)</code>转换一下，否则格式化输出指针变量不会打印出内存地址。</p>
+        <p>总结一下学习十来天go语言的成果，看了一遍语法之后，写了一个抓取HTML然后转换成PDF文件的程序，分享一下，代码点<a href="https://github.com/jacpy/GoDemo/blob/master/html2pdf/html2pdf.go" target="_blank" rel="noopener">这里</a>。代码在目前go的1.7.5版本和1.8版本上运行没有问题，据说go向下兼容，而不像swift。但发现有些比较老的资料上的代码，在新的go版本上看不到效果，比如打印地址<code>%p</code>，在新版本中必须得使用<code>unsafe.Pointer(p)</code>转换一下，否则格式化输出指针变量不会打印出内存地址。</p>
 <p>其中使用了两个第三方库：</p>
         
         
@@ -346,7 +412,7 @@
     <div class="article-content">
         
         <p>昨天遇到一个很奇葩的问题，使用了华为HMS SDK中的推送功能，然后插件布局文件中的TimePicker初始化时，会报如下错误：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">android.view.InflateException: Binary XML file line #47: Error inflating class huawei.android.widget.TimePicker</div></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">android.view.InflateException: Binary XML file line #47: Error inflating class huawei.android.widget.TimePicker</span><br></pre></td></tr></table></figure>
         
         
         <p class="article-more-link">
@@ -479,7 +545,7 @@
 <ul>
 <li><p>前几天在给一个同事讲&amp;运算取变量的状态写法，原因是我看到他代码中这样写会产生问题，所以想纠正他一下，于是就跟他说你可以参考下android系统中View在measure时使用的状态是怎么通过&amp;运算获取的。</p>
 </li>
-<li><p>他也说这几个状态是与View在布局文件中设置width或height时，有个对应关系。就这个机会，深入的了解了下View的宽高的measure是怎么与<a href="https://developer.android.google.cn/reference/android/view/View.MeasureSpec.html#EXACTLY">android.view.View.MeasureSpec.EXACTLY</a>、<a href="https://developer.android.google.cn/reference/android/view/View.MeasureSpec.html#AT_MOST">android.view.View.MeasureSpec.AT_MOST</a>、<a href="https://developer.android.google.cn/reference/android/view/View.MeasureSpec.html#UNSPECIFIED">android.view.View.MeasureSpec.UNSPECIFIED</a>这三种状态一一对应的。于是就有了下文。</p>
+<li><p>他也说这几个状态是与View在布局文件中设置width或height时，有个对应关系。就这个机会，深入的了解了下View的宽高的measure是怎么与<a href="https://developer.android.google.cn/reference/android/view/View.MeasureSpec.html#EXACTLY" target="_blank" rel="noopener">android.view.View.MeasureSpec.EXACTLY</a>、<a href="https://developer.android.google.cn/reference/android/view/View.MeasureSpec.html#AT_MOST" target="_blank" rel="noopener">android.view.View.MeasureSpec.AT_MOST</a>、<a href="https://developer.android.google.cn/reference/android/view/View.MeasureSpec.html#UNSPECIFIED" target="_blank" rel="noopener">android.view.View.MeasureSpec.UNSPECIFIED</a>这三种状态一一对应的。于是就有了下文。</p>
 </li>
 </ul>
 </blockquote>
@@ -941,7 +1007,7 @@
     <div class="article-content">
         
         <p>这两天在集成微信支付的功能，先是客户在插件中集成支付功能，后来发现回调不起来，于是将支付功能集成到了主应用，然后暴露接口给插件使用。费劲几个小时的折腾，于是乎就有下文。</p>
-<p>我们先来看下官网对于code为-1的说明（官网说明地址<a href="http://kf.qq.com/faq/140225MveaUz150413VNj6nm.html">点这里</a>）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">开放平台配置的报名和应用签名是否一致：（android）；确认是否使用正式的keystore打包apk并安装调试；（android）；提交订单部分需要在服务器端完成。</div></pre></td></tr></table></figure></p>
+<p>我们先来看下官网对于code为-1的说明（官网说明地址<a href="http://kf.qq.com/faq/140225MveaUz150413VNj6nm.html" target="_blank" rel="noopener">点这里</a>）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">开放平台配置的报名和应用签名是否一致：（android）；确认是否使用正式的keystore打包apk并安装调试；（android）；提交订单部分需要在服务器端完成。</span><br></pre></td></tr></table></figure></p>
 <p>先请仔细阅读，你遇到的问题就在这段描述中。其中注意，中间还错别字<code>报名</code>应为<code>包名</code>（鹅厂果然不一样）。</p>
         
         
@@ -1007,7 +1073,7 @@
     <div class="article-content">
         
         <p>gradle在build混淆后的代码时，会出现如下错误提示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">Warning: there were 2 unresolved references to library class members.</div><div class="line">         You probably need to update the library versions.</div><div class="line">         Alternatively, you may have to specify the option </div><div class="line">         &apos;-dontskipnonpubliclibraryclassmembers&apos;.</div><div class="line">         (http://proguard.sourceforge.net/manual/troubleshooting.html#unresolvedlibraryclassmember)</div><div class="line">Warning: Exception while processing task java.io.IOException: Please correct the above warnings first.</div><div class="line">:app:transformClassesAndResourcesWithProguardForRelease FAILED</div><div class="line"></div><div class="line">FAILURE: Build failed with an exception.</div><div class="line"></div><div class="line">* What went wrong:</div><div class="line">Execution failed for task &apos;:app:transformClassesAndResourcesWithProguardForRelease&apos;.</div><div class="line"> java.io.IOException: Please correct the above warnings first.</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Warning: there were 2 unresolved references to library class members.</span><br><span class="line">         You probably need to update the library versions.</span><br><span class="line">         Alternatively, you may have to specify the option </span><br><span class="line">         &apos;-dontskipnonpubliclibraryclassmembers&apos;.</span><br><span class="line">         (http://proguard.sourceforge.net/manual/troubleshooting.html#unresolvedlibraryclassmember)</span><br><span class="line">Warning: Exception while processing task java.io.IOException: Please correct the above warnings first.</span><br><span class="line">:app:transformClassesAndResourcesWithProguardForRelease FAILED</span><br><span class="line"></span><br><span class="line">FAILURE: Build failed with an exception.</span><br><span class="line"></span><br><span class="line">* What went wrong:</span><br><span class="line">Execution failed for task &apos;:app:transformClassesAndResourcesWithProguardForRelease&apos;.</span><br><span class="line"> java.io.IOException: Please correct the above warnings first.</span><br></pre></td></tr></table></figure>
         
         
         <p class="article-more-link">
@@ -1270,7 +1336,7 @@
 </header>
     <div class="article-content">
         
-        <h3 id="apkpatch工具实现分析"><a href="#apkpatch工具实现分析" class="headerlink" title="apkpatch工具实现分析"></a>apkpatch工具实现分析</h3><p>apkpatch工具是配套阿里AndFix框架的一个生成aptach补丁包的工具，链接地址是：<a href="https://github.com/alibaba/AndFix/tree/master/tools">https://github.com/alibaba/AndFix/tree/master/tools</a> 。主要包含反编译对比两个APK的类和方法、修改类名写入PACTH.MF文件、生成补丁apatch包。</p>
+        <h3 id="apkpatch工具实现分析"><a href="#apkpatch工具实现分析" class="headerlink" title="apkpatch工具实现分析"></a>apkpatch工具实现分析</h3><p>apkpatch工具是配套阿里AndFix框架的一个生成aptach补丁包的工具，链接地址是：<a href="https://github.com/alibaba/AndFix/tree/master/tools" target="_blank" rel="noopener">https://github.com/alibaba/AndFix/tree/master/tools</a> 。主要包含反编译对比两个APK的类和方法、修改类名写入PACTH.MF文件、生成补丁apatch包。</p>
 <blockquote>
 <p>由于没有从网上找到对应的源码，以下分析过程均通过jd-gui工具反编译jar包阅读反编译代码完成。</p>
 </blockquote>
@@ -1305,71 +1371,6 @@
 	
 	  	<span></span>
 		<a href="/2016/03/24/apkpatch-tool-analysis.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2016/03/24/apkpatch-tool-analysis.html" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/10/30/clear-genymotion-virturebox-cache-md.html" title="Genymotion模拟器长期使用占用大量磁盘空间解决方案" itemprop="url">Genymotion模拟器长期使用占用大量磁盘空间解决方案</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
-		
-  <p class="article-time">
-    <time datetime="2015-10-30T12:54:28.000Z" itemprop="datePublished"> 发表于 2015-10-30</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>今天下午在调应用，突然Android Studio弹出<code>Low disk space on a Android Studio system directory partition</code>提示，磁盘空间不够了？赶紧跑去看了磁盘用量。傻眼了，早上来还有几百M的C盘，现在只剩下几十M了。早在之前就已经注意到了C盘容量会莫名的减少，但是没有注意是哪个程序占用了更多的空间，今天决定要找找，于是就有了下文。</p>
-<h3 id="1-二分法找出磁盘占用空间最大的目录"><a href="#1-二分法找出磁盘占用空间最大的目录" class="headerlink" title="1.二分法找出磁盘占用空间最大的目录"></a>1.二分法找出磁盘占用空间最大的目录</h3><p>Win 7的应用程序缓存目录是在<code>C:\Users\jacpy\AppData</code>目录中，<code>jacpy</code>为当前系统用户名。<code>AppData</code>为隐藏目录，要在目录菜单的“组织”中找到“文件夹和搜索选项”的弹出框的“查看”Tab页中修改，不会修改也没关系，打开一个目录，把上面的路径直接copy到路径框里面，把用户名换成自己的电脑用户名，回车就行了。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2015/10/30/clear-genymotion-virturebox-cache-md.html#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/android/">android</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/genymotion/">genymotion</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/2015/10/30/clear-genymotion-virturebox-cache-md.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2015/10/30/clear-genymotion-virturebox-cache-md.html" data-count-type="comments">&nbsp;</a>
 	
 </div>
 
@@ -1445,6 +1446,10 @@
 		  
 		
 		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
 			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
 		  
 		
@@ -1478,10 +1483,6 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/SQLite性能优化/" title="SQLite性能优化">SQLite性能优化<sup>2</sup></a></li>
 			
 		
@@ -1490,19 +1491,15 @@
 			
 		
 			
-				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
+				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/InvocationTargetException-ActivityNotFoundException-android-os-FileUriExposedException/" title="InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException">InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException<sup>1</sup></a></li>
+				<li><a href="/tags/append-copy-slice/" title="append copy slice">append copy slice<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/android死锁分析/" title="android死锁分析">android死锁分析<sup>1</sup></a></li>
 			
 		
 			
@@ -1514,15 +1511,7 @@
 			
 		
 			
-				<li><a href="/tags/EXACTLY-AT-MOST-UNSPECIFIED/" title="EXACTLY AT_MOST UNSPECIFIED">EXACTLY AT_MOST UNSPECIFIED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/gradle配置/" title="gradle配置">gradle配置<sup>1</sup></a></li>
+				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
 			
 		
 			
@@ -1530,11 +1519,7 @@
 			
 		
 			
-				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
+				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
 			
 		
 			
@@ -1542,7 +1527,7 @@
 			
 		
 			
-				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
 			
 		
 			
@@ -1550,11 +1535,31 @@
 			
 		
 			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/gradle打jar包-混淆/" title="gradle打jar包 混淆">gradle打jar包 混淆<sup>1</sup></a></li>
+				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/boost-clion/" title="boost clion">boost clion<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
 			
 		
 		</ul>
@@ -1617,7 +1622,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2018 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
 		
 		<a href="/about" target="_blank" title="jacpy">jacpy</a>
 		

@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-CN">
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
   
     <title>android Activity设置为SingleTop值时的生命周期在7.0以上系统中的变化 | jacpy&#39;s blog</title>
@@ -11,26 +11,19 @@
     
 
     
-    <meta name="description" content="前几天在解决应用中一个问题，现象是在nexus 7.0以上系统的手机上创建群组会话时，消息发送超时。然后测试了一上，发现是必现的，而4.4系统的手机上却一切正常，于是一路分析了别人写的代码。最后找到原因并解决，于是就有了本文。
-
-
-最后找到原因是在Android系统7.0以上，当把Activity的launchMode属性值设置为singleTop时，Activity的生命周期与以前的系统版本">
+    <meta name="description" content="前几天在解决应用中一个问题，现象是在nexus 7.0以上系统的手机上创建群组会话时，消息发送超时。然后测试了一上，发现是必现的，而4.4系统的手机上却一切正常，于是一路分析了别人写的代码。最后找到原因并解决，于是就有了本文。   最后找到原因是在Android系统7.0以上，当把Activity的launchMode属性值设置为singleTop时，Activity的生命周期与以前的系统版本">
+<meta name="keywords" content="singleTop android7.0">
 <meta property="og:type" content="article">
 <meta property="og:title" content="android Activity设置为SingleTop值时的生命周期在7.0以上系统中的变化">
 <meta property="og:url" content="http://www.jacpy.com/2016/12/11/android-single-top-activity-lifecycle-changed-by-android-7.html">
-<meta property="og:site_name" content="jacpy's blog">
-<meta property="og:description" content="前几天在解决应用中一个问题，现象是在nexus 7.0以上系统的手机上创建群组会话时，消息发送超时。然后测试了一上，发现是必现的，而4.4系统的手机上却一切正常，于是一路分析了别人写的代码。最后找到原因并解决，于是就有了本文。
-
-
-最后找到原因是在Android系统7.0以上，当把Activity的launchMode属性值设置为singleTop时，Activity的生命周期与以前的系统版本">
+<meta property="og:site_name" content="jacpy&#39;s blog">
+<meta property="og:description" content="前几天在解决应用中一个问题，现象是在nexus 7.0以上系统的手机上创建群组会话时，消息发送超时。然后测试了一上，发现是必现的，而4.4系统的手机上却一切正常，于是一路分析了别人写的代码。最后找到原因并解决，于是就有了本文。   最后找到原因是在Android系统7.0以上，当把Activity的launchMode属性值设置为singleTop时，Activity的生命周期与以前的系统版本">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://www.jacpy.com/images/2016/12/11/activity_single_top_flow.png">
 <meta property="og:updated_time" content="2016-12-11T08:41:18.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="android Activity设置为SingleTop值时的生命周期在7.0以上系统中的变化">
-<meta name="twitter:description" content="前几天在解决应用中一个问题，现象是在nexus 7.0以上系统的手机上创建群组会话时，消息发送超时。然后测试了一上，发现是必现的，而4.4系统的手机上却一切正常，于是一路分析了别人写的代码。最后找到原因并解决，于是就有了本文。
-
-
-最后找到原因是在Android系统7.0以上，当把Activity的launchMode属性值设置为singleTop时，Activity的生命周期与以前的系统版本">
+<meta name="twitter:description" content="前几天在解决应用中一个问题，现象是在nexus 7.0以上系统的手机上创建群组会话时，消息发送超时。然后测试了一上，发现是必现的，而4.4系统的手机上却一切正常，于是一路分析了别人写的代码。最后找到原因并解决，于是就有了本文。   最后找到原因是在Android系统7.0以上，当把Activity的launchMode属性值设置为singleTop时，Activity的生命周期与以前的系统版本">
 <meta name="twitter:image" content="http://www.jacpy.com/images/2016/12/11/activity_single_top_flow.png">
 
     
@@ -45,7 +38,7 @@
     
     <link rel="stylesheet" href="/css/style.css">
 </head>
-
+</html>
   <body>
     <header>
       
@@ -263,6 +256,10 @@
 		  
 		
 		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
 			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
 		  
 		
@@ -296,10 +293,6 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/SQLite性能优化/" title="SQLite性能优化">SQLite性能优化<sup>2</sup></a></li>
 			
 		
@@ -308,19 +301,15 @@
 			
 		
 			
-				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
+				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/InvocationTargetException-ActivityNotFoundException-android-os-FileUriExposedException/" title="InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException">InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException<sup>1</sup></a></li>
+				<li><a href="/tags/append-copy-slice/" title="append copy slice">append copy slice<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/android死锁分析/" title="android死锁分析">android死锁分析<sup>1</sup></a></li>
 			
 		
 			
@@ -332,15 +321,7 @@
 			
 		
 			
-				<li><a href="/tags/EXACTLY-AT-MOST-UNSPECIFIED/" title="EXACTLY AT_MOST UNSPECIFIED">EXACTLY AT_MOST UNSPECIFIED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/gradle配置/" title="gradle配置">gradle配置<sup>1</sup></a></li>
+				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
 			
 		
 			
@@ -348,11 +329,7 @@
 			
 		
 			
-				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
+				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
 			
 		
 			
@@ -360,7 +337,7 @@
 			
 		
 			
-				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
 			
 		
 			
@@ -368,11 +345,31 @@
 			
 		
 			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/gradle打jar包-混淆/" title="gradle打jar包 混淆">gradle打jar包 混淆<sup>1</sup></a></li>
+				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/boost-clion/" title="boost clion">boost clion<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
 			
 		
 		</ul>
@@ -435,7 +432,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2018 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
 		
 		<a href="/about" target="_blank" title="jacpy">jacpy</a>
 		

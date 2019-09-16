@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-CN">
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
   
     <title>android点击通知栏通知启动Activity问题 | jacpy&#39;s blog</title>
@@ -11,19 +11,18 @@
     
 
     
-    <meta name="description" content="这几天遇到一个很奇葩的问题，终于解决了，记录一下。
-问题场景是：用小米手机使用小米推送一条消息，然后点击通知栏中的消息启动应用，然后进入会话的Activity。应用启动后，如果当前界面不是会话界面，那么新消息会在通知栏显示消息提醒，然后点击会话消息后却进不了会话的Activity，即点击了通知栏通知后，系统都没有启动指定Activity的意思，没有看到系统启动Activity的Log，到是会看到系">
+    <meta name="description" content="这几天遇到一个很奇葩的问题，终于解决了，记录一下。 问题场景是：用小米手机使用小米推送一条消息，然后点击通知栏中的消息启动应用，然后进入会话的Activity。应用启动后，如果当前界面不是会话界面，那么新消息会在通知栏显示消息提醒，然后点击会话消息后却进不了会话的Activity，即点击了通知栏通知后，系统都没有启动指定Activity的意思，没有看到系统启动Activity的Log，到是会看到系">
+<meta name="keywords" content="notification">
 <meta property="og:type" content="article">
 <meta property="og:title" content="android点击通知栏通知启动Activity问题">
 <meta property="og:url" content="http://www.jacpy.com/2016/12/28/android-notification-launch-activity.html">
-<meta property="og:site_name" content="jacpy's blog">
-<meta property="og:description" content="这几天遇到一个很奇葩的问题，终于解决了，记录一下。
-问题场景是：用小米手机使用小米推送一条消息，然后点击通知栏中的消息启动应用，然后进入会话的Activity。应用启动后，如果当前界面不是会话界面，那么新消息会在通知栏显示消息提醒，然后点击会话消息后却进不了会话的Activity，即点击了通知栏通知后，系统都没有启动指定Activity的意思，没有看到系统启动Activity的Log，到是会看到系">
+<meta property="og:site_name" content="jacpy&#39;s blog">
+<meta property="og:description" content="这几天遇到一个很奇葩的问题，终于解决了，记录一下。 问题场景是：用小米手机使用小米推送一条消息，然后点击通知栏中的消息启动应用，然后进入会话的Activity。应用启动后，如果当前界面不是会话界面，那么新消息会在通知栏显示消息提醒，然后点击会话消息后却进不了会话的Activity，即点击了通知栏通知后，系统都没有启动指定Activity的意思，没有看到系统启动Activity的Log，到是会看到系">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-01-19T09:36:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="android点击通知栏通知启动Activity问题">
-<meta name="twitter:description" content="这几天遇到一个很奇葩的问题，终于解决了，记录一下。
-问题场景是：用小米手机使用小米推送一条消息，然后点击通知栏中的消息启动应用，然后进入会话的Activity。应用启动后，如果当前界面不是会话界面，那么新消息会在通知栏显示消息提醒，然后点击会话消息后却进不了会话的Activity，即点击了通知栏通知后，系统都没有启动指定Activity的意思，没有看到系统启动Activity的Log，到是会看到系">
+<meta name="twitter:description" content="这几天遇到一个很奇葩的问题，终于解决了，记录一下。 问题场景是：用小米手机使用小米推送一条消息，然后点击通知栏中的消息启动应用，然后进入会话的Activity。应用启动后，如果当前界面不是会话界面，那么新消息会在通知栏显示消息提醒，然后点击会话消息后却进不了会话的Activity，即点击了通知栏通知后，系统都没有启动指定Activity的意思，没有看到系统启动Activity的Log，到是会看到系">
 
     
     <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
@@ -37,7 +36,7 @@
     
     <link rel="stylesheet" href="/css/style.css">
 </head>
-
+</html>
   <body>
     <header>
       
@@ -116,7 +115,7 @@
 <p>可能有人会想到是不是要加一个<code>Intent.FLAG_ACTIVITY_NEW_TASK</code>标识，因为在<code>getLaunchIntentForPackage()</code>方法中加了这个标识。</p>
 <p>最后测试发现，只要应用没有被启动，不管是点击系统弹出的通知栏还是远程进程弹出的通知栏，如果再收到新消息通知，再点击通知栏，就能进入会话Activity了。那只要判断应用中是否有Activity被启动就OK了，貌似问题可以解决了。</p>
 <p>于是用了下面的逻辑来判断是否有前台Activity在运行。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">/** * 判断UI进程是否正在运行 * <span class="doctag">@return</span> 返回true表示正在运行，否则没有运行 */</span><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isForegroundRunning</span><span class="params">()</span> </span>&#123;    ActivityManager am = (ActivityManager) EimCloud.getContext().getSystemService(Context.ACTIVITY_SERVICE);    List&lt;ActivityManager.RunningAppProcessInfo&gt; list = am.getRunningAppProcesses();    <span class="keyword">if</span> (list != <span class="keyword">null</span>) &#123;        <span class="keyword">for</span> (ActivityManager.RunningAppProcessInfo info : list) &#123;            <span class="keyword">if</span> (info.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND						&amp;&amp; EimCloud.getContext().getPackageName().equals(info.processName)) &#123;					<span class="keyword">return</span> <span class="keyword">true</span>;            &#125;        &#125;    &#125;	<span class="keyword">return</span> <span class="keyword">false</span>;&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/** * 判断UI进程是否正在运行 * <span class="doctag">@return</span> 返回true表示正在运行，否则没有运行 */</span><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isForegroundRunning</span><span class="params">()</span> </span>&#123;    ActivityManager am = (ActivityManager) EimCloud.getContext().getSystemService(Context.ACTIVITY_SERVICE);    List&lt;ActivityManager.RunningAppProcessInfo&gt; list = am.getRunningAppProcesses();    <span class="keyword">if</span> (list != <span class="keyword">null</span>) &#123;        <span class="keyword">for</span> (ActivityManager.RunningAppProcessInfo info : list) &#123;            <span class="keyword">if</span> (info.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND						&amp;&amp; EimCloud.getContext().getPackageName().equals(info.processName)) &#123;					<span class="keyword">return</span> <span class="keyword">true</span>;            &#125;        &#125;    &#125;	<span class="keyword">return</span> <span class="keyword">false</span>;&#125;</span><br></pre></td></tr></table></figure>
 <p>但是上面的方法在小米手机上凑效了，但在华为手机上还是有问题，即使同样的场景。华为又坑爹了！</p>
 <p>于是开始从上面的<code>ActivityManager.RunningAppProcessInfo</code>类中的<code>importance</code>变量的状态入手，然后测试各种场景可能出现的变量值，结果发现效果不尽人意，有些场景问题依旧。</p>
 <p>最后，又换种思路：不从Activity A开始启动应用，换个Activity B，也就是在调用<code>PendingIntent.getActivity()</code>方法传入Intent对象使用B的class。启动B会发现应用没有被初始化，则跳转到A执行初始化，然后再走正常流程。</p>
@@ -246,6 +245,10 @@
 		  
 		
 		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
 			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
 		  
 		
@@ -279,10 +282,6 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/SQLite性能优化/" title="SQLite性能优化">SQLite性能优化<sup>2</sup></a></li>
 			
 		
@@ -291,19 +290,15 @@
 			
 		
 			
-				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
+				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/InvocationTargetException-ActivityNotFoundException-android-os-FileUriExposedException/" title="InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException">InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException<sup>1</sup></a></li>
+				<li><a href="/tags/append-copy-slice/" title="append copy slice">append copy slice<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/android死锁分析/" title="android死锁分析">android死锁分析<sup>1</sup></a></li>
 			
 		
 			
@@ -315,15 +310,7 @@
 			
 		
 			
-				<li><a href="/tags/EXACTLY-AT-MOST-UNSPECIFIED/" title="EXACTLY AT_MOST UNSPECIFIED">EXACTLY AT_MOST UNSPECIFIED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/gradle配置/" title="gradle配置">gradle配置<sup>1</sup></a></li>
+				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
 			
 		
 			
@@ -331,11 +318,7 @@
 			
 		
 			
-				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
+				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
 			
 		
 			
@@ -343,7 +326,7 @@
 			
 		
 			
-				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
 			
 		
 			
@@ -351,11 +334,31 @@
 			
 		
 			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/gradle打jar包-混淆/" title="gradle打jar包 混淆">gradle打jar包 混淆<sup>1</sup></a></li>
+				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/boost-clion/" title="boost clion">boost clion<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
 			
 		
 		</ul>
@@ -418,7 +421,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2018 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
 		
 		<a href="/about" target="_blank" title="jacpy">jacpy</a>
 		

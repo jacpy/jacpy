@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-CN">
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
   
     <title>android 4.4系统调用Class.getTypeParameters()出现JNI function NewGlobalRef called with exception pending错误 | jacpy&#39;s blog</title>
@@ -15,8 +15,9 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="android 4.4系统调用Class.getTypeParameters()出现JNI function NewGlobalRef called with exception pending错误">
 <meta property="og:url" content="http://www.jacpy.com/2015/05/10/android-4-4-call-class-gettypeparameters-occur-jni-function-newglobalref-called-with-exception-pending.html">
-<meta property="og:site_name" content="jacpy's blog">
+<meta property="og:site_name" content="jacpy&#39;s blog">
 <meta property="og:description" content="先看一下异常信息：">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2015-10-30T15:48:50.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="android 4.4系统调用Class.getTypeParameters()出现JNI function NewGlobalRef called with exception pending错误">
@@ -34,7 +35,7 @@
     
     <link rel="stylesheet" href="/css/style.css">
 </head>
-
+</html>
   <body>
     <header>
       
@@ -105,7 +106,7 @@
 		
 		<p>先看一下异常信息：</p>
 <a id="more"></a>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line">JNI WARNING: JNI function NewGlobalRef called with exception pending</div><div class="line">in Ljava/lang/Class;.getDex:()Lcom/android/dex/Dex; (NewGlobalRef)</div><div class="line">Pending exception is:</div><div class="line">java.lang.IndexOutOfBoundsException: index=0, limit=0</div><div class="line">at java.nio.Buffer.checkIndex(Buffer.java:156)</div><div class="line">at java.nio.DirectByteBuffer.get(DirectByteBuffer.java:157)</div><div class="line">at com.android.dex.Dex.create(Dex.java:129)</div><div class="line">at java.lang.Class.getDex(Native Method)</div><div class="line">at libcore.reflect.AnnotationAccess.getSignature(AnnotationAccess.java:447)</div><div class="line">at java.lang.Class.getTypeParameters(Class.java:1070)</div><div class="line">05-11 15:14:28.285: I/dalvikvm(8083): at android.app.Activity.performCreate(Activity.java:5248)</div><div class="line">at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1110)</div><div class="line">at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2162)</div><div class="line">at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:2257)</div><div class="line">at android.app.ActivityThread.access$800(ActivityThread.java:139)</div><div class="line">at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1210)</div><div class="line">at android.os.Handler.dispatchMessage(Handler.java:102)</div><div class="line">at android.os.Looper.loop(Looper.java:136)</div><div class="line">at android.app.ActivityThread.main(ActivityThread.java:5086)</div><div class="line">at java.lang.reflect.Method.invokeNative(Native Method)</div><div class="line">at java.lang.reflect.Method.invoke(Method.java:515)</div><div class="line">at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:785)</div><div class="line">at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:601)</div><div class="line">at dalvik.system.NativeStart.main(Native Method)</div><div class="line">"main" prio=5 tid=1 NATIVE</div><div class="line">| group="main" sCount=0 dsCount=0 obj=0x416b6e40 self=0x415d8500</div><div class="line">| sysTid=8083 nice=0 sched=0/0 cgrp=apps handle=1074389332</div><div class="line">| state=R schedstat=( 0 0 0 ) utm=13 stm=4 core=3</div><div class="line">#00 pc 0000132e /system/lib/libcorkscrew.so (unwind_backtrace_thread+29)</div><div class="line">#01 pc 000635ba /system/lib/libdvm.so (dvmDumpNativeStack(DebugOutputTarget const*, int)+33)</div><div class="line">#02 pc 00057590 /system/lib/libdvm.so (dvmDumpThreadEx(DebugOutputTarget const*, Thread*, bool)+395)</div><div class="line">#03 pc 000575fe /system/lib/libdvm.so (dvmDumpThread(Thread*, bool)+25)</div><div class="line">#04 pc 0003b554 /system/lib/libdvm.so</div><div class="line">#05 pc 00043f2c /system/lib/libdvm.so</div><div class="line">#06 pc 0006a4ea /system/lib/libdvm.so (Java_java_lang_Class_getDex(_JNIEnv*, _jclass*)+141)</div><div class="line">#07 pc 000203cc /system/lib/libdvm.so (dvmPlatformInvoke+112)</div><div class="line">#08 pc 00050eea /system/lib/libdvm.so (dvmCallJNIMethod(unsigned int const*, JValue*, Method const*, Thread*)+397)</div><div class="line">#09 pc 00029860 /system/lib/libdvm.so</div><div class="line">#10 pc 00030b68 /system/lib/libdvm.so (dvmMterpStd(Thread*)+76)</div><div class="line">#11 pc 0002e200 /system/lib/libdvm.so (dvmInterpret(Thread*, Method const*, JValue*)+184)</div><div class="line">#12 pc 000637cc /system/lib/libdvm.so (dvmInvokeMethod(Object*, Method const*, ArrayObject*, ArrayObject*, ClassObject*, bool)+391)</div><div class="line">#13 pc 0006b6aa /system/lib/libdvm.so</div><div class="line">#14 pc 00029860 /system/lib/libdvm.so</div><div class="line">#15 pc 00030b68 /system/lib/libdvm.so (dvmMterpStd(Thread*)+76)</div><div class="line">#16 pc 0002e200 /system/lib/libdvm.so (dvmInterpret(Thread*, Method const*, JValue*)+184)</div><div class="line">#17 pc 000634e8 /system/lib/libdvm.so (dvmCallMethodV(Thread*, Method const*, Object*, bool, JValue*, std::__va_list)+335)</div><div class="line">#18 pc 0004cab6 /system/lib/libdvm.so</div><div class="line">#19 pc 0004d5c0 /system/lib/libandroid_runtime.so</div><div class="line">#20 pc 0004e2e6 /system/lib/libandroid_runtime.so (android::AndroidRuntime::start(char const*, char const*)+353)</div><div class="line">#21 pc 0000105a /system/bin/app_process</div><div class="line">#22 pc 0000e510 /system/lib/libc.so (__libc_init+47)</div></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">JNI WARNING: JNI function NewGlobalRef called with exception pending</span><br><span class="line">in Ljava/lang/Class;.getDex:()Lcom/android/dex/Dex; (NewGlobalRef)</span><br><span class="line">Pending exception is:</span><br><span class="line">java.lang.IndexOutOfBoundsException: index=<span class="number">0</span>, limit=<span class="number">0</span></span><br><span class="line">at java.nio.Buffer.checkIndex(Buffer.java:<span class="number">156</span>)</span><br><span class="line">at java.nio.DirectByteBuffer.get(DirectByteBuffer.java:<span class="number">157</span>)</span><br><span class="line">at com.android.dex.Dex.create(Dex.java:<span class="number">129</span>)</span><br><span class="line">at java.lang.Class.getDex(Native Method)</span><br><span class="line">at libcore.reflect.AnnotationAccess.getSignature(AnnotationAccess.java:<span class="number">447</span>)</span><br><span class="line">at java.lang.Class.getTypeParameters(Class.java:<span class="number">1070</span>)</span><br><span class="line"><span class="number">05</span>-<span class="number">11</span> <span class="number">15</span>:<span class="number">14</span>:<span class="number">28.285</span>: I/dalvikvm(<span class="number">8083</span>): at android.app.Activity.performCreate(Activity.java:<span class="number">5248</span>)</span><br><span class="line">at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:<span class="number">1110</span>)</span><br><span class="line">at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:<span class="number">2162</span>)</span><br><span class="line">at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:<span class="number">2257</span>)</span><br><span class="line">at android.app.ActivityThread.access$<span class="number">800</span>(ActivityThread.java:<span class="number">139</span>)</span><br><span class="line">at android.app.ActivityThread$H.handleMessage(ActivityThread.java:<span class="number">1210</span>)</span><br><span class="line">at android.os.Handler.dispatchMessage(Handler.java:<span class="number">102</span>)</span><br><span class="line">at android.os.Looper.loop(Looper.java:<span class="number">136</span>)</span><br><span class="line">at android.app.ActivityThread.main(ActivityThread.java:<span class="number">5086</span>)</span><br><span class="line">at java.lang.reflect.Method.invokeNative(Native Method)</span><br><span class="line">at java.lang.reflect.Method.invoke(Method.java:<span class="number">515</span>)</span><br><span class="line">at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:<span class="number">785</span>)</span><br><span class="line">at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:<span class="number">601</span>)</span><br><span class="line">at dalvik.system.NativeStart.main(Native Method)</span><br><span class="line"><span class="string">"main"</span> prio=<span class="number">5</span> tid=<span class="number">1</span> NATIVE</span><br><span class="line">| group=<span class="string">"main"</span> sCount=<span class="number">0</span> dsCount=<span class="number">0</span> obj=<span class="number">0x416b6e40</span> self=<span class="number">0x415d8500</span></span><br><span class="line">| sysTid=<span class="number">8083</span> nice=<span class="number">0</span> sched=<span class="number">0</span>/<span class="number">0</span> cgrp=apps handle=<span class="number">1074389332</span></span><br><span class="line">| state=R schedstat=( <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> ) utm=<span class="number">13</span> stm=<span class="number">4</span> core=<span class="number">3</span></span><br><span class="line">#00 pc 0000132e /system/lib/libcorkscrew.so (unwind_backtrace_thread+29)</span><br><span class="line">#01 pc 000635ba /system/lib/libdvm.so (dvmDumpNativeStack(DebugOutputTarget const*, int)+33)</span><br><span class="line">#02 pc 00057590 /system/lib/libdvm.so (dvmDumpThreadEx(DebugOutputTarget const*, Thread*, bool)+395)</span><br><span class="line">#03 pc 000575fe /system/lib/libdvm.so (dvmDumpThread(Thread*, bool)+25)</span><br><span class="line">#04 pc 0003b554 /system/lib/libdvm.so</span><br><span class="line">#05 pc 00043f2c /system/lib/libdvm.so</span><br><span class="line">#06 pc 0006a4ea /system/lib/libdvm.so (Java_java_lang_Class_getDex(_JNIEnv*, _jclass*)+141)</span><br><span class="line">#07 pc 000203cc /system/lib/libdvm.so (dvmPlatformInvoke+112)</span><br><span class="line">#08 pc 00050eea /system/lib/libdvm.so (dvmCallJNIMethod(unsigned int const*, JValue*, Method const*, Thread*)+397)</span><br><span class="line">#09 pc 00029860 /system/lib/libdvm.so</span><br><span class="line">#10 pc 00030b68 /system/lib/libdvm.so (dvmMterpStd(Thread*)+76)</span><br><span class="line">#11 pc 0002e200 /system/lib/libdvm.so (dvmInterpret(Thread*, Method const*, JValue*)+184)</span><br><span class="line">#12 pc 000637cc /system/lib/libdvm.so (dvmInvokeMethod(Object*, Method const*, ArrayObject*, ArrayObject*, ClassObject*, bool)+391)</span><br><span class="line">#13 pc 0006b6aa /system/lib/libdvm.so</span><br><span class="line">#14 pc 00029860 /system/lib/libdvm.so</span><br><span class="line">#15 pc 00030b68 /system/lib/libdvm.so (dvmMterpStd(Thread*)+76)</span><br><span class="line">#16 pc 0002e200 /system/lib/libdvm.so (dvmInterpret(Thread*, Method const*, JValue*)+184)</span><br><span class="line">#17 pc 000634e8 /system/lib/libdvm.so (dvmCallMethodV(Thread*, Method const*, Object*, bool, JValue*, std::__va_list)+335)</span><br><span class="line">#18 pc 0004cab6 /system/lib/libdvm.so</span><br><span class="line">#19 pc 0004d5c0 /system/lib/libandroid_runtime.so</span><br><span class="line">#20 pc 0004e2e6 /system/lib/libandroid_runtime.so (android::AndroidRuntime::start(char const*, char const*)+353)</span><br><span class="line">#21 pc 0000105a /system/bin/app_process</span><br><span class="line">#22 pc 0000e510 /system/lib/libc.so (__libc_init+47)</span><br></pre></td></tr></table></figure>
 <p>很明显，是因为应用调用了 java.lang.Class.getTypeParameters()方法导致的问题，这个方法是用来获取泛型数量，在GSON或fastjson这样的第三方JSON反射框架中会出现这样的调用，出现这样的问题也正是使用这样的类库出现的。为什么只会在android4.4系统中出现这样的兼容性问题，而其他版本没有？从堆栈错误信息中可以看出来，在Java层最后调用的一个方法是Class.getDex()，这个是个native方法，只在C++代码中实现，而android其他版本却没有这个方法。查看dalvik/vm/native/java_lang_Class.cpp中的JNIEXPORT jobject JNICALL Java_java_lang_Class_getDex(JNIEnv* env, jclass javaClass)函数发现，在NDK中new一个Dex对象，而在这个对象时传的参数为空，导致在java层通过下标访问时出现了java.lang.IndexOutOfBoundsException异常，这也解释了为什么会出现NewGlobalRef pending exception。最后在源码中插入LOG，编译验证了一下，证明确实是这样。</p>
 <p>OK，问题产生的原因找到了，怎么解决呢？</p>
 <p>应用加载DEX文件时，调用了4.4新增了static void Dalvik_dalvik_system_DexFile_openDexFile_bytearray(const u4<em> args, JValue</em> pResult)函数，直接将一个DEX文件的字节流传入，虚拟机自动解析并加载类相关信息。虽然这个函数是static，但因为使用到了NDK注册的方式，将Java层的方法与C++层对应的函数绑定到了一起，这样就可以使用指针遍历dvm_dalvik_system_DexFile数组找到对应的函数指针，从而可以调用。而在Java层的DexFile类中没有找到与之对应的int openDexFile(byte)方法，估计是被删了，而这个函数又没有被google官方验证，所以种种巧合，掉进了这个坑。唉，不说了，都是泪啊。</p>
@@ -230,6 +231,10 @@
 		  
 		
 		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
 			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
 		  
 		
@@ -263,10 +268,6 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/SQLite性能优化/" title="SQLite性能优化">SQLite性能优化<sup>2</sup></a></li>
 			
 		
@@ -275,19 +276,15 @@
 			
 		
 			
-				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
+				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/InvocationTargetException-ActivityNotFoundException-android-os-FileUriExposedException/" title="InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException">InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException<sup>1</sup></a></li>
+				<li><a href="/tags/append-copy-slice/" title="append copy slice">append copy slice<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/android死锁分析/" title="android死锁分析">android死锁分析<sup>1</sup></a></li>
 			
 		
 			
@@ -299,15 +296,7 @@
 			
 		
 			
-				<li><a href="/tags/EXACTLY-AT-MOST-UNSPECIFIED/" title="EXACTLY AT_MOST UNSPECIFIED">EXACTLY AT_MOST UNSPECIFIED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/gradle配置/" title="gradle配置">gradle配置<sup>1</sup></a></li>
+				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
 			
 		
 			
@@ -315,11 +304,7 @@
 			
 		
 			
-				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
+				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
 			
 		
 			
@@ -327,7 +312,7 @@
 			
 		
 			
-				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
 			
 		
 			
@@ -335,11 +320,31 @@
 			
 		
 			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/gradle打jar包-混淆/" title="gradle打jar包 混淆">gradle打jar包 混淆<sup>1</sup></a></li>
+				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/boost-clion/" title="boost clion">boost clion<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
 			
 		
 		</ul>
@@ -402,7 +407,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2018 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
 		
 		<a href="/about" target="_blank" title="jacpy">jacpy</a>
 		

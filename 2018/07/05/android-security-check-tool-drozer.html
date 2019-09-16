@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-CN">
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
   
     <title>android 安全检测工具drozer环境搭建 | jacpy&#39;s blog</title>
@@ -11,24 +11,23 @@
     
 
     
-    <meta name="description" content="最近在处理公司App的安全问题，跟第三方公司人员沟通，提到有使用drozer工具检测。装了下这个工具，在这里记录一些坑。
-drozer是一个python编写的开源工具，在github上面有源码，地址：https://github.com/mwrlabs/drozer。其功能很强大，可以检测App中的四大组件的导出情况、Intent拒绝服务、SQL注入风险以及可以自定义Module等。尤其是自定义M">
+    <meta name="description" content="最近在处理公司App的安全问题，跟第三方公司人员沟通，提到有使用drozer工具检测。装了下这个工具，在这里记录一些坑。 drozer是一个python编写的开源工具，在github上面有源码，地址：https://github.com/mwrlabs/drozer。其功能很强大，可以检测App中的四大组件的导出情况、Intent拒绝服务、SQL注入风险以及可以自定义Module等。尤其是自定义M">
+<meta name="keywords" content="android security">
 <meta property="og:type" content="article">
 <meta property="og:title" content="android 安全检测工具drozer环境搭建">
 <meta property="og:url" content="http://www.jacpy.com/2018/07/05/android-security-check-tool-drozer.html">
-<meta property="og:site_name" content="jacpy's blog">
-<meta property="og:description" content="最近在处理公司App的安全问题，跟第三方公司人员沟通，提到有使用drozer工具检测。装了下这个工具，在这里记录一些坑。
-drozer是一个python编写的开源工具，在github上面有源码，地址：https://github.com/mwrlabs/drozer。其功能很强大，可以检测App中的四大组件的导出情况、Intent拒绝服务、SQL注入风险以及可以自定义Module等。尤其是自定义M">
+<meta property="og:site_name" content="jacpy&#39;s blog">
+<meta property="og:description" content="最近在处理公司App的安全问题，跟第三方公司人员沟通，提到有使用drozer工具检测。装了下这个工具，在这里记录一些坑。 drozer是一个python编写的开源工具，在github上面有源码，地址：https://github.com/mwrlabs/drozer。其功能很强大，可以检测App中的四大组件的导出情况、Intent拒绝服务、SQL注入风险以及可以自定义Module等。尤其是自定义M">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://www.jacpy.com/images/2018/07/drozer_setup_path_select.png">
 <meta property="og:image" content="http://www.jacpy.com/images/2018/07/drozer_app_enabled.png">
 <meta property="og:image" content="http://www.jacpy.com/images/2018/07/drozer_console_connect.png">
 <meta property="og:image" content="http://www.jacpy.com/images/2018/07/drozer_console_list.png">
 <meta property="og:image" content="http://www.jacpy.com/images/2018/07/drozer_python_path.png">
-<meta property="og:updated_time" content="2018-07-06T05:16:03.707Z">
+<meta property="og:updated_time" content="2018-07-06T05:16:03.708Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="android 安全检测工具drozer环境搭建">
-<meta name="twitter:description" content="最近在处理公司App的安全问题，跟第三方公司人员沟通，提到有使用drozer工具检测。装了下这个工具，在这里记录一些坑。
-drozer是一个python编写的开源工具，在github上面有源码，地址：https://github.com/mwrlabs/drozer。其功能很强大，可以检测App中的四大组件的导出情况、Intent拒绝服务、SQL注入风险以及可以自定义Module等。尤其是自定义M">
+<meta name="twitter:description" content="最近在处理公司App的安全问题，跟第三方公司人员沟通，提到有使用drozer工具检测。装了下这个工具，在这里记录一些坑。 drozer是一个python编写的开源工具，在github上面有源码，地址：https://github.com/mwrlabs/drozer。其功能很强大，可以检测App中的四大组件的导出情况、Intent拒绝服务、SQL注入风险以及可以自定义Module等。尤其是自定义M">
 <meta name="twitter:image" content="http://www.jacpy.com/images/2018/07/drozer_setup_path_select.png">
 
     
@@ -43,7 +42,7 @@ drozer是一个python编写的开源工具，在github上面有源码，地址�
     
     <link rel="stylesheet" href="/css/style.css">
 </head>
-
+</html>
   <body>
     <header>
       
@@ -113,46 +112,46 @@ drozer是一个python编写的开源工具，在github上面有源码，地址�
 		</div>
 		
 		<p>最近在处理公司App的安全问题，跟第三方公司人员沟通，提到有使用<code>drozer</code>工具检测。装了下这个工具，在这里记录一些坑。</p>
-<p><code>drozer</code>是一个python编写的开源工具，在<code>github</code>上面有源码，地址：<a href="https://github.com/mwrlabs/drozer" target="_blank" rel="external">https://github.com/mwrlabs/drozer</a>。其功能很强大，可以检测App中的四大组件的导出情况、Intent拒绝服务、SQL注入风险以及可以自定义Module等。尤其是自定义Module功能，自己按格式编写一个Module功能，就可以获取终端设备及App的信息。</p>
+<p><code>drozer</code>是一个python编写的开源工具，在<code>github</code>上面有源码，地址：<a href="https://github.com/mwrlabs/drozer" target="_blank" rel="noopener">https://github.com/mwrlabs/drozer</a>。其功能很强大，可以检测App中的四大组件的导出情况、Intent拒绝服务、SQL注入风险以及可以自定义Module等。尤其是自定义Module功能，自己按格式编写一个Module功能，就可以获取终端设备及App的信息。</p>
 <p><code>drozer</code>工具有两部分：一是PC端，另一部分是终端APK。</p>
 <a id="more"></a>
 <p>环境搭建步骤有两种方式，一种是使用github上面的源码自己编译安装；另一种是官方提供了一些常用操作系统的安装包，可以直接安装。 下面以windows环境编译为例：</p>
 <h2 id="一、源码编译安装"><a href="#一、源码编译安装" class="headerlink" title="一、源码编译安装"></a>一、源码编译安装</h2><h3 id="1-1-编译环境搭建"><a href="#1-1-编译环境搭建" class="headerlink" title="1.1 编译环境搭建"></a>1.1 编译环境搭建</h3><p>编译前安装的环境与<code>github</code>上README所说的环境要一致，一定要一致！！！</p>
 <h4 id="1-1-1-jdk版本问题"><a href="#1-1-1-jdk版本问题" class="headerlink" title="1.1.1 jdk版本问题"></a>1.1.1 jdk版本问题</h4><p>如果JDK版本不一致，编译时会提示以下错误，导致编译APK失败。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">UNEXPECTED TOP-LEVEL EXCEPTION:</div><div class="line">com.android.dx.cf.iface.ParseException: bad class file magic (cafebabe) or version (0034.0000)</div><div class="line">        at com.android.dx.cf.direct.DirectClassFile.parse0(DirectClassFile.java:472)</div><div class="line">        at com.android.dx.cf.direct.DirectClassFile.parse(DirectClassFile.java:406)</div><div class="line">        at com.android.dx.cf.direct.DirectClassFile.parseToInterfacesIfNecessary(DirectClassFile.java:388)</div><div class="line">        at com.android.dx.cf.direct.DirectClassFile.getMagic(DirectClassFile.java:251)</div><div class="line">        at com.android.dx.command.dexer.Main.processClass(Main.java:665)</div><div class="line">        at com.android.dx.command.dexer.Main.processFileBytes(Main.java:634)</div><div class="line">        at com.android.dx.command.dexer.Main.access$600(Main.java:78)</div><div class="line">        at com.android.dx.command.dexer.Main$1.processFileBytes(Main.java:572)</div><div class="line">        at com.android.dx.cf.direct.ClassPathOpener.processOne(ClassPathOpener.java:170)</div><div class="line">        at com.android.dx.cf.direct.ClassPathOpener.process(ClassPathOpener.java:144)</div><div class="line">        at com.android.dx.command.dexer.Main.processOne(Main.java:596)</div><div class="line">        at com.android.dx.command.dexer.Main.processAllFiles(Main.java:498)</div><div class="line">        at com.android.dx.command.dexer.Main.runMonoDex(Main.java:264)</div><div class="line">        at com.android.dx.command.dexer.Main.run(Main.java:230)</div><div class="line">        at com.android.dx.command.dexer.Main.main(Main.java:199)</div><div class="line">        at com.android.dx.command.Main.main(Main.java:103)</div><div class="line">...while parsing ByteStreamReader.class</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">UNEXPECTED TOP-LEVEL EXCEPTION:</span><br><span class="line">com.android.dx.cf.iface.ParseException: bad class file magic (cafebabe) or version (0034.0000)</span><br><span class="line">        at com.android.dx.cf.direct.DirectClassFile.parse0(DirectClassFile.java:472)</span><br><span class="line">        at com.android.dx.cf.direct.DirectClassFile.parse(DirectClassFile.java:406)</span><br><span class="line">        at com.android.dx.cf.direct.DirectClassFile.parseToInterfacesIfNecessary(DirectClassFile.java:388)</span><br><span class="line">        at com.android.dx.cf.direct.DirectClassFile.getMagic(DirectClassFile.java:251)</span><br><span class="line">        at com.android.dx.command.dexer.Main.processClass(Main.java:665)</span><br><span class="line">        at com.android.dx.command.dexer.Main.processFileBytes(Main.java:634)</span><br><span class="line">        at com.android.dx.command.dexer.Main.access$600(Main.java:78)</span><br><span class="line">        at com.android.dx.command.dexer.Main$1.processFileBytes(Main.java:572)</span><br><span class="line">        at com.android.dx.cf.direct.ClassPathOpener.processOne(ClassPathOpener.java:170)</span><br><span class="line">        at com.android.dx.cf.direct.ClassPathOpener.process(ClassPathOpener.java:144)</span><br><span class="line">        at com.android.dx.command.dexer.Main.processOne(Main.java:596)</span><br><span class="line">        at com.android.dx.command.dexer.Main.processAllFiles(Main.java:498)</span><br><span class="line">        at com.android.dx.command.dexer.Main.runMonoDex(Main.java:264)</span><br><span class="line">        at com.android.dx.command.dexer.Main.run(Main.java:230)</span><br><span class="line">        at com.android.dx.command.dexer.Main.main(Main.java:199)</span><br><span class="line">        at com.android.dx.command.Main.main(Main.java:103)</span><br><span class="line">...while parsing ByteStreamReader.class</span><br></pre></td></tr></table></figure>
 <p>目前编译的版本是<code>2.4.3</code>，github网站<code>README</code>说明使用JDK版本为1.7。但官方网站上的说明文档还是老版本，使用的是JDK 1.6。所以这里要注意一下。</p>
 <h4 id="1-1-2-安装pip"><a href="#1-1-2-安装pip" class="headerlink" title="1.1.2 安装pip"></a>1.1.2 安装pip</h4><p>pip是python库的管理工具，通过它可以很方便下载一些其他库，编译<code>drozer</code>所需要的<code>Protobuf</code>、<code>Pyopenssl</code>、<code>Twisted</code>等库都可以通过它来下载。</p>
-<p>下载地址是：<a href="https://pypi.python.org/pypi/pip#downloads" target="_blank" rel="external">https://pypi.python.org/pypi/pip#downloads</a>，下载后解压，在命令行<code>cd</code>到解压目录，然后执行<code>python setup.py install</code>即可以安装<code>pip</code>。</p>
+<p>下载地址是：<a href="https://pypi.python.org/pypi/pip#downloads" target="_blank" rel="noopener">https://pypi.python.org/pypi/pip#downloads</a>，下载后解压，在命令行<code>cd</code>到解压目录，然后执行<code>python setup.py install</code>即可以安装<code>pip</code>。</p>
 <p>安装成功后，将<code>C:\Python27\Scripts</code>目录配置到系统的环境变量中。重新启动命令行， 执行<code>pip install protobuf</code>命令就可以安装<code>protobuf</code>库，其他库类似。</p>
 <h3 id="1-2-安装工具"><a href="#1-2-安装工具" class="headerlink" title="1.2 安装工具"></a>1.2 安装工具</h3><p>上述过程编译成功后，会在<code>dist</code>目录生成<code>msi</code>文件。</p>
 <h4 id="1-2-1-安装msi"><a href="#1-2-1-安装msi" class="headerlink" title="1.2.1 安装msi"></a>1.2.1 安装msi</h4><p>安装<code>msi</code>文件下一步就可以，但下面这个页面不要选错，否则都不知道上哪儿找<code>drozer.bat</code>文件。如果找到源码中的这个文件，在后面连接成功后，执行<code>list</code>命令会显示空白，即没有命令工具可以使用。</p>
 <p><img src="/images/2018/07/drozer_setup_path_select.png" alt="安装选项"></p>
-<h4 id="1-2-2-安装APK"><a href="#1-2-2-安装APK" class="headerlink" title="1.2.2 安装APK"></a>1.2.2 安装APK</h4><p>APK官方直接给出了下载地址：<a href="https://github.com/mwrlabs/drozer/releases/download/2.3.4/drozer-agent-2.3.4.apk" target="_blank" rel="external">https://github.com/mwrlabs/drozer/releases/download/2.3.4/drozer-agent-2.3.4.apk</a>，下载下来后，直接使用<code>adb install drozer-agent-2.3.4.apk</code>。这一步没什么好说的，只要将<code>adb</code>命令配置到环境变量，就可以直接执行<code>adb</code>命令。</p>
+<h4 id="1-2-2-安装APK"><a href="#1-2-2-安装APK" class="headerlink" title="1.2.2 安装APK"></a>1.2.2 安装APK</h4><p>APK官方直接给出了下载地址：<a href="https://github.com/mwrlabs/drozer/releases/download/2.3.4/drozer-agent-2.3.4.apk" target="_blank" rel="noopener">https://github.com/mwrlabs/drozer/releases/download/2.3.4/drozer-agent-2.3.4.apk</a>，下载下来后，直接使用<code>adb install drozer-agent-2.3.4.apk</code>。这一步没什么好说的，只要将<code>adb</code>命令配置到环境变量，就可以直接执行<code>adb</code>命令。</p>
 <h3 id="1-3-工具使用"><a href="#1-3-工具使用" class="headerlink" title="1.3 工具使用"></a>1.3 工具使用</h3><h4 id="1-3-1-启动APK"><a href="#1-3-1-启动APK" class="headerlink" title="1.3.1 启动APK"></a>1.3.1 启动APK</h4><p>工具使用之前，要先启动在终端安装的App<code>drozer Agent</code>，点击底部的<code>Embedded Server</code>，进入到新页面后滑动顶部的控件，将其置为<code>Enabled</code>状态。如下图所示：</p>
 <p><img src="/images/2018/07/drozer_app_enabled.png" alt="Enabled状态"></p>
 <h4 id="1-3-2-PC连接远程服务"><a href="#1-3-2-PC连接远程服务" class="headerlink" title="1.3.2 PC连接远程服务"></a>1.3.2 PC连接远程服务</h4><p>这一步按官方说明来：</p>
 <ul>
 <li>转发端口</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb forward tcp:31415 tcp:31415</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb forward tcp:31415 tcp:31415</span><br></pre></td></tr></table></figure>
 <ul>
 <li>连接应用</li>
 </ul>
 <p>如果是模拟器，直接执行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">drozer.bat console connect</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">drozer.bat console connect</span><br></pre></td></tr></table></figure>
 <p>如果是物理机，需要知道连接Wi-Fi的IP地址，启动命令的PC端网络要和物理机的网络在同一内网中。执行命令需要带上IP：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">drozer.bat console connect --server 192.168.0.10</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">drozer.bat console connect --server 192.168.0.10</span><br></pre></td></tr></table></figure>
 <p>我用物理机没有连接成功，用模拟就OK，所以如果网络环境复杂，建议使用模拟器。</p>
 <p>连接成功如下图所示：</p>
 <p><img src="/images/2018/07/drozer_console_connect.png" alt="drozer连接成功"></p>
 <p>执行<code>list</code>命令显示的部分命令列表如下图所示：</p>
 <p><img src="/images/2018/07/drozer_console_list.png" alt="drozer list"></p>
 <p>如果<code>drozer.bat console connect</code>执行失败，出现如下提示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Traceback (most recent call last):</div><div class="line">File &quot;bin/drozer&quot;, line 30, in </div><div class="line">import(&quot;drozer.cli.%s&quot; % (sys.argv[1]))</div><div class="line">ImportError: No module named drozer.cli.console</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">File &quot;bin/drozer&quot;, line 30, in </span><br><span class="line">import(&quot;drozer.cli.%s&quot; % (sys.argv[1]))</span><br><span class="line">ImportError: No module named drozer.cli.console</span><br></pre></td></tr></table></figure>
 <p>则是python找不到<code>drozer.cli.console</code>库，在系统的环境变量中增加<code>PYTHONPATH</code>变量，路径为上面安装<code>msi</code>文件时指定的路径中的子目录<code>site-packages</code>路径。如果环境变量中已经有这个变量，则增加一个路径，中间使用英文逗号分隔。如下所示：</p>
 <p><img src="/images/2018/07/drozer_python_path.png" alt="PYTHONPATH环境变量"></p>
-<h4 id="1-3-3-执行命令"><a href="#1-3-3-执行命令" class="headerlink" title="1.3.3 执行命令"></a>1.3.3 执行命令</h4><p>命令执行可以参考<a href="https://www.cnblogs.com/goodhacker/p/3906180.html" target="_blank" rel="external">利用drozer进行Android渗透测试</a>。</p>
-<h2 id="二、可执行文件安装"><a href="#二、可执行文件安装" class="headerlink" title="二、可执行文件安装"></a>二、可执行文件安装</h2><p>如果不想自己编译，PC端可执行文件以及APK可以从这个官方地址<a href="https://labs.mwrinfosecurity.com/tools/drozer" target="_blank" rel="external">https://labs.mwrinfosecurity.com/tools/drozer</a>下载。其他安装步骤和操作步骤与上面步骤一样，要注意一下编译生成的<code>msi</code>文件的安装路径。</p>
+<h4 id="1-3-3-执行命令"><a href="#1-3-3-执行命令" class="headerlink" title="1.3.3 执行命令"></a>1.3.3 执行命令</h4><p>命令执行可以参考<a href="https://www.cnblogs.com/goodhacker/p/3906180.html" target="_blank" rel="noopener">利用drozer进行Android渗透测试</a>。</p>
+<h2 id="二、可执行文件安装"><a href="#二、可执行文件安装" class="headerlink" title="二、可执行文件安装"></a>二、可执行文件安装</h2><p>如果不想自己编译，PC端可执行文件以及APK可以从这个官方地址<a href="https://labs.mwrinfosecurity.com/tools/drozer" target="_blank" rel="noopener">https://labs.mwrinfosecurity.com/tools/drozer</a>下载。其他安装步骤和操作步骤与上面步骤一样，要注意一下编译生成的<code>msi</code>文件的安装路径。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -278,6 +277,10 @@ drozer是一个python编写的开源工具，在github上面有源码，地址�
 		  
 		
 		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
 			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
 		  
 		
@@ -311,10 +314,6 @@ drozer是一个python编写的开源工具，在github上面有源码，地址�
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/SQLite性能优化/" title="SQLite性能优化">SQLite性能优化<sup>2</sup></a></li>
 			
 		
@@ -323,19 +322,15 @@ drozer是一个python编写的开源工具，在github上面有源码，地址�
 			
 		
 			
-				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
+				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/InvocationTargetException-ActivityNotFoundException-android-os-FileUriExposedException/" title="InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException">InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException<sup>1</sup></a></li>
+				<li><a href="/tags/append-copy-slice/" title="append copy slice">append copy slice<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/android死锁分析/" title="android死锁分析">android死锁分析<sup>1</sup></a></li>
 			
 		
 			
@@ -347,15 +342,7 @@ drozer是一个python编写的开源工具，在github上面有源码，地址�
 			
 		
 			
-				<li><a href="/tags/EXACTLY-AT-MOST-UNSPECIFIED/" title="EXACTLY AT_MOST UNSPECIFIED">EXACTLY AT_MOST UNSPECIFIED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/gradle配置/" title="gradle配置">gradle配置<sup>1</sup></a></li>
+				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
 			
 		
 			
@@ -363,11 +350,7 @@ drozer是一个python编写的开源工具，在github上面有源码，地址�
 			
 		
 			
-				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
+				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
 			
 		
 			
@@ -375,7 +358,7 @@ drozer是一个python编写的开源工具，在github上面有源码，地址�
 			
 		
 			
-				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
 			
 		
 			
@@ -383,11 +366,31 @@ drozer是一个python编写的开源工具，在github上面有源码，地址�
 			
 		
 			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/gradle打jar包-混淆/" title="gradle打jar包 混淆">gradle打jar包 混淆<sup>1</sup></a></li>
+				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/boost-clion/" title="boost clion">boost clion<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
 			
 		
 		</ul>
@@ -450,7 +453,7 @@ drozer是一个python编写的开源工具，在github上面有源码，地址�
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2018 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
 		
 		<a href="/about" target="_blank" title="jacpy">jacpy</a>
 		

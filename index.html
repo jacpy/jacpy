@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-CN">
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
   
     <title>jacpy&#39;s blog</title>
@@ -12,11 +12,12 @@
 
     
     <meta property="og:type" content="website">
-<meta property="og:title" content="jacpy's blog">
+<meta property="og:title" content="jacpy&#39;s blog">
 <meta property="og:url" content="http://www.jacpy.com/index.html">
-<meta property="og:site_name" content="jacpy's blog">
+<meta property="og:site_name" content="jacpy&#39;s blog">
+<meta property="og:locale" content="zh-CN">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="jacpy's blog">
+<meta name="twitter:title" content="jacpy&#39;s blog">
 
     
     <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
@@ -30,7 +31,7 @@
     
     <link rel="stylesheet" href="/css/style.css">
 </head>
-
+</html>
   <body>
     <header>
       
@@ -71,6 +72,71 @@
     </header>
     <div id="container">
       <div id="main">
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/09/16/jquery-cors.html" title="jquery跨域问题导致ajax请求直接走error回调函数" itemprop="url">jquery跨域问题导致ajax请求直接走error回调函数</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
+		
+  <p class="article-time">
+    <time datetime="2019-09-16T09:02:48.000Z" itemprop="datePublished"> 发表于 2019-09-16</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>使用jquery的ajax请求时，发现每次都是走error的回调函数，错误提示的日志为<code>{&quot;readyState&quot;:0, status: 0, status:&quot;error&quot;}</code>。抓包请求发现请求正常返回数据，但是js代码却执行error的回调。其他组开发人员反馈的问题描述是在App中使用离线代码没有问题，使用地址访问就有问题。自然而然就想到了跨域问题，一看请求地址，果然。</p>
+<p>服务器端接口响应的头增加以下内容就可以解决：</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2019/09/16/jquery-cors.html#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/javascript/">javascript</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/jquery跨域问题/">jquery跨域问题</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/2019/09/16/jquery-cors.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2019/09/16/jquery-cors.html" data-count-type="comments">&nbsp;</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
 
    
     
@@ -157,7 +223,7 @@
     <div class="article-content">
         
         <p>最近看了一下<code>EventBus</code>实现的源码，分享一下自己的心得体会。</p>
-<p><code>EventBus</code>这个库实现很简单，如官方所说一样，库体积很小。将组件之间的通信通过解耦的方式表现的淋漓尽致，废话不多说，<code>EventBus</code>优点官网上列举了一堆，有兴趣的可以去看一下<a href="http://greenrobot.org/eventbus/">http://greenrobot.org/eventbus/</a>。</p>
+<p><code>EventBus</code>这个库实现很简单，如官方所说一样，库体积很小。将组件之间的通信通过解耦的方式表现的淋漓尽致，废话不多说，<code>EventBus</code>优点官网上列举了一堆，有兴趣的可以去看一下<a href="http://greenrobot.org/eventbus/" target="_blank" rel="noopener">http://greenrobot.org/eventbus/</a>。</p>
 <p>分享主要有以下几个方面：</p>
         
         
@@ -223,7 +289,7 @@
     <div class="article-content">
         
         <p>最近在处理公司App的安全问题，跟第三方公司人员沟通，提到有使用<code>drozer</code>工具检测。装了下这个工具，在这里记录一些坑。</p>
-<p><code>drozer</code>是一个python编写的开源工具，在<code>github</code>上面有源码，地址：<a href="https://github.com/mwrlabs/drozer">https://github.com/mwrlabs/drozer</a>。其功能很强大，可以检测App中的四大组件的导出情况、Intent拒绝服务、SQL注入风险以及可以自定义Module等。尤其是自定义Module功能，自己按格式编写一个Module功能，就可以获取终端设备及App的信息。</p>
+<p><code>drozer</code>是一个python编写的开源工具，在<code>github</code>上面有源码，地址：<a href="https://github.com/mwrlabs/drozer" target="_blank" rel="noopener">https://github.com/mwrlabs/drozer</a>。其功能很强大，可以检测App中的四大组件的导出情况、Intent拒绝服务、SQL注入风险以及可以自定义Module等。尤其是自定义Module功能，自己按格式编写一个Module功能，就可以获取终端设备及App的信息。</p>
 <p><code>drozer</code>工具有两部分：一是PC端，另一部分是终端APK。</p>
         
         
@@ -290,8 +356,8 @@
         
         <p>博客好长时间没有更新了，因为年底和年初，你懂的，希望以后进入轨。</p>
 <p>前几天在开发过程中遇到这样一个HTTP请求错误：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">okhttp too many follow-up requests: 21</div></pre></td></tr></table></figure>
-<p>看到<code>okhttp</code>反应过来是底层请求出现问题了，以前从来没有遇到过，很好奇。在github上面<a href="https://github.com/square/okhttp">okhttp</a>库搜索了一下上面的关键字，找到下面的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">okhttp too many follow-up requests: 21</span><br></pre></td></tr></table></figure>
+<p>看到<code>okhttp</code>反应过来是底层请求出现问题了，以前从来没有遇到过，很好奇。在github上面<a href="https://github.com/square/okhttp" target="_blank" rel="noopener">okhttp</a>库搜索了一下上面的关键字，找到下面的代码：</p>
         
         
         <p class="article-more-link">
@@ -421,7 +487,7 @@
     <div class="article-content">
         
         <p>前几天编译<code>boost</code>库<code>1.65.1</code>版本，遇到一些问题，主要是与环境和版本有关系，如果不知道这些细节，很难找出问题。这里记录一下。</p>
-<h2 id="一、boost库编译"><a href="#一、boost库编译" class="headerlink" title="一、boost库编译"></a>一、boost库编译</h2><p>在windows下编译<code>boost</code>库可以参照这里：<a href="https://gist.github.com/sim642/29caef3cc8afaa273ce6">https://gist.github.com/sim642/29caef3cc8afaa273ce6</a> ，整个过程配置都可以按照上面来，但是要注意下最新版本的<code>MinGW</code>，同时还要注意是64位的还是32位的。</p>
+<h2 id="一、boost库编译"><a href="#一、boost库编译" class="headerlink" title="一、boost库编译"></a>一、boost库编译</h2><p>在windows下编译<code>boost</code>库可以参照这里：<a href="https://gist.github.com/sim642/29caef3cc8afaa273ce6" target="_blank" rel="noopener">https://gist.github.com/sim642/29caef3cc8afaa273ce6</a> ，整个过程配置都可以按照上面来，但是要注意下最新版本的<code>MinGW</code>，同时还要注意是64位的还是32位的。</p>
 <p>因使用的<code>boost</code>版本是目前最新版本的，所以要求内置<code>gcc</code>编译器的<code>MinGW</code>也要是最新版本的，否则在执行<code>b2</code>命令设置<code>toolset=gcc</code>时，会提示找不到<code>gcc</code>。另外还要注意系统是32位还是64位，对应的gcc也要相同的版本。</p>
         
         
@@ -682,7 +748,7 @@
     <div class="article-content">
         
         <p>前几天使用<code>Fresco</code>加载图片时遇到图片加载不出来的问题，然后调试了一下，发现出现如下错误：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">javax.net.ssl.SSLException: Connection closed by peer</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javax.net.ssl.SSLException: Connection closed by peer</span><br></pre></td></tr></table></figure>
 <p>debug时的截图如下图所示：</p>
         
         
@@ -877,7 +943,7 @@
     <div class="article-content">
         
         <p>前几天使用命令行<code>adb install</code>安装APK文件时，安装失败，遇到了这个错误提示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">INSTALL_FAILED_UID_CHANGED</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INSTALL_FAILED_UID_CHANGED</span><br></pre></td></tr></table></figure>
 <p>突然反应过来了，刚刚使用手机的<code>root</code>权限看app的缓存数据，命令行还在那个<code>/data/data/com.xxx.app</code>目录下，由于命令行的占用，所以这个包名路径没有被删除掉。赶紧退出到<code>/data/data/</code>目录下面，<code>ls</code>一看，这个包名路径还存在，用<code>rm -rf</code>一删除，再安装试下，成功了。</p>
         
         
@@ -943,7 +1009,7 @@
     <div class="article-content">
         
         <p>前几天在使用gradle编译项目插件，突然遇到这个错误：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">FAILURE: Build failed with an exception.</div><div class="line"></div><div class="line">* What went wrong:</div><div class="line">Execution failed for task &apos;:compileReleaseJavaWithJavac&apos;.</div><div class="line">&gt; Failed to create MD5 hash for file &apos;E:\workspace\as\app\libs\xxx.jar&apos;.</div><div class="line"></div><div class="line">* Try:</div><div class="line">Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.</div><div class="line"></div><div class="line">BUILD FAILED</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">FAILURE: Build failed with an exception.</span><br><span class="line"></span><br><span class="line">* What went wrong:</span><br><span class="line">Execution failed for task &apos;:compileReleaseJavaWithJavac&apos;.</span><br><span class="line">&gt; Failed to create MD5 hash for file &apos;E:\workspace\as\app\libs\xxx.jar&apos;.</span><br><span class="line"></span><br><span class="line">* Try:</span><br><span class="line">Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.</span><br><span class="line"></span><br><span class="line">BUILD FAILED</span><br></pre></td></tr></table></figure>
         
         
         <p class="article-more-link">
@@ -1309,71 +1375,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2017/04/24/android-anr-thread-lock-analysis.html" title="android ANR——线程死锁分析" itemprop="url">android ANR——线程死锁分析</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
-		
-  <p class="article-time">
-    <time datetime="2017-04-24T01:55:18.000Z" itemprop="datePublished"> 发表于 2017-04-24</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>前几天遇到了线程死锁问题，导致系统<code>ANR</code>。然后拿到系统<code>/data/anr/traces.txt</code>日志文件后，进行分析，然后找到原因，并解决了问题。</p>
-<p>java线程产生死锁的原因，要么同时满足死锁的四个条件，要么是android系统机制的原因，认为发生了类似死锁的情况而导致系统<code>ANR</code>。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2017/04/24/android-anr-thread-lock-analysis.html#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/android/">android</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/android死锁分析/">android死锁分析</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/2017/04/24/android-anr-thread-lock-analysis.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2017/04/24/android-anr-thread-lock-analysis.html" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next<span></span></a>
@@ -1436,6 +1437,10 @@
 		  
 		
 		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
 			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
 		  
 		
@@ -1469,10 +1474,6 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/SQLite性能优化/" title="SQLite性能优化">SQLite性能优化<sup>2</sup></a></li>
 			
 		
@@ -1481,19 +1482,15 @@
 			
 		
 			
-				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
+				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/InvocationTargetException-ActivityNotFoundException-android-os-FileUriExposedException/" title="InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException">InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException<sup>1</sup></a></li>
+				<li><a href="/tags/append-copy-slice/" title="append copy slice">append copy slice<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/android死锁分析/" title="android死锁分析">android死锁分析<sup>1</sup></a></li>
 			
 		
 			
@@ -1505,15 +1502,7 @@
 			
 		
 			
-				<li><a href="/tags/EXACTLY-AT-MOST-UNSPECIFIED/" title="EXACTLY AT_MOST UNSPECIFIED">EXACTLY AT_MOST UNSPECIFIED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/gradle配置/" title="gradle配置">gradle配置<sup>1</sup></a></li>
+				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
 			
 		
 			
@@ -1521,11 +1510,7 @@
 			
 		
 			
-				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
+				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
 			
 		
 			
@@ -1533,7 +1518,7 @@
 			
 		
 			
-				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
 			
 		
 			
@@ -1541,11 +1526,31 @@
 			
 		
 			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/gradle打jar包-混淆/" title="gradle打jar包 混淆">gradle打jar包 混淆<sup>1</sup></a></li>
+				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/boost-clion/" title="boost clion">boost clion<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
 			
 		
 		</ul>
@@ -1608,7 +1613,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2018 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
 		
 		<a href="/about" target="_blank" title="jacpy">jacpy</a>
 		

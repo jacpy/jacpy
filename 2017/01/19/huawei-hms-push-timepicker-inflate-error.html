@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-CN">
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
   
     <title>使用HMS推送定义了EMUI的样式导致TimePicker初始化失败 | jacpy&#39;s blog</title>
@@ -11,19 +11,18 @@
     
 
     
-    <meta name="description" content="昨天遇到一个很奇葩的问题，使用了华为HMS SDK中的推送功能，然后插件布局文件中的TimePicker初始化时，会报如下错误：
-12android.view.InflateException: Binary XML file line #47: Error inflating class huawei.android.widget.TimePicker">
+    <meta name="description" content="昨天遇到一个很奇葩的问题，使用了华为HMS SDK中的推送功能，然后插件布局文件中的TimePicker初始化时，会报如下错误： 12android.view.InflateException: Binary XML file line #47: Error inflating class huawei.android.widget.TimePicker">
+<meta name="keywords" content="推送">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用HMS推送定义了EMUI的样式导致TimePicker初始化失败">
 <meta property="og:url" content="http://www.jacpy.com/2017/01/19/huawei-hms-push-timepicker-inflate-error.html">
-<meta property="og:site_name" content="jacpy's blog">
-<meta property="og:description" content="昨天遇到一个很奇葩的问题，使用了华为HMS SDK中的推送功能，然后插件布局文件中的TimePicker初始化时，会报如下错误：
-12android.view.InflateException: Binary XML file line #47: Error inflating class huawei.android.widget.TimePicker">
+<meta property="og:site_name" content="jacpy&#39;s blog">
+<meta property="og:description" content="昨天遇到一个很奇葩的问题，使用了华为HMS SDK中的推送功能，然后插件布局文件中的TimePicker初始化时，会报如下错误： 12android.view.InflateException: Binary XML file line #47: Error inflating class huawei.android.widget.TimePicker">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-01-19T09:34:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用HMS推送定义了EMUI的样式导致TimePicker初始化失败">
-<meta name="twitter:description" content="昨天遇到一个很奇葩的问题，使用了华为HMS SDK中的推送功能，然后插件布局文件中的TimePicker初始化时，会报如下错误：
-12android.view.InflateException: Binary XML file line #47: Error inflating class huawei.android.widget.TimePicker">
+<meta name="twitter:description" content="昨天遇到一个很奇葩的问题，使用了华为HMS SDK中的推送功能，然后插件布局文件中的TimePicker初始化时，会报如下错误： 12android.view.InflateException: Binary XML file line #47: Error inflating class huawei.android.widget.TimePicker">
 
     
     <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
@@ -37,7 +36,7 @@
     
     <link rel="stylesheet" href="/css/style.css">
 </head>
-
+</html>
   <body>
     <header>
       
@@ -107,15 +106,15 @@
 		</div>
 		
 		<p>昨天遇到一个很奇葩的问题，使用了华为HMS SDK中的推送功能，然后插件布局文件中的TimePicker初始化时，会报如下错误：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">android.view.InflateException: Binary XML file line #47: Error inflating class huawei.android.widget.TimePicker</div></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">android.view.InflateException: Binary XML file line #47: Error inflating class huawei.android.widget.TimePicker</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 <p>很奇怪，<code>TimePicker</code>在布局文件中使用<code>&lt;TimePicker/&gt;</code>标签，当布局文件被inflate后，在<code>android.widget.TimePicker</code>前面加了一个<code>huawei.</code>。如果使用<code>&lt;android.widget.TimePicker/&gt;</code>标签，则不会有问题；而其他有地方会出现这个新的错误：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">android.view.InflateException: Binary XML file line #20: Error inflating class &lt;unknown&gt;at android.view.LayoutInflater.createView(LayoutInflater.java:620)at com.android.internal.policy.impl.PhoneLayoutInflater.onCreateView(PhoneLayoutInflater.java:56)at android.view.LayoutInflater.onCreateView(LayoutInflater.java:669)at android.view.LayoutInflater.createViewFromTag(LayoutInflater.java:694)at android.view.LayoutInflater.inflate(LayoutInflater.java:469)at android.view.LayoutInflater.inflate(LayoutInflater.java:397)at android.view.LayoutInflater.inflate(LayoutInflater.java:353)at android.app.TimePickerDialog.&lt;init&gt;(TimePickerDialog.java:103)at android.app.TimePickerDialog.&lt;init&gt;(TimePickerDialog.java:74)at android.view.View.performClick(View.java:4447)at android.view.View$PerformClick.run(View.java:18457)at android.os.Handler.handleCallback(Handler.java:733)at android.os.Handler.dispatchMessage(Handler.java:95)at android.os.Looper.loop(Looper.java:136)at android.app.ActivityThread.main(ActivityThread.java:5119)at java.lang.reflect.Method.invokeNative(Native Method)at java.lang.reflect.Method.invoke(Method.java:515)at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:789)at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:605)at dalvik.system.NativeStart.main(Native Method)Caused by: java.lang.reflect.InvocationTargetExceptionat java.lang.reflect.Constructor.constructNative(Native Method)at java.lang.reflect.Constructor.newInstance(Constructor.java:423)at android.view.LayoutInflater.createView(LayoutInflater.java:594)... 20 moreCaused by: java.lang.NullPointerExceptionat android.view.ViewGroup.addView(ViewGroup.java:3353)at com.huawei.android.hwcontrol.TimePickerFactory.updateAmPmStart(TimePickerFactory.java:92)at android.widget.TimePicker.&lt;init&gt;(TimePicker.java:265)at android.widget.TimePicker.&lt;init&gt;(TimePicker.java:139)... 23 morejava.lang.reflect.InvocationTargetExceptionat java.lang.reflect.Constructor.constructNative(Native Method)at java.lang.reflect.Constructor.newInstance(Constructor.java:423)at android.view.LayoutInflater.createView(LayoutInflater.java:594)at com.android.internal.policy.impl.PhoneLayoutInflater.onCreateView(PhoneLayoutInflater.java:56)at android.view.LayoutInflater.onCreateView(LayoutInflater.java:669)at android.view.LayoutInflater.createViewFromTag(LayoutInflater.java:694)at android.view.LayoutInflater.inflate(LayoutInflater.java:469)at android.view.LayoutInflater.inflate(LayoutInflater.java:397)at android.view.LayoutInflater.inflate(LayoutInflater.java:353)at android.app.TimePickerDialog.&lt;init&gt;(TimePickerDialog.java:103)at android.app.TimePickerDialog.&lt;init&gt;(TimePickerDialog.java:74)at android.view.View.performClick(View.java:4447)at android.view.View$PerformClick.run(View.java:18457)at android.os.Handler.handleCallback(Handler.java:733)at android.os.Handler.dispatchMessage(Handler.java:95)at android.os.Looper.loop(Looper.java:136)at android.app.ActivityThread.main(ActivityThread.java:5119)at java.lang.reflect.Method.invokeNative(Native Method)at java.lang.reflect.Method.invoke(Method.java:515)at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:789)at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:605)at dalvik.system.NativeStart.main(Native Method)Caused by: java.lang.NullPointerExceptionat android.view.ViewGroup.addView(ViewGroup.java:3353)at com.huawei.android.hwcontrol.TimePickerFactory.updateAmPmStart(TimePickerFactory.java:92)at android.widget.TimePicker.&lt;init&gt;(TimePicker.java:265)at android.widget.TimePicker.&lt;init&gt;(TimePicker.java:139)... 23 more</div></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">android.view.InflateException: Binary XML file line #20: Error inflating class &lt;unknown&gt;at android.view.LayoutInflater.createView(LayoutInflater.java:620)at com.android.internal.policy.impl.PhoneLayoutInflater.onCreateView(PhoneLayoutInflater.java:56)at android.view.LayoutInflater.onCreateView(LayoutInflater.java:669)at android.view.LayoutInflater.createViewFromTag(LayoutInflater.java:694)at android.view.LayoutInflater.inflate(LayoutInflater.java:469)at android.view.LayoutInflater.inflate(LayoutInflater.java:397)at android.view.LayoutInflater.inflate(LayoutInflater.java:353)at android.app.TimePickerDialog.&lt;init&gt;(TimePickerDialog.java:103)at android.app.TimePickerDialog.&lt;init&gt;(TimePickerDialog.java:74)at android.view.View.performClick(View.java:4447)at android.view.View$PerformClick.run(View.java:18457)at android.os.Handler.handleCallback(Handler.java:733)at android.os.Handler.dispatchMessage(Handler.java:95)at android.os.Looper.loop(Looper.java:136)at android.app.ActivityThread.main(ActivityThread.java:5119)at java.lang.reflect.Method.invokeNative(Native Method)at java.lang.reflect.Method.invoke(Method.java:515)at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:789)at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:605)at dalvik.system.NativeStart.main(Native Method)Caused by: java.lang.reflect.InvocationTargetExceptionat java.lang.reflect.Constructor.constructNative(Native Method)at java.lang.reflect.Constructor.newInstance(Constructor.java:423)at android.view.LayoutInflater.createView(LayoutInflater.java:594)... 20 moreCaused by: java.lang.NullPointerExceptionat android.view.ViewGroup.addView(ViewGroup.java:3353)at com.huawei.android.hwcontrol.TimePickerFactory.updateAmPmStart(TimePickerFactory.java:92)at android.widget.TimePicker.&lt;init&gt;(TimePicker.java:265)at android.widget.TimePicker.&lt;init&gt;(TimePicker.java:139)... 23 morejava.lang.reflect.InvocationTargetExceptionat java.lang.reflect.Constructor.constructNative(Native Method)at java.lang.reflect.Constructor.newInstance(Constructor.java:423)at android.view.LayoutInflater.createView(LayoutInflater.java:594)at com.android.internal.policy.impl.PhoneLayoutInflater.onCreateView(PhoneLayoutInflater.java:56)at android.view.LayoutInflater.onCreateView(LayoutInflater.java:669)at android.view.LayoutInflater.createViewFromTag(LayoutInflater.java:694)at android.view.LayoutInflater.inflate(LayoutInflater.java:469)at android.view.LayoutInflater.inflate(LayoutInflater.java:397)at android.view.LayoutInflater.inflate(LayoutInflater.java:353)at android.app.TimePickerDialog.&lt;init&gt;(TimePickerDialog.java:103)at android.app.TimePickerDialog.&lt;init&gt;(TimePickerDialog.java:74)at android.view.View.performClick(View.java:4447)at android.view.View$PerformClick.run(View.java:18457)at android.os.Handler.handleCallback(Handler.java:733)at android.os.Handler.dispatchMessage(Handler.java:95)at android.os.Looper.loop(Looper.java:136)at android.app.ActivityThread.main(ActivityThread.java:5119)at java.lang.reflect.Method.invokeNative(Native Method)at java.lang.reflect.Method.invoke(Method.java:515)at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:789)at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:605)at dalvik.system.NativeStart.main(Native Method)Caused by: java.lang.NullPointerExceptionat android.view.ViewGroup.addView(ViewGroup.java:3353)at com.huawei.android.hwcontrol.TimePickerFactory.updateAmPmStart(TimePickerFactory.java:92)at android.widget.TimePicker.&lt;init&gt;(TimePicker.java:265)at android.widget.TimePicker.&lt;init&gt;(TimePicker.java:139)... 23 more</span><br></pre></td></tr></table></figure>
 <p>但如果不使用插件，在主应用中使用TimePicker之类的组件，就一切OK。</p>
 <p>好吧，问题很严重，已经定位到是集成了推送的功能之后出现的。但很难定位为什么出现这种问题，注册Token后，跨进程通讯问题？后台推送服务导致的？</p>
 <p>看到这个<code>huawei.android.widget.TimePicker</code>在想，华为又调皮了，又改了系统的源码。因为google官方的android系统源中有这样一个逻辑，发现布局文件中的View没有包名，会自动加上<code>android.widget.</code>前缀。</p>
 <p>已经在怀疑是在AndroidManifest.xml文件中配置了什么导致了问题，所以一行一行的排查。果然，在去掉下面这行后，就正常了。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;application&gt;</div><div class="line"></div><div class="line">	&lt;meta-data android:name="hwc-theme"            android:value="androidhwext:style/Theme.Emui.NoActionBar" /&gt;</div><div class="line"></div><div class="line">&lt;/application&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;application&gt;</span><br><span class="line"></span><br><span class="line">	&lt;meta-data android:name=<span class="string">"hwc-theme"</span>            android:value=<span class="string">"androidhwext:style/Theme.Emui.NoActionBar"</span> /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/application&gt;</span><br></pre></td></tr></table></figure>
 <p>这个<code>meta-data</code>定义是放在<code>applicaton</code>标签中，所以会针对整个App。把这行干掉之后，问题解决。</p>
 <p>这种问题也只能是在这种特定场景中被遇到，一般还真遇不到。三生有幸！</p>
   
@@ -243,6 +242,10 @@
 		  
 		
 		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
 			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
 		  
 		
@@ -276,10 +279,6 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/SQLite性能优化/" title="SQLite性能优化">SQLite性能优化<sup>2</sup></a></li>
 			
 		
@@ -288,19 +287,15 @@
 			
 		
 			
-				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
+				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/InvocationTargetException-ActivityNotFoundException-android-os-FileUriExposedException/" title="InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException">InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException<sup>1</sup></a></li>
+				<li><a href="/tags/append-copy-slice/" title="append copy slice">append copy slice<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/android死锁分析/" title="android死锁分析">android死锁分析<sup>1</sup></a></li>
 			
 		
 			
@@ -312,15 +307,7 @@
 			
 		
 			
-				<li><a href="/tags/EXACTLY-AT-MOST-UNSPECIFIED/" title="EXACTLY AT_MOST UNSPECIFIED">EXACTLY AT_MOST UNSPECIFIED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/gradle配置/" title="gradle配置">gradle配置<sup>1</sup></a></li>
+				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
 			
 		
 			
@@ -328,11 +315,7 @@
 			
 		
 			
-				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
+				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
 			
 		
 			
@@ -340,7 +323,7 @@
 			
 		
 			
-				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
 			
 		
 			
@@ -348,11 +331,31 @@
 			
 		
 			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/gradle打jar包-混淆/" title="gradle打jar包 混淆">gradle打jar包 混淆<sup>1</sup></a></li>
+				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/boost-clion/" title="boost clion">boost clion<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
 			
 		
 		</ul>
@@ -415,7 +418,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2018 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
 		
 		<a href="/about" target="_blank" title="jacpy">jacpy</a>
 		

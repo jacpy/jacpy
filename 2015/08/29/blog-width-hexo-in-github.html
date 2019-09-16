@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-CN">
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
   
     <title>使用hexo在github上搭建自己的博客 | jacpy&#39;s blog</title>
@@ -12,11 +12,13 @@
 
     
     <meta name="description" content="本文主要是介绍自己在github上搭建blog，把自己在wordpress中的博客迁移过来的过程，以及这过程中遇到的坑。">
+<meta name="keywords" content="github hex blog">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用hexo在github上搭建自己的博客">
 <meta property="og:url" content="http://www.jacpy.com/2015/08/29/blog-width-hexo-in-github.html">
-<meta property="og:site_name" content="jacpy's blog">
+<meta property="og:site_name" content="jacpy&#39;s blog">
 <meta property="og:description" content="本文主要是介绍自己在github上搭建blog，把自己在wordpress中的博客迁移过来的过程，以及这过程中遇到的坑。">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://github.com/jacpy/jacpy.github.io/raw/master/images/2015/08/29/domain_list.jpg">
 <meta property="og:updated_time" content="2015-10-30T15:35:56.000Z">
 <meta name="twitter:card" content="summary">
@@ -36,7 +38,7 @@
     
     <link rel="stylesheet" href="/css/style.css">
 </head>
-
+</html>
   <body>
     <header>
       
@@ -107,60 +109,60 @@
 		
 		<p>本文主要是介绍自己在github上搭建blog，把自己在wordpress中的博客迁移过来的过程，以及这过程中遇到的坑。</p>
 <a id="more"></a>
-<h2 id="github上建站"><a href="#github上建站" class="headerlink" title="github上建站"></a>github上建站</h2><h3 id="1-注册账号"><a href="#1-注册账号" class="headerlink" title="1.注册账号"></a>1.注册账号</h3><p>在<a href="https://github.com" target="_blank" rel="external">github</a>上注册账号过程就不详说了，没啥难度。</p>
-<h3 id="2-创建仓库"><a href="#2-创建仓库" class="headerlink" title="2.创建仓库"></a>2.创建仓库</h3><p>注册在完成后登录，在自己的首页，即<a href="https://github.com" target="_blank" rel="external">https://github.com</a>  页面的右下角会有一个<strong>You repositories</strong>栏，点击右边绿色的<strong>New respository</strong>按钮，创建一个<strong>Repository name</strong>为与注册账户名称相同的并且带上<strong>.github.io</strong>后缀，如jacpy.github.io（将jacpy替换成你自己注册的名称，下同 ），注意这里是<strong>github.io</strong>不是<strong>github.com</strong>，点击创建repository页面的底部点击<strong>Create repository</strong>按钮后会要你选择博客的模板和一些信息，整个过程完成后，就可以直接访问<a href="https://jacpy.github.io" target="_blank" rel="external">https://jacpy.github.io</a> 了。<br>具体参考：<a href="https://pages.github.com/" target="_blank" rel="external">https://pages.github.com/</a></p>
+<h2 id="github上建站"><a href="#github上建站" class="headerlink" title="github上建站"></a>github上建站</h2><h3 id="1-注册账号"><a href="#1-注册账号" class="headerlink" title="1.注册账号"></a>1.注册账号</h3><p>在<a href="https://github.com" target="_blank" rel="noopener">github</a>上注册账号过程就不详说了，没啥难度。</p>
+<h3 id="2-创建仓库"><a href="#2-创建仓库" class="headerlink" title="2.创建仓库"></a>2.创建仓库</h3><p>注册在完成后登录，在自己的首页，即<a href="https://github.com" target="_blank" rel="noopener">https://github.com</a>  页面的右下角会有一个<strong>You repositories</strong>栏，点击右边绿色的<strong>New respository</strong>按钮，创建一个<strong>Repository name</strong>为与注册账户名称相同的并且带上<strong>.github.io</strong>后缀，如jacpy.github.io（将jacpy替换成你自己注册的名称，下同 ），注意这里是<strong>github.io</strong>不是<strong>github.com</strong>，点击创建repository页面的底部点击<strong>Create repository</strong>按钮后会要你选择博客的模板和一些信息，整个过程完成后，就可以直接访问<a href="https://jacpy.github.io" target="_blank" rel="noopener">https://jacpy.github.io</a> 了。<br>具体参考：<a href="https://pages.github.com/" target="_blank" rel="noopener">https://pages.github.com/</a></p>
 <hr>
-<h2 id="安装git"><a href="#安装git" class="headerlink" title="安装git"></a>安装git</h2><p>如果你PC上安装过git，此步略过；如果没安装，那么从<a href="https://git-scm.com/downloads" target="_blank" rel="external">git官网</a>  上下载git安装，安装过程中要将git添加到PATH中，安装过程中有页面有这样的选项，钩上就行了。</p>
-<h2 id="安装node-js"><a href="#安装node-js" class="headerlink" title="安装node.js"></a>安装node.js</h2><p>到<a href="https://nodejs.org/download/" target="_blank" rel="external">node.js官网</a> 下载一个安装，如果你是老版本了，建议升级成最新版本，我PC上安装的是最新的0.12.7版本，npm -v的版本是2.11.3。</p>
-<h2 id="安装hexo"><a href="#安装hexo" class="headerlink" title="安装hexo"></a>安装hexo</h2><h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h3><p>打开命令行，执行以下命令：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">npm install -g hexo-cli</div><div class="line">npm install hexo --save</div></pre></td></tr></table></figure></p>
-<h3 id="2-配置"><a href="#2-配置" class="headerlink" title="2.配置"></a>2.配置</h3><p>先创建一个目录jacpy，再在命令行cd到这个目录，执行下面命令，执行初始化操作和安装一些插件：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">hexo init</div><div class="line">npm install hexo-generator-index --save</div><div class="line">npm install hexo-generator-archive --save</div><div class="line">npm install hexo-generator-category --save</div><div class="line">npm install hexo-generator-tag --save</div><div class="line">npm install hexo-server --save</div><div class="line">npm install hexo-deployer-git --save</div><div class="line">npm install hexo-deployer-heroku --save</div><div class="line">npm install hexo-deployer-rsync --save</div><div class="line">npm install hexo-deployer-openshift --save</div><div class="line">npm install hexo-renderer-marked@<span class="number">0.2</span> --save</div><div class="line">npm install hexo-renderer-stylus@<span class="number">0.2</span> --save</div><div class="line">npm install hexo-generator-feed@<span class="number">1</span> --save</div><div class="line">npm install hexo-generator-sitemap@<span class="number">1</span> --save</div></pre></td></tr></table></figure></p>
+<h2 id="安装git"><a href="#安装git" class="headerlink" title="安装git"></a>安装git</h2><p>如果你PC上安装过git，此步略过；如果没安装，那么从<a href="https://git-scm.com/downloads" target="_blank" rel="noopener">git官网</a>  上下载git安装，安装过程中要将git添加到PATH中，安装过程中有页面有这样的选项，钩上就行了。</p>
+<h2 id="安装node-js"><a href="#安装node-js" class="headerlink" title="安装node.js"></a>安装node.js</h2><p>到<a href="https://nodejs.org/download/" target="_blank" rel="noopener">node.js官网</a> 下载一个安装，如果你是老版本了，建议升级成最新版本，我PC上安装的是最新的0.12.7版本，npm -v的版本是2.11.3。</p>
+<h2 id="安装hexo"><a href="#安装hexo" class="headerlink" title="安装hexo"></a>安装hexo</h2><h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h3><p>打开命令行，执行以下命令：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br><span class="line">npm install hexo --save</span><br></pre></td></tr></table></figure></p>
+<h3 id="2-配置"><a href="#2-配置" class="headerlink" title="2.配置"></a>2.配置</h3><p>先创建一个目录jacpy，再在命令行cd到这个目录，执行下面命令，执行初始化操作和安装一些插件：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">hexo init</span><br><span class="line">npm install hexo-generator-index --save</span><br><span class="line">npm install hexo-generator-archive --save</span><br><span class="line">npm install hexo-generator-category --save</span><br><span class="line">npm install hexo-generator-tag --save</span><br><span class="line">npm install hexo-server --save</span><br><span class="line">npm install hexo-deployer-git --save</span><br><span class="line">npm install hexo-deployer-heroku --save</span><br><span class="line">npm install hexo-deployer-rsync --save</span><br><span class="line">npm install hexo-deployer-openshift --save</span><br><span class="line">npm install hexo-renderer-marked@<span class="number">0.2</span> --save</span><br><span class="line">npm install hexo-renderer-stylus@<span class="number">0.2</span> --save</span><br><span class="line">npm install hexo-generator-feed@<span class="number">1</span> --save</span><br><span class="line">npm install hexo-generator-sitemap@<span class="number">1</span> --save</span><br></pre></td></tr></table></figure></p>
 <blockquote>
 <ul>
 <li>提示：把上面一大串命令直接复制到命令行，不用一条一条复制，再回车。<br><strong>注意：</strong>如果在执行命令过程中会有一些提示，比如提示要执行一些命令，那么就按要求直接执行，下同，不然就出现一些意想不到的情况。后面会有一个错误解决的例子。</li>
 </ul>
 </blockquote>
-<h3 id="3-本地效果查看"><a href="#3-本地效果查看" class="headerlink" title="3.本地效果查看"></a>3.本地效果查看</h3><p>环境已经准备好了，接下来就可以写一篇了博客了，执行创建命令：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo <span class="keyword">new</span> blog-width-hexo-in-github</div></pre></td></tr></table></figure></p>
+<h3 id="3-本地效果查看"><a href="#3-本地效果查看" class="headerlink" title="3.本地效果查看"></a>3.本地效果查看</h3><p>环境已经准备好了，接下来就可以写一篇了博客了，执行创建命令：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo <span class="keyword">new</span> blog-width-hexo-in-github</span><br></pre></td></tr></table></figure></p>
 <p>等待几秒，会在jacpy/source/_posts/创建一个blog-width-hexo-in-github.md文件。打开文件就可以编辑，使用的markdown语法。</p>
 <blockquote>
 <ul>
 <li>话说这命令执行的速度太慢了吧，貌似整个一晚上的操作印象中，执行命令速度都很慢，都要等几秒钟，没有瞬间完成的，吐槽一下执行的速度。另外如果长时间发现命令没响应，就按ctrl + C终止命令，重新再执行一下，这个也是坑爹的地方。</li>
-<li>生成的md文件介绍可以参考<a href="https://hexo.io/zh-cn/docs/writing.html" target="_blank" rel="external">写作</a> ， <a href="https://hexo.io/zh-cn/docs/front-matter.html" target="_blank" rel="external">Front-matter</a>。</li>
+<li>生成的md文件介绍可以参考<a href="https://hexo.io/zh-cn/docs/writing.html" target="_blank" rel="noopener">写作</a> ， <a href="https://hexo.io/zh-cn/docs/front-matter.html" target="_blank" rel="noopener">Front-matter</a>。</li>
 </ul>
 </blockquote>
-<p>清除和生成静态HTML文件，命令如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hexo clean</div><div class="line">hexo generate</div></pre></td></tr></table></figure></p>
-<p>执行后，会在目录jacpy目录下创建一个public目录，里面是生成网页的全部内容，OK，启动服务预览一下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo server</div></pre></td></tr></table></figure></p>
-<p>在浏览器中访问:localhost:4000，你可以看到正常的页面内容，如果出现以下不正常的页面：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;%- partial(<span class="string">'_partial/head'</span>) %&gt;</div><div class="line">&lt;%- partial(<span class="string">'_partial/header'</span>, <span class="keyword">null</span>, &#123;cache: !config.relative_link&#125;) %&gt;</div><div class="line">&lt;%- body %&gt;</div><div class="line">&lt;% <span class="keyword">if</span> (theme.sidebar &amp;&amp; theme.sidebar !== <span class="string">'bottom'</span>)&#123; %&gt; &lt;%- partial(<span class="string">'_partial/sidebar'</span>, <span class="keyword">null</span>,     &#123;cache: !config.relative_link&#125;) %&gt; &lt;% &#125; %&gt;</div><div class="line">&lt;%- partial(<span class="string">'_partial/footer'</span>, <span class="keyword">null</span>, &#123;cache: !config.relative_link&#125;) %&gt;</div><div class="line">&lt;%- partial(<span class="string">'_partial/mobile-nav'</span>, <span class="keyword">null</span>, &#123;cache: !config.relative_link&#125;) %&gt; &lt;%- partial(<span class="string">'_partial/after-footer'</span>) %&gt;</div></pre></td></tr></table></figure></p>
-<p>在命令行执行：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install</div></pre></td></tr></table></figure></p>
+<p>清除和生成静态HTML文件，命令如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo generate</span><br></pre></td></tr></table></figure></p>
+<p>执行后，会在目录jacpy目录下创建一个public目录，里面是生成网页的全部内容，OK，启动服务预览一下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo server</span><br></pre></td></tr></table></figure></p>
+<p>在浏览器中访问:localhost:4000，你可以看到正常的页面内容，如果出现以下不正常的页面：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;%- partial(<span class="string">'_partial/head'</span>) %&gt;</span><br><span class="line">&lt;%- partial(<span class="string">'_partial/header'</span>, <span class="keyword">null</span>, &#123;cache: !config.relative_link&#125;) %&gt;</span><br><span class="line">&lt;%- body %&gt;</span><br><span class="line">&lt;% <span class="keyword">if</span> (theme.sidebar &amp;&amp; theme.sidebar !== <span class="string">'bottom'</span>)&#123; %&gt; &lt;%- partial(<span class="string">'_partial/sidebar'</span>, <span class="keyword">null</span>,     &#123;cache: !config.relative_link&#125;) %&gt; &lt;% &#125; %&gt;</span><br><span class="line">&lt;%- partial(<span class="string">'_partial/footer'</span>, <span class="keyword">null</span>, &#123;cache: !config.relative_link&#125;) %&gt;</span><br><span class="line">&lt;%- partial(<span class="string">'_partial/mobile-nav'</span>, <span class="keyword">null</span>, &#123;cache: !config.relative_link&#125;) %&gt; &lt;%- partial(<span class="string">'_partial/after-footer'</span>) %&gt;</span><br></pre></td></tr></table></figure></p>
+<p>在命令行执行：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install</span><br></pre></td></tr></table></figure></p>
 <p>再生成执行清除和生成HTML命令即OK。因为在执行上面命令后，会有提示要执行npm install命令，但自己忽略了，才导致这个问题。</p>
 <hr>
-<h2 id="导出wordpress博客"><a href="#导出wordpress博客" class="headerlink" title="导出wordpress博客"></a>导出wordpress博客</h2><p>导出wordpress博客可参考<a href="https://hexo.io/zh-cn/docs/migration.html" target="_blank" rel="external">hexo官方说明</a>。<br>导出来的是一个xml文件，转换完成后，在命令行cd到public目录，先删除public目录中的内容，再执行初始化命令：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">git init</div><div class="line">git remote add origin https:<span class="comment">//github.com/jacpy/jacpy.github.io.git</span></div><div class="line">git pull origin master</div></pre></td></tr></table></figure></p>
+<h2 id="导出wordpress博客"><a href="#导出wordpress博客" class="headerlink" title="导出wordpress博客"></a>导出wordpress博客</h2><p>导出wordpress博客可参考<a href="https://hexo.io/zh-cn/docs/migration.html" target="_blank" rel="noopener">hexo官方说明</a>。<br>导出来的是一个xml文件，转换完成后，在命令行cd到public目录，先删除public目录中的内容，再执行初始化命令：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br><span class="line">git remote add origin https:<span class="comment">//github.com/jacpy/jacpy.github.io.git</span></span><br><span class="line">git pull origin master</span><br></pre></td></tr></table></figure></p>
 <blockquote>
 <ul>
 <li><strong>注意：</strong>是master分支，不是gh-pages分支。后面的内容都是在master分支上操作。</li>
 </ul>
 </blockquote>
-<p>OK，删除public中所有的内容，除了.git目录。然后执行：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">git add -A</div><div class="line">git commit -m <span class="string">"remove default pages"</span></div><div class="line">git push origin master</div></pre></td></tr></table></figure></p>
-<p>按提示输入用户名和密码。上面的操作是将github上面的页面文件先删除，也可以在github上面打开文件，点击文件右上角的垃圾箱按钮，一个一个的删除。<br>再回到jacpy目录，执行清除和生成HTML命令，最后使用上面的命令将publish的内容提交到github上面，再刷新一下你的jacpy.github.io主页，内容已经更新上去。<br>到这一步已经大功了。当然你可以使用hexo deploy命令，将内容提交到github，需要配置jacpy目录下的_config.yml文件，在末尾找到deploy项，进行编辑：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># Deployment</div><div class="line">## Docs: http://hexo.io/docs/deployment.html</div><div class="line">deploy:</div><div class="line">  type: git</div><div class="line">  repo: https://github.com/jacpy/jacpy.github.io.git</div><div class="line">  branch: master</div></pre></td></tr></table></figure></p>
+<p>OK，删除public中所有的内容，除了.git目录。然后执行：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add -A</span><br><span class="line">git commit -m <span class="string">"remove default pages"</span></span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure></p>
+<p>按提示输入用户名和密码。上面的操作是将github上面的页面文件先删除，也可以在github上面打开文件，点击文件右上角的垃圾箱按钮，一个一个的删除。<br>再回到jacpy目录，执行清除和生成HTML命令，最后使用上面的命令将publish的内容提交到github上面，再刷新一下你的jacpy.github.io主页，内容已经更新上去。<br>到这一步已经大功了。当然你可以使用hexo deploy命令，将内容提交到github，需要配置jacpy目录下的_config.yml文件，在末尾找到deploy项，进行编辑：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># Deployment</span><br><span class="line">## Docs: http://hexo.io/docs/deployment.html</span><br><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: https:<span class="comment">//github.com/jacpy/jacpy.github.io.git</span></span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure></p>
 <h2 id="修改域名解析"><a href="#修改域名解析" class="headerlink" title="修改域名解析"></a>修改域名解析</h2><blockquote>
 <ul>
 <li>这部分是自己耗时最多的地方，中间还遇到404问题，卡了很久。如果你自己有一个域名，想直接通过域名访问你的github上面的博客，形如访问jacpy.com时，会自动跳转到jacpy.github.io页面，但地址栏并没有改变，那么接着往下看。</li>
 </ul>
 </blockquote>
-<p>因为自己的域名是在万网上注册的，所以到万网上修改配置。为了避免做广告之嫌，推荐一下<a href="https://www.godaddy.com/" target="_blank" rel="external">godady</a> 可以对比一下性价比。万网现在已经被阿里收购了，所以网页风格都和阿里云保持一致了，访问[域名列表页面(<a href="http://netcn.console.aliyun.com/core/domain/tclist" target="_blank" rel="external">http://netcn.console.aliyun.com/core/domain/tclist</a>) ，点击自己的域名会跳转到另外一个页面，我原来是将这个域名绑定到一个IP地址，所以看到的<strong>记录类型</strong>是<strong>A</strong>，点击右边的修改栏，将记录类型修改成<strong>CNAME</strong>，如下图所示：<br><img src="https://github.com/jacpy/jacpy.github.io/raw/master/images/2015/08/29/domain_list.jpg" alt="域名列表截图"></p>
+<p>因为自己的域名是在万网上注册的，所以到万网上修改配置。为了避免做广告之嫌，推荐一下<a href="https://www.godaddy.com/" target="_blank" rel="noopener">godady</a> 可以对比一下性价比。万网现在已经被阿里收购了，所以网页风格都和阿里云保持一致了，访问[域名列表页面(<a href="http://netcn.console.aliyun.com/core/domain/tclist" target="_blank" rel="noopener">http://netcn.console.aliyun.com/core/domain/tclist</a>) ，点击自己的域名会跳转到另外一个页面，我原来是将这个域名绑定到一个IP地址，所以看到的<strong>记录类型</strong>是<strong>A</strong>，点击右边的修改栏，将记录类型修改成<strong>CNAME</strong>，如下图所示：<br><img src="https://github.com/jacpy/jacpy.github.io/raw/master/images/2015/08/29/domain_list.jpg" alt="域名列表截图"></p>
 <p>保存以后，如果现在访问你的域名jacpy.com，肯定会出现404，因为还要在master分支上创建一个CNAME文件。</p>
 <blockquote>
 <ul>
 <li>出现404有两个原因，一个是你访问的是<strong>jacpy.github.com</strong>而不是<strong>jacpy.github.io</strong>，另外一个就是在master分支上没有CNAME文件。</li>
 </ul>
 </blockquote>
-<p>OK，在jacpy/source目录中创建一个CNAME文件，在里面在增加一行内容：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">jacpy.com</div></pre></td></tr></table></figure></p>
+<p>OK，在jacpy/source目录中创建一个CNAME文件，在里面在增加一行内容：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jacpy.com</span><br></pre></td></tr></table></figure></p>
 <p>然后再重新生成HTML命令和提交到github。OK，到此已经全部完成了：)。</p>
 <blockquote>
 <ul>
 <li>如果发现HTML中有乱码，将md文件转换成UTF-8编码即可。</li>
 </ul>
 </blockquote>
-<p>参考：<br><a href="http://wsgzao.github.io/post/hexo-guide/" target="_blank" rel="external">http://wsgzao.github.io/post/hexo-guide/</a><br><a href="https://linux.cn/article-5930-qqmail.html" target="_blank" rel="external">https://linux.cn/article-5930-qqmail.html</a><br><a href="https://help.github.com/categories/github-pages-basics/" target="_blank" rel="external">https://help.github.com/categories/github-pages-basics/</a><br><a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="external">https://hexo.io/zh-cn/docs/</a></p>
+<p>参考：<br><a href="http://wsgzao.github.io/post/hexo-guide/" target="_blank" rel="noopener">http://wsgzao.github.io/post/hexo-guide/</a><br><a href="https://linux.cn/article-5930-qqmail.html" target="_blank" rel="noopener">https://linux.cn/article-5930-qqmail.html</a><br><a href="https://help.github.com/categories/github-pages-basics/" target="_blank" rel="noopener">https://help.github.com/categories/github-pages-basics/</a><br><a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="noopener">https://hexo.io/zh-cn/docs/</a></p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -286,6 +288,10 @@
 		  
 		
 		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
 			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
 		  
 		
@@ -319,10 +325,6 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/SQLite性能优化/" title="SQLite性能优化">SQLite性能优化<sup>2</sup></a></li>
 			
 		
@@ -331,19 +333,15 @@
 			
 		
 			
-				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
+				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/InvocationTargetException-ActivityNotFoundException-android-os-FileUriExposedException/" title="InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException">InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException<sup>1</sup></a></li>
+				<li><a href="/tags/append-copy-slice/" title="append copy slice">append copy slice<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/android死锁分析/" title="android死锁分析">android死锁分析<sup>1</sup></a></li>
 			
 		
 			
@@ -355,15 +353,7 @@
 			
 		
 			
-				<li><a href="/tags/EXACTLY-AT-MOST-UNSPECIFIED/" title="EXACTLY AT_MOST UNSPECIFIED">EXACTLY AT_MOST UNSPECIFIED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/gradle配置/" title="gradle配置">gradle配置<sup>1</sup></a></li>
+				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
 			
 		
 			
@@ -371,11 +361,7 @@
 			
 		
 			
-				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
+				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
 			
 		
 			
@@ -383,7 +369,7 @@
 			
 		
 			
-				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
 			
 		
 			
@@ -391,11 +377,31 @@
 			
 		
 			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/gradle打jar包-混淆/" title="gradle打jar包 混淆">gradle打jar包 混淆<sup>1</sup></a></li>
+				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/boost-clion/" title="boost clion">boost clion<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
 			
 		
 		</ul>
@@ -458,7 +464,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2018 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
 		
 		<a href="/about" target="_blank" title="jacpy">jacpy</a>
 		

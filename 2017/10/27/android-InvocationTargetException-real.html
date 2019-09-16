@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-CN">
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
   
     <title>android InvocationTargetException异常浅析 | jacpy&#39;s blog</title>
@@ -11,22 +11,18 @@
     
 
     
-    <meta name="description" content="前几天处理一个很奇葩的问题，解决过程可谓一波三折啊，处理起来却很有意思，这里记录一下。
-事情的起因是同事写了一个在android系统调用系统相机的拍照的功能，将路径通过Intent传过去，照片拍好后保存到路径，通过路径取这张照片。
-突然有一天点这拍照功能无效了，直接crash。一看异常日志，发现抛出的是ActivityNotFoundException。第一反应是以为是Activity没有注册或者">
+    <meta name="description" content="前几天处理一个很奇葩的问题，解决过程可谓一波三折啊，处理起来却很有意思，这里记录一下。 事情的起因是同事写了一个在android系统调用系统相机的拍照的功能，将路径通过Intent传过去，照片拍好后保存到路径，通过路径取这张照片。 突然有一天点这拍照功能无效了，直接crash。一看异常日志，发现抛出的是ActivityNotFoundException。第一反应是以为是Activity没有注册或者">
+<meta name="keywords" content="InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException">
 <meta property="og:type" content="article">
 <meta property="og:title" content="android InvocationTargetException异常浅析">
 <meta property="og:url" content="http://www.jacpy.com/2017/10/27/android-InvocationTargetException-real.html">
-<meta property="og:site_name" content="jacpy's blog">
-<meta property="og:description" content="前几天处理一个很奇葩的问题，解决过程可谓一波三折啊，处理起来却很有意思，这里记录一下。
-事情的起因是同事写了一个在android系统调用系统相机的拍照的功能，将路径通过Intent传过去，照片拍好后保存到路径，通过路径取这张照片。
-突然有一天点这拍照功能无效了，直接crash。一看异常日志，发现抛出的是ActivityNotFoundException。第一反应是以为是Activity没有注册或者">
+<meta property="og:site_name" content="jacpy&#39;s blog">
+<meta property="og:description" content="前几天处理一个很奇葩的问题，解决过程可谓一波三折啊，处理起来却很有意思，这里记录一下。 事情的起因是同事写了一个在android系统调用系统相机的拍照的功能，将路径通过Intent传过去，照片拍好后保存到路径，通过路径取这张照片。 突然有一天点这拍照功能无效了，直接crash。一看异常日志，发现抛出的是ActivityNotFoundException。第一反应是以为是Activity没有注册或者">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-10-27T15:52:10.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="android InvocationTargetException异常浅析">
-<meta name="twitter:description" content="前几天处理一个很奇葩的问题，解决过程可谓一波三折啊，处理起来却很有意思，这里记录一下。
-事情的起因是同事写了一个在android系统调用系统相机的拍照的功能，将路径通过Intent传过去，照片拍好后保存到路径，通过路径取这张照片。
-突然有一天点这拍照功能无效了，直接crash。一看异常日志，发现抛出的是ActivityNotFoundException。第一反应是以为是Activity没有注册或者">
+<meta name="twitter:description" content="前几天处理一个很奇葩的问题，解决过程可谓一波三折啊，处理起来却很有意思，这里记录一下。 事情的起因是同事写了一个在android系统调用系统相机的拍照的功能，将路径通过Intent传过去，照片拍好后保存到路径，通过路径取这张照片。 突然有一天点这拍照功能无效了，直接crash。一看异常日志，发现抛出的是ActivityNotFoundException。第一反应是以为是Activity没有注册或者">
 
     
     <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
@@ -40,7 +36,7 @@
     
     <link rel="stylesheet" href="/css/style.css">
 </head>
-
+</html>
   <body>
     <header>
       
@@ -114,13 +110,13 @@
 <p>突然有一天点这拍照功能无效了，直接crash。一看异常日志，发现抛出的是<code>ActivityNotFoundException</code>。第一反应是以为是Activity没有注册或者打包出现问题了，于是把Apk反编译，在AndroidManifest.xml中检查了下注册，在dex文件中也找了下相关的类，结果发现都没有问题。</p>
 <a id="more"></a>
 <p>再细看日志，发现和项目中的插件框有关，报错是跟插件框架中的一个启动Activity的方法有关。因为Hook了系统的<code>Instrumention</code>，所以执行启动Activity时，是由框架中这个Hook来接管Activity的启动。于是找到源码，看了下代码实现，部分代码如下所示：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">Method method = <span class="keyword">null</span>;</div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">  Class&lt;Instrumentation&gt; cl = (Class&lt;Instrumentation&gt;) <span class="keyword">this</span>.getClass()</div><div class="line">      .getClassLoader().loadClass(<span class="string">"android.app.Instrumentation"</span>);</div><div class="line">  method = cl.getDeclaredMethod(<span class="string">"execStartActivity"</span>, <span class="keyword">new</span> Class[] &#123;</div><div class="line">      Context.class, IBinder.class, IBinder.class, Activity.class,</div><div class="line">      Intent.class, Integer.TYPE, android.os.Bundle.class &#125;);</div><div class="line">  method.setAccessible(<span class="keyword">true</span>);</div><div class="line">  ActivityResult r = (ActivityResult) method.invoke(</div><div class="line">      originalInstrumentation, <span class="keyword">new</span> Object[] &#123; who, contextThread, token,</div><div class="line">          target, intent, requestCode, aBundle &#125;);</div><div class="line">  <span class="keyword">return</span> r;</div><div class="line">&#125; <span class="keyword">catch</span> (NoSuchMethodException e) &#123;</div><div class="line">  e.printStackTrace();</div><div class="line">&#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</div><div class="line">  e.printStackTrace();</div><div class="line">&#125; <span class="keyword">catch</span> (IllegalArgumentException e) &#123;</div><div class="line">  e.printStackTrace();</div><div class="line">&#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</div><div class="line">  e.printStackTrace();</div><div class="line">&#125; <span class="keyword">catch</span> (InvocationTargetException e) &#123;</div><div class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> ActivityNotFoundException();</div><div class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">  e.printStackTrace();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Method method = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  Class&lt;Instrumentation&gt; cl = (Class&lt;Instrumentation&gt;) <span class="keyword">this</span>.getClass()</span><br><span class="line">      .getClassLoader().loadClass(<span class="string">"android.app.Instrumentation"</span>);</span><br><span class="line">  method = cl.getDeclaredMethod(<span class="string">"execStartActivity"</span>, <span class="keyword">new</span> Class[] &#123;</span><br><span class="line">      Context.class, IBinder.class, IBinder.class, Activity.class,</span><br><span class="line">      Intent.class, Integer.TYPE, android.os.Bundle.class &#125;);</span><br><span class="line">  method.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">  ActivityResult r = (ActivityResult) method.invoke(</span><br><span class="line">      originalInstrumentation, <span class="keyword">new</span> Object[] &#123; who, contextThread, token,</span><br><span class="line">          target, intent, requestCode, aBundle &#125;);</span><br><span class="line">  <span class="keyword">return</span> r;</span><br><span class="line">&#125; <span class="keyword">catch</span> (NoSuchMethodException e) &#123;</span><br><span class="line">  e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">  e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">catch</span> (IllegalArgumentException e) &#123;</span><br><span class="line">  e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</span><br><span class="line">  e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">catch</span> (InvocationTargetException e) &#123;</span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> ActivityNotFoundException();</span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">  e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>异常是由<code>throw new ActivityNotFoundException();</code>这行代码抛出来的，抛出的原因是执行<code>method.invoke()</code>方法失败了。抱着怀疑的态度验证了下，在抛出异常之前加了LOG输出，果然有LOG输出，确认是这里出现了问题。没有弄明白写这个框架的人为什么要使用这样的障眼法不让<code>InvocationTargetException</code>的异常信息直接输出，而是抛出一个<code>ActivityNotFoundException</code>。</p>
 <p>最后网上查了下这个异常类，发现这个异常类是一个包装的异常类，通过查看其源码也可以看得到，其内部有一个真实的异常。这也不难理解，因为执行反射的方法，可能会抛出各种异常。按照异常尽可能具体的原则，不能直接抛出一个Exception了事，所以就有了这个包装一个异常的<code>InvocationTargetException</code>类。要输出这个真实的异常，可以直接调用该类的<code>getTargetException().printStackTrace();</code>即可输出真实的异常信息。</p>
-<p>输出的异常信息如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">android.os.FileUriExposedException: file:///sdcard/tmp exposed beyond app through ClipData.Item.getUri()</div><div class="line">     at android.os.StrictMode.onFileUriExposed(StrictMode.java:1799)</div><div class="line">     at android.net.Uri.checkFileUriExposed(Uri.java:2346)</div><div class="line">     at android.content.ClipData.prepareToLeaveProcess(ClipData.java:845)</div><div class="line">     at android.content.Intent.prepareToLeaveProcess(Intent.java:8957)</div><div class="line">     at android.content.Intent.prepareToLeaveProcess(Intent.java:8942)</div><div class="line">     at android.app.Instrumentation.execStartActivity(Instrumentation.java:1519)</div><div class="line">     at java.lang.reflect.Method.invoke(Native Method)</div><div class="line">     at android.view.View.performClick(View.java:5639)</div><div class="line">     at android.view.View$PerformClick.run(View.java:22446)</div><div class="line">     at android.os.Handler.handleCallback(Handler.java:754)</div><div class="line">     at android.os.Handler.dispatchMessage(Handler.java:95)</div><div class="line">     at android.os.Looper.loop(Looper.java:160)</div><div class="line">     at android.app.ActivityThread.main(ActivityThread.java:6252)</div><div class="line">     at java.lang.reflect.Method.invoke(Native Method)</div><div class="line">     at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:895)</div><div class="line">     at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:785)</div><div class="line"> java.lang.reflect.InvocationTargetException</div><div class="line">     at java.lang.reflect.Method.invoke(Native Method)</div><div class="line">     at android.view.View.performClick(View.java:5639)</div><div class="line">     at android.view.View$PerformClick.run(View.java:22446)</div><div class="line">     at android.os.Handler.handleCallback(Handler.java:754)</div><div class="line">     at android.os.Handler.dispatchMessage(Handler.java:95)</div><div class="line">     at android.os.Looper.loop(Looper.java:160)</div><div class="line">     at android.app.ActivityThread.main(ActivityThread.java:6252)</div><div class="line">     at java.lang.reflect.Method.invoke(Native Method)</div><div class="line">     at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:895)</div><div class="line">     at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:785)</div><div class="line"> Caused by: android.os.FileUriExposedException: file:///sdcard/tmp exposed beyond app through ClipData.Item.getUri()</div><div class="line">     at android.os.StrictMode.onFileUriExposed(StrictMode.java:1799)</div><div class="line">     at android.net.Uri.checkFileUriExposed(Uri.java:2346)</div><div class="line">     at android.content.ClipData.prepareToLeaveProcess(ClipData.java:845)</div><div class="line">     at android.content.Intent.prepareToLeaveProcess(Intent.java:8957)</div><div class="line">     at android.content.Intent.prepareToLeaveProcess(Intent.java:8942)</div><div class="line">     at android.app.Instrumentation.execStartActivity(Instrumentation.java:1519)</div><div class="line">    ... 20 more</div></pre></td></tr></table></figure></p>
-<p><code>FileUriExposedException</code>这个异常还是头一次遇到，于是又查了下，在<code>stackoverflow</code>上看到别个的回答：<a href="https://stackoverflow.com/questions/38200282/android-os-fileuriexposedexception-file-storage-emulated-0-test-txt-exposed。" target="_blank" rel="external">https://stackoverflow.com/questions/38200282/android-os-fileuriexposedexception-file-storage-emulated-0-test-txt-exposed。</a><br>遇到这个问题的人还真不少，出现这样的问题是由于android 7.0的系统机制问题，为了安全起见，一个<code>App</code>要访问另外一个<code>App</code>的外部存储目录，需要被访问的<code>App</code>来授权读写权限，所以需要进行版本适配。</p>
+<p>输出的异常信息如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">android.os.FileUriExposedException: file:///sdcard/tmp exposed beyond app through ClipData.Item.getUri()</span><br><span class="line">     at android.os.StrictMode.onFileUriExposed(StrictMode.java:1799)</span><br><span class="line">     at android.net.Uri.checkFileUriExposed(Uri.java:2346)</span><br><span class="line">     at android.content.ClipData.prepareToLeaveProcess(ClipData.java:845)</span><br><span class="line">     at android.content.Intent.prepareToLeaveProcess(Intent.java:8957)</span><br><span class="line">     at android.content.Intent.prepareToLeaveProcess(Intent.java:8942)</span><br><span class="line">     at android.app.Instrumentation.execStartActivity(Instrumentation.java:1519)</span><br><span class="line">     at java.lang.reflect.Method.invoke(Native Method)</span><br><span class="line">     at android.view.View.performClick(View.java:5639)</span><br><span class="line">     at android.view.View$PerformClick.run(View.java:22446)</span><br><span class="line">     at android.os.Handler.handleCallback(Handler.java:754)</span><br><span class="line">     at android.os.Handler.dispatchMessage(Handler.java:95)</span><br><span class="line">     at android.os.Looper.loop(Looper.java:160)</span><br><span class="line">     at android.app.ActivityThread.main(ActivityThread.java:6252)</span><br><span class="line">     at java.lang.reflect.Method.invoke(Native Method)</span><br><span class="line">     at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:895)</span><br><span class="line">     at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:785)</span><br><span class="line"> java.lang.reflect.InvocationTargetException</span><br><span class="line">     at java.lang.reflect.Method.invoke(Native Method)</span><br><span class="line">     at android.view.View.performClick(View.java:5639)</span><br><span class="line">     at android.view.View$PerformClick.run(View.java:22446)</span><br><span class="line">     at android.os.Handler.handleCallback(Handler.java:754)</span><br><span class="line">     at android.os.Handler.dispatchMessage(Handler.java:95)</span><br><span class="line">     at android.os.Looper.loop(Looper.java:160)</span><br><span class="line">     at android.app.ActivityThread.main(ActivityThread.java:6252)</span><br><span class="line">     at java.lang.reflect.Method.invoke(Native Method)</span><br><span class="line">     at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:895)</span><br><span class="line">     at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:785)</span><br><span class="line"> Caused by: android.os.FileUriExposedException: file:///sdcard/tmp exposed beyond app through ClipData.Item.getUri()</span><br><span class="line">     at android.os.StrictMode.onFileUriExposed(StrictMode.java:1799)</span><br><span class="line">     at android.net.Uri.checkFileUriExposed(Uri.java:2346)</span><br><span class="line">     at android.content.ClipData.prepareToLeaveProcess(ClipData.java:845)</span><br><span class="line">     at android.content.Intent.prepareToLeaveProcess(Intent.java:8957)</span><br><span class="line">     at android.content.Intent.prepareToLeaveProcess(Intent.java:8942)</span><br><span class="line">     at android.app.Instrumentation.execStartActivity(Instrumentation.java:1519)</span><br><span class="line">    ... 20 more</span><br></pre></td></tr></table></figure></p>
+<p><code>FileUriExposedException</code>这个异常还是头一次遇到，于是又查了下，在<code>stackoverflow</code>上看到别个的回答：<a href="https://stackoverflow.com/questions/38200282/android-os-fileuriexposedexception-file-storage-emulated-0-test-txt-exposed。" target="_blank" rel="noopener">https://stackoverflow.com/questions/38200282/android-os-fileuriexposedexception-file-storage-emulated-0-test-txt-exposed。</a><br>遇到这个问题的人还真不少，出现这样的问题是由于android 7.0的系统机制问题，为了安全起见，一个<code>App</code>要访问另外一个<code>App</code>的外部存储目录，需要被访问的<code>App</code>来授权读写权限，所以需要进行版本适配。</p>
 <p>在定位问题的时候中间发生一个插曲，写拍照功能的同事用他写的库在demo里面了跑了一下，发现正常，没有任何异常出现。而在项目的App中却出现了问题，所以就说不是他的问题，怀疑是插件框架的问题。因为是我接手了插件框架，所以就开始排查这个问题。</p>
-<p><code>stackoverflow</code>上面有人回答也说了，如果把编译的<code>targetVersion</code>改成24或以上，遇到这种场景就会报错，也给了解决方法，官方的说明和解决方案参照这里：<a href="https://developer.android.google.cn/reference/android/support/v4/content/FileProvider.html" target="_blank" rel="external">https://developer.android.google.cn/reference/android/support/v4/content/FileProvider.html</a></p>
+<p><code>stackoverflow</code>上面有人回答也说了，如果把编译的<code>targetVersion</code>改成24或以上，遇到这种场景就会报错，也给了解决方法，官方的说明和解决方案参照这里：<a href="https://developer.android.google.cn/reference/android/support/v4/content/FileProvider.html" target="_blank" rel="noopener">https://developer.android.google.cn/reference/android/support/v4/content/FileProvider.html</a></p>
 <p>找到原因后，叫写这个拍照功能的同事把<code>targetVersion</code>修改一下，果然，demo中问题就出现了。</p>
 <p>中间还发生一个插曲，传的路径是使用<code>Uri</code>传过去的，如果使用<code>Uri.parse(String)</code>这个方法将路径字符串直接传过去就不会报错；如果使用<code>Uri.parseFile(File)</code>就会出现crash，android 7.0系统的安全机制是识别<code>file://</code>这样的schema，而对普通的路径直接放行。检查的系统源码如下所示：</p>
 <blockquote>
@@ -128,7 +124,7 @@
 <li>android.net.Uri.java</li>
 </ul>
 </blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"> <span class="comment">/**</span></div><div class="line"> * If this is a &#123;<span class="doctag">@code</span> file://&#125; Uri, it will be reported to</div><div class="line"> * &#123;<span class="doctag">@link</span> StrictMode&#125;.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@hide</span></div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">checkFileUriExposed</span><span class="params">(String location)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="string">"file"</span>.equals(getScheme()) &amp;&amp; !getPath().startsWith(<span class="string">"/system/"</span>)) &#123;</div><div class="line">        StrictMode.onFileUriExposed(<span class="keyword">this</span>, location);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">/**</span></span><br><span class="line"><span class="comment"> * If this is a &#123;<span class="doctag">@code</span> file://&#125; Uri, it will be reported to</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@link</span> StrictMode&#125;.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@hide</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">checkFileUriExposed</span><span class="params">(String location)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="string">"file"</span>.equals(getScheme()) &amp;&amp; !getPath().startsWith(<span class="string">"/system/"</span>)) &#123;</span><br><span class="line">        StrictMode.onFileUriExposed(<span class="keyword">this</span>, location);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>以上。</p>
   
 	</div>
@@ -255,6 +251,10 @@
 		  
 		
 		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
 			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
 		  
 		
@@ -288,10 +288,6 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/SQLite性能优化/" title="SQLite性能优化">SQLite性能优化<sup>2</sup></a></li>
 			
 		
@@ -300,19 +296,15 @@
 			
 		
 			
-				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
+				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/InvocationTargetException-ActivityNotFoundException-android-os-FileUriExposedException/" title="InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException">InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException<sup>1</sup></a></li>
+				<li><a href="/tags/append-copy-slice/" title="append copy slice">append copy slice<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/android死锁分析/" title="android死锁分析">android死锁分析<sup>1</sup></a></li>
 			
 		
 			
@@ -324,15 +316,7 @@
 			
 		
 			
-				<li><a href="/tags/EXACTLY-AT-MOST-UNSPECIFIED/" title="EXACTLY AT_MOST UNSPECIFIED">EXACTLY AT_MOST UNSPECIFIED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/gradle配置/" title="gradle配置">gradle配置<sup>1</sup></a></li>
+				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
 			
 		
 			
@@ -340,11 +324,7 @@
 			
 		
 			
-				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
+				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
 			
 		
 			
@@ -352,7 +332,7 @@
 			
 		
 			
-				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
 			
 		
 			
@@ -360,11 +340,31 @@
 			
 		
 			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/gradle打jar包-混淆/" title="gradle打jar包 混淆">gradle打jar包 混淆<sup>1</sup></a></li>
+				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/boost-clion/" title="boost clion">boost clion<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
 			
 		
 		</ul>
@@ -427,7 +427,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2018 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
 		
 		<a href="/about" target="_blank" title="jacpy">jacpy</a>
 		

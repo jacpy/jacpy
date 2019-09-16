@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-CN">
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
   
     <title>关于android fresco初始化的一个坑 | jacpy&#39;s blog</title>
@@ -12,11 +12,13 @@
 
     
     <meta name="description" content="之前有写文章说别人对网上文章的看法，这次写的是我对网上文章的看法。一直以来对网上的文章的说法都抱有怀疑态度，一般都是把网上的东西作为参考，找准关键的地方，他的说法与自己写的有什么区别？一对比就知道哪些地方有欠缺，是什么原因。而不是直接copy过来使用。">
+<meta name="keywords" content="fresco初始化设置">
 <meta property="og:type" content="article">
 <meta property="og:title" content="关于android fresco初始化的一个坑">
 <meta property="og:url" content="http://www.jacpy.com/2017/05/02/android-fresco-init.html">
-<meta property="og:site_name" content="jacpy's blog">
+<meta property="og:site_name" content="jacpy&#39;s blog">
 <meta property="og:description" content="之前有写文章说别人对网上文章的看法，这次写的是我对网上文章的看法。一直以来对网上的文章的说法都抱有怀疑态度，一般都是把网上的东西作为参考，找准关键的地方，他的说法与自己写的有什么区别？一对比就知道哪些地方有欠缺，是什么原因。而不是直接copy过来使用。">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-08-02T05:21:45.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于android fresco初始化的一个坑">
@@ -34,7 +36,7 @@
     
     <link rel="stylesheet" href="/css/style.css">
 </head>
-
+</html>
   <body>
     <header>
       
@@ -113,16 +115,16 @@
 <p>项目中有一个滚动的Gallery查看大图，还有一个将图片保存到本地功能。但保存图片时会概率性失败，这个问题是测试反馈的，而且概率很高。自己测试发现进这个界面保存当前看到的这张图片能成功，后面每次保存都失败。</p>
 <p>跟踪代码发现失败的原因是从SD卡中<code>Fresco</code>库缓存取图片时，图片不存在，所以保存失败。那为什么保存当前图片成功？</p>
 <p>于是将缓存目录下面的内容都用日志打了出来。以下代码在每次图片加载完后就会把缓存内容都以LOG方式输出。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">final</span> PhotoDraweeView photoDraweeView = <span class="keyword">new</span> PhotoDraweeView(context);</div><div class="line"><span class="keyword">final</span> PipelineDraweeControllerBuilder controller = Fresco.newDraweeControllerBuilder();</div><div class="line">controller.setUri(uri); <span class="comment">// 图片请求的URL地址</span></div><div class="line">controller.setAutoPlayAnimations(<span class="keyword">true</span>);</div><div class="line">controller.setOldController(photoDraweeView.getController());</div><div class="line">controller.setControllerListener(<span class="keyword">new</span> BaseControllerListener&lt;ImageInfo&gt;() &#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFinalImageSet</span><span class="params">(String id, ImageInfo imageInfo, Animatable animatable)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onFinalImageSet(id, imageInfo, animatable);</div><div class="line">        <span class="keyword">if</span> (imageInfo == <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line">        FileBinaryResource resource = (FileBinaryResource) ImagePipelineFactory.getInstance().getMainFileCache().getResource(DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(controller.getImageRequest(), <span class="keyword">null</span>));</div><div class="line">        <span class="keyword">if</span> (BuildConfig.DEBUG) &#123;</div><div class="line">            Log.d(<span class="string">"may"</span>, <span class="string">"resource: "</span> + resource);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            List&lt;DiskStorage.DiskDumpInfoEntry&gt; list = Fresco.getImagePipelineFactory().getMainFileCache().getDumpInfo().entries;</div><div class="line">            <span class="keyword">if</span> (list != <span class="keyword">null</span> &amp;&amp; !list.isEmpty()) &#123;</div><div class="line">                <span class="keyword">for</span> (DiskStorage.DiskDumpInfoEntry info : list) &#123;</div><div class="line">                    Log.d(<span class="string">"may"</span>, <span class="string">"size: "</span> + info.size + <span class="string">", type: "</span> + info.type + <span class="string">", path: "</span> + info.path + <span class="string">", fb: "</span> + info.firstBits);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onIntermediateImageSet</span><span class="params">(String id, ImageInfo imageInfo)</span> </span>&#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFailure</span><span class="params">(String id, Throwable throwable)</span> </span>&#123;</div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">final</span> PhotoDraweeView photoDraweeView = <span class="keyword">new</span> PhotoDraweeView(context);</span><br><span class="line"><span class="keyword">final</span> PipelineDraweeControllerBuilder controller = Fresco.newDraweeControllerBuilder();</span><br><span class="line">controller.setUri(uri); <span class="comment">// 图片请求的URL地址</span></span><br><span class="line">controller.setAutoPlayAnimations(<span class="keyword">true</span>);</span><br><span class="line">controller.setOldController(photoDraweeView.getController());</span><br><span class="line">controller.setControllerListener(<span class="keyword">new</span> BaseControllerListener&lt;ImageInfo&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFinalImageSet</span><span class="params">(String id, ImageInfo imageInfo, Animatable animatable)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onFinalImageSet(id, imageInfo, animatable);</span><br><span class="line">        <span class="keyword">if</span> (imageInfo == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        FileBinaryResource resource = (FileBinaryResource) ImagePipelineFactory.getInstance().getMainFileCache().getResource(DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(controller.getImageRequest(), <span class="keyword">null</span>));</span><br><span class="line">        <span class="keyword">if</span> (BuildConfig.DEBUG) &#123;</span><br><span class="line">            Log.d(<span class="string">"may"</span>, <span class="string">"resource: "</span> + resource);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            List&lt;DiskStorage.DiskDumpInfoEntry&gt; list = Fresco.getImagePipelineFactory().getMainFileCache().getDumpInfo().entries;</span><br><span class="line">            <span class="keyword">if</span> (list != <span class="keyword">null</span> &amp;&amp; !list.isEmpty()) &#123;</span><br><span class="line">                <span class="keyword">for</span> (DiskStorage.DiskDumpInfoEntry info : list) &#123;</span><br><span class="line">                    Log.d(<span class="string">"may"</span>, <span class="string">"size: "</span> + info.size + <span class="string">", type: "</span> + info.type + <span class="string">", path: "</span> + info.path + <span class="string">", fb: "</span> + info.firstBits);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onIntermediateImageSet</span><span class="params">(String id, ImageInfo imageInfo)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFailure</span><span class="params">(String id, Throwable throwable)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <p>以下是输出的LOG，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[onFinalImageSet, 314]:resource: com.facebook.binaryresource.FileBinaryResource@2f8cf0a9</div><div class="line">[onFinalImageSet, 321]:size: 1580616.0, type: jpg, path: imgcache/v2.ols100.1/3/3qC9ts9ad_tJcsN1ot7Ort5YQ9A.cnt, fb: </div><div class="line">[onFinalImageSet, 314]:resource: com.facebook.binaryresource.FileBinaryResource@411bafa9</div><div class="line">[onFinalImageSet, 321]:size: 1.0461388E7, type: jpg, path: imgcache/v2.ols100.1/24/r0c37nN9TT6P-HU0hoYwm_ZU5K4.cnt, fb: </div><div class="line">[onFinalImageSet, 314]:resource: com.facebook.binaryresource.FileBinaryResource@6d7fddcf</div><div class="line">[onFinalImageSet, 321]:size: 1622679.0, type: jpg, path: imgcache/v2.ols100.1/1/BYrt44bfrnqXpdkx5x4p1W_RsTY.cnt, fb: </div><div class="line">[onFinalImageSet, 314]:resource: com.facebook.binaryresource.FileBinaryResource@bfbbc062</div><div class="line">[onFinalImageSet, 321]:size: 1127054.0, type: jpg, path: imgcache/v2.ols100.1/96/mhZk2iyqbM0iKt2RmDV0aKT0o5Q.cnt, fb:</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[onFinalImageSet, 314]:resource: com.facebook.binaryresource.FileBinaryResource@2f8cf0a9</span><br><span class="line">[onFinalImageSet, 321]:size: 1580616.0, type: jpg, path: imgcache/v2.ols100.1/3/3qC9ts9ad_tJcsN1ot7Ort5YQ9A.cnt, fb: </span><br><span class="line">[onFinalImageSet, 314]:resource: com.facebook.binaryresource.FileBinaryResource@411bafa9</span><br><span class="line">[onFinalImageSet, 321]:size: 1.0461388E7, type: jpg, path: imgcache/v2.ols100.1/24/r0c37nN9TT6P-HU0hoYwm_ZU5K4.cnt, fb: </span><br><span class="line">[onFinalImageSet, 314]:resource: com.facebook.binaryresource.FileBinaryResource@6d7fddcf</span><br><span class="line">[onFinalImageSet, 321]:size: 1622679.0, type: jpg, path: imgcache/v2.ols100.1/1/BYrt44bfrnqXpdkx5x4p1W_RsTY.cnt, fb: </span><br><span class="line">[onFinalImageSet, 314]:resource: com.facebook.binaryresource.FileBinaryResource@bfbbc062</span><br><span class="line">[onFinalImageSet, 321]:size: 1127054.0, type: jpg, path: imgcache/v2.ols100.1/96/mhZk2iyqbM0iKt2RmDV0aKT0o5Q.cnt, fb:</span><br></pre></td></tr></table></figure>
 <p>从上面的日志中看出图片都缓存到了指定的路径，但是从文件管理器中去查看<code>v2.ols100.1</code>目录下面的对应目录基本都为空，只有一个目录中有缓存图片，整个目录大小只有几百KB。感觉图片只缓存了一张，其它的都没有缓存到外部存储空间上来。</p>
 <p>看了一下存储空间，还有几个G，不存在空间不足。与图片大小有关系？换了大图试试，也还是这样。开始怀疑与Fresco相关的代码，于是找到了Fresco初始化代码，如下所示：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">DiskCacheConfig.Builder builder = DiskCacheConfig.newBuilder(<span class="keyword">this</span>);</div><div class="line">builder.setMaxCacheSize(<span class="number">150</span>);</div><div class="line">builder.setMaxCacheSizeOnLowDiskSpace(<span class="number">100</span>);</div><div class="line">builder.setMaxCacheSizeOnVeryLowDiskSpace(<span class="number">30</span> * ByteConstants.MB);</div><div class="line">builder.setVersion(<span class="number">1</span>);</div><div class="line">builder.setBaseDirectoryName(<span class="string">"imgcache"</span>);</div><div class="line">builder.setBaseDirectoryPath(<span class="keyword">new</span> File(FileUtils.getUserWorkingFolder()));</div><div class="line">DiskCacheConfig diskCacheConfig = builder.build();</div><div class="line">ImagePipelineConfig config = ImagePipelineConfig.newBuilder(<span class="keyword">this</span>)</div><div class="line">        .setMainDiskCacheConfig(diskCacheConfig)</div><div class="line">        .build();</div><div class="line">Fresco.initialize(<span class="keyword">this</span> , config);</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">DiskCacheConfig.Builder builder = DiskCacheConfig.newBuilder(<span class="keyword">this</span>);</span><br><span class="line">builder.setMaxCacheSize(<span class="number">150</span>);</span><br><span class="line">builder.setMaxCacheSizeOnLowDiskSpace(<span class="number">100</span>);</span><br><span class="line">builder.setMaxCacheSizeOnVeryLowDiskSpace(<span class="number">30</span> * ByteConstants.MB);</span><br><span class="line">builder.setVersion(<span class="number">1</span>);</span><br><span class="line">builder.setBaseDirectoryName(<span class="string">"imgcache"</span>);</span><br><span class="line">builder.setBaseDirectoryPath(<span class="keyword">new</span> File(FileUtils.getUserWorkingFolder()));</span><br><span class="line">DiskCacheConfig diskCacheConfig = builder.build();</span><br><span class="line">ImagePipelineConfig config = ImagePipelineConfig.newBuilder(<span class="keyword">this</span>)</span><br><span class="line">        .setMainDiskCacheConfig(diskCacheConfig)</span><br><span class="line">        .build();</span><br><span class="line">Fresco.initialize(<span class="keyword">this</span> , config);</span><br></pre></td></tr></table></figure>
 <p>想知道这几个参数值表示的是什么意思，是怎么使用的。于是就查看了源码，发现这个参数初始化代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">private</span> <span class="keyword">long</span> mMaxCacheSize = <span class="number">40</span> * ByteConstants.MB;</div><div class="line"><span class="keyword">private</span> <span class="keyword">long</span> mMaxCacheSizeOnLowDiskSpace = <span class="number">10</span> * ByteConstants.MB;</div><div class="line"><span class="keyword">private</span> <span class="keyword">long</span> mMaxCacheSizeOnVeryLowDiskSpace = <span class="number">2</span> * ByteConstants.MB;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> Builder <span class="title">setMaxCacheSize</span><span class="params">(<span class="keyword">long</span> maxCacheSize)</span> </span>&#123;</div><div class="line">    mMaxCacheSize = maxCacheSize;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> Builder <span class="title">setMaxCacheSizeOnLowDiskSpace</span><span class="params">(<span class="keyword">long</span> maxCacheSizeOnLowDiskSpace)</span> </span>&#123;</div><div class="line">    mMaxCacheSizeOnLowDiskSpace = maxCacheSizeOnLowDiskSpace;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> Builder <span class="title">setMaxCacheSizeOnVeryLowDiskSpace</span><span class="params">(<span class="keyword">long</span> maxCacheSizeOnVeryLowDiskSpace)</span> </span>&#123;</div><div class="line">    mMaxCacheSizeOnVeryLowDiskSpace = maxCacheSizeOnVeryLowDiskSpace;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">long</span> mMaxCacheSize = <span class="number">40</span> * ByteConstants.MB;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">long</span> mMaxCacheSizeOnLowDiskSpace = <span class="number">10</span> * ByteConstants.MB;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">long</span> mMaxCacheSizeOnVeryLowDiskSpace = <span class="number">2</span> * ByteConstants.MB;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> Builder <span class="title">setMaxCacheSize</span><span class="params">(<span class="keyword">long</span> maxCacheSize)</span> </span>&#123;</span><br><span class="line">    mMaxCacheSize = maxCacheSize;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> Builder <span class="title">setMaxCacheSizeOnLowDiskSpace</span><span class="params">(<span class="keyword">long</span> maxCacheSizeOnLowDiskSpace)</span> </span>&#123;</span><br><span class="line">    mMaxCacheSizeOnLowDiskSpace = maxCacheSizeOnLowDiskSpace;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> Builder <span class="title">setMaxCacheSizeOnVeryLowDiskSpace</span><span class="params">(<span class="keyword">long</span> maxCacheSizeOnVeryLowDiskSpace)</span> </span>&#123;</span><br><span class="line">    mMaxCacheSizeOnVeryLowDiskSpace = maxCacheSizeOnVeryLowDiskSpace;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>看到这个代码就立马反应过来了，少了一个常量<code>ByteConstants.MB</code>？把项目中的初始化代码修改了一下，加上了这个常量，代码如下所示：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">DiskCacheConfig.Builder builder = DiskCacheConfig.newBuilder(<span class="keyword">this</span>);</div><div class="line">builder.setMaxCacheSize(<span class="number">150</span> * ByteConstants.MB);</div><div class="line">builder.setMaxCacheSizeOnLowDiskSpace(<span class="number">100</span> * ByteConstants.MB);</div><div class="line">builder.setMaxCacheSizeOnVeryLowDiskSpace(<span class="number">30</span> * ByteConstants.MB);</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">DiskCacheConfig.Builder builder = DiskCacheConfig.newBuilder(<span class="keyword">this</span>);</span><br><span class="line">builder.setMaxCacheSize(<span class="number">150</span> * ByteConstants.MB);</span><br><span class="line">builder.setMaxCacheSizeOnLowDiskSpace(<span class="number">100</span> * ByteConstants.MB);</span><br><span class="line">builder.setMaxCacheSizeOnVeryLowDiskSpace(<span class="number">30</span> * ByteConstants.MB);</span><br></pre></td></tr></table></figure>
 <p>再来测试时，发现问题解决了，不会出现保存失败的情况。<code>v2.ols100.1</code>这个目录下缓存了很多文件，文件大小一下子就几M了。</p>
 <p>然后用上面代码中的关键字在google上搜索了一下，发现代码是copy过来的，参数值全部都一样。好吧，我认栽。</p>
   
@@ -250,6 +252,10 @@
 		  
 		
 		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
 			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
 		  
 		
@@ -283,10 +289,6 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/SQLite性能优化/" title="SQLite性能优化">SQLite性能优化<sup>2</sup></a></li>
 			
 		
@@ -295,19 +297,15 @@
 			
 		
 			
-				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
+				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/InvocationTargetException-ActivityNotFoundException-android-os-FileUriExposedException/" title="InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException">InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException<sup>1</sup></a></li>
+				<li><a href="/tags/append-copy-slice/" title="append copy slice">append copy slice<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/android死锁分析/" title="android死锁分析">android死锁分析<sup>1</sup></a></li>
 			
 		
 			
@@ -319,15 +317,7 @@
 			
 		
 			
-				<li><a href="/tags/EXACTLY-AT-MOST-UNSPECIFIED/" title="EXACTLY AT_MOST UNSPECIFIED">EXACTLY AT_MOST UNSPECIFIED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/gradle配置/" title="gradle配置">gradle配置<sup>1</sup></a></li>
+				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
 			
 		
 			
@@ -335,11 +325,7 @@
 			
 		
 			
-				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
+				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
 			
 		
 			
@@ -347,7 +333,7 @@
 			
 		
 			
-				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
 			
 		
 			
@@ -355,11 +341,31 @@
 			
 		
 			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/gradle打jar包-混淆/" title="gradle打jar包 混淆">gradle打jar包 混淆<sup>1</sup></a></li>
+				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/boost-clion/" title="boost clion">boost clion<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
 			
 		
 		</ul>
@@ -422,7 +428,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2018 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
 		
 		<a href="/about" target="_blank" title="jacpy">jacpy</a>
 		

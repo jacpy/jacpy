@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-CN">
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
   
     <title>golang抓取html转换成pdf | jacpy&#39;s blog</title>
@@ -12,11 +12,13 @@
 
     
     <meta name="description" content="总结一下学习十来天go语言的成果，看了一遍语法之后，写了一个抓取HTML然后转换成PDF文件的程序，分享一下，代码点这里。代码在目前go的1.7.5版本和1.8版本上运行没有问题，据说go向下兼容，而不像swift。但发现有些比较老的资料上的代码，在新的go版本上看不到效果，比如打印地址%p，在新版本中必须得使用unsafe.Pointer(p)转换一下，否则格式化输出指针变量不会打印出内存地址。">
+<meta name="keywords" content="go html to pdf">
 <meta property="og:type" content="article">
 <meta property="og:title" content="golang抓取html转换成pdf">
 <meta property="og:url" content="http://www.jacpy.com/2017/02/19/go-html-to-pdf.html">
-<meta property="og:site_name" content="jacpy's blog">
+<meta property="og:site_name" content="jacpy&#39;s blog">
 <meta property="og:description" content="总结一下学习十来天go语言的成果，看了一遍语法之后，写了一个抓取HTML然后转换成PDF文件的程序，分享一下，代码点这里。代码在目前go的1.7.5版本和1.8版本上运行没有问题，据说go向下兼容，而不像swift。但发现有些比较老的资料上的代码，在新的go版本上看不到效果，比如打印地址%p，在新版本中必须得使用unsafe.Pointer(p)转换一下，否则格式化输出指针变量不会打印出内存地址。">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-03-05T14:01:34.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="golang抓取html转换成pdf">
@@ -34,7 +36,7 @@
     
     <link rel="stylesheet" href="/css/style.css">
 </head>
-
+</html>
   <body>
     <header>
       
@@ -103,17 +105,17 @@
 		
 		</div>
 		
-		<p>总结一下学习十来天go语言的成果，看了一遍语法之后，写了一个抓取HTML然后转换成PDF文件的程序，分享一下，代码点<a href="https://github.com/jacpy/GoDemo/blob/master/html2pdf/html2pdf.go" target="_blank" rel="external">这里</a>。代码在目前go的1.7.5版本和1.8版本上运行没有问题，据说go向下兼容，而不像swift。但发现有些比较老的资料上的代码，在新的go版本上看不到效果，比如打印地址<code>%p</code>，在新版本中必须得使用<code>unsafe.Pointer(p)</code>转换一下，否则格式化输出指针变量不会打印出内存地址。</p>
+		<p>总结一下学习十来天go语言的成果，看了一遍语法之后，写了一个抓取HTML然后转换成PDF文件的程序，分享一下，代码点<a href="https://github.com/jacpy/GoDemo/blob/master/html2pdf/html2pdf.go" target="_blank" rel="noopener">这里</a>。代码在目前go的1.7.5版本和1.8版本上运行没有问题，据说go向下兼容，而不像swift。但发现有些比较老的资料上的代码，在新的go版本上看不到效果，比如打印地址<code>%p</code>，在新版本中必须得使用<code>unsafe.Pointer(p)</code>转换一下，否则格式化输出指针变量不会打印出内存地址。</p>
 <p>其中使用了两个第三方库：</p>
 <a id="more"></a>
 <ul>
-<li>html操作使用了<a href="https://github.com/PuerkitoBio/goquery" target="_blank" rel="external">goquery</a>的第三方库，对html操作很方便；</li>
-<li>html转PDF使用了<a href="http://wkhtmltopdf.org/" target="_blank" rel="external">wkhtmltopdf</a>库，到官方网站上选择相应的平台下载安装，然后在go语言中执行相应的命令即可。使用说明点<a href="http://wkhtmltopdf.org/usage/wkhtmltopdf.txt" target="_blank" rel="external">这里</a>。</li>
+<li>html操作使用了<a href="https://github.com/PuerkitoBio/goquery" target="_blank" rel="noopener">goquery</a>的第三方库，对html操作很方便；</li>
+<li>html转PDF使用了<a href="http://wkhtmltopdf.org/" target="_blank" rel="noopener">wkhtmltopdf</a>库，到官方网站上选择相应的平台下载安装，然后在go语言中执行相应的命令即可。使用说明点<a href="http://wkhtmltopdf.org/usage/wkhtmltopdf.txt" target="_blank" rel="noopener">这里</a>。</li>
 </ul>
 <p>另外还有一个去水印的功能，想具体了解请参考代码。</p>
 <p>通过这个功能的练手，发现go语言还是相关操作都很方便。比如文件读写：不像java那样，不同的流嵌套，然后就是try-catch。go里面写起来，相比而言简单好多。goquery这个库操作HTML很方便，唯一感觉不好用的地方是修改HTML标签的属性值，没有找到类似这种<code>p.Find(&quot;div.Part div a img&quot;).RemoveAttr(&quot;alt&quot;)</code>好用的函数。</p>
 <p>后面希望能更深入的了解go语言。</p>
-<p>附已经转换OK的PDF的下载地址：<a href="https://github.com/jacpy/GoDemo/blob/master/html2pdf/TCP:IP%E8%AF%A6%E8%A7%A3%20%E5%8D%B71%EF%BC%9A%E5%8D%8F%E8%AE%AE.pdf" target="_blank" rel="external">TCP:IP详解 卷1：协议.pdf</a></p>
+<p>附已经转换OK的PDF的下载地址：<a href="https://github.com/jacpy/GoDemo/blob/master/html2pdf/TCP:IP%E8%AF%A6%E8%A7%A3%20%E5%8D%B71%EF%BC%9A%E5%8D%8F%E8%AE%AE.pdf" target="_blank" rel="noopener">TCP:IP详解 卷1：协议.pdf</a></p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -239,6 +241,10 @@
 		  
 		
 		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
 			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
 		  
 		
@@ -272,10 +278,6 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/SQLite性能优化/" title="SQLite性能优化">SQLite性能优化<sup>2</sup></a></li>
 			
 		
@@ -284,19 +286,15 @@
 			
 		
 			
-				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
+				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/InvocationTargetException-ActivityNotFoundException-android-os-FileUriExposedException/" title="InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException">InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException<sup>1</sup></a></li>
+				<li><a href="/tags/append-copy-slice/" title="append copy slice">append copy slice<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/android死锁分析/" title="android死锁分析">android死锁分析<sup>1</sup></a></li>
 			
 		
 			
@@ -308,15 +306,7 @@
 			
 		
 			
-				<li><a href="/tags/EXACTLY-AT-MOST-UNSPECIFIED/" title="EXACTLY AT_MOST UNSPECIFIED">EXACTLY AT_MOST UNSPECIFIED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/gradle配置/" title="gradle配置">gradle配置<sup>1</sup></a></li>
+				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
 			
 		
 			
@@ -324,11 +314,7 @@
 			
 		
 			
-				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
+				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
 			
 		
 			
@@ -336,7 +322,7 @@
 			
 		
 			
-				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
 			
 		
 			
@@ -344,11 +330,31 @@
 			
 		
 			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/gradle打jar包-混淆/" title="gradle打jar包 混淆">gradle打jar包 混淆<sup>1</sup></a></li>
+				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/boost-clion/" title="boost clion">boost clion<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
 			
 		
 		</ul>
@@ -411,7 +417,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2018 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
 		
 		<a href="/about" target="_blank" title="jacpy">jacpy</a>
 		

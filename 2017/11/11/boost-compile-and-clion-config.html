@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-CN">
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
   
     <title>boost编译和CLion配置 | jacpy&#39;s blog</title>
@@ -11,19 +11,18 @@
     
 
     
-    <meta name="description" content="前几天编译boost库1.65.1版本，遇到一些问题，主要是与环境和版本有关系，如果不知道这些细节，很难找出问题。这里记录一下。
-一、boost库编译在windows下编译boost库可以参照这里：https://gist.github.com/sim642/29caef3cc8afaa273ce6 ，整个过程配置都可以按照上面来，但是要注意下最新版本的MinGW，同时还要注意是64位的还是32位">
+    <meta name="description" content="前几天编译boost库1.65.1版本，遇到一些问题，主要是与环境和版本有关系，如果不知道这些细节，很难找出问题。这里记录一下。 一、boost库编译在windows下编译boost库可以参照这里：https://gist.github.com/sim642/29caef3cc8afaa273ce6 ，整个过程配置都可以按照上面来，但是要注意下最新版本的MinGW，同时还要注意是64位的还是32位">
+<meta name="keywords" content="boost clion">
 <meta property="og:type" content="article">
 <meta property="og:title" content="boost编译和CLion配置">
 <meta property="og:url" content="http://www.jacpy.com/2017/11/11/boost-compile-and-clion-config.html">
-<meta property="og:site_name" content="jacpy's blog">
-<meta property="og:description" content="前几天编译boost库1.65.1版本，遇到一些问题，主要是与环境和版本有关系，如果不知道这些细节，很难找出问题。这里记录一下。
-一、boost库编译在windows下编译boost库可以参照这里：https://gist.github.com/sim642/29caef3cc8afaa273ce6 ，整个过程配置都可以按照上面来，但是要注意下最新版本的MinGW，同时还要注意是64位的还是32位">
+<meta property="og:site_name" content="jacpy&#39;s blog">
+<meta property="og:description" content="前几天编译boost库1.65.1版本，遇到一些问题，主要是与环境和版本有关系，如果不知道这些细节，很难找出问题。这里记录一下。 一、boost库编译在windows下编译boost库可以参照这里：https://gist.github.com/sim642/29caef3cc8afaa273ce6 ，整个过程配置都可以按照上面来，但是要注意下最新版本的MinGW，同时还要注意是64位的还是32位">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-11-21T05:26:05.738Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="boost编译和CLion配置">
-<meta name="twitter:description" content="前几天编译boost库1.65.1版本，遇到一些问题，主要是与环境和版本有关系，如果不知道这些细节，很难找出问题。这里记录一下。
-一、boost库编译在windows下编译boost库可以参照这里：https://gist.github.com/sim642/29caef3cc8afaa273ce6 ，整个过程配置都可以按照上面来，但是要注意下最新版本的MinGW，同时还要注意是64位的还是32位">
+<meta name="twitter:description" content="前几天编译boost库1.65.1版本，遇到一些问题，主要是与环境和版本有关系，如果不知道这些细节，很难找出问题。这里记录一下。 一、boost库编译在windows下编译boost库可以参照这里：https://gist.github.com/sim642/29caef3cc8afaa273ce6 ，整个过程配置都可以按照上面来，但是要注意下最新版本的MinGW，同时还要注意是64位的还是32位">
 
     
     <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
@@ -37,7 +36,7 @@
     
     <link rel="stylesheet" href="/css/style.css">
 </head>
-
+</html>
   <body>
     <header>
       
@@ -107,20 +106,20 @@
 		</div>
 		
 		<p>前几天编译<code>boost</code>库<code>1.65.1</code>版本，遇到一些问题，主要是与环境和版本有关系，如果不知道这些细节，很难找出问题。这里记录一下。</p>
-<h2 id="一、boost库编译"><a href="#一、boost库编译" class="headerlink" title="一、boost库编译"></a>一、boost库编译</h2><p>在windows下编译<code>boost</code>库可以参照这里：<a href="https://gist.github.com/sim642/29caef3cc8afaa273ce6" target="_blank" rel="external">https://gist.github.com/sim642/29caef3cc8afaa273ce6</a> ，整个过程配置都可以按照上面来，但是要注意下最新版本的<code>MinGW</code>，同时还要注意是64位的还是32位的。</p>
+<h2 id="一、boost库编译"><a href="#一、boost库编译" class="headerlink" title="一、boost库编译"></a>一、boost库编译</h2><p>在windows下编译<code>boost</code>库可以参照这里：<a href="https://gist.github.com/sim642/29caef3cc8afaa273ce6" target="_blank" rel="noopener">https://gist.github.com/sim642/29caef3cc8afaa273ce6</a> ，整个过程配置都可以按照上面来，但是要注意下最新版本的<code>MinGW</code>，同时还要注意是64位的还是32位的。</p>
 <p>因使用的<code>boost</code>版本是目前最新版本的，所以要求内置<code>gcc</code>编译器的<code>MinGW</code>也要是最新版本的，否则在执行<code>b2</code>命令设置<code>toolset=gcc</code>时，会提示找不到<code>gcc</code>。另外还要注意系统是32位还是64位，对应的gcc也要相同的版本。</p>
 <a id="more"></a>
 <p>如果中间编译遇到如下问题：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">For MinGW make to work correctly sh.exe must NOT be in your path.</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">For MinGW make to work correctly sh.exe must NOT be in your path.</span><br></pre></td></tr></table></figure>
 <p>解决办法是，先保证<code>MinGW</code>的环境变量配置正确，然后关闭命令行，重新执行编译命令。如果还提示这个错误，找到环境变量中<code>Git</code>的bin目录，把这个环境配置删除。原因是<code>Git</code>配置的环境变量中的<code>sh.exe</code>与<code>MinGW</code>中的<code>sh.exe</code>冲突，去掉<code>Git</code>的即可。</p>
 <h2 id="二、CLion配置"><a href="#二、CLion配置" class="headerlink" title="二、CLion配置"></a>二、CLion配置</h2><p>因为<code>CLion</code>使用的是<code>CMake</code>编译，所以需要配置<code>CMakeList.txt</code>文件。使用目前最新版本<code>2017.2</code>版本时，默认使用的<code>CMake</code>版本是<code>3.8</code>，而<code>CMake</code>的官方网站上最新的版本已经是<code>3.10</code>了。这段文字一直在强调一个–<code>版本</code>，所以这里的版本很重要，原因是如果配置都OK，会提示下面的错误：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Imported targets not available for Boost version</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Imported targets not available for Boost version</span><br></pre></td></tr></table></figure>
 <p>这个时候就要考虑换<code>CMake</code>版本了，下面是在<code>stackoverflow</code>上面找到的<code>boost</code>库与<code>CMake</code>版本的对应关系：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Boost 1.63 requires CMake 3.7 or newer</div><div class="line">Boost 1.64 requires CMake 3.8 or newer</div><div class="line">Boost 1.65 and 1.65.1 require CMake 3.9.3 or newer</div></pre></td></tr></table></figure>
-<p>参见这里：<a href="https://stackoverflow.com/questions/42123509/cmake-finds-boost-but-the-imported-targets-not-available-for-boost-version" target="_blank" rel="external">https://stackoverflow.com/questions/42123509/cmake-finds-boost-but-the-imported-targets-not-available-for-boost-version</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Boost 1.63 requires CMake 3.7 or newer</span><br><span class="line">Boost 1.64 requires CMake 3.8 or newer</span><br><span class="line">Boost 1.65 and 1.65.1 require CMake 3.9.3 or newer</span><br></pre></td></tr></table></figure>
+<p>参见这里：<a href="https://stackoverflow.com/questions/42123509/cmake-finds-boost-but-the-imported-targets-not-available-for-boost-version" target="_blank" rel="noopener">https://stackoverflow.com/questions/42123509/cmake-finds-boost-but-the-imported-targets-not-available-for-boost-version</a></p>
 <p>所以需要修改<code>CLion</code>的默认<code>CMake</code>的版本，从<code>CMake</code>的官网上下载最新的<code>CMake</code>，然后安装，然后在设置的<code>Build, Excutation, Deployment</code>中的第一个<code>ToolChains</code>中设置<code>CMake</code>的版本。但是，但是使用<code>CMake executable</code>的<code>Custom</code>选择最新版本的<code>CMake</code>路径无效。下面的<code>CMake</code>不提示版本，显示无效。目测是<code>CLion</code>的bug，解决办法是找到<code>CLion</code>的安装目录，然后将<code>cmake</code>目录下面的内容复制一份备份，然后把最新<code>CMake</code>安装目录下面的对应内容替换<code>CLion</code>安装目录下面的<code>cmake</code>里面的内容。然后再切回<code>Bundled Cmake</code>就可以使用最新版本了。</p>
 <p>下面附一份<code>CMakeList.txt</code>的配置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">cmake_minimum_required(VERSION 3.9)</div><div class="line">project(cppDemo)</div><div class="line"></div><div class="line">set(CMAKE_CXX_FLAGS &quot;$&#123;CMAKE_CXX_FLAGS&#125; -std=c++14 -static-libgcc -static-libstdc++&quot;)</div><div class="line"></div><div class="line">set(SOURCE_FILES main.cpp digital_converter.h digital_converter.cpp)</div><div class="line"></div><div class="line"></div><div class="line">add_executable(cppDemo $&#123;SOURCE_FILES&#125;)</div><div class="line"></div><div class="line">if (WIN32)</div><div class="line"></div><div class="line">    set(BOOST_ROOT &quot;D:/programs/boost_1_65_1/boost&quot;)</div><div class="line">    set(Boost_INCLUDE_DIR, $&#123;BOOST_ROOT&#125;/include/boost-1_65_1)</div><div class="line">    set(BOOST_LIBRARYDIR $&#123;BOOST_ROOT&#125;/lib)</div><div class="line">    set(Boost_USE_STATIC_LIBS ON)</div><div class="line">    set(Boost_MULTITHREADED ON)</div><div class="line">    set(Boost_USE_STATIC_RUNTIME OFF)</div><div class="line">    set(Boost_VERSION 106501)</div><div class="line">    set(Boost_COMPILER &quot;-mgw72&quot;) # 注意这里是编译后的boost库中包含的字符串，72是MinGW的版本号，根据自己的版本修改，看下自己编译出来的库的名称就知道了</div><div class="line"></div><div class="line">    MESSAGE(STATUS &quot;boost root dir: &quot; : $&#123;BOOST_LIBRARYDIR&#125;)</div><div class="line"></div><div class="line">    find_package(Boost 1.65.1 REQUIRED COMPONENTS</div><div class="line">            filesystem) # 注意windows下面编译出来的boost库名称中间都有-mgw72，所以需要在前面指定，不然这里提示找不到filesystem</div><div class="line">    add_definitions($&#123;Boost_LIB_DIAGNOSTIC_DEFINITIONS&#125;)</div><div class="line"></div><div class="line">    include_directories($&#123;Boost_INCLUDE_DIR&#125;)</div><div class="line"></div><div class="line">    target_link_libraries(cppDemo $&#123;Boost_LIBRARIES&#125;)</div><div class="line"></div><div class="line">endif (WIN32)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">cmake_minimum_required(VERSION 3.9)</span><br><span class="line">project(cppDemo)</span><br><span class="line"></span><br><span class="line">set(CMAKE_CXX_FLAGS &quot;$&#123;CMAKE_CXX_FLAGS&#125; -std=c++14 -static-libgcc -static-libstdc++&quot;)</span><br><span class="line"></span><br><span class="line">set(SOURCE_FILES main.cpp digital_converter.h digital_converter.cpp)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">add_executable(cppDemo $&#123;SOURCE_FILES&#125;)</span><br><span class="line"></span><br><span class="line">if (WIN32)</span><br><span class="line"></span><br><span class="line">    set(BOOST_ROOT &quot;D:/programs/boost_1_65_1/boost&quot;)</span><br><span class="line">    set(Boost_INCLUDE_DIR, $&#123;BOOST_ROOT&#125;/include/boost-1_65_1)</span><br><span class="line">    set(BOOST_LIBRARYDIR $&#123;BOOST_ROOT&#125;/lib)</span><br><span class="line">    set(Boost_USE_STATIC_LIBS ON)</span><br><span class="line">    set(Boost_MULTITHREADED ON)</span><br><span class="line">    set(Boost_USE_STATIC_RUNTIME OFF)</span><br><span class="line">    set(Boost_VERSION 106501)</span><br><span class="line">    set(Boost_COMPILER &quot;-mgw72&quot;) # 注意这里是编译后的boost库中包含的字符串，72是MinGW的版本号，根据自己的版本修改，看下自己编译出来的库的名称就知道了</span><br><span class="line"></span><br><span class="line">    MESSAGE(STATUS &quot;boost root dir: &quot; : $&#123;BOOST_LIBRARYDIR&#125;)</span><br><span class="line"></span><br><span class="line">    find_package(Boost 1.65.1 REQUIRED COMPONENTS</span><br><span class="line">            filesystem) # 注意windows下面编译出来的boost库名称中间都有-mgw72，所以需要在前面指定，不然这里提示找不到filesystem</span><br><span class="line">    add_definitions($&#123;Boost_LIB_DIAGNOSTIC_DEFINITIONS&#125;)</span><br><span class="line"></span><br><span class="line">    include_directories($&#123;Boost_INCLUDE_DIR&#125;)</span><br><span class="line"></span><br><span class="line">    target_link_libraries(cppDemo $&#123;Boost_LIBRARIES&#125;)</span><br><span class="line"></span><br><span class="line">endif (WIN32)</span><br></pre></td></tr></table></figure>
 <p>看来C++使用<code>CLion</code>工具的人比较少，估计都是在windows下面用<code>VC</code>了。但感觉<code>VS</code>太大了，不想装，所以选择<code>CLion</code>。用这些小众的工具，遇到问题都不好查资料，需要自己一点点的摸索，以后还不知道会遇到什么问题。</p>
 <p>以上。</p>
   
@@ -248,6 +247,10 @@
 		  
 		
 		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
 			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
 		  
 		
@@ -281,10 +284,6 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/SQLite性能优化/" title="SQLite性能优化">SQLite性能优化<sup>2</sup></a></li>
 			
 		
@@ -293,19 +292,15 @@
 			
 		
 			
-				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
+				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/InvocationTargetException-ActivityNotFoundException-android-os-FileUriExposedException/" title="InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException">InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException<sup>1</sup></a></li>
+				<li><a href="/tags/append-copy-slice/" title="append copy slice">append copy slice<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/android死锁分析/" title="android死锁分析">android死锁分析<sup>1</sup></a></li>
 			
 		
 			
@@ -317,15 +312,7 @@
 			
 		
 			
-				<li><a href="/tags/EXACTLY-AT-MOST-UNSPECIFIED/" title="EXACTLY AT_MOST UNSPECIFIED">EXACTLY AT_MOST UNSPECIFIED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/gradle配置/" title="gradle配置">gradle配置<sup>1</sup></a></li>
+				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
 			
 		
 			
@@ -333,11 +320,7 @@
 			
 		
 			
-				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
+				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
 			
 		
 			
@@ -345,7 +328,7 @@
 			
 		
 			
-				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
 			
 		
 			
@@ -353,11 +336,31 @@
 			
 		
 			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/gradle打jar包-混淆/" title="gradle打jar包 混淆">gradle打jar包 混淆<sup>1</sup></a></li>
+				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/boost-clion/" title="boost clion">boost clion<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
 			
 		
 		</ul>
@@ -420,7 +423,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2018 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
 		
 		<a href="/about" target="_blank" title="jacpy">jacpy</a>
 		

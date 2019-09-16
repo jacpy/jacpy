@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-CN">
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
   
     <title>sqlite cant open database exception unknow error code 14 | jacpy&#39;s blog</title>
@@ -11,19 +11,18 @@
     
 
     
-    <meta name="description" content="这几天在解决客户的一个问题，说用了发给我的sqlite的数据库文件会发生数据上传失败问题，于是结合发过来的数据库文件准备看一下。
-先是通过adb push命令把文件copy到手机，然后cp到应用的缓存目录（需要root权限），覆盖原来的数据库文件。结果应用一运行就报了如下的错误：">
+    <meta name="description" content="这几天在解决客户的一个问题，说用了发给我的sqlite的数据库文件会发生数据上传失败问题，于是结合发过来的数据库文件准备看一下。 先是通过adb push命令把文件copy到手机，然后cp到应用的缓存目录（需要root权限），覆盖原来的数据库文件。结果应用一运行就报了如下的错误：">
+<meta name="keywords" content="sqlite error code 14">
 <meta property="og:type" content="article">
 <meta property="og:title" content="sqlite cant open database exception unknow error code 14">
 <meta property="og:url" content="http://www.jacpy.com/2017/08/03/sqlite-cant-open-database-exception-unknow-error-code-14-md.html">
-<meta property="og:site_name" content="jacpy's blog">
-<meta property="og:description" content="这几天在解决客户的一个问题，说用了发给我的sqlite的数据库文件会发生数据上传失败问题，于是结合发过来的数据库文件准备看一下。
-先是通过adb push命令把文件copy到手机，然后cp到应用的缓存目录（需要root权限），覆盖原来的数据库文件。结果应用一运行就报了如下的错误：">
+<meta property="og:site_name" content="jacpy&#39;s blog">
+<meta property="og:description" content="这几天在解决客户的一个问题，说用了发给我的sqlite的数据库文件会发生数据上传失败问题，于是结合发过来的数据库文件准备看一下。 先是通过adb push命令把文件copy到手机，然后cp到应用的缓存目录（需要root权限），覆盖原来的数据库文件。结果应用一运行就报了如下的错误：">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2017-08-07T07:44:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="sqlite cant open database exception unknow error code 14">
-<meta name="twitter:description" content="这几天在解决客户的一个问题，说用了发给我的sqlite的数据库文件会发生数据上传失败问题，于是结合发过来的数据库文件准备看一下。
-先是通过adb push命令把文件copy到手机，然后cp到应用的缓存目录（需要root权限），覆盖原来的数据库文件。结果应用一运行就报了如下的错误：">
+<meta name="twitter:description" content="这几天在解决客户的一个问题，说用了发给我的sqlite的数据库文件会发生数据上传失败问题，于是结合发过来的数据库文件准备看一下。 先是通过adb push命令把文件copy到手机，然后cp到应用的缓存目录（需要root权限），覆盖原来的数据库文件。结果应用一运行就报了如下的错误：">
 
     
     <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
@@ -37,7 +36,7 @@
     
     <link rel="stylesheet" href="/css/style.css">
 </head>
-
+</html>
   <body>
     <header>
       
@@ -109,7 +108,7 @@
 		<p>这几天在解决客户的一个问题，说用了发给我的sqlite的数据库文件会发生数据上传失败问题，于是结合发过来的数据库文件准备看一下。</p>
 <p>先是通过<code>adb push</code>命令把文件copy到手机，然后cp到应用的缓存目录（需要root权限），覆盖原来的数据库文件。结果应用一运行就报了如下的错误：</p>
 <a id="more"></a>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">E/SQLiteLog: (14) cannot open file at line 30191 of [00bb9c9ce4]</div><div class="line">E/SQLiteLog: (14) os_unix.c:30191: (13) open(/data/data/com.xxx/databases/xxx) - </div><div class="line">E/SQLiteDatabase: Failed to open database &apos;/data/data/xxx/databases/xxxx&apos;.</div><div class="line"></div><div class="line">android.database.sqlite.SQLiteCantOpenDatabaseException: </div><div class="line">unknown error (code 14): Could not open database</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">E/SQLiteLog: (14) cannot open file at line 30191 of [00bb9c9ce4]</span><br><span class="line">E/SQLiteLog: (14) os_unix.c:30191: (13) open(/data/data/com.xxx/databases/xxx) - </span><br><span class="line">E/SQLiteDatabase: Failed to open database &apos;/data/data/xxx/databases/xxxx&apos;.</span><br><span class="line"></span><br><span class="line">android.database.sqlite.SQLiteCantOpenDatabaseException: </span><br><span class="line">unknown error (code 14): Could not open database</span><br></pre></td></tr></table></figure>
 <p>看提示说是读了多少行后报错，第一反应是数据库文件有问题？在PC端用工具打开那个文件，发现能正常打开，而且执行了SQL都是正常看到数据。奇了怪了，那个<code>line</code>是代码的行数？直接搜索上面的错误，在<code>stackoverflow</code>上面看别人各种回答。有的说是权限问题，要先申请权限，有的说是6.0上面的问题，要动态权限等等。结合自己的情况，发现都不是。接着往下看，发现有人提到了<code>SELinux security</code>，突然想到了是不是权限问题？马上命令一看，果然只有root权限，执行<code>chomd 777 xxxx</code>，然后再一运行app，OK了。</p>
 <p>运气太好了，这样就解决问题了，还想说报那个<code>code 14</code>是什么错误呢。后来到sqlite源码里面找了一下，找到这个的一个宏定义<code>#define SQLITE_CANTOPEN    14   /* Unable to open the database file */</code>，这个提示对解决问题并没有什么帮助，很佩服自己当时的反应。网上也有人说这里有一个bug，没有去深究，问题已解决，后面的事情还没有做呢！</p>
   
@@ -237,6 +236,10 @@
 		  
 		
 		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
 			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
 		  
 		
@@ -270,10 +273,6 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/SQLite性能优化/" title="SQLite性能优化">SQLite性能优化<sup>2</sup></a></li>
 			
 		
@@ -282,19 +281,15 @@
 			
 		
 			
-				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
+				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/InvocationTargetException-ActivityNotFoundException-android-os-FileUriExposedException/" title="InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException">InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException<sup>1</sup></a></li>
+				<li><a href="/tags/append-copy-slice/" title="append copy slice">append copy slice<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/android死锁分析/" title="android死锁分析">android死锁分析<sup>1</sup></a></li>
 			
 		
 			
@@ -306,15 +301,7 @@
 			
 		
 			
-				<li><a href="/tags/EXACTLY-AT-MOST-UNSPECIFIED/" title="EXACTLY AT_MOST UNSPECIFIED">EXACTLY AT_MOST UNSPECIFIED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/gradle配置/" title="gradle配置">gradle配置<sup>1</sup></a></li>
+				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
 			
 		
 			
@@ -322,11 +309,7 @@
 			
 		
 			
-				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
+				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
 			
 		
 			
@@ -334,7 +317,7 @@
 			
 		
 			
-				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
 			
 		
 			
@@ -342,11 +325,31 @@
 			
 		
 			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/gradle打jar包-混淆/" title="gradle打jar包 混淆">gradle打jar包 混淆<sup>1</sup></a></li>
+				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/boost-clion/" title="boost clion">boost clion<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
 			
 		
 		</ul>
@@ -409,7 +412,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2018 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
 		
 		<a href="/about" target="_blank" title="jacpy">jacpy</a>
 		
