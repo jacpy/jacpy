@@ -4,25 +4,25 @@
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
   
-    <title>Okhttp使用注意事项 | jacpy&#39;s blog</title>
+    <title>golang执行命令获取执行结果状态 | jacpy&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="jacpy">
     
 
     
-    <meta name="description" content="前几天在使用Okhttp时遇到两个坑，这里记录一下。一个是在请求头中不需要设置Accept-Encoding为gzip，使用Okhttp默认的就好；第二个是添加到Okhttp请求头里面的键值对不能为空。">
-<meta name="keywords" content="okhttp">
+    <meta name="description" content="这几天在用golang写一个工具，要执行外部命令工具，而且还要将外部命令工具输出的日志也要输出出来。网上找了一下，资料很多，关键是执行的结果成功或失败状态没找到好的方法获取到。刚开始想的是看错误日志，如果有错误日志，那么就是执行失败。测试的时候发现这样不行，发现有些时候会用error输出日志，但不一定就是执行失败。后来想用日志中的关键字匹配，因为有些命令执行成功或失败都是有关键字输出的，测试发现也">
+<meta name="keywords" content="golang command status">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Okhttp使用注意事项">
-<meta property="og:url" content="http://www.jacpy.com/2017/09/28/okhttp-used-attentions.html">
+<meta property="og:title" content="golang执行命令获取执行结果状态">
+<meta property="og:url" content="http://www.jacpy.com/2019/09/18/golang-exec-command-tools.html">
 <meta property="og:site_name" content="jacpy&#39;s blog">
-<meta property="og:description" content="前几天在使用Okhttp时遇到两个坑，这里记录一下。一个是在请求头中不需要设置Accept-Encoding为gzip，使用Okhttp默认的就好；第二个是添加到Okhttp请求头里面的键值对不能为空。">
+<meta property="og:description" content="这几天在用golang写一个工具，要执行外部命令工具，而且还要将外部命令工具输出的日志也要输出出来。网上找了一下，资料很多，关键是执行的结果成功或失败状态没找到好的方法获取到。刚开始想的是看错误日志，如果有错误日志，那么就是执行失败。测试的时候发现这样不行，发现有些时候会用error输出日志，但不一定就是执行失败。后来想用日志中的关键字匹配，因为有些命令执行成功或失败都是有关键字输出的，测试发现也">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-10-15T03:30:22.000Z">
+<meta property="og:updated_time" content="2019-09-18T05:26:30.530Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Okhttp使用注意事项">
-<meta name="twitter:description" content="前几天在使用Okhttp时遇到两个坑，这里记录一下。一个是在请求头中不需要设置Accept-Encoding为gzip，使用Okhttp默认的就好；第二个是添加到Okhttp请求头里面的键值对不能为空。">
+<meta name="twitter:title" content="golang执行命令获取执行结果状态">
+<meta name="twitter:description" content="这几天在用golang写一个工具，要执行外部命令工具，而且还要将外部命令工具输出的日志也要输出出来。网上找了一下，资料很多，关键是执行的结果成功或失败状态没找到好的方法获取到。刚开始想的是看错误日志，如果有错误日志，那么就是执行失败。测试的时候发现这样不行，发现有些时候会用error输出日志，但不一定就是执行失败。后来想用日志中的关键字匹配，因为有些命令执行成功或失败都是有关键字输出的，测试发现也">
 
     
     <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
@@ -82,14 +82,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2017/09/28/okhttp-used-attentions.html" title="Okhttp使用注意事项" itemprop="url">Okhttp使用注意事项</a>
+      <a href="/2019/09/18/golang-exec-command-tools.html" title="golang执行命令获取执行结果状态" itemprop="url">golang执行命令获取执行结果状态</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
 		
   <p class="article-time">
-    <time datetime="2017-09-28T07:10:42.000Z" itemprop="datePublished"> 发表于 2017-09-28</time>
+    <time datetime="2019-09-18T05:00:27.000Z" itemprop="datePublished"> 发表于 2019-09-18</time>
     
   </p>
 </header>
@@ -101,20 +101,14 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#默认不需要设置Accept-Encoding为gzip"><span class="toc-number">1.</span> <span class="toc-text">默认不需要设置Accept-Encoding为gzip</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#设置请求头信息时，值不能为空"><span class="toc-number">2.</span> <span class="toc-text">设置请求头信息时，值不能为空</span></a></li></ol>
+			
 		
 		</div>
 		
-		<p>前几天在使用<code>Okhttp</code>时遇到两个坑，这里记录一下。一个是在请求头中不需要设置<code>Accept-Encoding</code>为<code>gzip</code>，使用<code>Okhttp</code>默认的就好；第二个是添加到<code>Okhttp</code>请求头里面的键值对不能为空。</p>
+		<p>这几天在用golang写一个工具，要执行外部命令工具，而且还要将外部命令工具输出的日志也要输出出来。网上找了一下，资料很多，关键是执行的结果成功或失败状态没找到好的方法获取到。刚开始想的是看错误日志，如果有错误日志，那么就是执行失败。测试的时候发现这样不行，发现有些时候会用error输出日志，但不一定就是执行失败。后来想用日志中的关键字匹配，因为有些命令执行成功或失败都是有关键字输出的，测试发现也不太好。最后没办法，看了一下<code>Cmd.Wait()</code>方法的实现，突然眼前一亮，找到方法了，有一个<code>Cmd.ProcessState</code>结构体可以使用。于是整理了一下，贴一下代码实现：</p>
 <a id="more"></a>
-<h2 id="默认不需要设置Accept-Encoding为gzip"><a href="#默认不需要设置Accept-Encoding为gzip" class="headerlink" title="默认不需要设置Accept-Encoding为gzip"></a>默认不需要设置Accept-Encoding为gzip</h2><p><code>Okhttp</code>中如果外部请求没有在请求里面设置<code>Accept-Encoding</code>值和<code>Range</code>值时，会在请求头里增加设置<code>Accept-Encoding: gzip</code>，如果外部设置这个<code>Accept-Encoding</code>参数，则不会设置。如果是<code>Okhttp</code>自己设置的参数，并且服务器端响应的头里包含有<code>Content-Encoding</code>值为<code>gzip</code>，则会使用<code>Gzip</code>解压。如果是外部设置的，即使服务器端响应头里面包含有<code>Content-Encoding</code>值为<code>gzip</code>，也不会使用<code>Gzip</code>解压，需要自己去解压。</p>
-<p>下面是官方代码，在<code>okhttp3.internal.http.BridgeInterceptor#intercept(Chain chain)</code>方法中：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// If we add an "Accept-Encoding: gzip" header field we're responsible for also decompressing</span></span><br><span class="line">    <span class="comment">// the transfer stream.</span></span><br><span class="line">    <span class="keyword">boolean</span> transparentGzip = <span class="keyword">false</span>;</span><br><span class="line">    <span class="keyword">if</span> (userRequest.header(<span class="string">"Accept-Encoding"</span>) == <span class="keyword">null</span> &amp;&amp; userRequest.header(<span class="string">"Range"</span>) == <span class="keyword">null</span>) &#123;</span><br><span class="line">      transparentGzip = <span class="keyword">true</span>;</span><br><span class="line">      requestBuilder.header(<span class="string">"Accept-Encoding"</span>, <span class="string">"gzip"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    List&lt;Cookie&gt; cookies = cookieJar.loadForRequest(userRequest.url());</span><br><span class="line">    <span class="keyword">if</span> (!cookies.isEmpty()) &#123;</span><br><span class="line">      requestBuilder.header(<span class="string">"Cookie"</span>, cookieHeader(cookies));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (userRequest.header(<span class="string">"User-Agent"</span>) == <span class="keyword">null</span>) &#123;</span><br><span class="line">      requestBuilder.header(<span class="string">"User-Agent"</span>, Version.userAgent());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Response networkResponse = chain.proceed(requestBuilder.build());</span><br><span class="line"></span><br><span class="line">    HttpHeaders.receiveHeaders(cookieJar, userRequest.url(), networkResponse.headers());</span><br><span class="line"></span><br><span class="line">    Response.Builder responseBuilder = networkResponse.newBuilder()</span><br><span class="line">        .request(userRequest);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (transparentGzip</span><br><span class="line">        &amp;&amp; <span class="string">"gzip"</span>.equalsIgnoreCase(networkResponse.header(<span class="string">"Content-Encoding"</span>))</span><br><span class="line">        &amp;&amp; HttpHeaders.hasBody(networkResponse)) &#123;</span><br><span class="line">      GzipSource responseBody = <span class="keyword">new</span> GzipSource(networkResponse.body().source());</span><br><span class="line">      Headers strippedHeaders = networkResponse.headers().newBuilder()</span><br><span class="line">          .removeAll(<span class="string">"Content-Encoding"</span>)</span><br><span class="line">          .removeAll(<span class="string">"Content-Length"</span>)</span><br><span class="line">          .build();</span><br><span class="line">      responseBuilder.headers(strippedHeaders);</span><br><span class="line">      responseBuilder.body(<span class="keyword">new</span> RealResponseBody(strippedHeaders, Okio.buffer(responseBody)));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>注意整个逻辑是由<code>transparentGzip</code>变量来控制的。刚开始不知道有这种逻辑，使用了<code>Okhttp</code>做请求，然后在请求头里设置了<code>Accept-Encoding</code>值为<code>gzip</code>，于是使用<code>okhttp3.ResponseBody#string()</code>方法来获取服务器端的响应字符串时，结果是乱码。去排查原因时发现上面这段逻辑。</p>
-<h2 id="设置请求头信息时，值不能为空"><a href="#设置请求头信息时，值不能为空" class="headerlink" title="设置请求头信息时，值不能为空"></a>设置请求头信息时，值不能为空</h2><p>在使用<code>Okhttp</code>请求时，由于设置请求的值为null值，所以App直接闪退，一看错误日志，发现了原因。原来源码里面有拦截操作，具体代码在<code>okhttp3.Headers#checkNameAndValue(String name, String value)</code>方法中，如下所示：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">checkNameAndValue</span><span class="params">(String name, String value)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (name == <span class="keyword">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException(<span class="string">"name == null"</span>);</span><br><span class="line">  <span class="keyword">if</span> (name.isEmpty()) <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"name is empty"</span>);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, length = name.length(); i &lt; length; i++) &#123;</span><br><span class="line">    <span class="keyword">char</span> c = name.charAt(i);</span><br><span class="line">    <span class="keyword">if</span> (c &lt;= <span class="string">'\u0020'</span> || c &gt;= <span class="string">'\u007f'</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(Util.format(</span><br><span class="line">          <span class="string">"Unexpected char %#04x at %d in header name: %s"</span>, (<span class="keyword">int</span>) c, i, name));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (value == <span class="keyword">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException(<span class="string">"value for name "</span> + name + <span class="string">" == null"</span>);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, length = value.length(); i &lt; length; i++) &#123;</span><br><span class="line">    <span class="keyword">char</span> c = value.charAt(i);</span><br><span class="line">    <span class="keyword">if</span> ((c &lt;= <span class="string">'\u001f'</span> &amp;&amp; c != <span class="string">'\t'</span>) || c &gt;= <span class="string">'\u007f'</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(Util.format(</span><br><span class="line">          <span class="string">"Unexpected char %#04x at %d in %s value: %s"</span>, (<span class="keyword">int</span>) c, i, name, value));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果添加请求的键或值为<code>null</code>，都会抛出异常，而且还要求键的长度不能为0，值的要求是可见字符，可以是<code>\t</code>。否则都会抛出异常。</p>
-<p>解决方法是对请求时添加到头里面的内容过滤下就可以了。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Exec</span><span class="params">(name <span class="keyword">string</span>, args ...<span class="keyword">string</span>)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	cmd := exec.Command(name, args...)</span><br><span class="line">	stderr, _ := cmd.StderrPipe()</span><br><span class="line">	stdout, _ := cmd.StdoutPipe()</span><br><span class="line">	<span class="keyword">if</span> err := cmd.Start(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">"exec the cmd "</span>, name, <span class="string">" failed"</span>)</span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 正常日志</span></span><br><span class="line">	logScan := bufio.NewScanner(stdout)</span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="keyword">for</span> logScan.Scan() &#123;</span><br><span class="line">			log.Println(logScan.Text())</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 错误日志</span></span><br><span class="line">	errBuf := bytes.NewBufferString(<span class="string">""</span>)</span><br><span class="line">	scan := bufio.NewScanner(stderr)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> scan.Scan() &#123;</span><br><span class="line">		s := scan.Text()</span><br><span class="line">		log.Println(<span class="string">"build error: "</span>, s)</span><br><span class="line">		errBuf.WriteString(s)</span><br><span class="line">		errBuf.WriteString(<span class="string">"\n"</span>)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 等待命令执行完</span></span><br><span class="line">	cmd.Wait()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> !cmd.ProcessState.Success() &#123;</span><br><span class="line">		<span class="comment">// 执行失败，返回错误信息</span></span><br><span class="line">		<span class="keyword">return</span> errors.New(errBuf.String())</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>注意：上面代码中没有处理输入的情况，如果待执行的命令需要输入数据，则不适用。</strong></p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -122,13 +116,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/android/">android</a>
+  <a class="article-category-link" href="/categories/golang/">golang</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/okhttp/">okhttp</a>
+  <span></span> <a href="/tags/golang-command-status/">golang command status</a>
   </div>
 
 </div>
@@ -137,7 +131,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://www.jacpy.com/2017/09/28/okhttp-used-attentions.html" data-title="Okhttp使用注意事项 | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
+	  <div data-url="http://www.jacpy.com/2019/09/18/golang-exec-command-tools.html" data-title="golang执行命令获取执行结果状态 | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -150,19 +144,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2017/10/26/golang-difference-between-append-and-copy-function.html" title="golang中append函数和copy函数操作slice的不同用法">
-  <strong>上一篇：</strong><br/>
-  <span>
-  golang中append函数和copy函数操作slice的不同用法</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2017/09/28/fresco-used-httpurlconnection-support-https-image-loader.html"  title="Fresco使用HttpURLConnection支持加载https链接图片">
+<a href="/2019/09/16/jquery-cors.html"  title="jquery跨域问题导致ajax请求直接走error回调函数">
  <strong>下一篇：</strong><br/> 
- <span>Fresco使用HttpURLConnection支持加载https链接图片
+ <span>jquery跨域问题导致ajax请求直接走error回调函数
 </span>
 </a>
 </div>
@@ -171,7 +157,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2017/09/28/okhttp-used-attentions.html" data-title="Okhttp使用注意事项" data-url="http://www.jacpy.com/2017/09/28/okhttp-used-attentions.html"></div>
+	<div class="ds-thread" data-thread-key="2019/09/18/golang-exec-command-tools.html" data-title="golang执行命令获取执行结果状态" data-url="http://www.jacpy.com/2019/09/18/golang-exec-command-tools.html"></div>
 </section>
 
 
@@ -182,7 +168,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#默认不需要设置Accept-Encoding为gzip"><span class="toc-number">1.</span> <span class="toc-text">默认不需要设置Accept-Encoding为gzip</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#设置请求头信息时，值不能为空"><span class="toc-number">2.</span> <span class="toc-text">设置请求头信息时，值不能为空</span></a></li></ol>
+ 
  
   </div>
 

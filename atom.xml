@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jacpy.com/"/>
-  <updated>2019-09-16T09:40:02.221Z</updated>
+  <updated>2019-09-18T05:26:30.530Z</updated>
   <id>http://www.jacpy.com/</id>
   
   <author>
@@ -14,6 +14,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>golang执行命令获取执行结果状态</title>
+    <link href="http://www.jacpy.com/2019/09/18/golang-exec-command-tools.html"/>
+    <id>http://www.jacpy.com/2019/09/18/golang-exec-command-tools.html</id>
+    <published>2019-09-18T05:00:27.000Z</published>
+    <updated>2019-09-18T05:26:30.530Z</updated>
+    
+    <content type="html">&lt;p&gt;这几天在用golang写一个工具，要执行外部命令工具，而且还要将外部命令工具输出的日志也要输出出来。网上找了一下，资料很多，关键是执行的结果成功或失败状态没找到好的方法获取到。刚开始想的是看错误日志，如果有错误日志，那么就是执行失败。测试的时候发现这样不行，发现有些时候会用error输出日志，但不一定就是执行失败。后来想用日志中的关键字匹配，因为有些命令执行成功或失败都是有关键字输出的，测试发现也不太好。最后没办法，看了一下&lt;code&gt;Cmd.Wait()&lt;/code&gt;方法的实现，突然眼前一亮，找到方法了，有一个&lt;code&gt;Cmd.ProcessState&lt;/code&gt;结构体可以使用。于是整理了一下，贴一下代码实现：&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;figure class=&quot;highlight golang&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Exec&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(name &lt;span class=&quot;keyword&quot;&gt;string&lt;/span&gt;, args ...&lt;span class=&quot;keyword&quot;&gt;string&lt;/span&gt;)&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;error&lt;/span&gt;&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	cmd := exec.Command(name, args...)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	stderr, _ := cmd.StderrPipe()&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	stdout, _ := cmd.StdoutPipe()&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; err := cmd.Start(); err != &lt;span class=&quot;literal&quot;&gt;nil&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		log.Println(&lt;span class=&quot;string&quot;&gt;&quot;exec the cmd &quot;&lt;/span&gt;, name, &lt;span class=&quot;string&quot;&gt;&quot; failed&quot;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; err&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;comment&quot;&gt;// 正常日志&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	logScan := bufio.NewScanner(stdout)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;keyword&quot;&gt;go&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; logScan.Scan() &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			log.Println(logScan.Text())&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;#125;()&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;comment&quot;&gt;// 错误日志&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	errBuf := bytes.NewBufferString(&lt;span class=&quot;string&quot;&gt;&quot;&quot;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	scan := bufio.NewScanner(stderr)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; scan.Scan() &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		s := scan.Text()&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		log.Println(&lt;span class=&quot;string&quot;&gt;&quot;build error: &quot;&lt;/span&gt;, s)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		errBuf.WriteString(s)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		errBuf.WriteString(&lt;span class=&quot;string&quot;&gt;&quot;\n&quot;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;comment&quot;&gt;// 等待命令执行完&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	cmd.Wait()&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; !cmd.ProcessState.Success() &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&lt;span class=&quot;comment&quot;&gt;// 执行失败，返回错误信息&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; errors.New(errBuf.String())&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;nil&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;&lt;strong&gt;注意：上面代码中没有处理输入的情况，如果待执行的命令需要输入数据，则不适用。&lt;/strong&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;这几天在用golang写一个工具，要执行外部命令工具，而且还要将外部命令工具输出的日志也要输出出来。网上找了一下，资料很多，关键是执行的结果成功或失败状态没找到好的方法获取到。刚开始想的是看错误日志，如果有错误日志，那么就是执行失败。测试的时候发现这样不行，发现有些时候会用error输出日志，但不一定就是执行失败。后来想用日志中的关键字匹配，因为有些命令执行成功或失败都是有关键字输出的，测试发现也不太好。最后没办法，看了一下&lt;code&gt;Cmd.Wait()&lt;/code&gt;方法的实现，突然眼前一亮，找到方法了，有一个&lt;code&gt;Cmd.ProcessState&lt;/code&gt;结构体可以使用。于是整理了一下，贴一下代码实现：&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="golang" scheme="http://www.jacpy.com/categories/golang/"/>
+    
+    
+      <category term="golang command status" scheme="http://www.jacpy.com/tags/golang-command-status/"/>
+    
+  </entry>
   
   <entry>
     <title>jquery跨域问题导致ajax请求直接走error回调函数</title>
@@ -846,43 +872,6 @@
     
     
       <category term="fresco初始化设置" scheme="http://www.jacpy.com/tags/fresco%E5%88%9D%E5%A7%8B%E5%8C%96%E8%AE%BE%E7%BD%AE/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>windows 7 驱动安装成功后无法启动</title>
-    <link href="http://www.jacpy.com/2017/04/28/windows-driver-donot-install.html"/>
-    <id>http://www.jacpy.com/2017/04/28/windows-driver-donot-install.html</id>
-    <published>2017-04-28T00:27:57.000Z</published>
-    <updated>2017-08-02T05:16:26.000Z</updated>
-    
-    <content type="html">&lt;p&gt;前几天在PC上安装无线网卡，可以将PC的网络通用Wi-Fi的形式让手机可以连接。由于系统限制，驱动安装成功，但是加载驱动却失败，于是开始找原因，就有了下文。&lt;/p&gt;
-&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;p&gt;首先驱动可以安装成功，但不能被系统加载，出现的情况下图所示：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/images/2017/04/device.png&quot; alt=&quot;驱动未被加载&quot;&gt;&lt;/p&gt;
-&lt;p&gt;然后选中黄色警告项，右键选择“更新驱动”，然后选择驱动安装目录，然后下一步，结果提示&lt;code&gt;系统策略禁止安装此设备，请与系统管理员联系&lt;/code&gt;，如下图所示：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/images/2017/04/system_forbidden_install_driver_call_admin.jpg&quot; alt=&quot;系统策略禁止安装此设备，请与系统管理员联系&quot;&gt;&lt;/p&gt;
-&lt;p&gt;于是打开组策略，开始找是哪项设置的。&lt;/p&gt;
-&lt;p&gt;打开组策略后，先选中其中一个模板，比如&lt;code&gt;管理模板&lt;/code&gt;，然后点击&lt;code&gt;操作&lt;/code&gt;菜单中的&lt;code&gt;筛选器选项...&lt;/code&gt;项，如图所示：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/images/2017/04/gpedit_msc_drive_menu.png&quot; alt=&quot;筛选器选项菜单&quot;&gt;&lt;/p&gt;
-&lt;p&gt;在弹出的窗口中什么都不用选，如下图所示，然后单击确定按钮：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/images/2017/04/gpedit_msc_drive_dialog.png&quot; alt=&quot;筛选器选项&quot;&gt;&lt;/p&gt;
-&lt;p&gt;最后发现什么都没有搜索出来，因为这些项都是未配置。心想，这里没有被人修改过，全都是系统默认的，现在怎么知道是哪项产生的影响？&lt;/p&gt;
-&lt;p&gt;最后没办法，只得挨个找，最后还是被找到设置的位置。在&lt;code&gt;计算机配置&lt;/code&gt;-&amp;gt;&lt;code&gt;管理模板&lt;/code&gt;-&amp;gt;&lt;code&gt;系统&lt;/code&gt;-&amp;gt;&lt;code&gt;设备安装&lt;/code&gt;-&amp;gt;&lt;code&gt;设备安装限制&lt;/code&gt;的右侧面板中，分别修改&lt;code&gt;允许管理员忽略设备安装限制策略&lt;/code&gt;和&lt;code&gt;禁止安装未由其他策略设备描述的设备&lt;/code&gt;，如下图所示：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/images/2017/04/gpedit_msc_drive.png&quot; alt=&quot;设备安装限制&quot;&gt;&lt;/p&gt;
-&lt;p&gt;设置后，再去更新驱动，OK了。&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;前几天在PC上安装无线网卡，可以将PC的网络通用Wi-Fi的形式让手机可以连接。由于系统限制，驱动安装成功，但是加载驱动却失败，于是开始找原因，就有了下文。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="windows" scheme="http://www.jacpy.com/categories/windows/"/>
-    
-    
-      <category term="windows 7 驱动安装成功后无法启动" scheme="http://www.jacpy.com/tags/windows-7-%E9%A9%B1%E5%8A%A8%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F%E5%90%8E%E6%97%A0%E6%B3%95%E5%90%AF%E5%8A%A8/"/>
     
   </entry>
   
