@@ -79,6 +79,70 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2019/09/19/cannot-install-apk-in-android-17-width-jarsigner.html" title="使用jarsigner签名的apk无法在android 4.2及以下版本系统安装" itemprop="url">使用jarsigner签名的apk无法在android 4.2及以下版本系统安装</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
+		
+  <p class="article-time">
+    <time datetime="2019-09-19T11:52:15.000Z" itemprop="datePublished"> 发表于 2019-09-19</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>这几天遇到一件怪事，使用加固工具后，打包出来的APK无法在Android 4.2版本的手机上安装，不使用加固打出来的安装包却可以安装。于是找加固厂商询问原因，加固厂商拿了不能安装的文件后，又发了一个安装包让我们测试一下，结果可以了。询问原因，说是我们给的安装包没有签名，加上签名信息就好了。于是用<code>keytool</code>工具看了下原安装文件的签名信息，发现都有。把执行命令包含有签名信息的截图发过去了之后，加固厂商问了使用的签名工具，然后说是用<code>jarsigner</code>工具的问题。于是一查，还真是。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2019/09/19/cannot-install-apk-in-android-17-width-jarsigner.html#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/android/">android</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/cannot-install-apk/">cannot install apk</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/2019/09/19/cannot-install-apk-in-android-17-width-jarsigner.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2019/09/19/cannot-install-apk-in-android-17-width-jarsigner.html" data-count-type="comments">&nbsp;</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2019/09/18/golang-exec-command-tools.html" title="golang执行命令获取执行结果状态" itemprop="url">golang执行命令获取执行结果状态</a>
   </h1>
   <p class="article-author">By
@@ -1311,70 +1375,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2017/05/02/android-fresco-init.html" title="关于android fresco初始化的一个坑" itemprop="url">关于android fresco初始化的一个坑</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
-		
-  <p class="article-time">
-    <time datetime="2017-05-02T13:42:22.000Z" itemprop="datePublished"> 发表于 2017-05-02</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>之前有写文章说别人对网上文章的看法，这次写的是我对网上文章的看法。一直以来对网上的文章的说法都抱有怀疑态度，一般都是把网上的东西作为参考，找准关键的地方，他的说法与自己写的有什么区别？一对比就知道哪些地方有欠缺，是什么原因。而不是直接copy过来使用。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2017/05/02/android-fresco-init.html#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/android/">android</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/fresco初始化设置/">fresco初始化设置</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/2017/05/02/android-fresco-init.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2017/05/02/android-fresco-init.html" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next<span></span></a>
@@ -1401,7 +1401,7 @@
 		  
 		
 		  
-			<li><a href="/categories/android/" title="android">android<sup>22</sup></a></li>
+			<li><a href="/categories/android/" title="android">android<sup>23</sup></a></li>
 		  
 		
 		  
@@ -1494,7 +1494,11 @@
 			
 		
 			
-				<li><a href="/tags/InvocationTargetException-ActivityNotFoundException-android-os-FileUriExposedException/" title="InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException">InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException<sup>1</sup></a></li>
+				<li><a href="/tags/Out-Of-Memory/" title="Out Of Memory">Out Of Memory<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Device-or-resource-busy/" title="Device or resource busy">Device or resource busy<sup>1</sup></a></li>
 			
 		
 			
@@ -1506,7 +1510,7 @@
 			
 		
 			
-				<li><a href="/tags/Device-or-resource-busy/" title="Device or resource busy">Device or resource busy<sup>1</sup></a></li>
+				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
 			
 		
 			
@@ -1518,15 +1522,7 @@
 			
 		
 			
-				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/singleTop-android7-0/" title="singleTop android7.0">singleTop android7.0<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
 			
 		
 			
@@ -1538,15 +1534,19 @@
 			
 		
 			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+				<li><a href="/tags/cannot-install-apk/" title="cannot install apk">cannot install apk<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
+				<li><a href="/tags/boost-clion/" title="boost clion">boost clion<sup>1</sup></a></li>
 			
 		
 			
@@ -1554,7 +1554,7 @@
 			
 		
 			
-				<li><a href="/tags/boost-clion/" title="boost clion">boost clion<sup>1</sup></a></li>
+				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
 			
 		
 		</ul>

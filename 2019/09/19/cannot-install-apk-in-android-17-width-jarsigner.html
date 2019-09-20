@@ -4,25 +4,25 @@
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
   
-    <title>NDK编译ART代码出现错误：art/runtime/atomic.h:21:18: fatal error: atomic: No such file or directory | jacpy&#39;s blog</title>
+    <title>使用jarsigner签名的apk无法在android 4.2及以下版本系统安装 | jacpy&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="jacpy">
     
 
     
-    <meta name="description" content="今天使用NDK编译ART代码时出现了这样的错： 123**art/runtime/atomic.h:21:18: fatal error: atomic: No such file or directory**** #include &amp;lt;atomic&amp;gt;**">
-<meta name="keywords" content="gnustl,stlport">
+    <meta name="description" content="这几天遇到一件怪事，使用加固工具后，打包出来的APK无法在Android 4.2版本的手机上安装，不使用加固打出来的安装包却可以安装。于是找加固厂商询问原因，加固厂商拿了不能安装的文件后，又发了一个安装包让我们测试一下，结果可以了。询问原因，说是我们给的安装包没有签名，加上签名信息就好了。于是用keytool工具看了下原安装文件的签名信息，发现都有。把执行命令包含有签名信息的截图发过去了之后，加固">
+<meta name="keywords" content="cannot install apk">
 <meta property="og:type" content="article">
-<meta property="og:title" content="NDK编译ART代码出现错误：art&#x2F;runtime&#x2F;atomic.h:21:18: fatal error: atomic: No such file or directory">
-<meta property="og:url" content="http://www.jacpy.com/2015/05/26/ndk-compile-art-occur-artruntimeatomic-h2118-fatal-error-atomic-no-such-file-or-directory.html">
+<meta property="og:title" content="使用jarsigner签名的apk无法在android 4.2及以下版本系统安装">
+<meta property="og:url" content="http://www.jacpy.com/2019/09/19/cannot-install-apk-in-android-17-width-jarsigner.html">
 <meta property="og:site_name" content="jacpy&#39;s blog">
-<meta property="og:description" content="今天使用NDK编译ART代码时出现了这样的错： 123**art/runtime/atomic.h:21:18: fatal error: atomic: No such file or directory**** #include &amp;lt;atomic&amp;gt;**">
+<meta property="og:description" content="这几天遇到一件怪事，使用加固工具后，打包出来的APK无法在Android 4.2版本的手机上安装，不使用加固打出来的安装包却可以安装。于是找加固厂商询问原因，加固厂商拿了不能安装的文件后，又发了一个安装包让我们测试一下，结果可以了。询问原因，说是我们给的安装包没有签名，加上签名信息就好了。于是用keytool工具看了下原安装文件的签名信息，发现都有。把执行命令包含有签名信息的截图发过去了之后，加固">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2015-10-30T15:51:10.000Z">
+<meta property="og:updated_time" content="2019-09-20T00:49:12.307Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="NDK编译ART代码出现错误：art&#x2F;runtime&#x2F;atomic.h:21:18: fatal error: atomic: No such file or directory">
-<meta name="twitter:description" content="今天使用NDK编译ART代码时出现了这样的错： 123**art/runtime/atomic.h:21:18: fatal error: atomic: No such file or directory**** #include &amp;lt;atomic&amp;gt;**">
+<meta name="twitter:title" content="使用jarsigner签名的apk无法在android 4.2及以下版本系统安装">
+<meta name="twitter:description" content="这几天遇到一件怪事，使用加固工具后，打包出来的APK无法在Android 4.2版本的手机上安装，不使用加固打出来的安装包却可以安装。于是找加固厂商询问原因，加固厂商拿了不能安装的文件后，又发了一个安装包让我们测试一下，结果可以了。询问原因，说是我们给的安装包没有签名，加上签名信息就好了。于是用keytool工具看了下原安装文件的签名信息，发现都有。把执行命令包含有签名信息的截图发过去了之后，加固">
 
     
     <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
@@ -82,14 +82,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/05/26/ndk-compile-art-occur-artruntimeatomic-h2118-fatal-error-atomic-no-such-file-or-directory.html" title="NDK编译ART代码出现错误：art/runtime/atomic.h:21:18: fatal error: atomic: No such file or directory" itemprop="url">NDK编译ART代码出现错误：art/runtime/atomic.h:21:18: fatal error: atomic: No such file or directory</a>
+      <a href="/2019/09/19/cannot-install-apk-in-android-17-width-jarsigner.html" title="使用jarsigner签名的apk无法在android 4.2及以下版本系统安装" itemprop="url">使用jarsigner签名的apk无法在android 4.2及以下版本系统安装</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
 		
   <p class="article-time">
-    <time datetime="2015-05-25T17:43:27.000Z" itemprop="datePublished"> 发表于 2015-05-26</time>
+    <time datetime="2019-09-19T11:52:15.000Z" itemprop="datePublished"> 发表于 2019-09-19</time>
     
   </p>
 </header>
@@ -105,11 +105,22 @@
 		
 		</div>
 		
-		<p>今天使用NDK编译ART代码时出现了这样的错：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">**art/runtime/atomic.h:<span class="number">21</span>:<span class="number">18</span>: fatal error: atomic: No such file or directory**</span><br><span class="line"></span><br><span class="line">** #include &lt;atomic&gt;**</span><br></pre></td></tr></table></figure>
+		<p>这几天遇到一件怪事，使用加固工具后，打包出来的APK无法在Android 4.2版本的手机上安装，不使用加固打出来的安装包却可以安装。于是找加固厂商询问原因，加固厂商拿了不能安装的文件后，又发了一个安装包让我们测试一下，结果可以了。询问原因，说是我们给的安装包没有签名，加上签名信息就好了。于是用<code>keytool</code>工具看了下原安装文件的签名信息，发现都有。把执行命令包含有签名信息的截图发过去了之后，加固厂商问了使用的签名工具，然后说是用<code>jarsigner</code>工具的问题。于是一查，还真是。</p>
 <a id="more"></a>
-<p>stackoverflow上有人说把Application.mk文件中的APP_STL := stlport_shared换成stlport_static就行了，试了一下，发现编译还是出现同样的错。<strong>最后换成gnustl_shared或者gnustl_static就OK了</strong>，莫非gnustl比stlport支持的功能多？不得而知，而且还有一种很让人很费解的问题：使用android4.4版本的ART的代码编译通过，而使用android5.0版本的ART的代码编译就会提示上面的错误，atomic.h文件内容都一样，mk文件中只有使用的SO库不一样，一个是4.4系统上面的libart.so，一个是5.0系统上面的libart.so，其他环境都是一样。唉，水平有限，解释不了。</p>
-<p>知乎上解释stlport与gnustl两者的不同：<a href="http://www.zhihu.com/question/20845153" target="_blank" rel="noopener">http://www.zhihu.com/question/20845153</a></p>
+<p>原来默认打包使用的是<code>gradlew assembleRelease</code>命令，使用这个命令默认使用的是Android SDK中的<code>apksigner</code>命令读取gradle文件中的签名信息进行签名。这就解释了为什么没有加固的安装包可以正常安装。</p>
+<p>因为加固后，需要重新签名，这时自动打包在jenkins上使用的是<code>jarsigner</code>命令进行签名。而这个工具是由jdk提供的，而且不同的jdk版本的算法不一致。在jdk7版本开始使用SHA256，而4.2系统版本只支持SHA1，所以导致无法安装。</p>
+<p>解决办法是执行<code>jarsigner</code>命令时，使用参数，命令如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jarsigner -keystore debug.keystore -digestalg SHA1 -sigalg SHA1widthRSA -signedjar test_signed.apk test_unsigned.apk</span><br></pre></td></tr></table></figure>
+<p>即要加上<code>-digestalg SHA1 -sigalg SHA1widthRSA</code>参数即可。</p>
+<p>但是上述方法不推荐，因为在Android 7.0版本以上会使用V2签名，v1签名会有Janus安全漏洞，所以签名apk文件时还是得使用<code>apkSigner</code>比较好。</p>
+<p>命令如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar apksigner.jar sign --v1-signing-enabled true --v2-signing-enabled true --ks D:\test.jks --ks-pass pass:storePassword --ks-key-alias keyAlias --key-pass pass:keyPassword --in unsigned.apk --out signed.apk</span><br></pre></td></tr></table></figure>
+<p><code>apksigner.jar</code>文件是在Android SDK的build-tool目录中相应版本目录中的lib目录下。注意这两个参数<code>--v1-signing-enabled true --v2-signing-enabled true</code>是可选，如果不加这两个参数，其默认值为true，这样可以在android 7.0版本以上避免Janus安全漏洞。另外还要注意密钥之前要加上<code>pass:</code>前缀。</p>
+<p>查看apk签名信息的命令如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar apksigner.jar verify -v --print-certs 1.apk</span><br></pre></td></tr></table></figure>
+<p>查看签名文件中的签名信息的命令如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keytool -list -v -keystore D:\test.jks</span><br></pre></td></tr></table></figure>
+<p>输入密钥库口令后即可输出签名信息。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -117,13 +128,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/ndk/">ndk</a>
+  <a class="article-category-link" href="/categories/android/">android</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/gnustl/">gnustl</a><a href="/tags/stlport/">stlport</a>
+  <span></span> <a href="/tags/cannot-install-apk/">cannot install apk</a>
   </div>
 
 </div>
@@ -132,7 +143,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://www.jacpy.com/2015/05/26/ndk-compile-art-occur-artruntimeatomic-h2118-fatal-error-atomic-no-such-file-or-directory.html" data-title="NDK编译ART代码出现错误：art/runtime/atomic.h:21:18: fatal error: atomic: No such file or directory | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
+	  <div data-url="http://www.jacpy.com/2019/09/19/cannot-install-apk-in-android-17-width-jarsigner.html" data-title="使用jarsigner签名的apk无法在android 4.2及以下版本系统安装 | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -145,19 +156,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/05/26/ndk-used-zlib-mini-compress-occur-zip-eocd-not-found-dex-is-not-zip.html" title="NDK使用zlib mini压缩报错：Zip: EOCD not found, dex is not zip">
-  <strong>上一篇：</strong><br/>
-  <span>
-  NDK使用zlib mini压缩报错：Zip: EOCD not found, dex is not zip</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2015/05/10/android-4-4-call-class-gettypeparameters-occur-jni-function-newglobalref-called-with-exception-pending.html"  title="android 4.4系统调用Class.getTypeParameters()出现JNI function NewGlobalRef called with exception pending错误">
+<a href="/2019/09/18/golang-exec-command-tools.html"  title="golang执行命令获取执行结果状态">
  <strong>下一篇：</strong><br/> 
- <span>android 4.4系统调用Class.getTypeParameters()出现JNI function NewGlobalRef called with exception pending错误
+ <span>golang执行命令获取执行结果状态
 </span>
 </a>
 </div>
@@ -166,7 +169,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2015/05/26/ndk-compile-art-occur-artruntimeatomic-h2118-fatal-error-atomic-no-such-file-or-directory.html" data-title="NDK编译ART代码出现错误：art/runtime/atomic.h:21:18: fatal error: atomic: No such file or directory" data-url="http://www.jacpy.com/2015/05/26/ndk-compile-art-occur-artruntimeatomic-h2118-fatal-error-atomic-no-such-file-or-directory.html"></div>
+	<div class="ds-thread" data-thread-key="2019/09/19/cannot-install-apk-in-android-17-width-jarsigner.html" data-title="使用jarsigner签名的apk无法在android 4.2及以下版本系统安装" data-url="http://www.jacpy.com/2019/09/19/cannot-install-apk-in-android-17-width-jarsigner.html"></div>
 </section>
 
 
