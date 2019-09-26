@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jacpy.com/"/>
-  <updated>2019-09-20T00:49:12.307Z</updated>
+  <updated>2019-09-26T10:27:49.193Z</updated>
   <id>http://www.jacpy.com/</id>
   
   <author>
@@ -14,6 +14,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Android编译minizip库运行时报Z_DATA_ERROR invalid code lengths set错误处理方法</title>
+    <link href="http://www.jacpy.com/2019/09/26/z-data-error-invalid-code-lengths-set.html"/>
+    <id>http://www.jacpy.com/2019/09/26/z-data-error-invalid-code-lengths-set.html</id>
+    <published>2019-09-26T09:56:06.000Z</published>
+    <updated>2019-09-26T10:27:49.193Z</updated>
+    
+    <content type="html">&lt;p&gt;这几天在Android上给zip加上aes解密方法，刚开始使用的是&lt;code&gt;zlib&lt;/code&gt;库中的&lt;code&gt;minizip&lt;/code&gt;代码，发现不支持&lt;code&gt;aes&lt;/code&gt;加解密，就换了github上的&lt;a href=&quot;https://github.com/nmoinvaz/minizip&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;minizip&lt;/a&gt;库。等都编译OK，一运行就出现了异常，返回结果为-3，把msg输出如下所示：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;invalid code lengths set&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;搜索了-3，发现对应的是Z_DATA_ERROR。把测试zip包用winrar解密，发现一切正常，不是zip包数据原因。&lt;/p&gt;
+&lt;p&gt;然后编译了源码中&lt;code&gt;minizip.c&lt;/code&gt;文件，使用命令的方式执行了一下生成的&lt;code&gt;minizip&lt;/code&gt;文件，发现能正常解密。看了一下&lt;code&gt;minizip&lt;/code&gt;源码中的&lt;code&gt;CMakeLists.txt&lt;/code&gt;文件，给&lt;code&gt;Android.mk&lt;/code&gt;文件中增加了如下参数：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;LOCAL_CFLAGS += -DHAVE_PKCRYPT&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;再编译运行，OK了。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;这几天在Android上给zip加上aes解密方法，刚开始使用的是&lt;code&gt;zlib&lt;/code&gt;库中的&lt;code&gt;minizip&lt;/code&gt;代码，发现不支持&lt;code&gt;aes&lt;/code&gt;加解密，就换了github上的&lt;a href=&quot;https://github.c
+    
+    </summary>
+    
+      <category term="minizip" scheme="http://www.jacpy.com/categories/minizip/"/>
+    
+    
+      <category term="Z_DATA_ERROR invalid code lengths set" scheme="http://www.jacpy.com/tags/Z-DATA-ERROR-invalid-code-lengths-set/"/>
+    
+  </entry>
   
   <entry>
     <title>使用jarsigner签名的apk无法在android 4.2及以下版本系统安装</title>
@@ -838,34 +866,6 @@
     
     
       <category term="sqlite error code 14" scheme="http://www.jacpy.com/tags/sqlite-error-code-14/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>android device or resource busy</title>
-    <link href="http://www.jacpy.com/2017/05/03/android-device-or-resource-busy.html"/>
-    <id>http://www.jacpy.com/2017/05/03/android-device-or-resource-busy.html</id>
-    <published>2017-05-03T09:28:14.000Z</published>
-    <updated>2017-08-02T05:12:12.000Z</updated>
-    
-    <content type="html">&lt;p&gt;前几天在项目开发中遇到一个很奇葩的问题，在应用中做了一个清除应用缓存功能，将缓存目录文件中所有的文件都删除，然后再重新初始化的时候，这个目录就不能创建文件和目录了。在红米手机和魅族手机上试了，都会出现这个问题，华为手机上却没有这个问题，我的MOTO手机上也有这个问题。&lt;/p&gt;
-&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;p&gt;于是在命令行进入&lt;code&gt;shell&lt;/code&gt;，然后&lt;code&gt;cd&lt;/code&gt;到这个目录提示&lt;code&gt;tmp-mksh:  Device or resource busy&lt;/code&gt;错误。用手机中的文件管理器删除这个目录提示删除失败。最后把应用卸载了，然后再删除，又可以删除这个目录。&lt;/p&gt;
-&lt;p&gt;这就奇了怪了，到底是怎么回事？在这个目录用执行&lt;code&gt;new File(path).mkdirs()&lt;/code&gt;方法时，返回false，创建目录失败。导致应用没有办法在这个目录创建缓存数据，导致整个应用都没有办法正常进行，如果处理这种失败情况，很多地方都得改。但有些地方是分裂式的，这一个地方失败，会影响其他N多地方。但是之前用这个功能都没有问题，只是近期出现了这个问题。&lt;/p&gt;
-&lt;p&gt;不行，得找出原因。于是把清除缓存目录下面的文件路径都用日志输出了一遍，结果突然发现一些个奇怪的文件–&lt;code&gt;mmap&lt;/code&gt;文件。这些文件是在使用腾讯&lt;code&gt;mars&lt;/code&gt;开源库中的&lt;code&gt;xlog&lt;/code&gt;组件产生的内核映射文件，用来同步缓存日志，防止日志因为应用出现意外而丢失。按照&lt;code&gt;xlog&lt;/code&gt;的官方demo中的使用方法，&lt;code&gt;xlog&lt;/code&gt;的初始化和关闭都是在&lt;code&gt;Application&lt;/code&gt;中。删除缓存目录下面的日志文件时并没有关闭&lt;code&gt;xlog&lt;/code&gt;，&lt;code&gt;mmap&lt;/code&gt;文件直接被删除，所以才导致上面说的奇葩问题。&lt;/p&gt;
-&lt;p&gt;目测是原因找到了，于是在删除缓存时，日志目录下面的日志文件都不删除，最后问题解决。至于是什么原因导致删除&lt;code&gt;mmap&lt;/code&gt;文件出现上面的问题就不得而知，但是感觉整个目录被锁死了，直到删除应用才释放，强制停止应用都不起作用。&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;前几天在项目开发中遇到一个很奇葩的问题，在应用中做了一个清除应用缓存功能，将缓存目录文件中所有的文件都删除，然后再重新初始化的时候，这个目录就不能创建文件和目录了。在红米手机和魅族手机上试了，都会出现这个问题，华为手机上却没有这个问题，我的MOTO手机上也有这个问题。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="android" scheme="http://www.jacpy.com/categories/android/"/>
-    
-    
-      <category term="Device or resource busy" scheme="http://www.jacpy.com/tags/Device-or-resource-busy/"/>
     
   </entry>
   

@@ -79,6 +79,74 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2019/09/26/z-data-error-invalid-code-lengths-set.html" title="Android编译minizip库运行时报Z_DATA_ERROR invalid code lengths set错误处理方法" itemprop="url">Android编译minizip库运行时报Z_DATA_ERROR invalid code lengths set错误处理方法</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
+		
+  <p class="article-time">
+    <time datetime="2019-09-26T09:56:06.000Z" itemprop="datePublished"> 发表于 2019-09-26</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>这几天在Android上给zip加上aes解密方法，刚开始使用的是<code>zlib</code>库中的<code>minizip</code>代码，发现不支持<code>aes</code>加解密，就换了github上的<a href="https://github.com/nmoinvaz/minizip" target="_blank" rel="noopener">minizip</a>库。等都编译OK，一运行就出现了异常，返回结果为-3，把msg输出如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">invalid code lengths set</span><br></pre></td></tr></table></figure>
+<p>搜索了-3，发现对应的是Z_DATA_ERROR。把测试zip包用winrar解密，发现一切正常，不是zip包数据原因。</p>
+<p>然后编译了源码中<code>minizip.c</code>文件，使用命令的方式执行了一下生成的<code>minizip</code>文件，发现能正常解密。看了一下<code>minizip</code>源码中的<code>CMakeLists.txt</code>文件，给<code>Android.mk</code>文件中增加了如下参数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LOCAL_CFLAGS += -DHAVE_PKCRYPT</span><br></pre></td></tr></table></figure>
+<p>再编译运行，OK了。</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/minizip/">minizip</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Z-DATA-ERROR-invalid-code-lengths-set/">Z_DATA_ERROR invalid code lengths set</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/2019/09/26/z-data-error-invalid-code-lengths-set.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2019/09/26/z-data-error-invalid-code-lengths-set.html" data-count-type="comments">&nbsp;</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2019/09/19/cannot-install-apk-in-android-17-width-jarsigner.html" title="使用jarsigner签名的apk无法在android 4.2及以下版本系统安装" itemprop="url">使用jarsigner签名的apk无法在android 4.2及以下版本系统安装</a>
   </h1>
   <p class="article-author">By
@@ -1311,70 +1379,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2017/05/03/android-device-or-resource-busy.html" title="android device or resource busy" itemprop="url">android device or resource busy</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
-		
-  <p class="article-time">
-    <time datetime="2017-05-03T09:28:14.000Z" itemprop="datePublished"> 发表于 2017-05-03</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>前几天在项目开发中遇到一个很奇葩的问题，在应用中做了一个清除应用缓存功能，将缓存目录文件中所有的文件都删除，然后再重新初始化的时候，这个目录就不能创建文件和目录了。在红米手机和魅族手机上试了，都会出现这个问题，华为手机上却没有这个问题，我的MOTO手机上也有这个问题。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2017/05/03/android-device-or-resource-busy.html#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/android/">android</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/Device-or-resource-busy/">Device or resource busy</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/2017/05/03/android-device-or-resource-busy.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2017/05/03/android-device-or-resource-busy.html" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next<span></span></a>
@@ -1445,6 +1449,10 @@
 		  
 		
 		  
+			<li><a href="/categories/minizip/" title="minizip">minizip<sup>1</sup></a></li>
+		  
+		
+		  
 			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
 		  
 		
@@ -1490,15 +1498,7 @@
 			
 		
 			
-				<li><a href="/tags/failed-to-create-MD5-hash-for-file/" title="failed to create MD5 hash for file">failed to create MD5 hash for file<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Out-Of-Memory/" title="Out Of Memory">Out Of Memory<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Device-or-resource-busy/" title="Device or resource busy">Device or resource busy<sup>1</sup></a></li>
+				<li><a href="/tags/Please-correct-the-above-warnings-first/" title="Please correct the above warnings first">Please correct the above warnings first<sup>1</sup></a></li>
 			
 		
 			
@@ -1506,11 +1506,23 @@
 			
 		
 			
+				<li><a href="/tags/Out-Of-Memory/" title="Out Of Memory">Out Of Memory<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
 			
 		
 			
+				<li><a href="/tags/Device-or-resource-busy/" title="Device or resource busy">Device or resource busy<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
 			
 		
 			
@@ -1526,7 +1538,7 @@
 			
 		
 			
-				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
 			
 		
 			
@@ -1534,7 +1546,7 @@
 			
 		
 			
-				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
 			
 		
 			
@@ -1546,15 +1558,11 @@
 			
 		
 			
-				<li><a href="/tags/boost-clion/" title="boost clion">boost clion<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/markdown设置-sublime/" title="markdown设置 sublime">markdown设置 sublime<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
+				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
 			
 		
 		</ul>
