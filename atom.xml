@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jacpy.com/"/>
-  <updated>2019-09-26T10:27:49.193Z</updated>
+  <updated>2019-09-27T13:29:29.173Z</updated>
   <id>http://www.jacpy.com/</id>
   
   <author>
@@ -20,19 +20,23 @@
     <link href="http://www.jacpy.com/2019/09/26/z-data-error-invalid-code-lengths-set.html"/>
     <id>http://www.jacpy.com/2019/09/26/z-data-error-invalid-code-lengths-set.html</id>
     <published>2019-09-26T09:56:06.000Z</published>
-    <updated>2019-09-26T10:27:49.193Z</updated>
+    <updated>2019-09-27T13:29:29.173Z</updated>
     
     <content type="html">&lt;p&gt;这几天在Android上给zip加上aes解密方法，刚开始使用的是&lt;code&gt;zlib&lt;/code&gt;库中的&lt;code&gt;minizip&lt;/code&gt;代码，发现不支持&lt;code&gt;aes&lt;/code&gt;加解密，就换了github上的&lt;a href=&quot;https://github.com/nmoinvaz/minizip&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;minizip&lt;/a&gt;库。等都编译OK，一运行就出现了异常，返回结果为-3，把msg输出如下所示：&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;invalid code lengths set&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;搜索了-3，发现对应的是Z_DATA_ERROR。把测试zip包用winrar解密，发现一切正常，不是zip包数据原因。&lt;/p&gt;
 &lt;p&gt;然后编译了源码中&lt;code&gt;minizip.c&lt;/code&gt;文件，使用命令的方式执行了一下生成的&lt;code&gt;minizip&lt;/code&gt;文件，发现能正常解密。看了一下&lt;code&gt;minizip&lt;/code&gt;源码中的&lt;code&gt;CMakeLists.txt&lt;/code&gt;文件，给&lt;code&gt;Android.mk&lt;/code&gt;文件中增加了如下参数：&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;LOCAL_CFLAGS += -DHAVE_PKCRYPT&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;再编译运行，OK了。&lt;/p&gt;
 </content>
     
     <summary type="html">
     
-      &lt;p&gt;这几天在Android上给zip加上aes解密方法，刚开始使用的是&lt;code&gt;zlib&lt;/code&gt;库中的&lt;code&gt;minizip&lt;/code&gt;代码，发现不支持&lt;code&gt;aes&lt;/code&gt;加解密，就换了github上的&lt;a href=&quot;https://github.c
+      &lt;p&gt;这几天在Android上给zip加上aes解密方法，刚开始使用的是&lt;code&gt;zlib&lt;/code&gt;库中的&lt;code&gt;minizip&lt;/code&gt;代码，发现不支持&lt;code&gt;aes&lt;/code&gt;加解密，就换了github上的&lt;a href=&quot;https://github.com/nmoinvaz/minizip&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;minizip&lt;/a&gt;库。等都编译OK，一运行就出现了异常，返回结果为-3，把msg输出如下所示：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;invalid code lengths set&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;搜索了-3，发现对应的是Z_DATA_ERROR。把测试zip包用winrar解密，发现一切正常，不是zip包数据原因。&lt;/p&gt;
+&lt;p&gt;然后编译了源码中&lt;code&gt;minizip.c&lt;/code&gt;文件，使用命令的方式执行了一下生成的&lt;code&gt;minizip&lt;/code&gt;文件，发现能正常解密。看了一下&lt;code&gt;minizip&lt;/code&gt;源码中的&lt;code&gt;CMakeLists.txt&lt;/code&gt;文件，给&lt;code&gt;Android.mk&lt;/code&gt;文件中增加了如下参数：&lt;/p&gt;
     
     </summary>
     

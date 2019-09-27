@@ -19,7 +19,7 @@
 <meta property="og:site_name" content="jacpy&#39;s blog">
 <meta property="og:description" content="这几天在Android上给zip加上aes解密方法，刚开始使用的是zlib库中的minizip代码，发现不支持aes加解密，就换了github上的minizip库。等都编译OK，一运行就出现了异常，返回结果为-3，把msg输出如下所示： 1invalid code lengths set 搜索了-3，发现对应的是Z_DATA_ERROR。把测试zip包用winrar解密，发现一切正常，不是zip包">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-26T10:27:49.193Z">
+<meta property="og:updated_time" content="2019-09-27T13:29:29.173Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android编译minizip库运行时报Z_DATA_ERROR invalid code lengths set错误处理方法">
 <meta name="twitter:description" content="这几天在Android上给zip加上aes解密方法，刚开始使用的是zlib库中的minizip代码，发现不支持aes加解密，就换了github上的minizip库。等都编译OK，一运行就出现了异常，返回结果为-3，把msg输出如下所示： 1invalid code lengths set 搜索了-3，发现对应的是Z_DATA_ERROR。把测试zip包用winrar解密，发现一切正常，不是zip包">
@@ -109,6 +109,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">invalid code lengths set</span><br></pre></td></tr></table></figure>
 <p>搜索了-3，发现对应的是Z_DATA_ERROR。把测试zip包用winrar解密，发现一切正常，不是zip包数据原因。</p>
 <p>然后编译了源码中<code>minizip.c</code>文件，使用命令的方式执行了一下生成的<code>minizip</code>文件，发现能正常解密。看了一下<code>minizip</code>源码中的<code>CMakeLists.txt</code>文件，给<code>Android.mk</code>文件中增加了如下参数：</p>
+<a id="more"></a>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LOCAL_CFLAGS += -DHAVE_PKCRYPT</span><br></pre></td></tr></table></figure>
 <p>再编译运行，OK了。</p>
   
@@ -285,11 +286,7 @@
 			
 		
 			
-				<li><a href="/tags/Please-correct-the-above-warnings-first/" title="Please correct the above warnings first">Please correct the above warnings first<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
+				<li><a href="/tags/append-copy-slice/" title="append copy slice">append copy slice<sup>1</sup></a></li>
 			
 		
 			
@@ -297,11 +294,19 @@
 			
 		
 			
+				<li><a href="/tags/Device-or-resource-busy/" title="Device or resource busy">Device or resource busy<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Device-or-resource-busy/" title="Device or resource busy">Device or resource busy<sup>1</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/INSTALL-FAILED-TEST-ONLY/" title="INSTALL_FAILED_TEST_ONLY">INSTALL_FAILED_TEST_ONLY<sup>1</sup></a></li>
 			
 		
 			
@@ -313,15 +318,7 @@
 			
 		
 			
-				<li><a href="/tags/INSTALL-FAILED-TEST-ONLY/" title="INSTALL_FAILED_TEST_ONLY">INSTALL_FAILED_TEST_ONLY<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/android-security/" title="android security">android security<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/singleTop-android7-0/" title="singleTop android7.0">singleTop android7.0<sup>1</sup></a></li>
 			
 		
 			
@@ -329,7 +326,11 @@
 			
 		
 			
-				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
+				<li><a href="/tags/singleTop-android7-0/" title="singleTop android7.0">singleTop android7.0<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/cannot-install-apk/" title="cannot install apk">cannot install apk<sup>1</sup></a></li>
 			
 		
 			
@@ -341,7 +342,7 @@
 			
 		
 			
-				<li><a href="/tags/cannot-install-apk/" title="cannot install apk">cannot install apk<sup>1</sup></a></li>
+				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
 			
 		
 			
@@ -349,7 +350,7 @@
 			
 		
 			
-				<li><a href="/tags/chrome/" title="chrome">chrome<sup>1</sup></a></li>
+				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
 			
 		
 		</ul>
