@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.jacpy.com/2019/11/07/nodejs-file-data-stream-has-unexpected-number-of-bytes.html</loc>
+    
+    <lastmod>2019-11-13T12:34:10.546Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.jacpy.com/2019/09/26/z-data-error-invalid-code-lengths-set.html</loc>
     
     <lastmod>2019-09-27T13:29:29.173Z</lastmod>

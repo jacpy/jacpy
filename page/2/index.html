@@ -79,6 +79,71 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2017/08/03/sqlite-cant-open-database-exception-unknow-error-code-14-md.html" title="sqlite cant open database exception unknow error code 14" itemprop="url">sqlite cant open database exception unknow error code 14</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
+		
+  <p class="article-time">
+    <time datetime="2017-08-03T00:59:05.000Z" itemprop="datePublished"> 发表于 2017-08-03</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>这几天在解决客户的一个问题，说用了发给我的sqlite的数据库文件会发生数据上传失败问题，于是结合发过来的数据库文件准备看一下。</p>
+<p>先是通过<code>adb push</code>命令把文件copy到手机，然后cp到应用的缓存目录（需要root权限），覆盖原来的数据库文件。结果应用一运行就报了如下的错误：</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2017/08/03/sqlite-cant-open-database-exception-unknow-error-code-14-md.html#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/android/">android</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/sqlite-error-code-14/">sqlite error code 14</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/2017/08/03/sqlite-cant-open-database-exception-unknow-error-code-14-md.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2017/08/03/sqlite-cant-open-database-exception-unknow-error-code-14-md.html" data-count-type="comments">&nbsp;</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2017/05/03/android-device-or-resource-busy.html" title="android device or resource busy" itemprop="url">android device or resource busy</a>
   </h1>
   <p class="article-author">By
@@ -1310,70 +1375,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/05/10/gradle-compile-exclude-third-library-arm64-x86-64.html" title="gardle编译排除第三方库中的arm64、x86-64中的SO库" itemprop="url">gardle编译排除第三方库中的arm64、x86-64中的SO库</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
-		
-  <p class="article-time">
-    <time datetime="2016-05-10T13:20:16.000Z" itemprop="datePublished"> 发表于 2016-05-10</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>在开发android应用时，一般都会用很多的第三方框架。有些框架会提供各个CPU的架构的SO库，比如arm、arm-v7a、x86、mips，有的甚至还提供64位的版本；而有的为了缩小应用包的体积只提供了一些常用的，比如arm，x86。如果应用中有的第三方框架提供了arm和x86的版本，而有的提供了arm，arm-v7a，x86三个版本，那么当运行在arm-v7a版本的CPU上，就会提示找不到只有arm和x86版本的SO库，这样很容易导致应用挂掉，报<code>java.lang.UnsatisfiedLinkError</code>错误，提示native方法找不到实现。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/05/10/gradle-compile-exclude-third-library-arm64-x86-64.html#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/gradle/">gradle</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/gradle-不编译-arm64-x86-64/">gradle 不编译 arm64 x86-64</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/2016/05/10/gradle-compile-exclude-third-library-arm64-x86-64.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2016/05/10/gradle-compile-exclude-third-library-arm64-x86-64.html" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next<span></span></a>
@@ -1444,6 +1445,10 @@
 		  
 		
 		  
+			<li><a href="/categories/js/" title="js">js<sup>1</sup></a></li>
+		  
+		
+		  
 			<li><a href="/categories/minizip/" title="minizip">minizip<sup>1</sup></a></li>
 		  
 		
@@ -1493,7 +1498,11 @@
 			
 		
 			
-				<li><a href="/tags/append-copy-slice/" title="append copy slice">append copy slice<sup>1</sup></a></li>
+				<li><a href="/tags/Please-correct-the-above-warnings-first/" title="Please correct the above warnings first">Please correct the above warnings first<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
 			
 		
 			
@@ -1501,15 +1510,23 @@
 			
 		
 			
-				<li><a href="/tags/Device-or-resource-busy/" title="Device or resource busy">Device or resource busy<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
+				<li><a href="/tags/Device-or-resource-busy/" title="Device or resource busy">Device or resource busy<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android-security/" title="android security">android security<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
 			
 		
 			
@@ -1521,31 +1538,7 @@
 			
 		
 			
-				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/android-security/" title="android security">android security<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/singleTop-android7-0/" title="singleTop android7.0">singleTop android7.0<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/cannot-install-apk/" title="cannot install apk">cannot install apk<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
 			
 		
 			
@@ -1553,11 +1546,23 @@
 			
 		
 			
-				<li><a href="/tags/markdown设置-sublime/" title="markdown设置 sublime">markdown设置 sublime<sup>1</sup></a></li>
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
+				<li><a href="/tags/android死锁分析/" title="android死锁分析">android死锁分析<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/andfix/" title="andfix">andfix<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gradle配置/" title="gradle配置">gradle配置<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/boost-clion/" title="boost clion">boost clion<sup>1</sup></a></li>
 			
 		
 		</ul>

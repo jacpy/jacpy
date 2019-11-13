@@ -1,0 +1,640 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  
+    <title>Nodejs使用archiver-zip-encrypted库加密压缩文件时报错 | jacpy&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="jacpy">
+    
+
+    
+    <meta name="description" content="前几天在维护一个nodejs写的命令行工具，要增加一个压缩zip文件时加密码功能。压缩文件时使用了archiver库，加密码使用了archiver-zip-encrypted库。在windows系统上测试时，发现会概率的出现以下异常： 123456789101112131415events.js:174 throw er; // Unhandled &amp;apos;error&amp;apos; event">
+<meta name="keywords" content="nodejs archiver-zip-encrypted">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nodejs使用archiver-zip-encrypted库加密压缩文件时报错">
+<meta property="og:url" content="http://www.jacpy.com/2019/11/07/nodejs-file-data-stream-has-unexpected-number-of-bytes.html">
+<meta property="og:site_name" content="jacpy&#39;s blog">
+<meta property="og:description" content="前几天在维护一个nodejs写的命令行工具，要增加一个压缩zip文件时加密码功能。压缩文件时使用了archiver库，加密码使用了archiver-zip-encrypted库。在windows系统上测试时，发现会概率的出现以下异常： 123456789101112131415events.js:174 throw er; // Unhandled &amp;apos;error&amp;apos; event">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-11-13T12:34:10.546Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nodejs使用archiver-zip-encrypted库加密压缩文件时报错">
+<meta name="twitter:description" content="前几天在维护一个nodejs写的命令行工具，要增加一个压缩zip文件时加密码功能。压缩文件时使用了archiver库，加密码使用了archiver-zip-encrypted库。在windows系统上测试时，发现会概率的出现以下异常： 123456789101112131415events.js:174 throw er; // Unhandled &amp;apos;error&amp;apos; event">
+
+    
+    <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="jacpy&#39;s blog" title="jacpy&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="jacpy&#39;s blog">jacpy&#39;s blog</a></h1>
+				<h2 class="blog-motto">enjoy mobile development</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated" style="margin-top: 0px;">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:www.jacpy.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/11/07/nodejs-file-data-stream-has-unexpected-number-of-bytes.html" title="Nodejs使用archiver-zip-encrypted库加密压缩文件时报错" itemprop="url">Nodejs使用archiver-zip-encrypted库加密压缩文件时报错</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
+		
+  <p class="article-time">
+    <time datetime="2019-11-07T12:35:10.000Z" itemprop="datePublished"> 发表于 2019-11-07</time>
+    
+  </p>
+</header>
+
+
+
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			
+		
+		</div>
+		
+		<p>前几天在维护一个nodejs写的命令行工具，要增加一个压缩zip文件时加密码功能。压缩文件时使用了<a href="https://www.npmjs.com/package/archiver" target="_blank" rel="noopener">archiver</a>库，加密码使用了<a href="https://www.npmjs.com/package/archiver-zip-encrypted" target="_blank" rel="noopener">archiver-zip-encrypted</a>库。在windows系统上测试时，发现会概率的出现以下异常：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">events.js:174 </span><br><span class="line">throw er; // Unhandled &apos;error&apos; event </span><br><span class="line">^</span><br><span class="line"></span><br><span class="line">Error: file data stream has unexpected number of bytes </span><br><span class="line">at ByteCounter. (</span><br><span class="line">xxx\node_modules\yazl\index.js:162:99) </span><br><span class="line">at ByteCounter.emit (events.js:194:15) </span><br><span class="line">at endReadableNT (_stream_readable.js:1103:12) </span><br><span class="line">at process._tickCallback (internal/process/next_tick.js:63:19) </span><br><span class="line">Emitted &apos;error&apos; event at: </span><br><span class="line">at ByteCounter. (xxx\node_modules\yazl\index.js:162:85) </span><br><span class="line">at ByteCounter.emit (events.js:194:15) </span><br><span class="line">at endReadableNT (_stream_readable.js:1103:12) </span><br><span class="line">at process._tickCallback (internal/process/next_t</span><br></pre></td></tr></table></figure>
+<p>我的本机环境是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm：6.9.0</span><br><span class="line">node: v10.16.3</span><br></pre></td></tr></table></figure>
+<p>在另外一个同事的windows系统上测试，他那边是上面异常必现，对应的node版本是v10.15。</p>
+<p>具体使用的代码不贴了，基本上是参照官方<a href="https://www.npmjs.com/package/archiver" target="_blank" rel="noopener">demo</a>来写的，压缩完成最后调用代码如下所示：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">archive.finalize().then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 到这里认为是压缩完成，进行后续处理，实际并没有，参照后面分析</span></span><br><span class="line">    anotherProcess();</span><br><span class="line">&#125;).catch(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 压缩出现异常处理...</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>出现异常后一一检查代码和官方demo不一样的地方，并没有发现什么异常之处，网上搜索也没有发现这种异常记录。由于刚接触JS，不是很熟，就从问题开始下手，找到出现问题的代码，开始调试。</p>
+<p>错误日志中提示是在<code>yzal/index.js</code>文件中发生异常，找到出现异常的代码如下所示：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">pumpFileDataReadStream</span>(<span class="params">self, entry, readStream</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> crc32Watcher = <span class="keyword">new</span> Crc32Watcher();</span><br><span class="line">  <span class="keyword">var</span> uncompressedSizeCounter = <span class="keyword">new</span> ByteCounter();</span><br><span class="line">  <span class="keyword">var</span> compressor = entry.compress ? <span class="keyword">new</span> zlib.DeflateRaw() : <span class="keyword">new</span> PassThrough();</span><br><span class="line">  <span class="keyword">var</span> compressedSizeCounter = <span class="keyword">new</span> ByteCounter();</span><br><span class="line">  readStream.pipe(crc32Watcher)</span><br><span class="line">            .pipe(uncompressedSizeCounter)</span><br><span class="line">            .pipe(compressor)</span><br><span class="line">            .pipe(compressedSizeCounter)</span><br><span class="line">            .pipe(self.outputStream, &#123;<span class="attr">end</span>: <span class="literal">false</span>&#125;);</span><br><span class="line">  compressedSizeCounter.on(<span class="string">"end"</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    entry.crc32 = crc32Watcher.crc32;</span><br><span class="line">    <span class="keyword">if</span> (entry.uncompressedSize == <span class="literal">null</span>) &#123;</span><br><span class="line">      entry.uncompressedSize = uncompressedSizeCounter.byteCount;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// 异常从这里抛出来的</span></span><br><span class="line">      <span class="keyword">if</span> (entry.uncompressedSize !== uncompressedSizeCounter.byteCount) <span class="keyword">return</span> self.emit(<span class="string">"error"</span>, <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"file data stream has unexpected number of bytes"</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    entry.compressedSize = compressedSizeCounter.byteCount;</span><br><span class="line">    self.outputStreamCursor += entry.compressedSize;</span><br><span class="line">    writeToOutputStream(self, entry.getDataDescriptor());</span><br><span class="line">    entry.state = Entry.FILE_DATA_DONE;</span><br><span class="line">    pumpEntries(self);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从上面代码可以看出来：<code>uncompressedSizeCounter.byteCount</code>是从<code>pumpFileDataReadStream()</code>函数<code>readStream</code>参数中获取的属性值，而<code>entry.uncompressedSize</code>也是函数的<code>entry</code>参数中获取的属性。接着找<code>pumpFileDataReadStream()</code>函数是从哪里调用的。</p>
+<p>通过输出日志得出<code>pumpFileDataReadStream()</code>函数是在以下面的代码中被调用的：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">ZipFile.prototype.addFile = <span class="function"><span class="keyword">function</span>(<span class="params">realPath, metadataPath, options</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line">  metadataPath = validateMetadataPath(metadataPath, <span class="literal">false</span>);</span><br><span class="line">  <span class="keyword">if</span> (options == <span class="literal">null</span>) options = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> entry = <span class="keyword">new</span> Entry(metadataPath, <span class="literal">false</span>, options);</span><br><span class="line">  self.entries.push(entry);</span><br><span class="line">  fs.stat(realPath, <span class="function"><span class="keyword">function</span>(<span class="params">err, stats</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (err) <span class="keyword">return</span> self.emit(<span class="string">"error"</span>, err);</span><br><span class="line">    <span class="keyword">if</span> (!stats.isFile()) <span class="keyword">return</span> self.emit(<span class="string">"error"</span>, <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"not a file: "</span> + realPath));</span><br><span class="line">    <span class="comment">// 这里是文件的大小</span></span><br><span class="line">    entry.uncompressedSize = stats.size;</span><br><span class="line">    <span class="keyword">if</span> (options.mtime == <span class="literal">null</span>) entry.setLastModDate(stats.mtime);</span><br><span class="line">    <span class="keyword">if</span> (options.mode == <span class="literal">null</span>) entry.setFileAttributesMode(stats.mode);</span><br><span class="line">    entry.setFileDataPumpFunction(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="comment">// readStream在这里创建的</span></span><br><span class="line">      <span class="keyword">var</span> readStream = fs.createReadStream(realPath);</span><br><span class="line">      entry.state = Entry.FILE_DATA_IN_PROGRESS;</span><br><span class="line">      readStream.on(<span class="string">"error"</span>, <span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</span><br><span class="line">        self.emit(<span class="string">"error"</span>, err);</span><br><span class="line">      &#125;);</span><br><span class="line">      <span class="comment">// 在这里被调用</span></span><br><span class="line">      pumpFileDataReadStream(self, entry, readStream);</span><br><span class="line">    &#125;);</span><br><span class="line">    pumpEntries(self);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>从上面代码可以看出来<code>entry.uncompressedSize</code>是stats.size，即文件的大小，<code>readStream</code>是创建的文件流。但是在什么情况下两者会不一样呢？感觉只可能在文件还没有读取完，但是是什么原因导致这种情况发生？由于对JS接触的时间不长，没有进行深入分析。最后在抛出异常的上面一行用<code>console.log</code>将两个属性的大小值都输出，代码如下所示：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (entry.uncompressedSize == <span class="literal">null</span>) &#123;</span><br><span class="line">      entry.uncompressedSize = uncompressedSizeCounter.byteCount;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="comment">// 增加日志输出</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"entry size: "</span> + entry.uncompressedSize + <span class="string">", uncompressedSize: "</span> + uncompressedSizeCounter.byteCount);</span><br><span class="line">  <span class="keyword">if</span> (entry.uncompressedSize !== uncompressedSizeCounter.byteCount) <span class="keyword">return</span> self.emit(<span class="string">"error"</span>, <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"file data stream has unexpected number of bytes"</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在<code>archive.finalize()</code>时和<code>output</code>写入流的<code>close</code>事件时(详细参照官方的示例代码)，分别加上日志输出，代码如下所示：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">archive.finalize().then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 到这里认为是压缩完成，进行后续处理，实际并没有，参照后面分析</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"finalize"</span>);</span><br><span class="line">  <span class="comment">// anotherProcess();</span></span><br><span class="line">&#125;).catch(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 压缩出现异常</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">output.on(<span class="string">'close'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'close'</span>);</span><br><span class="line">  <span class="comment">// 这个业务函数与上面finalize函数中的是互斥，不会同时存在</span></span><br><span class="line">  anotherProcess();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>最后分别将<code>anotherProcess()</code>函数加到两个异步回调中执行，发现在<code>close</code>事件执行时，两个size输出的大小一致，都是文件的大小。而在<code>finalize</code>场景测试发现<code>uncompressedSize</code>要小于文件的大小。最后将<code>anotherProcess()</code>函数放在<code>close</code>事件回调函数中执行，问题解决。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/js/">js</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/nodejs-archiver-zip-encrypted/">nodejs archiver-zip-encrypted</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.jacpy.com/2019/11/07/nodejs-file-data-stream-has-unexpected-number-of-bytes.html" data-title="Nodejs使用archiver-zip-encrypted库加密压缩文件时报错 | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2019/09/26/z-data-error-invalid-code-lengths-set.html"  title="Android编译minizip库运行时报Z_DATA_ERROR invalid code lengths set错误处理方法">
+ <strong>下一篇：</strong><br/> 
+ <span>Android编译minizip库运行时报Z_DATA_ERROR invalid code lengths set错误处理方法
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2019/11/07/nodejs-file-data-stream-has-unexpected-number-of-bytes.html" data-title="Nodejs使用archiver-zip-encrypted库加密压缩文件时报错" data-url="http://www.jacpy.com/2019/11/07/nodejs-file-data-stream-has-unexpected-number-of-bytes.html"></div>
+</section>
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Cpp/" title="Cpp">Cpp<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/andfix/" title="andfix">andfix<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/" title="android">android<sup>23</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android-push/" title="android push">android push<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android-studio/" title="android studio">android studio<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android-view/" title="android view">android view<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/dvm/" title="dvm">dvm<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/github/" title="github">github<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/go/" title="go">go<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/golang/" title="golang">golang<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/gradle/" title="gradle">gradle<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/js/" title="js">js<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/minizip/" title="minizip">minizip<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/pay/" title="pay">pay<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/sqlite/" title="sqlite">sqlite<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/sublime/" title="sublime">sublime<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/view/" title="view">view<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/windows/" title="windows">windows<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/SQLite性能优化/" title="SQLite性能优化">SQLite性能优化<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/okhttp/" title="okhttp">okhttp<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Please-correct-the-above-warnings-first/" title="Please correct the above warnings first">Please correct the above warnings first<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Out-Of-Memory/" title="Out Of Memory">Out Of Memory<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Device-or-resource-busy/" title="Device or resource busy">Device or resource busy<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android-security/" title="android security">android security<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/INSTALL-FAILED-TEST-ONLY/" title="INSTALL_FAILED_TEST_ONLY">INSTALL_FAILED_TEST_ONLY<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/singleTop-android7-0/" title="singleTop android7.0">singleTop android7.0<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/transformClassesWithDexForDebug/" title="transformClassesWithDexForDebug">transformClassesWithDexForDebug<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android死锁分析/" title="android死锁分析">android死锁分析<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/andfix/" title="andfix">andfix<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gradle配置/" title="gradle配置">gradle配置<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/boost-clion/" title="boost clion">boost clion<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.jacpy.com" target="_blank" title="jacpy">jacpy</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Jacpy, welcome to my blog. <br/>
+			This is my blog, believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/jacpy" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:jacpy.may@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		
+		<a href="/about" target="_blank" title="jacpy">jacpy</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"maylian7700"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254674300'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s23.cnzz.com/z_stat.php%3Fid%3D1254674300' type='text/javascript'%3E%3C/script%3E"));</script>
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
