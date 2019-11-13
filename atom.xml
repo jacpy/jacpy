@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jacpy.com/"/>
-  <updated>2019-11-13T12:34:10.546Z</updated>
+  <updated>2019-11-13T12:35:41.465Z</updated>
   <id>http://www.jacpy.com/</id>
   
   <author>
@@ -20,9 +20,10 @@
     <link href="http://www.jacpy.com/2019/11/07/nodejs-file-data-stream-has-unexpected-number-of-bytes.html"/>
     <id>http://www.jacpy.com/2019/11/07/nodejs-file-data-stream-has-unexpected-number-of-bytes.html</id>
     <published>2019-11-07T12:35:10.000Z</published>
-    <updated>2019-11-13T12:34:10.546Z</updated>
+    <updated>2019-11-13T12:35:41.465Z</updated>
     
     <content type="html">&lt;p&gt;前几天在维护一个nodejs写的命令行工具，要增加一个压缩zip文件时加密码功能。压缩文件时使用了&lt;a href=&quot;https://www.npmjs.com/package/archiver&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;archiver&lt;/a&gt;库，加密码使用了&lt;a href=&quot;https://www.npmjs.com/package/archiver-zip-encrypted&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;archiver-zip-encrypted&lt;/a&gt;库。在windows系统上测试时，发现会概率的出现以下异常：&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;events.js:174 &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;throw er; // Unhandled &amp;apos;error&amp;apos; event &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;^&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Error: file data stream has unexpected number of bytes &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;at ByteCounter. (&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;xxx\node_modules\yazl\index.js:162:99) &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;at ByteCounter.emit (events.js:194:15) &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;at endReadableNT (_stream_readable.js:1103:12) &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;at process._tickCallback (internal/process/next_tick.js:63:19) &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Emitted &amp;apos;error&amp;apos; event at: &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;at ByteCounter. (xxx\node_modules\yazl\index.js:162:85) &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;at ByteCounter.emit (events.js:194:15) &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;at endReadableNT (_stream_readable.js:1103:12) &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;at process._tickCallback (internal/process/next_t&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;我的本机环境是：&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;npm：6.9.0&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;node: v10.16.3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -44,7 +45,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;前几天在维护一个nodejs写的命令行工具，要增加一个压缩zip文件时加密码功能。压缩文件时使用了&lt;a href=&quot;https://www.npmjs.com/package/archiver&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;archiver
+      &lt;p&gt;前几天在维护一个nodejs写的命令行工具，要增加一个压缩zip文件时加密码功能。压缩文件时使用了&lt;a href=&quot;https://www.npmjs.com/package/archiver&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;archiver&lt;/a&gt;库，加密码使用了&lt;a href=&quot;https://www.npmjs.com/package/archiver-zip-encrypted&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;archiver-zip-encrypted&lt;/a&gt;库。在windows系统上测试时，发现会概率的出现以下异常：&lt;/p&gt;
     
     </summary>
     

@@ -93,27 +93,11 @@
     <div class="article-content">
         
         <p>前几天在维护一个nodejs写的命令行工具，要增加一个压缩zip文件时加密码功能。压缩文件时使用了<a href="https://www.npmjs.com/package/archiver" target="_blank" rel="noopener">archiver</a>库，加密码使用了<a href="https://www.npmjs.com/package/archiver-zip-encrypted" target="_blank" rel="noopener">archiver-zip-encrypted</a>库。在windows系统上测试时，发现会概率的出现以下异常：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">events.js:174 </span><br><span class="line">throw er; // Unhandled &apos;error&apos; event </span><br><span class="line">^</span><br><span class="line"></span><br><span class="line">Error: file data stream has unexpected number of bytes </span><br><span class="line">at ByteCounter. (</span><br><span class="line">xxx\node_modules\yazl\index.js:162:99) </span><br><span class="line">at ByteCounter.emit (events.js:194:15) </span><br><span class="line">at endReadableNT (_stream_readable.js:1103:12) </span><br><span class="line">at process._tickCallback (internal/process/next_tick.js:63:19) </span><br><span class="line">Emitted &apos;error&apos; event at: </span><br><span class="line">at ByteCounter. (xxx\node_modules\yazl\index.js:162:85) </span><br><span class="line">at ByteCounter.emit (events.js:194:15) </span><br><span class="line">at endReadableNT (_stream_readable.js:1103:12) </span><br><span class="line">at process._tickCallback (internal/process/next_t</span><br></pre></td></tr></table></figure>
-<p>我的本机环境是：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm：6.9.0</span><br><span class="line">node: v10.16.3</span><br></pre></td></tr></table></figure>
-<p>在另外一个同事的windows系统上测试，他那边是上面异常必现，对应的node版本是v10.15。</p>
-<p>具体使用的代码不贴了，基本上是参照官方<a href="https://www.npmjs.com/package/archiver" target="_blank" rel="noopener">demo</a>来写的，压缩完成最后调用代码如下所示：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">archive.finalize().then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 到这里认为是压缩完成，进行后续处理，实际并没有，参照后面分析</span></span><br><span class="line">    anotherProcess();</span><br><span class="line">&#125;).catch(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 压缩出现异常处理...</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>出现异常后一一检查代码和官方demo不一样的地方，并没有发现什么异常之处，网上搜索也没有发现这种异常记录。由于刚接触JS，不是很熟，就从问题开始下手，找到出现问题的代码，开始调试。</p>
-<p>错误日志中提示是在<code>yzal/index.js</code>文件中发生异常，找到出现异常的代码如下所示：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">pumpFileDataReadStream</span>(<span class="params">self, entry, readStream</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> crc32Watcher = <span class="keyword">new</span> Crc32Watcher();</span><br><span class="line">  <span class="keyword">var</span> uncompressedSizeCounter = <span class="keyword">new</span> ByteCounter();</span><br><span class="line">  <span class="keyword">var</span> compressor = entry.compress ? <span class="keyword">new</span> zlib.DeflateRaw() : <span class="keyword">new</span> PassThrough();</span><br><span class="line">  <span class="keyword">var</span> compressedSizeCounter = <span class="keyword">new</span> ByteCounter();</span><br><span class="line">  readStream.pipe(crc32Watcher)</span><br><span class="line">            .pipe(uncompressedSizeCounter)</span><br><span class="line">            .pipe(compressor)</span><br><span class="line">            .pipe(compressedSizeCounter)</span><br><span class="line">            .pipe(self.outputStream, &#123;<span class="attr">end</span>: <span class="literal">false</span>&#125;);</span><br><span class="line">  compressedSizeCounter.on(<span class="string">"end"</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    entry.crc32 = crc32Watcher.crc32;</span><br><span class="line">    <span class="keyword">if</span> (entry.uncompressedSize == <span class="literal">null</span>) &#123;</span><br><span class="line">      entry.uncompressedSize = uncompressedSizeCounter.byteCount;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// 异常从这里抛出来的</span></span><br><span class="line">      <span class="keyword">if</span> (entry.uncompressedSize !== uncompressedSizeCounter.byteCount) <span class="keyword">return</span> self.emit(<span class="string">"error"</span>, <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"file data stream has unexpected number of bytes"</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    entry.compressedSize = compressedSizeCounter.byteCount;</span><br><span class="line">    self.outputStreamCursor += entry.compressedSize;</span><br><span class="line">    writeToOutputStream(self, entry.getDataDescriptor());</span><br><span class="line">    entry.state = Entry.FILE_DATA_DONE;</span><br><span class="line">    pumpEntries(self);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>从上面代码可以看出来：<code>uncompressedSizeCounter.byteCount</code>是从<code>pumpFileDataReadStream()</code>函数<code>readStream</code>参数中获取的属性值，而<code>entry.uncompressedSize</code>也是函数的<code>entry</code>参数中获取的属性。接着找<code>pumpFileDataReadStream()</code>函数是从哪里调用的。</p>
-<p>通过输出日志得出<code>pumpFileDataReadStream()</code>函数是在以下面的代码中被调用的：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">ZipFile.prototype.addFile = <span class="function"><span class="keyword">function</span>(<span class="params">realPath, metadataPath, options</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line">  metadataPath = validateMetadataPath(metadataPath, <span class="literal">false</span>);</span><br><span class="line">  <span class="keyword">if</span> (options == <span class="literal">null</span>) options = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> entry = <span class="keyword">new</span> Entry(metadataPath, <span class="literal">false</span>, options);</span><br><span class="line">  self.entries.push(entry);</span><br><span class="line">  fs.stat(realPath, <span class="function"><span class="keyword">function</span>(<span class="params">err, stats</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (err) <span class="keyword">return</span> self.emit(<span class="string">"error"</span>, err);</span><br><span class="line">    <span class="keyword">if</span> (!stats.isFile()) <span class="keyword">return</span> self.emit(<span class="string">"error"</span>, <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"not a file: "</span> + realPath));</span><br><span class="line">    <span class="comment">// 这里是文件的大小</span></span><br><span class="line">    entry.uncompressedSize = stats.size;</span><br><span class="line">    <span class="keyword">if</span> (options.mtime == <span class="literal">null</span>) entry.setLastModDate(stats.mtime);</span><br><span class="line">    <span class="keyword">if</span> (options.mode == <span class="literal">null</span>) entry.setFileAttributesMode(stats.mode);</span><br><span class="line">    entry.setFileDataPumpFunction(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="comment">// readStream在这里创建的</span></span><br><span class="line">      <span class="keyword">var</span> readStream = fs.createReadStream(realPath);</span><br><span class="line">      entry.state = Entry.FILE_DATA_IN_PROGRESS;</span><br><span class="line">      readStream.on(<span class="string">"error"</span>, <span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</span><br><span class="line">        self.emit(<span class="string">"error"</span>, err);</span><br><span class="line">      &#125;);</span><br><span class="line">      <span class="comment">// 在这里被调用</span></span><br><span class="line">      pumpFileDataReadStream(self, entry, readStream);</span><br><span class="line">    &#125;);</span><br><span class="line">    pumpEntries(self);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>从上面代码可以看出来<code>entry.uncompressedSize</code>是stats.size，即文件的大小，<code>readStream</code>是创建的文件流。但是在什么情况下两者会不一样呢？感觉只可能在文件还没有读取完，但是是什么原因导致这种情况发生？由于对JS接触的时间不长，没有进行深入分析。最后在抛出异常的上面一行用<code>console.log</code>将两个属性的大小值都输出，代码如下所示：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (entry.uncompressedSize == <span class="literal">null</span>) &#123;</span><br><span class="line">      entry.uncompressedSize = uncompressedSizeCounter.byteCount;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="comment">// 增加日志输出</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"entry size: "</span> + entry.uncompressedSize + <span class="string">", uncompressedSize: "</span> + uncompressedSizeCounter.byteCount);</span><br><span class="line">  <span class="keyword">if</span> (entry.uncompressedSize !== uncompressedSizeCounter.byteCount) <span class="keyword">return</span> self.emit(<span class="string">"error"</span>, <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"file data stream has unexpected number of bytes"</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在<code>archive.finalize()</code>时和<code>output</code>写入流的<code>close</code>事件时(详细参照官方的示例代码)，分别加上日志输出，代码如下所示：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">archive.finalize().then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 到这里认为是压缩完成，进行后续处理，实际并没有，参照后面分析</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"finalize"</span>);</span><br><span class="line">  <span class="comment">// anotherProcess();</span></span><br><span class="line">&#125;).catch(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 压缩出现异常</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">output.on(<span class="string">'close'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'close'</span>);</span><br><span class="line">  <span class="comment">// 这个业务函数与上面finalize函数中的是互斥，不会同时存在</span></span><br><span class="line">  anotherProcess();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>最后分别将<code>anotherProcess()</code>函数加到两个异步回调中执行，发现在<code>close</code>事件执行时，两个size输出的大小一致，都是文件的大小。而在<code>finalize</code>场景测试发现<code>uncompressedSize</code>要小于文件的大小。最后将<code>anotherProcess()</code>函数放在<code>close</code>事件回调函数中执行，问题解决。</p>
-
         
         
         <p class="article-more-link">
+          
+            <a href="/2019/11/07/nodejs-file-data-stream-has-unexpected-number-of-bytes.html#more">Read More</a>
           
        </p>
     </div>
@@ -1520,11 +1504,15 @@
 			
 		
 			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Out-Of-Memory/" title="Out Of Memory">Out Of Memory<sup>1</sup></a></li>
+				<li><a href="/tags/Device-or-resource-busy/" title="Device or resource busy">Device or resource busy<sup>1</sup></a></li>
 			
 		
 			
@@ -1532,7 +1520,11 @@
 			
 		
 			
-				<li><a href="/tags/Device-or-resource-busy/" title="Device or resource busy">Device or resource busy<sup>1</sup></a></li>
+				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/INSTALL-FAILED-TEST-ONLY/" title="INSTALL_FAILED_TEST_ONLY">INSTALL_FAILED_TEST_ONLY<sup>1</sup></a></li>
 			
 		
 			
@@ -1544,19 +1536,11 @@
 			
 		
 			
-				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/INSTALL-FAILED-TEST-ONLY/" title="INSTALL_FAILED_TEST_ONLY">INSTALL_FAILED_TEST_ONLY<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/singleTop-android7-0/" title="singleTop android7.0">singleTop android7.0<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
 			
 		
 			
@@ -1564,23 +1548,23 @@
 			
 		
 			
+				<li><a href="/tags/andfix-apkpatch/" title="andfix apkpatch">andfix apkpatch<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/github-hex-blog/" title="github hex blog">github hex blog<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/android死锁分析/" title="android死锁分析">android死锁分析<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/andfix/" title="andfix">andfix<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/gradle配置/" title="gradle配置">gradle配置<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/boost-clion/" title="boost clion">boost clion<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/cannot-install-apk/" title="cannot install apk">cannot install apk<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/genymotion/" title="genymotion">genymotion<sup>1</sup></a></li>
 			
 		
 		</ul>
