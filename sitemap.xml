@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.jacpy.com/2017/02/28/android-gradle-config-summary.html</loc>
+    
+    <lastmod>2020-06-10T00:55:00.576Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.jacpy.com/2019/11/07/nodejs-file-data-stream-has-unexpected-number-of-bytes.html</loc>
     
     <lastmod>2019-11-13T12:35:41.465Z</lastmod>
@@ -173,13 +180,6 @@
     <loc>http://www.jacpy.com/2017/05/03/android-device-or-resource-busy.html</loc>
     
     <lastmod>2017-08-02T05:12:12.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.jacpy.com/2017/02/28/android-gradle-config-summary.html</loc>
-    
-    <lastmod>2017-03-07T02:43:27.000Z</lastmod>
     
   </url>
   
