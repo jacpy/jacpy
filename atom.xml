@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jacpy.com/"/>
-  <updated>2019-11-13T12:35:41.465Z</updated>
+  <updated>2020-06-13T14:22:47.026Z</updated>
   <id>http://www.jacpy.com/</id>
   
   <author>
@@ -16,11 +16,37 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>compile opencv 4.3.0 gcc: error: long: No such file or directory</title>
+    <link href="http://www.jacpy.com/2020/06/13/compile-opencv-4-3-0-gcc-error-long-No-such-file-or-directory.html"/>
+    <id>http://www.jacpy.com/2020/06/13/compile-opencv-4-3-0-gcc-error-long-No-such-file-or-directory.html</id>
+    <published>2020-06-13T14:13:19.000Z</published>
+    <updated>2020-06-13T14:22:47.026Z</updated>
+    
+    <content type="html">&lt;p&gt;之前在windows一直使用mingw+cmake编译opencv都没有问题，这次编译最新版本4.3.0出现了&lt;code&gt;gcc: error: long: No such file or directory&lt;/code&gt;问题，解决办法也很简单，在cmake-gui中&lt;code&gt;Search&lt;/code&gt;栏中找到&lt;code&gt;OPENCV_ENABLE_ALLOCATOR_STATS&lt;/code&gt;项，将Value上的勾去掉，不勾选即可。如下图所示：&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2020/06/compile_opencv_4.3.0_uncheck_options.jpg&quot; alt=&quot;compile_opencv_4.3.0_uncheck_options&quot;&gt;&lt;/p&gt;
+&lt;p&gt;点击下面的&lt;code&gt;Generate&lt;/code&gt;按钮后，再在命令cd到根目录下，执行make。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;之前在windows一直使用mingw+cmake编译opencv都没有问题，这次编译最新版本4.3.0出现了&lt;code&gt;gcc: error: long: No such file or directory&lt;/code&gt;问题，解决办法也很简单，在cmake-gui中&lt;code&gt;Search&lt;/code&gt;栏中找到&lt;code&gt;OPENCV_ENABLE_ALLOCATOR_STATS&lt;/code&gt;项，将Value上的勾去掉，不勾选即可。如下图所示：&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="opencv" scheme="http://www.jacpy.com/categories/opencv/"/>
+    
+    
+      <category term="opencv" scheme="http://www.jacpy.com/tags/opencv/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Nodejs使用archiver-zip-encrypted库加密压缩文件时报错</title>
     <link href="http://www.jacpy.com/2019/11/07/nodejs-file-data-stream-has-unexpected-number-of-bytes.html"/>
     <id>http://www.jacpy.com/2019/11/07/nodejs-file-data-stream-has-unexpected-number-of-bytes.html</id>
     <published>2019-11-07T12:35:10.000Z</published>
-    <updated>2019-11-13T12:35:41.465Z</updated>
+    <updated>2019-11-13T12:35:42.000Z</updated>
     
     <content type="html">&lt;p&gt;前几天在维护一个nodejs写的命令行工具，要增加一个压缩zip文件时加密码功能。压缩文件时使用了&lt;a href=&quot;https://www.npmjs.com/package/archiver&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;archiver&lt;/a&gt;库，加密码使用了&lt;a href=&quot;https://www.npmjs.com/package/archiver-zip-encrypted&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;archiver-zip-encrypted&lt;/a&gt;库。在windows系统上测试时，发现会概率的出现以下异常：&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
@@ -61,7 +87,7 @@
     <link href="http://www.jacpy.com/2019/09/26/z-data-error-invalid-code-lengths-set.html"/>
     <id>http://www.jacpy.com/2019/09/26/z-data-error-invalid-code-lengths-set.html</id>
     <published>2019-09-26T09:56:06.000Z</published>
-    <updated>2019-09-27T13:29:29.173Z</updated>
+    <updated>2019-09-27T13:29:30.000Z</updated>
     
     <content type="html">&lt;p&gt;这几天在Android上给zip加上aes解密方法，刚开始使用的是&lt;code&gt;zlib&lt;/code&gt;库中的&lt;code&gt;minizip&lt;/code&gt;代码，发现不支持&lt;code&gt;aes&lt;/code&gt;加解密，就换了github上的&lt;a href=&quot;https://github.com/nmoinvaz/minizip&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;minizip&lt;/a&gt;库。等都编译OK，一运行就出现了异常，返回结果为-3，把msg输出如下所示：&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;invalid code lengths set&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -93,7 +119,7 @@
     <link href="http://www.jacpy.com/2019/09/19/cannot-install-apk-in-android-17-width-jarsigner.html"/>
     <id>http://www.jacpy.com/2019/09/19/cannot-install-apk-in-android-17-width-jarsigner.html</id>
     <published>2019-09-19T11:52:15.000Z</published>
-    <updated>2019-09-20T00:49:12.307Z</updated>
+    <updated>2019-09-20T00:49:12.000Z</updated>
     
     <content type="html">&lt;p&gt;这几天遇到一件怪事，使用加固工具后，打包出来的APK无法在Android 4.2版本的手机上安装，不使用加固打出来的安装包却可以安装。于是找加固厂商询问原因，加固厂商拿了不能安装的文件后，又发了一个安装包让我们测试一下，结果可以了。询问原因，说是我们给的安装包没有签名，加上签名信息就好了。于是用&lt;code&gt;keytool&lt;/code&gt;工具看了下原安装文件的签名信息，发现都有。把执行命令包含有签名信息的截图发过去了之后，加固厂商问了使用的签名工具，然后说是用&lt;code&gt;jarsigner&lt;/code&gt;工具的问题。于是一查，还真是。&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
@@ -131,7 +157,7 @@
     <link href="http://www.jacpy.com/2019/09/18/golang-exec-command-tools.html"/>
     <id>http://www.jacpy.com/2019/09/18/golang-exec-command-tools.html</id>
     <published>2019-09-18T05:00:27.000Z</published>
-    <updated>2019-09-18T05:26:30.530Z</updated>
+    <updated>2019-09-18T05:26:30.000Z</updated>
     
     <content type="html">&lt;p&gt;这几天在用golang写一个工具，要执行外部命令工具，而且还要将外部命令工具输出的日志也要输出出来。网上找了一下，资料很多，关键是执行的结果成功或失败状态没找到好的方法获取到。刚开始想的是看错误日志，如果有错误日志，那么就是执行失败。测试的时候发现这样不行，发现有些时候会用error输出日志，但不一定就是执行失败。后来想用日志中的关键字匹配，因为有些命令执行成功或失败都是有关键字输出的，测试发现也不太好。最后没办法，看了一下&lt;code&gt;Cmd.Wait()&lt;/code&gt;方法的实现，突然眼前一亮，找到方法了，有一个&lt;code&gt;Cmd.ProcessState&lt;/code&gt;结构体可以使用。于是整理了一下，贴一下代码实现：&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
@@ -157,7 +183,7 @@
     <link href="http://www.jacpy.com/2019/09/16/jquery-cors.html"/>
     <id>http://www.jacpy.com/2019/09/16/jquery-cors.html</id>
     <published>2019-09-16T09:02:48.000Z</published>
-    <updated>2019-09-16T09:40:02.221Z</updated>
+    <updated>2019-09-16T09:40:02.000Z</updated>
     
     <content type="html">&lt;p&gt;使用jquery的ajax请求时，发现每次都是走error的回调函数，错误提示的日志为&lt;code&gt;{&amp;quot;readyState&amp;quot;:0, status: 0, status:&amp;quot;error&amp;quot;}&lt;/code&gt;。抓包请求发现请求正常返回数据，但是js代码却执行error的回调。其他组开发人员反馈的问题描述是在App中使用离线代码没有问题，使用地址访问就有问题。自然而然就想到了跨域问题，一看请求地址，果然。&lt;/p&gt;
 &lt;p&gt;服务器端接口响应的头增加以下内容就可以解决：&lt;/p&gt;
@@ -186,7 +212,7 @@
     <link href="http://www.jacpy.com/2018/07/26/eventbus-implement-analysis-2.html"/>
     <id>http://www.jacpy.com/2018/07/26/eventbus-implement-analysis-2.html</id>
     <published>2018-07-26T01:45:13.000Z</published>
-    <updated>2019-01-27T01:14:15.839Z</updated>
+    <updated>2019-01-27T01:14:16.000Z</updated>
     
     <content type="html">&lt;p&gt;&lt;a href=&quot;/2018/07/23/eventbus-implement-analysis-1.html&quot;&gt;EventBus实现分析（上）&lt;/a&gt;中介绍了&lt;code&gt;EventBus&lt;/code&gt;的&lt;code&gt;简单使用&lt;/code&gt;和&lt;code&gt;解决什么问题&lt;/code&gt;，这一节介绍EventBus的实现细节。&lt;/p&gt;
 &lt;h2 id=&quot;三、实现细节&quot;&gt;&lt;a href=&quot;#三、实现细节&quot; class=&quot;headerlink&quot; title=&quot;三、实现细节&quot;&gt;&lt;/a&gt;三、实现细节&lt;/h2&gt;&lt;p&gt;前面在介绍EventBus的使用时，也顺带着讲了一些细节。下面先从两个流程开始，一个是注册流程，另一个是发送消息并且处理的流程。&lt;/p&gt;
@@ -254,7 +280,7 @@
     <link href="http://www.jacpy.com/2018/07/23/eventbus-implement-analysis-1.html"/>
     <id>http://www.jacpy.com/2018/07/23/eventbus-implement-analysis-1.html</id>
     <published>2018-07-23T04:59:17.000Z</published>
-    <updated>2018-07-30T09:04:22.423Z</updated>
+    <updated>2018-07-30T09:04:22.000Z</updated>
     
     <content type="html">&lt;p&gt;最近看了一下&lt;code&gt;EventBus&lt;/code&gt;实现的源码，分享一下自己的心得体会。&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;EventBus&lt;/code&gt;这个库实现很简单，如官方所说一样，库体积很小。将组件之间的通信通过解耦的方式表现的淋漓尽致，废话不多说，&lt;code&gt;EventBus&lt;/code&gt;优点官网上列举了一堆，有兴趣的可以去看一下&lt;a href=&quot;http://greenrobot.org/eventbus/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;http://greenrobot.org/eventbus/&lt;/a&gt;。&lt;/p&gt;
@@ -374,7 +400,7 @@
     <link href="http://www.jacpy.com/2018/07/05/android-security-check-tool-drozer.html"/>
     <id>http://www.jacpy.com/2018/07/05/android-security-check-tool-drozer.html</id>
     <published>2018-07-05T00:52:47.000Z</published>
-    <updated>2018-07-06T05:16:03.708Z</updated>
+    <updated>2018-07-06T05:16:04.000Z</updated>
     
     <content type="html">&lt;p&gt;最近在处理公司App的安全问题，跟第三方公司人员沟通，提到有使用&lt;code&gt;drozer&lt;/code&gt;工具检测。装了下这个工具，在这里记录一些坑。&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;drozer&lt;/code&gt;是一个python编写的开源工具，在&lt;code&gt;github&lt;/code&gt;上面有源码，地址：&lt;a href=&quot;https://github.com/mwrlabs/drozer&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://github.com/mwrlabs/drozer&lt;/a&gt;。其功能很强大，可以检测App中的四大组件的导出情况、Intent拒绝服务、SQL注入风险以及可以自定义Module等。尤其是自定义Module功能，自己按格式编写一个Module功能，就可以获取终端设备及App的信息。&lt;/p&gt;
@@ -439,7 +465,7 @@
     <link href="http://www.jacpy.com/2018/05/18/okhttp-too-many-follow-up-requests-21.html"/>
     <id>http://www.jacpy.com/2018/05/18/okhttp-too-many-follow-up-requests-21.html</id>
     <published>2018-05-18T05:12:17.000Z</published>
-    <updated>2018-05-19T00:38:08.601Z</updated>
+    <updated>2018-05-19T00:38:08.000Z</updated>
     
     <content type="html">&lt;p&gt;博客好长时间没有更新了，因为年底和年初，你懂的，希望以后进入轨。&lt;/p&gt;
 &lt;p&gt;前几天在开发过程中遇到这样一个HTTP请求错误：&lt;/p&gt;
@@ -479,7 +505,7 @@
     <link href="http://www.jacpy.com/2018/02/28/android-camera-out-of-memory-solution.html"/>
     <id>http://www.jacpy.com/2018/02/28/android-camera-out-of-memory-solution.html</id>
     <published>2018-02-28T00:39:15.000Z</published>
-    <updated>2018-05-18T09:55:13.824Z</updated>
+    <updated>2018-05-18T09:55:14.000Z</updated>
     
     <content type="html">&lt;p&gt;博客好长时间没有更新了，由于前段时间疯狂赶项目，有些问题没有来得及时整理，后面慢慢总结一下。&lt;/p&gt;
 &lt;p&gt;前段时间在优化相机扫描二维码时，遇到了一个内存溢出问题，内存被用完了，日志中出现&lt;code&gt;E/dalvikvm-heap: Out of memory on a 2366828-byte allocation&lt;/code&gt;错误提示，App也没有崩溃，只是相机不再输出拍摄到的内容。使用&lt;code&gt;Zxing&lt;/code&gt;做过二维码扫描的同学都知道，被扫描到的内容会不停的被处理，并识别出二维码内容，如果有。而此时内存被用完了的现象是：相应的回调处理识别二维码内容的方法没有被调用。于是展开了排查。&lt;/p&gt;
@@ -516,7 +542,7 @@
     <link href="http://www.jacpy.com/2017/11/11/boost-compile-and-clion-config.html"/>
     <id>http://www.jacpy.com/2017/11/11/boost-compile-and-clion-config.html</id>
     <published>2017-11-11T14:54:44.000Z</published>
-    <updated>2017-11-21T05:26:05.738Z</updated>
+    <updated>2017-11-21T05:26:06.000Z</updated>
     
     <content type="html">&lt;p&gt;前几天编译&lt;code&gt;boost&lt;/code&gt;库&lt;code&gt;1.65.1&lt;/code&gt;版本，遇到一些问题，主要是与环境和版本有关系，如果不知道这些细节，很难找出问题。这里记录一下。&lt;/p&gt;
 &lt;h2 id=&quot;一、boost库编译&quot;&gt;&lt;a href=&quot;#一、boost库编译&quot; class=&quot;headerlink&quot; title=&quot;一、boost库编译&quot;&gt;&lt;/a&gt;一、boost库编译&lt;/h2&gt;&lt;p&gt;在windows下编译&lt;code&gt;boost&lt;/code&gt;库可以参照这里：&lt;a href=&quot;https://gist.github.com/sim642/29caef3cc8afaa273ce6&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://gist.github.com/sim642/29caef3cc8afaa273ce6&lt;/a&gt; ，整个过程配置都可以按照上面来，但是要注意下最新版本的&lt;code&gt;MinGW&lt;/code&gt;，同时还要注意是64位的还是32位的。&lt;/p&gt;
@@ -602,7 +628,7 @@
     <link href="http://www.jacpy.com/2017/10/26/golang-difference-between-append-and-copy-function.html"/>
     <id>http://www.jacpy.com/2017/10/26/golang-difference-between-append-and-copy-function.html</id>
     <published>2017-10-26T04:50:00.000Z</published>
-    <updated>2017-10-26T15:39:31.000Z</updated>
+    <updated>2017-10-26T15:39:32.000Z</updated>
     
     <content type="html">&lt;p&gt;前几天使用&lt;code&gt;golang&lt;/code&gt;时，遇到一个很奇怪的问题，原因是对&lt;code&gt;golang&lt;/code&gt;不熟悉，所以记录一下。&lt;/p&gt;
 &lt;p&gt;在使用&lt;code&gt;append()&lt;/code&gt;函数给&lt;code&gt;slice&lt;/code&gt;中添加元素时，&lt;code&gt;slice&lt;/code&gt;的初始大小可以为0，也就是&lt;code&gt;len&lt;/code&gt;可以为0。每次向&lt;code&gt;slice&lt;/code&gt;中&lt;code&gt;append&lt;/code&gt;的时候，如果容量&lt;code&gt;cap&lt;/code&gt;不够，会自动对&lt;code&gt;slice&lt;/code&gt;进行扩容，也就是改变&lt;code&gt;slice&lt;/code&gt;的&lt;code&gt;cap&lt;/code&gt;的大小。&lt;/p&gt;
@@ -680,7 +706,7 @@
     <link href="http://www.jacpy.com/2017/09/28/fresco-used-httpurlconnection-support-https-image-loader.html"/>
     <id>http://www.jacpy.com/2017/09/28/fresco-used-httpurlconnection-support-https-image-loader.html</id>
     <published>2017-09-28T07:09:41.000Z</published>
-    <updated>2017-09-30T16:38:03.000Z</updated>
+    <updated>2017-09-30T16:38:04.000Z</updated>
     
     <content type="html">&lt;p&gt;前几天使用&lt;code&gt;Fresco&lt;/code&gt;加载图片时遇到图片加载不出来的问题，然后调试了一下，发现出现如下错误：&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;javax.net.ssl.SSLException: Connection closed by peer&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -721,7 +747,7 @@
     <link href="http://www.jacpy.com/2017/09/22/config-4-sublime-markdownedit.html"/>
     <id>http://www.jacpy.com/2017/09/22/config-4-sublime-markdownedit.html</id>
     <published>2017-09-22T11:12:12.000Z</published>
-    <updated>2017-09-22T12:13:31.000Z</updated>
+    <updated>2017-09-22T12:13:32.000Z</updated>
     
     <content type="html">&lt;p&gt;前几天&lt;code&gt;sublime&lt;/code&gt;发布正式版本，mac下面一直没有发现跟windows下的&lt;code&gt;notepad++&lt;/code&gt;相媲美的工具，于是装了下&lt;code&gt;sublime&lt;/code&gt;玩玩，也试了下&lt;code&gt;markdown&lt;/code&gt;插件，结果发现太坑爹了，于是走上了不归路。&lt;/p&gt;
 &lt;p&gt;装完&lt;code&gt;markdown&lt;/code&gt;插件后，打开&lt;code&gt;md&lt;/code&gt;文件，发现界面很丑，MD风格都被吓跑了。如下图所示：&lt;/p&gt;
@@ -824,7 +850,7 @@
     <link href="http://www.jacpy.com/2017/09/07/gradle-failed-to-create-md5-hash-for-file.html"/>
     <id>http://www.jacpy.com/2017/09/07/gradle-failed-to-create-md5-hash-for-file.html</id>
     <published>2017-09-07T05:03:59.000Z</published>
-    <updated>2017-09-07T06:29:17.000Z</updated>
+    <updated>2017-09-07T06:29:18.000Z</updated>
     
     <content type="html">&lt;p&gt;前几天在使用gradle编译项目插件，突然遇到这个错误：&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;FAILURE: Build failed with an exception.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;* What went wrong:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Execution failed for task &amp;apos;:compileReleaseJavaWithJavac&amp;apos;.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt; Failed to create MD5 hash for file &amp;apos;E:\workspace\as\app\libs\xxx.jar&amp;apos;.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;* Try:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;BUILD FAILED&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -844,44 +870,6 @@
     
     
       <category term="failed to create MD5 hash for file" scheme="http://www.jacpy.com/tags/failed-to-create-MD5-hash-for-file/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>android听云升级后编译报错</title>
-    <link href="http://www.jacpy.com/2017/08/03/network-bench-update-compile-error-md.html"/>
-    <id>http://www.jacpy.com/2017/08/03/network-bench-update-compile-error-md.html</id>
-    <published>2017-08-03T01:00:09.000Z</published>
-    <updated>2017-08-07T05:16:41.000Z</updated>
-    
-    <content type="html">&lt;h2 id=&quot;升级遇到的问题&quot;&gt;&lt;a href=&quot;#升级遇到的问题&quot; class=&quot;headerlink&quot; title=&quot;升级遇到的问题&quot;&gt;&lt;/a&gt;升级遇到的问题&lt;/h2&gt;&lt;p&gt;项目中由于需要，集成了听云的SDK，最近把听云的SDK版本从&lt;code&gt;2.4.4&lt;/code&gt;升级到&lt;code&gt;2.5.7&lt;/code&gt;，重新运行时，在编译过程中报了如下错误：&lt;/p&gt;
-&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;50&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;51&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;52&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;53&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;54&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;55&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;56&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;57&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;58&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;59&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;60&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;61&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;62&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;63&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;64&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;65&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;66&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;67&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;68&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;69&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;[NBSAgent.error] Error:com.networkbench.agent.compile.a: NetworkBench NewLens Android Agent Error: Your agent and class rewriter versions do not match: agent = 2.4.4 class rewriter = 2.5.7.  You probably need to update one of these components.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;java.lang.RuntimeException: com.networkbench.agent.compile.a: NetworkBench NewLens Android Agent Error: Your agent and class rewriter versions do not match: agent = 2.4.4 class rewriter = 2.5.7.  You probably need to update one of these components.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    at com.networkbench.agent.compile.NBSStubPreMain$e.a(SourceFile:517)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    at com.networkbench.agent.compile.NBSStubPreMain$e.a(SourceFile:296)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    at com.networkbench.agent.compile.NBSStubPreMain$e$1$1.invoke(SourceFile:328)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    at com.networkbench.agent.compile.NBSStubPreMain$e.invoke(SourceFile:425)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    at com.android.dx.command.dexer.Main.processClass(Main.java)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    at com.android.dx.command.dexer.Main.processFileBytes(Main.java:723)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    at com.android.dx.command.dexer.Main.access$1200(Main.java:85)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    at com.android.dx.command.dexer.Main$FileBytesConsumer.processFileBytes(Main.java:1653)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    at com.android.dx.cf.direct.ClassPathOpener.processArchive(ClassPathOpener.java:284)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    at com.android.dx.cf.direct.ClassPathOpener.processOne(ClassPathOpener.java:166)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    at com.android.dx.cf.direct.ClassPathOpener.process(ClassPathOpener.java:144)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    at com.android.dx.command.dexer.Main.processOne(Main.java:677)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    at com.android.dx.command.dexer.Main.processAllFiles(Main.java:569)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    at com.android.dx.command.dexer.Main.runMultiDex(Main.java:366)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    at com.android.dx.command.dexer.Main.run(Main.java:275)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    at com.android.dx.command.dexer.Main.main(Main.java:245)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    at com.android.dx.command.Main.main(Main.java:106)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Caused by: com.networkbench.agent.compile.a: NetworkBench NewLens Android Agent Error: Your agent and class rewriter versions do not match: agent = 2.4.4 class rewriter = 2.5.7.  You probably need to update one of these components.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    at com.networkbench.agent.compile.a.e.a(SourceFile:91)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    at com.networkbench.agent.compile.a.h.a(SourceFile:43)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    at com.networkbench.agent.compile.b.f.a(SourceFile:644)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    at com.networkbench.agent.compile.b.f.a(SourceFile:439)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    at com.networkbench.agent.compile.NBSStubPreMain$e.a(SourceFile:479)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    ... 16 more&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Dex: Error converting bytecode to dex:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Cause: java.lang.RuntimeException: Exception parsing classes&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    UNEXPECTED TOP-LEVEL EXCEPTION:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    java.lang.RuntimeException: Exception parsing classes&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at com.android.dx.command.dexer.Main.processClass(Main.java:760)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at com.android.dx.command.dexer.Main.processFileBytes(Main.java:723)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at com.android.dx.command.dexer.Main.access$1200(Main.java:85)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at com.android.dx.command.dexer.Main$FileBytesConsumer.processFileBytes(Main.java:1653)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at com.android.dx.cf.direct.ClassPathOpener.processArchive(ClassPathOpener.java:284)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at com.android.dx.cf.direct.ClassPathOpener.processOne(ClassPathOpener.java:166)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at com.android.dx.cf.direct.ClassPathOpener.process(ClassPathOpener.java:144)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at com.android.dx.command.dexer.Main.processOne(Main.java:677)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at com.android.dx.command.dexer.Main.processAllFiles(Main.java:569)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at com.android.dx.command.dexer.Main.runMultiDex(Main.java:366)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at com.android.dx.command.dexer.Main.run(Main.java:275)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at com.android.dx.command.dexer.Main.main(Main.java:245)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at com.android.dx.command.Main.main(Main.java:106)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Caused by: java.lang.NullPointerException&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at com.android.dx.util.ByteArray.&amp;lt;init&amp;gt;(ByteArray.java:76)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at com.android.dx.cf.direct.DirectClassFile.&amp;lt;init&amp;gt;(DirectClassFile.java:206)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at com.android.dx.command.dexer.Main.parseClass(Main.java:769)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at com.android.dx.command.dexer.Main.access$1500(Main.java:85)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at com.android.dx.command.dexer.Main$ClassParserTask.call(Main.java:1700)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at com.android.dx.command.dexer.Main.processClass(Main.java:755)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        ... 12 more&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;1 error; aborting&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;:app:transformClassesWithDexForDebug FAILED&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;:app:networkBenchNewLensDeinstrumentTask&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;[NBSAgent.debug] NetworkBench begin&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;FAILURE: Build failed with an exception.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;* What went wrong:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Execution failed for task &amp;apos;:app:transformClassesWithDexForDebug&amp;apos;.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt; com.android.build.api.transform.TransformException: com.android.ide.common.process.ProcessException: java.util.concurrent.ExecutionException: com.android.ide.common.process.ProcessException: Error while executing java process with main class com.android.dx.command.Main with arguments &amp;#123;--dex --num-threads=4 --multi-dex --main-dex-list /data/jenkins/workspace/app/build/intermediates/multi-dex/debug/maindexlist.txt --output /data/jenkins/workspace/app/build/intermediates/transforms/dex/debug/folders/1000/1f/main /data/jenkins/workspace/app/build/intermediates/transforms/jarMerging/debug/jars/1/1f/combined.jar&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;* Try:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;BUILD FAILED&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;h2 id=&quot;解决问题&quot;&gt;&lt;a href=&quot;#解决问题&quot; class=&quot;headerlink&quot; title=&quot;解决问题&quot;&gt;&lt;/a&gt;解决问题&lt;/h2&gt;&lt;p&gt;遇到了上面的编译错误问题，先google了一下，没有人提出了这样的错误，也没有解决方案，而且从搜索的结果来看，用的人也不多。这问题只能是自己解决了，从上面的错误提示来看，这个错误是听云中抛出来的。也就是听云干预了编译过程。从这个&lt;code&gt;NetworkBench NewLens Android Agent Error: Your agent and class rewriter versions do not match: agent = 2.4.4 class rewriter = 2.5.7.  You probably need to update one of these components.&lt;/code&gt;错误提示上来看，说是版本没有对应起来。的确，听云在&lt;code&gt;project&lt;/code&gt;下面的&lt;code&gt;build.gradle&lt;/code&gt;中的&lt;code&gt;dependencies&lt;/code&gt;块中的&lt;code&gt;classpath&lt;/code&gt;中和&lt;code&gt;module&lt;/code&gt;下面的&lt;code&gt;build.gradle&lt;/code&gt;中的&lt;code&gt;dependencies&lt;/code&gt;块中的&lt;code&gt;compile&lt;/code&gt;两个地方都要指定一个版本SDK。一个是用来干预编译过程，植入代码；一个则是要植入的代码。&lt;/p&gt;
-&lt;p&gt;引入方式如下代码所示：&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;project&lt;/code&gt;目录下面的&lt;code&gt;build.gradle&lt;/code&gt;：&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;dependencies &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    classpath &amp;apos;com.networkbench.newlens.agent.android:agent-gradle-plugin:2.5.7&amp;apos;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;&lt;code&gt;app&lt;/code&gt;目录下面的&lt;code&gt;build.gradle&lt;/code&gt;：&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;dependencies &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;   	compile &amp;apos;com.networkbench.newlens.agent.android:nbs.newlens.agent:2.5.7&amp;apos;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;那为什么会有上面有错误？按道理说两者都具备就可以了，猜是听云的版本兼容性问题，也就是&lt;code&gt;2.5.7&lt;/code&gt;不兼容&lt;code&gt;2.4.4&lt;/code&gt;版本。也就是上面说的&lt;code&gt;classpath&lt;/code&gt;与&lt;code&gt;compile&lt;/code&gt;版本要一一对应，版本号必须保持一致。但修改时的版本号是保持一致的呀？问题出在哪儿？缓存问题？&lt;/p&gt;
-&lt;p&gt;于是先&lt;code&gt;clean&lt;/code&gt;，然后再重新&lt;code&gt;build了&lt;/code&gt;一下，再运行时，发现问题依旧。没折了，我把版本号改回去&lt;code&gt;2.4.4&lt;/code&gt;总行吧？结果还是编译报错，无语了，试了几次，还是这样，现在感觉到自己进入到进退两难的地步了。最后重新启动&lt;code&gt;AS&lt;/code&gt;，再重新运行了，问题解决了，编译时不报错了，真是太惊喜，太意外了。&lt;/p&gt;
-&lt;p&gt;OK，本地问题解决了，服务器的自动构建上又出现问题。按照解决本地问题的思路，不可能重启服务器吧？仔细一想，还是缓存问题？问了运维，说每次构建都会自动清除&lt;code&gt;build&lt;/code&gt;目录中的内容。但心想，与&lt;code&gt;build&lt;/code&gt;目录的内容无关，自己解决问题时都删了好几次，问题依旧没有解决。突然想起平时经常被&lt;code&gt;kill&lt;/code&gt;的&lt;code&gt;java.exe&lt;/code&gt;进程，这个进程里面会缓存一些东西，编译时经常会看到&lt;code&gt;Starting a Gradle Daemon&lt;/code&gt;这样的提示，&lt;code&gt;AS&lt;/code&gt;要提高编译速度，肯定会在这个进程里面缓存一些东西，不然这个&lt;code&gt;java.exe&lt;/code&gt;进程内存占用会有几百M甚至超过1个G？&lt;/p&gt;
-&lt;p&gt;跑去跟运维说，你把这个&lt;code&gt;java&lt;/code&gt;进程先&lt;code&gt;kill&lt;/code&gt;，然后再重新构建。果然，&lt;code&gt;kill&lt;/code&gt;进程之后再重新自动构建就OK了。后来想了一下，自己本地重启&lt;code&gt;AS&lt;/code&gt;也是重新启动这个&lt;code&gt;java&lt;/code&gt;进程。&lt;/p&gt;
-&lt;h2 id=&quot;为什么要用听云&quot;&gt;&lt;a href=&quot;#为什么要用听云&quot; class=&quot;headerlink&quot; title=&quot;为什么要用听云&quot;&gt;&lt;/a&gt;为什么要用听云&lt;/h2&gt;&lt;p&gt;听云是收费的，但也有免费的版本，免费的版本最多只能看三天的数据。我看重听云的最大一个好处是可以监控网络情况，比如说哪些接口失败率比较高、请求耗时等，这样可以做一些优化。&lt;/p&gt;
-&lt;p&gt;但听云有一个不好的地方是，对代码进行侵入，有时候在报错的堆栈中看到了听云的堆栈信息。如果项目结构设计不好，用的第三方库太多，估计听云的代码会插入的到处都是，这里没有整理出数据来。&lt;/p&gt;
-&lt;p&gt;另外听去的另外一个ANR日志收集的功能没有做好，把&lt;code&gt;traces.txt&lt;/code&gt;日志文件中的有用的信息基本都过虑掉了，只留下一些堆栈信息。&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;升级遇到的问题&quot;&gt;&lt;a href=&quot;#升级遇到的问题&quot; class=&quot;headerlink&quot; title=&quot;升级遇到的问题&quot;&gt;&lt;/a&gt;升级遇到的问题&lt;/h2&gt;&lt;p&gt;项目中由于需要，集成了听云的SDK，最近把听云的SDK版本从&lt;code&gt;2.4.4&lt;/code&gt;升级到&lt;code&gt;2.5.7&lt;/code&gt;，重新运行时，在编译过程中报了如下错误：&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="android" scheme="http://www.jacpy.com/categories/android/"/>
-    
-    
-      <category term="听云" scheme="http://www.jacpy.com/tags/%E5%90%AC%E4%BA%91/"/>
     
   </entry>
   

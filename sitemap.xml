@@ -2,86 +2,93 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.jacpy.com/2020/06/13/compile-opencv-4-3-0-gcc-error-long-No-such-file-or-directory.html</loc>
+    
+    <lastmod>2020-06-13T14:22:47.026Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.jacpy.com/2017/02/28/android-gradle-config-summary.html</loc>
     
-    <lastmod>2020-06-10T01:03:01.167Z</lastmod>
+    <lastmod>2020-06-10T01:03:02.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://www.jacpy.com/2019/11/07/nodejs-file-data-stream-has-unexpected-number-of-bytes.html</loc>
     
-    <lastmod>2019-11-13T12:35:41.465Z</lastmod>
+    <lastmod>2019-11-13T12:35:42.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://www.jacpy.com/2019/09/26/z-data-error-invalid-code-lengths-set.html</loc>
     
-    <lastmod>2019-09-27T13:29:29.173Z</lastmod>
+    <lastmod>2019-09-27T13:29:30.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://www.jacpy.com/2019/09/19/cannot-install-apk-in-android-17-width-jarsigner.html</loc>
     
-    <lastmod>2019-09-20T00:49:12.307Z</lastmod>
+    <lastmod>2019-09-20T00:49:12.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://www.jacpy.com/2019/09/18/golang-exec-command-tools.html</loc>
     
-    <lastmod>2019-09-18T05:26:30.530Z</lastmod>
+    <lastmod>2019-09-18T05:26:30.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://www.jacpy.com/2019/09/16/jquery-cors.html</loc>
     
-    <lastmod>2019-09-16T09:40:02.221Z</lastmod>
+    <lastmod>2019-09-16T09:40:02.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://www.jacpy.com/2018/07/26/eventbus-implement-analysis-2.html</loc>
     
-    <lastmod>2019-01-27T01:14:15.839Z</lastmod>
+    <lastmod>2019-01-27T01:14:16.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://www.jacpy.com/2018/07/23/eventbus-implement-analysis-1.html</loc>
     
-    <lastmod>2018-07-30T09:04:22.423Z</lastmod>
+    <lastmod>2018-07-30T09:04:22.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://www.jacpy.com/2018/07/05/android-security-check-tool-drozer.html</loc>
     
-    <lastmod>2018-07-06T05:16:03.708Z</lastmod>
+    <lastmod>2018-07-06T05:16:04.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://www.jacpy.com/2018/05/18/okhttp-too-many-follow-up-requests-21.html</loc>
     
-    <lastmod>2018-05-19T00:38:08.601Z</lastmod>
+    <lastmod>2018-05-19T00:38:08.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://www.jacpy.com/2018/02/28/android-camera-out-of-memory-solution.html</loc>
     
-    <lastmod>2018-05-18T09:55:13.824Z</lastmod>
+    <lastmod>2018-05-18T09:55:14.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://www.jacpy.com/2017/11/11/boost-compile-and-clion-config.html</loc>
     
-    <lastmod>2017-11-21T05:26:05.738Z</lastmod>
+    <lastmod>2017-11-21T05:26:06.000Z</lastmod>
     
   </url>
   
@@ -95,7 +102,7 @@
   <url>
     <loc>http://www.jacpy.com/2017/10/26/golang-difference-between-append-and-copy-function.html</loc>
     
-    <lastmod>2017-10-26T15:39:31.000Z</lastmod>
+    <lastmod>2017-10-26T15:39:32.000Z</lastmod>
     
   </url>
   
@@ -109,7 +116,7 @@
   <url>
     <loc>http://www.jacpy.com/2017/09/28/fresco-used-httpurlconnection-support-https-image-loader.html</loc>
     
-    <lastmod>2017-09-30T16:38:03.000Z</lastmod>
+    <lastmod>2017-09-30T16:38:04.000Z</lastmod>
     
   </url>
   
@@ -123,14 +130,14 @@
   <url>
     <loc>http://www.jacpy.com/2017/09/22/config-4-sublime-markdownedit.html</loc>
     
-    <lastmod>2017-09-22T12:13:31.000Z</lastmod>
+    <lastmod>2017-09-22T12:13:32.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://www.jacpy.com/2017/09/07/gradle-failed-to-create-md5-hash-for-file.html</loc>
     
-    <lastmod>2017-09-07T06:29:17.000Z</lastmod>
+    <lastmod>2017-09-07T06:29:18.000Z</lastmod>
     
   </url>
   
@@ -144,28 +151,28 @@
   <url>
     <loc>http://www.jacpy.com/2017/04/24/android-anr-thread-lock-analysis.html</loc>
     
-    <lastmod>2017-08-08T05:29:03.000Z</lastmod>
+    <lastmod>2017-08-08T05:29:04.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://www.jacpy.com/2017/08/03/sqlite-cant-open-database-exception-unknow-error-code-14-md.html</loc>
     
-    <lastmod>2017-08-07T07:44:03.000Z</lastmod>
+    <lastmod>2017-08-07T07:44:04.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://www.jacpy.com/2017/08/03/network-bench-update-compile-error-md.html</loc>
     
-    <lastmod>2017-08-07T05:16:41.000Z</lastmod>
+    <lastmod>2017-08-07T05:16:42.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://www.jacpy.com/2017/05/02/android-fresco-init.html</loc>
     
-    <lastmod>2017-08-02T05:21:45.000Z</lastmod>
+    <lastmod>2017-08-02T05:21:46.000Z</lastmod>
     
   </url>
   
@@ -186,7 +193,7 @@
   <url>
     <loc>http://www.jacpy.com/2017/01/20/huawei-push-summary.html</loc>
     
-    <lastmod>2017-03-05T14:02:43.000Z</lastmod>
+    <lastmod>2017-03-05T14:02:44.000Z</lastmod>
     
   </url>
   
@@ -207,14 +214,14 @@
   <url>
     <loc>http://www.jacpy.com/2016/12/28/android-notification-launch-activity.html</loc>
     
-    <lastmod>2017-01-19T09:36:41.000Z</lastmod>
+    <lastmod>2017-01-19T09:36:42.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://www.jacpy.com/2017/01/19/huawei-hms-push-timepicker-inflate-error.html</loc>
     
-    <lastmod>2017-01-19T09:34:59.000Z</lastmod>
+    <lastmod>2017-01-19T09:35:00.000Z</lastmod>
     
   </url>
   
@@ -228,7 +235,7 @@
   <url>
     <loc>http://www.jacpy.com/2016/12/13/android-view-create-detail.html</loc>
     
-    <lastmod>2016-12-17T11:12:01.000Z</lastmod>
+    <lastmod>2016-12-17T11:12:02.000Z</lastmod>
     
   </url>
   
@@ -242,14 +249,14 @@
   <url>
     <loc>http://www.jacpy.com/2016/09/17/share-bus-line-custom-view.html</loc>
     
-    <lastmod>2016-09-17T05:18:07.000Z</lastmod>
+    <lastmod>2016-09-17T05:18:08.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://www.jacpy.com/2016/09/06/react-native-ios-integrated.html</loc>
     
-    <lastmod>2016-09-06T08:57:47.000Z</lastmod>
+    <lastmod>2016-09-06T08:57:48.000Z</lastmod>
     
   </url>
   
@@ -263,14 +270,14 @@
   <url>
     <loc>http://www.jacpy.com/2016/05/10/android-app-develop-familiar-trap.html</loc>
     
-    <lastmod>2016-07-15T06:44:15.000Z</lastmod>
+    <lastmod>2016-07-15T06:44:16.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://www.jacpy.com/2016/06/27/chrome_open_android_app.html</loc>
     
-    <lastmod>2016-06-27T05:05:31.000Z</lastmod>
+    <lastmod>2016-06-27T05:05:32.000Z</lastmod>
     
   </url>
   
@@ -312,7 +319,7 @@
   <url>
     <loc>http://www.jacpy.com/2015/06/24/android-sqlite-performance-optimization-used-transaction-and-sql-compile.html</loc>
     
-    <lastmod>2016-03-12T08:06:51.000Z</lastmod>
+    <lastmod>2016-03-12T08:06:52.000Z</lastmod>
     
   </url>
   
