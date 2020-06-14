@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jacpy.com/"/>
-  <updated>2020-06-13T14:22:47.026Z</updated>
+  <updated>2020-06-14T05:08:26.540Z</updated>
   <id>http://www.jacpy.com/</id>
   
   <author>
@@ -14,6 +14,45 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>博客换机迁移问题记录</title>
+    <link href="http://www.jacpy.com/2020/06/14/hexo-blog-move-machine-note.html"/>
+    <id>http://www.jacpy.com/2020/06/14/hexo-blog-move-machine-note.html</id>
+    <published>2020-06-14T03:44:49.000Z</published>
+    <updated>2020-06-14T05:08:26.540Z</updated>
+    
+    <content type="html">&lt;p&gt;最近换机了，把用了五年的mac换成了windows笔记本，终于结束了mac的历史使命。在迁移博客文章时，遇到以下几个问题：&lt;/p&gt;
+&lt;h3 id=&quot;一、’hexo’-不是内部或外部命令，也不是可运行的程序或批处理文件&quot;&gt;&lt;a href=&quot;#一、’hexo’-不是内部或外部命令，也不是可运行的程序或批处理文件&quot; class=&quot;headerlink&quot; title=&quot;一、’hexo’ 不是内部或外部命令，也不是可运行的程序或批处理文件&quot;&gt;&lt;/a&gt;一、’hexo’ 不是内部或外部命令，也不是可运行的程序或批处理文件&lt;/h3&gt;&lt;p&gt;在windows系统上执行命令时，如果命令不在系统环境的&lt;code&gt;path&lt;/code&gt;中或当前目录下，都会有这样的提示，意思是找不到当前执行的命令。那么问题来了，在博客的目录下执行&lt;code&gt;hexo&lt;/code&gt;命令时出现上述提示，怎么办？&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;出现问题的原因是修改了&lt;code&gt;C:\Program Files\nodejs\node_modules\npm\npmrc&lt;/code&gt;文件中的内容，重新指定了&lt;code&gt;node_modules&lt;/code&gt;的路径，导致安装了&lt;code&gt;hexo-cli&lt;/code&gt;后，系统环境变量中没有&lt;code&gt;hexo&lt;/code&gt;命令的路径。解决办法就是将重新指定的&lt;code&gt;node_modules&lt;/code&gt;目录的路径添加到环境变量中&lt;code&gt;path&lt;/code&gt;中。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意：&lt;/strong&gt; 修改环境变量path后要重新打开命令行窗口再试，否则不会起作用。&lt;/p&gt;
+&lt;h3 id=&quot;二、could-not-read-Username-for-‘https-github-com‘-No-such-file-or-directory&quot;&gt;&lt;a href=&quot;#二、could-not-read-Username-for-‘https-github-com‘-No-such-file-or-directory&quot; class=&quot;headerlink&quot; title=&quot;二、could not read Username for ‘https://github.com‘: No such file or directory&quot;&gt;&lt;/a&gt;二、could not read Username for ‘&lt;a href=&quot;https://github.com&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://github.com&lt;/a&gt;‘: No such file or directory&lt;/h3&gt;&lt;p&gt;出现的原因是在最后执行&lt;code&gt;hexo d&lt;/code&gt;将生成的html代码部署(即提交)到gitbub上出现异常&lt;code&gt;could not read Username for &amp;#39;https://github.com&amp;#39;: No such file or directory&lt;/code&gt;，首先不怀疑是配置出现问题，因为我是将整个博客全部复制过来，配置没有修改。其实错误提示很显示的说明了找不到github账户相关的信息。&lt;/p&gt;
+&lt;p&gt;看到错误信息就想到之前使用nodejs写了一个命令行工具时需要从内容的gitlab上面拉取代码，其中有需要输入账户密码。有的使用者刚开始不知道自己的账户密码，不知道输入了什么，导致不能正常使用工具，每次正常拉取代码时都提示失败。最后花很大力气才找到原因，跟git存储密码的方式有关，具体可以参考&lt;a href=&quot;https://git-scm.com/book/zh/v2/Git-%E5%B7%A5%E5%85%B7-%E5%87%AD%E8%AF%81%E5%AD%98%E5%82%A8&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;这里&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;最后的解决方法是：&lt;br&gt;在windows系统的控制面板中找到&lt;code&gt;凭据管理器&lt;/code&gt;，点击打开页面，再点击右侧的&lt;code&gt;windows凭据&lt;/code&gt;，如下图1所示的位置：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2020/06/windows_gitconfig.jpg&quot; alt=&quot;windows凭据&quot;&gt;&lt;/p&gt;
+&lt;p&gt;如果没有对应地址的git信息，则点击2位置的添加&lt;code&gt;添加普通凭证&lt;/code&gt;，在打开的页面中添加地址，如果是github，则添加如图3位置的信息：&lt;code&gt;git:https://github.com&lt;/code&gt;，然后输入账号密码。如果密码发生修改可以点击4位置进行&lt;code&gt;编辑&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;另外使用&lt;code&gt;android studio&lt;/code&gt;或&lt;code&gt;JetBrain Intellij&lt;/code&gt;的全家桶工具时，首次提交代码如果没有账户信息，则会提示输入账户密码信息，此时账户密码信息是保存到上述的位置。&lt;/p&gt;
+&lt;p&gt;参考：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/hexojs/hexo/issues/2015&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://github.com/hexojs/hexo/issues/2015&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://git-scm.com/book/zh/v2/Git-%E5%B7%A5%E5%85%B7-%E5%87%AD%E8%AF%81%E5%AD%98%E5%82%A8&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://git-scm.com/book/zh/v2/Git-%E5%B7%A5%E5%85%B7-%E5%87%AD%E8%AF%81%E5%AD%98%E5%82%A8&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近换机了，把用了五年的mac换成了windows笔记本，终于结束了mac的历史使命。在迁移博客文章时，遇到以下几个问题：&lt;/p&gt;
+&lt;h3 id=&quot;一、’hexo’-不是内部或外部命令，也不是可运行的程序或批处理文件&quot;&gt;&lt;a href=&quot;#一、’hexo’-不是内部或外部命令，也不是可运行的程序或批处理文件&quot; class=&quot;headerlink&quot; title=&quot;一、’hexo’ 不是内部或外部命令，也不是可运行的程序或批处理文件&quot;&gt;&lt;/a&gt;一、’hexo’ 不是内部或外部命令，也不是可运行的程序或批处理文件&lt;/h3&gt;&lt;p&gt;在windows系统上执行命令时，如果命令不在系统环境的&lt;code&gt;path&lt;/code&gt;中或当前目录下，都会有这样的提示，意思是找不到当前执行的命令。那么问题来了，在博客的目录下执行&lt;code&gt;hexo&lt;/code&gt;命令时出现上述提示，怎么办？&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="hexo" scheme="http://www.jacpy.com/categories/hexo/"/>
+    
+    
+      <category term="hexo" scheme="http://www.jacpy.com/tags/hexo/"/>
+    
+  </entry>
   
   <entry>
     <title>compile opencv 4.3.0 gcc: error: long: No such file or directory</title>
@@ -842,34 +881,6 @@
     
     
       <category term="install apk INSTALL_FAILED_UID_CHANGED" scheme="http://www.jacpy.com/tags/install-apk-INSTALL-FAILED-UID-CHANGED/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>gradle failed to create MD5 hash for file</title>
-    <link href="http://www.jacpy.com/2017/09/07/gradle-failed-to-create-md5-hash-for-file.html"/>
-    <id>http://www.jacpy.com/2017/09/07/gradle-failed-to-create-md5-hash-for-file.html</id>
-    <published>2017-09-07T05:03:59.000Z</published>
-    <updated>2017-09-07T06:29:18.000Z</updated>
-    
-    <content type="html">&lt;p&gt;前几天在使用gradle编译项目插件，突然遇到这个错误：&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;FAILURE: Build failed with an exception.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;* What went wrong:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Execution failed for task &amp;apos;:compileReleaseJavaWithJavac&amp;apos;.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt; Failed to create MD5 hash for file &amp;apos;E:\workspace\as\app\libs\xxx.jar&amp;apos;.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;* Try:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;BUILD FAILED&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;p&gt;然后在对应目录找了下这个文件，发现没有这个&lt;code&gt;jar&lt;/code&gt;文件。于是去&lt;code&gt;build.gradle&lt;/code&gt;文件中的&lt;code&gt;depenencies&lt;/code&gt;下面找到了这个&lt;code&gt;provided files&lt;/code&gt;依赖，然后把这个&lt;code&gt;provided files&lt;/code&gt;行删除，然后重新编译就OK了。&lt;/p&gt;
-&lt;p&gt;发现使用&lt;code&gt;compile files&lt;/code&gt;和&lt;code&gt;provided files&lt;/code&gt;引用文件时，如果引用的文件不存，都会报这个错误。删除就好了。&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;前几天在使用gradle编译项目插件，突然遇到这个错误：&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;FAILURE: Build failed with an exception.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;* What went wrong:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Execution failed for task &amp;apos;:compileReleaseJavaWithJavac&amp;apos;.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt; Failed to create MD5 hash for file &amp;apos;E:\workspace\as\app\libs\xxx.jar&amp;apos;.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;* Try:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;BUILD FAILED&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-      <category term="gradle" scheme="http://www.jacpy.com/categories/gradle/"/>
-    
-    
-      <category term="failed to create MD5 hash for file" scheme="http://www.jacpy.com/tags/failed-to-create-MD5-hash-for-file/"/>
     
   </entry>
   

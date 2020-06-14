@@ -4,25 +4,27 @@
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
   
-    <title>NDK使用zlib mini压缩报错：Zip: EOCD not found, dex is not zip | jacpy&#39;s blog</title>
+    <title>博客换机迁移问题记录 | jacpy&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="jacpy">
     
 
     
-    <meta name="description" content="最近在对Dex文件在内存中解密后压缩成zip文件写到本地供DVM加载时出现了Zip: EOCD not found, *.dex is not zip异常，折腾了好几个小时，终于解决了。">
-<meta name="keywords" content="EOCD,zlib压缩">
+    <meta name="description" content="最近换机了，把用了五年的mac换成了windows笔记本，终于结束了mac的历史使命。在迁移博客文章时，遇到以下几个问题： 一、’hexo’ 不是内部或外部命令，也不是可运行的程序或批处理文件在windows系统上执行命令时，如果命令不在系统环境的path中或当前目录下，都会有这样的提示，意思是找不到当前执行的命令。那么问题来了，在博客的目录下执行hexo命令时出现上述提示，怎么办？">
+<meta name="keywords" content="hexo">
 <meta property="og:type" content="article">
-<meta property="og:title" content="NDK使用zlib mini压缩报错：Zip: EOCD not found, dex is not zip">
-<meta property="og:url" content="http://www.jacpy.com/2015/05/26/ndk-used-zlib-mini-compress-occur-zip-eocd-not-found-dex-is-not-zip.html">
+<meta property="og:title" content="博客换机迁移问题记录">
+<meta property="og:url" content="http://www.jacpy.com/2020/06/14/hexo-blog-move-machine-note.html">
 <meta property="og:site_name" content="jacpy&#39;s blog">
-<meta property="og:description" content="最近在对Dex文件在内存中解密后压缩成zip文件写到本地供DVM加载时出现了Zip: EOCD not found, *.dex is not zip异常，折腾了好几个小时，终于解决了。">
+<meta property="og:description" content="最近换机了，把用了五年的mac换成了windows笔记本，终于结束了mac的历史使命。在迁移博客文章时，遇到以下几个问题： 一、’hexo’ 不是内部或外部命令，也不是可运行的程序或批处理文件在windows系统上执行命令时，如果命令不在系统环境的path中或当前目录下，都会有这样的提示，意思是找不到当前执行的命令。那么问题来了，在博客的目录下执行hexo命令时出现上述提示，怎么办？">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2015-10-30T15:43:32.000Z">
+<meta property="og:image" content="http://www.jacpy.com/images/2020/06/windows_gitconfig.jpg">
+<meta property="og:updated_time" content="2020-06-14T05:08:26.540Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="NDK使用zlib mini压缩报错：Zip: EOCD not found, dex is not zip">
-<meta name="twitter:description" content="最近在对Dex文件在内存中解密后压缩成zip文件写到本地供DVM加载时出现了Zip: EOCD not found, *.dex is not zip异常，折腾了好几个小时，终于解决了。">
+<meta name="twitter:title" content="博客换机迁移问题记录">
+<meta name="twitter:description" content="最近换机了，把用了五年的mac换成了windows笔记本，终于结束了mac的历史使命。在迁移博客文章时，遇到以下几个问题： 一、’hexo’ 不是内部或外部命令，也不是可运行的程序或批处理文件在windows系统上执行命令时，如果命令不在系统环境的path中或当前目录下，都会有这样的提示，意思是找不到当前执行的命令。那么问题来了，在博客的目录下执行hexo命令时出现上述提示，怎么办？">
+<meta name="twitter:image" content="http://www.jacpy.com/images/2020/06/windows_gitconfig.jpg">
 
     
     <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
@@ -82,14 +84,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/05/26/ndk-used-zlib-mini-compress-occur-zip-eocd-not-found-dex-is-not-zip.html" title="NDK使用zlib mini压缩报错：Zip: EOCD not found, dex is not zip" itemprop="url">NDK使用zlib mini压缩报错：Zip: EOCD not found, dex is not zip</a>
+      <a href="/2020/06/14/hexo-blog-move-machine-note.html" title="博客换机迁移问题记录" itemprop="url">博客换机迁移问题记录</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
 		
   <p class="article-time">
-    <time datetime="2015-05-25T23:46:01.000Z" itemprop="datePublished"> 发表于 2015-05-26</time>
+    <time datetime="2020-06-14T03:44:49.000Z" itemprop="datePublished"> 发表于 2020-06-14</time>
     
   </p>
 </header>
@@ -101,14 +103,26 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、’hexo’-不是内部或外部命令，也不是可运行的程序或批处理文件"><span class="toc-number">1.</span> <span class="toc-text">一、’hexo’ 不是内部或外部命令，也不是可运行的程序或批处理文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、could-not-read-Username-for-‘https-github-com‘-No-such-file-or-directory"><span class="toc-number">2.</span> <span class="toc-text">二、could not read Username for ‘https://github.com‘: No such file or directory</span></a></li></ol>
 		
 		</div>
 		
-		<p>最近在对Dex文件在内存中解密后压缩成zip文件写到本地供DVM加载时出现了Zip: EOCD not found, *.dex is not zip异常，折腾了好几个小时，终于解决了。</p>
+		<p>最近换机了，把用了五年的mac换成了windows笔记本，终于结束了mac的历史使命。在迁移博客文章时，遇到以下几个问题：</p>
+<h3 id="一、’hexo’-不是内部或外部命令，也不是可运行的程序或批处理文件"><a href="#一、’hexo’-不是内部或外部命令，也不是可运行的程序或批处理文件" class="headerlink" title="一、’hexo’ 不是内部或外部命令，也不是可运行的程序或批处理文件"></a>一、’hexo’ 不是内部或外部命令，也不是可运行的程序或批处理文件</h3><p>在windows系统上执行命令时，如果命令不在系统环境的<code>path</code>中或当前目录下，都会有这样的提示，意思是找不到当前执行的命令。那么问题来了，在博客的目录下执行<code>hexo</code>命令时出现上述提示，怎么办？</p>
 <a id="more"></a>
-<p>按照DVM的错误提示找到了系统源码出错的地方，在dalvik/libdex/ZipArchive.cpp文件mapCentralDirectory0(int fd, const char* debugFileName, ZipArchive* pArchive, off_t fileLength, size_t readAmount, u1* scanBuf)函数中。在解析ZIP文件时，因为缺少 EOCD(<strong>E</strong>nd <strong>O</strong>f <strong>C</strong>entral <strong>D</strong>irectory)段的内容，即没有找到50 4b 05 06这样的魔数内容，导致entry数量和目录大小及偏移地址等重要数据不能解析，所以DVM提示解析失败，这个段内容是在ZIP文件的末尾部分，所以只需要补上去就OK。对照自己使用ZIP mini写的压缩出来的文件，发现没有EOCD段，但是使用RAR解压却没有问题，纠结了好长时间，于是乎到zlib中全局搜索EOCD关键字，在zlib/src/contrib/minizip/zip.c文件中的找到了ENDHEADERMAGIC宏定义，使用是在Write_EndOfCentralDirectoryRecord(zip64_internal* zi, uLong size_centraldir, ZPOS64_T centraldir_pos_inzip)函数中使用，被<strong>zipClose</strong> (zipFile file, const char* global_comment)函数调用。原来是自己写的压缩代码中没有调用zipClose函数，补上就OK了。</p>
-<p>在google上搜索发现很多人也出现类似的问题，很大一部分原因是apk文件被破坏，极有可能是文件在传输过程中没有传输完整，比如USB传输中断，网络传输中断导致文件 EOCD段缺失（因为这部分内容在文件的末尾）。也发现网上的有些代码中有坑，需谨慎使用，谨记。</p>
+<p>出现问题的原因是修改了<code>C:\Program Files\nodejs\node_modules\npm\npmrc</code>文件中的内容，重新指定了<code>node_modules</code>的路径，导致安装了<code>hexo-cli</code>后，系统环境变量中没有<code>hexo</code>命令的路径。解决办法就是将重新指定的<code>node_modules</code>目录的路径添加到环境变量中<code>path</code>中。</p>
+<p><strong>注意：</strong> 修改环境变量path后要重新打开命令行窗口再试，否则不会起作用。</p>
+<h3 id="二、could-not-read-Username-for-‘https-github-com‘-No-such-file-or-directory"><a href="#二、could-not-read-Username-for-‘https-github-com‘-No-such-file-or-directory" class="headerlink" title="二、could not read Username for ‘https://github.com‘: No such file or directory"></a>二、could not read Username for ‘<a href="https://github.com" target="_blank" rel="noopener">https://github.com</a>‘: No such file or directory</h3><p>出现的原因是在最后执行<code>hexo d</code>将生成的html代码部署(即提交)到gitbub上出现异常<code>could not read Username for &#39;https://github.com&#39;: No such file or directory</code>，首先不怀疑是配置出现问题，因为我是将整个博客全部复制过来，配置没有修改。其实错误提示很显示的说明了找不到github账户相关的信息。</p>
+<p>看到错误信息就想到之前使用nodejs写了一个命令行工具时需要从内容的gitlab上面拉取代码，其中有需要输入账户密码。有的使用者刚开始不知道自己的账户密码，不知道输入了什么，导致不能正常使用工具，每次正常拉取代码时都提示失败。最后花很大力气才找到原因，跟git存储密码的方式有关，具体可以参考<a href="https://git-scm.com/book/zh/v2/Git-%E5%B7%A5%E5%85%B7-%E5%87%AD%E8%AF%81%E5%AD%98%E5%82%A8" target="_blank" rel="noopener">这里</a>。</p>
+<p>最后的解决方法是：<br>在windows系统的控制面板中找到<code>凭据管理器</code>，点击打开页面，再点击右侧的<code>windows凭据</code>，如下图1所示的位置：</p>
+<p><img src="/images/2020/06/windows_gitconfig.jpg" alt="windows凭据"></p>
+<p>如果没有对应地址的git信息，则点击2位置的添加<code>添加普通凭证</code>，在打开的页面中添加地址，如果是github，则添加如图3位置的信息：<code>git:https://github.com</code>，然后输入账号密码。如果密码发生修改可以点击4位置进行<code>编辑</code>。</p>
+<p>另外使用<code>android studio</code>或<code>JetBrain Intellij</code>的全家桶工具时，首次提交代码如果没有账户信息，则会提示输入账户密码信息，此时账户密码信息是保存到上述的位置。</p>
+<p>参考：</p>
+<ul>
+<li><a href="https://github.com/hexojs/hexo/issues/2015" target="_blank" rel="noopener">https://github.com/hexojs/hexo/issues/2015</a></li>
+<li><a href="https://git-scm.com/book/zh/v2/Git-%E5%B7%A5%E5%85%B7-%E5%87%AD%E8%AF%81%E5%AD%98%E5%82%A8" target="_blank" rel="noopener">https://git-scm.com/book/zh/v2/Git-%E5%B7%A5%E5%85%B7-%E5%87%AD%E8%AF%81%E5%AD%98%E5%82%A8</a></li>
+</ul>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -116,13 +130,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/ndk/">ndk</a>
+  <a class="article-category-link" href="/categories/hexo/">hexo</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/EOCD/">EOCD</a><a href="/tags/zlib压缩/">zlib压缩</a>
+  <span></span> <a href="/tags/hexo/">hexo</a>
   </div>
 
 </div>
@@ -131,7 +145,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://www.jacpy.com/2015/05/26/ndk-used-zlib-mini-compress-occur-zip-eocd-not-found-dex-is-not-zip.html" data-title="NDK使用zlib mini压缩报错：Zip: EOCD not found, dex is not zip | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
+	  <div data-url="http://www.jacpy.com/2020/06/14/hexo-blog-move-machine-note.html" data-title="博客换机迁移问题记录 | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -144,19 +158,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/06/05/ndk-compile-error-make-exe-no-rule-to-make-target-jnijniapk-loader-cpp-needed-by-objlocalarmeabi-v7aobjsjniapk-loader-o-stop-resolved.html" title="NDK编译时报错：make.exe: *** No rule to make target `jni/jni/apk_loader.cpp&#39;, needed by `obj/local/armeabi-v7a/objs/jni/apk_loader.o&#39;.  Stop.解决方法">
-  <strong>上一篇：</strong><br/>
-  <span>
-  NDK编译时报错：make.exe: *** No rule to make target `jni/jni/apk_loader.cpp&#39;, needed by `obj/local/armeabi-v7a/objs/jni/apk_loader.o&#39;.  Stop.解决方法</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2015/05/26/ndk-compile-art-occur-artruntimeatomic-h2118-fatal-error-atomic-no-such-file-or-directory.html"  title="NDK编译ART代码出现错误：art/runtime/atomic.h:21:18: fatal error: atomic: No such file or directory">
+<a href="/2020/06/13/compile-opencv-4-3-0-gcc-error-long-No-such-file-or-directory.html"  title="compile opencv 4.3.0 gcc: error: long: No such file or directory">
  <strong>下一篇：</strong><br/> 
- <span>NDK编译ART代码出现错误：art/runtime/atomic.h:21:18: fatal error: atomic: No such file or directory
+ <span>compile opencv 4.3.0 gcc: error: long: No such file or directory
 </span>
 </a>
 </div>
@@ -165,7 +171,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2015/05/26/ndk-used-zlib-mini-compress-occur-zip-eocd-not-found-dex-is-not-zip.html" data-title="NDK使用zlib mini压缩报错：Zip: EOCD not found, dex is not zip" data-url="http://www.jacpy.com/2015/05/26/ndk-used-zlib-mini-compress-occur-zip-eocd-not-found-dex-is-not-zip.html"></div>
+	<div class="ds-thread" data-thread-key="2020/06/14/hexo-blog-move-machine-note.html" data-title="博客换机迁移问题记录" data-url="http://www.jacpy.com/2020/06/14/hexo-blog-move-machine-note.html"></div>
 </section>
 
 
@@ -176,7 +182,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、’hexo’-不是内部或外部命令，也不是可运行的程序或批处理文件"><span class="toc-number">1.</span> <span class="toc-text">一、’hexo’ 不是内部或外部命令，也不是可运行的程序或批处理文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、could-not-read-Username-for-‘https-github-com‘-No-such-file-or-directory"><span class="toc-number">2.</span> <span class="toc-text">二、could not read Username for ‘https://github.com‘: No such file or directory</span></a></li></ol>
  
   </div>
 

@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.jacpy.com/2020/06/14/hexo-blog-move-machine-note.html</loc>
+    
+    <lastmod>2020-06-14T05:08:26.540Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.jacpy.com/2020/06/13/compile-opencv-4-3-0-gcc-error-long-No-such-file-or-directory.html</loc>
     
     <lastmod>2020-06-13T14:22:47.026Z</lastmod>
