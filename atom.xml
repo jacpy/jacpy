@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jacpy.com/"/>
-  <updated>2020-06-14T05:08:26.540Z</updated>
+  <updated>2020-06-14T05:37:58.789Z</updated>
   <id>http://www.jacpy.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.jacpy.com/2020/06/14/hexo-blog-move-machine-note.html"/>
     <id>http://www.jacpy.com/2020/06/14/hexo-blog-move-machine-note.html</id>
     <published>2020-06-14T03:44:49.000Z</published>
-    <updated>2020-06-14T05:08:26.540Z</updated>
+    <updated>2020-06-14T05:37:58.789Z</updated>
     
     <content type="html">&lt;p&gt;最近换机了，把用了五年的mac换成了windows笔记本，终于结束了mac的历史使命。在迁移博客文章时，遇到以下几个问题：&lt;/p&gt;
 &lt;h3 id=&quot;一、’hexo’-不是内部或外部命令，也不是可运行的程序或批处理文件&quot;&gt;&lt;a href=&quot;#一、’hexo’-不是内部或外部命令，也不是可运行的程序或批处理文件&quot; class=&quot;headerlink&quot; title=&quot;一、’hexo’ 不是内部或外部命令，也不是可运行的程序或批处理文件&quot;&gt;&lt;/a&gt;一、’hexo’ 不是内部或外部命令，也不是可运行的程序或批处理文件&lt;/h3&gt;&lt;p&gt;在windows系统上执行命令时，如果命令不在系统环境的&lt;code&gt;path&lt;/code&gt;中或当前目录下，都会有这样的提示，意思是找不到当前执行的命令。那么问题来了，在博客的目录下执行&lt;code&gt;hexo&lt;/code&gt;命令时出现上述提示，怎么办？&lt;/p&gt;
@@ -33,6 +33,7 @@
 &lt;p&gt;&lt;img src=&quot;/images/2020/06/windows_gitconfig.jpg&quot; alt=&quot;windows凭据&quot;&gt;&lt;/p&gt;
 &lt;p&gt;如果没有对应地址的git信息，则点击2位置的添加&lt;code&gt;添加普通凭证&lt;/code&gt;，在打开的页面中添加地址，如果是github，则添加如图3位置的信息：&lt;code&gt;git:https://github.com&lt;/code&gt;，然后输入账号密码。如果密码发生修改可以点击4位置进行&lt;code&gt;编辑&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;另外使用&lt;code&gt;android studio&lt;/code&gt;或&lt;code&gt;JetBrain Intellij&lt;/code&gt;的全家桶工具时，首次提交代码如果没有账户信息，则会提示输入账户密码信息，此时账户密码信息是保存到上述的位置。&lt;/p&gt;
+&lt;p&gt;如果发现自己添加的不管用，尝试重新打开命令行，再执行&lt;code&gt;hexo d&lt;/code&gt;，或者删除已经存在的项，再重新打开命令行再试。&lt;/p&gt;
 &lt;p&gt;参考：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;https://github.com/hexojs/hexo/issues/2015&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://github.com/hexojs/hexo/issues/2015&lt;/a&gt;&lt;/li&gt;
