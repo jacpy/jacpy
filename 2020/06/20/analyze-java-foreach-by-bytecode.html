@@ -1,0 +1,669 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  
+    <title>通过java字节码分析java foreach循环 | jacpy&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="jacpy">
+    
+
+    
+    <meta name="description" content="〇、前言前几天看到群里有人发了一篇关于java foreach循环（增强for循环）测试的文章。文章没细看，从别人的发的截图来看是将LinkedList使用for i循环与foreach循环测试的数据做对比，然后得出foreach循环惊人的性能。猜写这文章的人应该是一个初学者，如果是我，会用迭代器来遍历LinkedList，然后再与foreach循环的数据作对比。因为LinkedList是双链表结">
+<meta name="keywords" content="foreach bytecode">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通过java字节码分析java foreach循环">
+<meta property="og:url" content="http://www.jacpy.com/2020/06/20/analyze-java-foreach-by-bytecode.html">
+<meta property="og:site_name" content="jacpy&#39;s blog">
+<meta property="og:description" content="〇、前言前几天看到群里有人发了一篇关于java foreach循环（增强for循环）测试的文章。文章没细看，从别人的发的截图来看是将LinkedList使用for i循环与foreach循环测试的数据做对比，然后得出foreach循环惊人的性能。猜写这文章的人应该是一个初学者，如果是我，会用迭代器来遍历LinkedList，然后再与foreach循环的数据作对比。因为LinkedList是双链表结">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-06-21T09:45:43.170Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="通过java字节码分析java foreach循环">
+<meta name="twitter:description" content="〇、前言前几天看到群里有人发了一篇关于java foreach循环（增强for循环）测试的文章。文章没细看，从别人的发的截图来看是将LinkedList使用for i循环与foreach循环测试的数据做对比，然后得出foreach循环惊人的性能。猜写这文章的人应该是一个初学者，如果是我，会用迭代器来遍历LinkedList，然后再与foreach循环的数据作对比。因为LinkedList是双链表结">
+
+    
+    <link rel="alternative" href="/atom.xml" title="jacpy&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="jacpy&#39;s blog" title="jacpy&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="jacpy&#39;s blog">jacpy&#39;s blog</a></h1>
+				<h2 class="blog-motto">enjoy mobile development</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated" style="margin-top: 0px;">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:www.jacpy.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2020/06/20/analyze-java-foreach-by-bytecode.html" title="通过java字节码分析java foreach循环" itemprop="url">通过java字节码分析java foreach循环</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
+		
+  <p class="article-time">
+    <time datetime="2020-06-20T12:14:27.000Z" itemprop="datePublished"> 发表于 2020-06-20</time>
+    
+  </p>
+</header>
+
+
+
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#〇、前言"><span class="toc-number">1.</span> <span class="toc-text">〇、前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一、集合遍历测试数据对比"><span class="toc-number">2.</span> <span class="toc-text">一、集合遍历测试数据对比</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-LinkedList循环测试数据对比"><span class="toc-number">2.0.1.</span> <span class="toc-text">1.1 LinkedList循环测试数据对比</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-ArrayList循环测试数据对比"><span class="toc-number">2.0.2.</span> <span class="toc-text">1.2 ArrayList循环测试数据对比</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、数组遍历测试数据对比"><span class="toc-number">3.</span> <span class="toc-text">二、数组遍历测试数据对比</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、从字节码看foreach循环"><span class="toc-number">4.</span> <span class="toc-text">三、从字节码看foreach循环</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-LinkedList测试代码的字节码"><span class="toc-number">4.0.1.</span> <span class="toc-text">3.1 LinkedList测试代码的字节码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-ArrayList测试代码的字节码"><span class="toc-number">4.0.2.</span> <span class="toc-text">3.2 ArrayList测试代码的字节码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-数组测试代码的字节码"><span class="toc-number">4.0.3.</span> <span class="toc-text">3.3 数组测试代码的字节码</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、总结"><span class="toc-number">5.</span> <span class="toc-text">四、总结</span></a></li></ol>
+		
+		</div>
+		
+		<h2 id="〇、前言"><a href="#〇、前言" class="headerlink" title="〇、前言"></a>〇、前言</h2><p>前几天看到群里有人发了一篇关于java <code>foreach循环（增强for循环）</code>测试的文章。文章没细看，从别人的发的截图来看是将LinkedList使用<code>for i</code>循环与foreach循环测试的数据做对比，然后得出foreach循环惊人的性能。猜写这文章的人应该是一个初学者，如果是我，会用迭代器来遍历LinkedList，然后再与foreach循环的数据作对比。因为LinkedList是双链表结构，并不适合使用<code>for i</code>循环这种方式进行遍历，实际写代码时也不会这么用。那foreach循环出现是为了解决什么问题？</p>
+<a id="more"></a>
+<h2 id="一、集合遍历测试数据对比"><a href="#一、集合遍历测试数据对比" class="headerlink" title="一、集合遍历测试数据对比"></a>一、集合遍历测试数据对比</h2><p>使用的测试环境是jdk： 1.8.0_251，CPU：i7-9750H。</p>
+<h4 id="1-1-LinkedList循环测试数据对比"><a href="#1-1-LinkedList循环测试数据对比" class="headerlink" title="1.1 LinkedList循环测试数据对比"></a>1.1 LinkedList循环测试数据对比</h4><p>对于LinkedList遍历的测试代码如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Iterator;</span><br><span class="line"><span class="keyword">import</span> java.util.LinkedList;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LinkedListTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SIZE = <span class="number">50000000</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TIMES = <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        LinkedList&lt;String&gt; list = initLinkedList();</span><br><span class="line">        <span class="keyword">long</span> time = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; TIMES; i++) &#123;</span><br><span class="line">            testLinkedListIterator(list);</span><br><span class="line"><span class="comment">//            testLinkedListForeach(list);</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"LinkedList used time: "</span> + ((System.currentTimeMillis() - time) / TIMES));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 初始化数据</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 返回初始化数据</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> LinkedList&lt;String&gt; <span class="title">initLinkedList</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        LinkedList&lt;String&gt; list = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; SIZE; i++) &#123;</span><br><span class="line">            list.add(String.valueOf(i));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> list;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 测试迭代器迭代LinkedList的性能</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> list LinkedList数据</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 返回执行的时间</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">long</span> <span class="title">testLinkedListIterator</span><span class="params">(LinkedList&lt;String&gt; list)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> sum = <span class="number">0L</span>;</span><br><span class="line">        Iterator&lt;String&gt; it = list.iterator();</span><br><span class="line">        <span class="keyword">while</span> (it.hasNext()) &#123;</span><br><span class="line">            sum += it.next().length();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 测试foreach循环LinkedList的性能</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> list LinkedList数据</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 返回执行的时间</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">long</span> <span class="title">testLinkedListForeach</span><span class="params">(LinkedList&lt;String&gt; list)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> sum = <span class="number">0L</span>;</span><br><span class="line">        <span class="keyword">for</span> (String s : list) &#123;</span><br><span class="line">            sum += s.length();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后测试两种遍历方式输出的时间分别是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">testLinkedListIterator(): LinkedList used time: 1005</span><br><span class="line">testLinkedListForeach(): LinkedList used time: 1028</span><br></pre></td></tr></table></figure>
+<p>通过数据对比，迭代器循环和foreach循环两者不相上下。</p>
+<h4 id="1-2-ArrayList循环测试数据对比"><a href="#1-2-ArrayList循环测试数据对比" class="headerlink" title="1.2 ArrayList循环测试数据对比"></a>1.2 ArrayList循环测试数据对比</h4><p>同样测试ArrayList遍历的代码如下，但是增加了普通的for循环：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.Iterator;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ArrayListTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SIZE = <span class="number">50000000</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TIMES = <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ArrayList&lt;String&gt; list = initArrayList();</span><br><span class="line">        <span class="keyword">long</span> time = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; TIMES; i++) &#123;</span><br><span class="line">            testArrayListIterator(list);</span><br><span class="line"><span class="comment">//            testArrayListForeach(list);</span></span><br><span class="line"><span class="comment">//            testArrayListFor(list);</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"ArrayList used time: "</span> + ((System.currentTimeMillis() - time) / TIMES));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 初始化数据</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 返回初始化数据</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> ArrayList&lt;String&gt; <span class="title">initArrayList</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        ArrayList&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;(SIZE);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; SIZE; i++) &#123;</span><br><span class="line">            list.add(String.valueOf(i));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> list;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 测试迭代器迭代ArrayList的性能</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> list ArrayList数据</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 返回执行的时间</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">long</span> <span class="title">testArrayListIterator</span><span class="params">(ArrayList&lt;String&gt; list)</span> </span>&#123;</span><br><span class="line">        Iterator&lt;String&gt; it = list.iterator();</span><br><span class="line">        <span class="keyword">long</span> sum = <span class="number">0L</span>;</span><br><span class="line">        <span class="keyword">while</span> (it.hasNext()) &#123;</span><br><span class="line">            sum += it.next().length();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 测试foreach循环ArrayList的性能</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> list ArrayList数据</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 返回执行的时间</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">long</span> <span class="title">testArrayListForeach</span><span class="params">(ArrayList&lt;String&gt; list)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> sum = <span class="number">0L</span>;</span><br><span class="line">        StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">        <span class="keyword">for</span> (String s : list) &#123;</span><br><span class="line">            sum += s.length();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 测试普通for循环ArrayList的性能</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> list ArrayList数据</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 返回执行的时间</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">long</span> <span class="title">testArrayListFor</span><span class="params">(ArrayList&lt;String&gt; list)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> sum = <span class="number">0L</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; list.size(); i++) &#123;</span><br><span class="line">            sum += list.get(i).length();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后测试三种遍历方式输出的时间分别是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">testArrayListIterator(): ArrayList used time: 162</span><br><span class="line">testArrayListForeach(): ArrayList used time: 164</span><br><span class="line">testArrayListFor(): ArrayList used time: 166</span><br></pre></td></tr></table></figure>
+<p>同样，三者的数据基本不相上下。</p>
+<h2 id="二、数组遍历测试数据对比"><a href="#二、数组遍历测试数据对比" class="headerlink" title="二、数组遍历测试数据对比"></a>二、数组遍历测试数据对比</h2><p>对于普通的数组也可以使用foreach循环，测试代码如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ArrayTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SIZE = <span class="number">50000000</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TIMES = <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        String[] list = initArray();</span><br><span class="line">        <span class="keyword">long</span> time = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; TIMES; i++) &#123;</span><br><span class="line">           testArrayForeach(list);</span><br><span class="line">           <span class="comment">// testArrayFor(list);</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"Array used time: "</span> + ((System.currentTimeMillis() - time) / TIMES));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 初始化数据</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 返回初始化数据</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> String[] initArray() &#123;</span><br><span class="line">        String[] list = <span class="keyword">new</span> String[SIZE];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; SIZE; i++) &#123;</span><br><span class="line">            list[i] = String.valueOf(i);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> list;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 测试foreach循环数组的性能</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> list 数组数据</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 返回执行的时间</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">long</span> <span class="title">testArrayForeach</span><span class="params">(String[] list)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> sum = <span class="number">0L</span>;</span><br><span class="line">        <span class="keyword">for</span> (String s : list) &#123;</span><br><span class="line">            sum += s.length();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 测试普通for循环数组的性能</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> list 数组数据</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 返回执行的时间</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">long</span> <span class="title">testArrayFor</span><span class="params">(String[] list)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> sum = <span class="number">0L</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; list.length; i++) &#123;</span><br><span class="line">            sum += list[i].length();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试两种遍历方式输出的时间分别是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">testArrayForeach(): Array used time: 152</span><br><span class="line">testArrayFor()： Array used time: 150</span><br></pre></td></tr></table></figure>
+<p>一样区分不了伯仲。</p>
+<h2 id="三、从字节码看foreach循环"><a href="#三、从字节码看foreach循环" class="headerlink" title="三、从字节码看foreach循环"></a>三、从字节码看foreach循环</h2><p>从上面的测试的数据来看，集合的foreach循环和迭代器循环耗时基本一致，没有很大差异。同样，数组的foreach循环和普通循环也没有很大的差异。接下来看下编译后的代码来进行对比，因最终都是编译成字节码交给虚拟机运行，所以看编译后的结果最直接，看看foreach循环的代码有什么不同。</p>
+<p>下面就以<code>smali</code>格式来查看字节码，因为<code>smali</code>这种方式跟java语法类似，感觉比不停的出栈、入栈要容易理解。</p>
+<p>查看的方法是下载<code>jadx</code>工具，直接将class文件拖入到打开的窗口中，在右边的窗口中的左下角有一个<code>代码</code>和<code>smali</code>切换的Tab，点击<code>smali</code>就可以看到smali格式的代码。</p>
+<h4 id="3-1-LinkedList测试代码的字节码"><a href="#3-1-LinkedList测试代码的字节码" class="headerlink" title="3.1 LinkedList测试代码的字节码"></a>3.1 LinkedList测试代码的字节码</h4><p>下面只贴出核心部分的代码，想看完整的代码，可以自己动手试下。</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">.method</span><span class="keyword"> private</span><span class="keyword"> static</span> testLinkedListForeach(<span class="class">Ljava/util/LinkedList;</span>)J</span><br><span class="line">    // 头部省略</span><br><span class="line"><span class="keyword">    .prologue</span></span><br><span class="line"><span class="keyword">    .line</span> 56</span><br><span class="line"><span class="keyword">    .local</span> p0, <span class="string">"list"</span>:<span class="class">Ljava/util/LinkedList;</span>, <span class="string">"Ljava/util/LinkedList&lt;Ljava/lang/String;&gt;;"</span></span><br><span class="line">   <span class="built_in"> const-wide/16 </span>v2, 0x0</span><br><span class="line"></span><br><span class="line"><span class="keyword">    .line</span> 57</span><br><span class="line"><span class="keyword">    .local</span> v2, <span class="string">"sum"</span>:J</span><br><span class="line">   <span class="built_in"> invoke-virtual </span>&#123;p0&#125;, <span class="class">Ljava/util/LinkedList;</span>-&gt;iterator()<span class="class">Ljava/util/Iterator;</span></span><br><span class="line"></span><br><span class="line">   <span class="built_in"> move-result-object </span>v1</span><br><span class="line"></span><br><span class="line">   <span class="keyword"> :goto_6</span></span><br><span class="line">   <span class="built_in"> invoke-interface </span>&#123;v1&#125;, <span class="class">Ljava/util/Iterator;</span>-&gt;hasNext()Z</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> move-result </span>v4</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> if-eqz </span>v4,<span class="keyword"> :cond_19</span></span><br><span class="line"></span><br><span class="line">   <span class="built_in"> invoke-interface </span>&#123;v1&#125;, <span class="class">Ljava/util/Iterator;</span>-&gt;next()<span class="class">Ljava/lang/Object;</span></span><br><span class="line"></span><br><span class="line">   <span class="built_in"> move-result-object </span>v0</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> check-cast </span>v0, <span class="class">Ljava/lang/String;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">    .line</span> 58</span><br><span class="line"><span class="keyword">    .local</span> v0, <span class="string">"s"</span>:<span class="class">Ljava/lang/String;</span></span><br><span class="line">   <span class="built_in"> invoke-virtual </span>&#123;v0&#125;, <span class="class">Ljava/lang/String;</span>-&gt;length()I</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> move-result </span>v4</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> int-to-long </span>v4, v4</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> add-long/2addr </span>v2, v4</span><br><span class="line"></span><br><span class="line"><span class="keyword">    .line</span> 59</span><br><span class="line">   <span class="built_in"> goto </span>:goto_6</span><br><span class="line"></span><br><span class="line"><span class="keyword">    .line</span> 61</span><br><span class="line"><span class="keyword">    .end local</span> v0    <span class="comment"># "s":Ljava/lang/String;</span></span><br><span class="line">   <span class="keyword"> :cond_19</span></span><br><span class="line">   <span class="built_in"> return-wide </span>v2</span><br><span class="line"><span class="keyword">.end method</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">.method</span><span class="keyword"> private</span><span class="keyword"> static</span> testLinkedListIterator(<span class="class">Ljava/util/LinkedList;</span>)J</span><br><span class="line">    // 头部省略</span><br><span class="line"><span class="keyword">    .prologue</span></span><br><span class="line"><span class="keyword">    .line</span> 41 // 对应java代码的行号</span><br><span class="line"><span class="keyword">    .local</span> p0, <span class="string">"list"</span>:<span class="class">Ljava/util/LinkedList;</span>, <span class="string">"Ljava/util/LinkedList&lt;Ljava/lang/String;&gt;;"</span> // p0对应代码中的list参数</span><br><span class="line">   <span class="built_in"> const-wide/16 </span>v2, 0x0 // v2对应代码中的 sum变量</span><br><span class="line"></span><br><span class="line"><span class="keyword">    .line</span> 42</span><br><span class="line"><span class="keyword">    .local</span> v2, <span class="string">"sum"</span>:J</span><br><span class="line">   <span class="built_in"> invoke-virtual </span>&#123;p0&#125;, <span class="class">Ljava/util/LinkedList;</span>-&gt;iterator()<span class="class">Ljava/util/Iterator;</span></span><br><span class="line"></span><br><span class="line">   <span class="built_in"> move-result-object </span>v0 // 这里是迭代器变量，上面一行代码执行LinkedList的iterator()方法的返回值</span><br><span class="line"></span><br><span class="line"><span class="keyword">    .line</span> 43</span><br><span class="line"><span class="keyword">    .local</span> v0, <span class="string">"it"</span>:<span class="class">Ljava/util/Iterator;</span>, <span class="string">"Ljava/util/Iterator&lt;Ljava/lang/String;&gt;;"</span></span><br><span class="line">   <span class="keyword"> :goto_6</span> // 这里是标记循环开始的位置</span><br><span class="line">   <span class="built_in"> invoke-interface </span>&#123;v0&#125;, <span class="class">Ljava/util/Iterator;</span>-&gt;hasNext()Z</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> move-result </span>v1 // 将上一行代码中hasNext() boolean结果保存到v1变量中</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> if-eqz </span>v1,<span class="keyword"> :cond_19</span> // 判断v1的值是否为true，如果不为true，则跳转到:cond_19标记的位置，即下面代码的return位置，即退出整个方法</span><br><span class="line"></span><br><span class="line"><span class="keyword">    .line</span> 44</span><br><span class="line">   <span class="built_in"> invoke-interface </span>&#123;v0&#125;, <span class="class">Ljava/util/Iterator;</span>-&gt;next()<span class="class">Ljava/lang/Object;</span></span><br><span class="line"></span><br><span class="line">   <span class="built_in"> move-result-object </span>v1 // 取next()方法的结果，保存到v1变量中</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> check-cast </span>v1, <span class="class">Ljava/lang/String;</span></span><br><span class="line"></span><br><span class="line">   <span class="built_in"> invoke-virtual </span>&#123;v1&#125;, <span class="class">Ljava/lang/String;</span>-&gt;length()I</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> move-result </span>v1 // 将字符串的长度赋值到v1变量中，这里有点类似python语法，可以理解成，所有的变量都是object，不同类型的变量之间都可以赋值。v1变量之前的值已经不需要了，所以在这里会被重新覆盖成新值</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> int-to-long </span>v4, v1 // 将v1值转换成long值，并保存到v4变量中</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> add-long/2addr </span>v2, v4 // 将v2和v4的值相加，并保存到v2中，这里的v2在上面对应的sum变量</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> goto </span>:goto_6 // 跳转到循环开始的位置</span><br><span class="line"></span><br><span class="line"><span class="keyword">    .line</span> 47</span><br><span class="line">   <span class="keyword"> :cond_19</span></span><br><span class="line">   <span class="built_in"> return-wide </span>v2</span><br><span class="line"><span class="keyword">.end method</span></span><br></pre></td></tr></table></figure>
+<p>对比上面两个方法的<code>smali</code>代码，发现foreach循环最终编译成迭代器循环的代码。这就解释了为什么两种循环方式测试的消耗时间基本一致。其实也可以通过<code>class</code>字节码工具转换成<code>java</code>代码就可以看到，原来的foreach循环没有了，换成了迭代器循环。</p>
+<h4 id="3-2-ArrayList测试代码的字节码"><a href="#3-2-ArrayList测试代码的字节码" class="headerlink" title="3.2 ArrayList测试代码的字节码"></a>3.2 ArrayList测试代码的字节码</h4><p>ArrayList的迭代器遍历和foreach遍历的smali代码与上面LinkedList循环部分的代码基本一致，下面只贴出普通for循环部分的代码：</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">.method</span><span class="keyword"> private</span><span class="keyword"> static</span> testArrayListFor(<span class="class">Ljava/util/ArrayList;</span>)J</span><br><span class="line"><span class="keyword">    .registers</span> 7</span><br><span class="line"><span class="keyword">    .annotation</span><span class="keyword"> system</span> <span class="class">Ldalvik/annotation/Signature;</span></span><br><span class="line">        value = &#123;</span><br><span class="line">            <span class="string">"("</span>,</span><br><span class="line">            <span class="string">"Ljava/util/ArrayList"</span>,</span><br><span class="line">            <span class="string">"&lt;"</span>,</span><br><span class="line">            <span class="string">"Ljava/lang/String;"</span>,</span><br><span class="line">            <span class="string">"&gt;;)J"</span></span><br><span class="line">        &#125;</span><br><span class="line"><span class="keyword">    .end annotation</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">    .prologue</span></span><br><span class="line"><span class="keyword">    .line</span> 72</span><br><span class="line"><span class="keyword">    .local</span> p0, <span class="string">"list"</span>:<span class="class">Ljava/util/ArrayList;</span>, <span class="string">"Ljava/util/ArrayList&lt;Ljava/lang/String;&gt;;"</span></span><br><span class="line">   <span class="built_in"> const-wide/16 </span>v2, 0x0</span><br><span class="line"></span><br><span class="line"><span class="keyword">    .line</span> 73</span><br><span class="line"><span class="keyword">    .local</span> v2, <span class="string">"sum"</span>:J</span><br><span class="line">   <span class="built_in"> const/4 </span>v0, 0x0 // v0是循环下标i</span><br><span class="line"></span><br><span class="line"><span class="keyword">    .local</span> v0, <span class="string">"i"</span>:I</span><br><span class="line">   <span class="keyword"> :goto_3</span></span><br><span class="line">   <span class="built_in"> invoke-virtual </span>&#123;p0&#125;, <span class="class">Ljava/util/ArrayList;</span>-&gt;size()I // size大小</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> move-result </span>v1</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> if-ge </span>v0, v1,<span class="keyword"> :cond_18</span> // 如果v1大于v0，则跳转到:cond_18标记的位置，即return位置</span><br><span class="line"></span><br><span class="line"><span class="keyword">    .line</span> 74</span><br><span class="line">   <span class="built_in"> invoke-virtual </span>&#123;p0, v0&#125;, <span class="class">Ljava/util/ArrayList;</span>-&gt;get(I)<span class="class">Ljava/lang/Object;</span> // 调用p0的get方法，参数值是v0</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> move-result-object </span>v1</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> check-cast </span>v1, <span class="class">Ljava/lang/String;</span></span><br><span class="line"></span><br><span class="line">   <span class="built_in"> invoke-virtual </span>&#123;v1&#125;, <span class="class">Ljava/lang/String;</span>-&gt;length()I</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> move-result </span>v1</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> int-to-long </span>v4, v1</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> add-long/2addr </span>v2, v4</span><br><span class="line"></span><br><span class="line"><span class="keyword">    .line</span> 73</span><br><span class="line">   <span class="built_in"> add-int/lit8 </span>v0, v0, 0x1 // v0值加1，并保存到v0中</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> goto </span>:goto_3 // 跳转到:goto_3位置，重新开始循环</span><br><span class="line"></span><br><span class="line"><span class="keyword">    .line</span> 77</span><br><span class="line">   <span class="keyword"> :cond_18</span></span><br><span class="line">   <span class="built_in"> return-wide </span>v2</span><br><span class="line"><span class="keyword">.end method</span></span><br></pre></td></tr></table></figure>
+<p>通过上面的代码发现，普通for循环遍历，并没有使用迭代器的方式进行遍历。</p>
+<h4 id="3-3-数组测试代码的字节码"><a href="#3-3-数组测试代码的字节码" class="headerlink" title="3.3 数组测试代码的字节码"></a>3.3 数组测试代码的字节码</h4><p>对于数组的遍历，两种方式的smali代码基本一致。也就是说foreach循环的代码编译成了普通的<code>for i循环</code>。代码如下所示：</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">.method</span><span class="keyword"> private</span><span class="keyword"> static</span> testArrayFor([<span class="class">Ljava/lang/String;</span>)J</span><br><span class="line"><span class="keyword">    .registers</span> 7</span><br><span class="line"><span class="keyword">    .param</span> p0, <span class="string">"list"</span>    <span class="comment"># [Ljava/lang/String;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">    .prologue</span></span><br><span class="line"><span class="keyword">    .line</span> 52</span><br><span class="line">   <span class="built_in"> const-wide/16 </span>v2, 0x0</span><br><span class="line"></span><br><span class="line"><span class="keyword">    .line</span> 53</span><br><span class="line"><span class="keyword">    .local</span> v2, <span class="string">"sum"</span>:J</span><br><span class="line">   <span class="built_in"> const/4 </span>v0, 0x0</span><br><span class="line"></span><br><span class="line"><span class="keyword">    .local</span> v0, <span class="string">"i"</span>:I</span><br><span class="line">   <span class="keyword"> :goto_3</span></span><br><span class="line">   <span class="built_in"> array-length </span>v1, p0</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> if-ge </span>v0, v1,<span class="keyword"> :cond_11</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">    .line</span> 54</span><br><span class="line">   <span class="built_in"> aget-object </span>v1, p0, v0</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> invoke-virtual </span>&#123;v1&#125;, <span class="class">Ljava/lang/String;</span>-&gt;length()I</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> move-result </span>v1</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> int-to-long </span>v4, v1</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> add-long/2addr </span>v2, v4</span><br><span class="line"></span><br><span class="line"><span class="keyword">    .line</span> 53</span><br><span class="line">   <span class="built_in"> add-int/lit8 </span>v0, v0, 0x1</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> goto </span>:goto_3</span><br><span class="line"></span><br><span class="line"><span class="keyword">    .line</span> 57</span><br><span class="line">   <span class="keyword"> :cond_11</span></span><br><span class="line">   <span class="built_in"> return-wide </span>v2</span><br><span class="line"><span class="keyword">.end method</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">.method</span><span class="keyword"> private</span><span class="keyword"> static</span> testArrayForeach([<span class="class">Ljava/lang/String;</span>)J</span><br><span class="line"><span class="keyword">    .registers</span> 9</span><br><span class="line"><span class="keyword">    .param</span> p0, <span class="string">"list"</span>    <span class="comment"># [Ljava/lang/String;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">    .prologue</span></span><br><span class="line"><span class="keyword">    .line</span> 38</span><br><span class="line">   <span class="built_in"> const-wide/16 </span>v2, 0x0</span><br><span class="line"></span><br><span class="line"><span class="keyword">    .line</span> 39</span><br><span class="line"><span class="keyword">    .local</span> v2, <span class="string">"sum"</span>:J</span><br><span class="line">   <span class="built_in"> array-length </span>v4, p0 // 取p0数组的长度，保存到v4变量中</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> const/4 </span>v1, 0x0 // v1是下标</span><br><span class="line"></span><br><span class="line">   <span class="keyword"> :goto_4</span></span><br><span class="line">   <span class="built_in"> if-ge </span>v1, v4,<span class="keyword"> :cond_11</span></span><br><span class="line"></span><br><span class="line">   <span class="built_in"> aget-object </span>v0, p0, v1 // 取p0的v1位置的值，并保存到v0变量中</span><br><span class="line"></span><br><span class="line"><span class="keyword">    .line</span> 40</span><br><span class="line"><span class="keyword">    .local</span> v0, <span class="string">"s"</span>:<span class="class">Ljava/lang/String;</span></span><br><span class="line">   <span class="built_in"> invoke-virtual </span>&#123;v0&#125;, <span class="class">Ljava/lang/String;</span>-&gt;length()I</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> move-result </span>v5</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> int-to-long </span>v6, v5</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> add-long/2addr </span>v2, v6</span><br><span class="line"></span><br><span class="line"><span class="keyword">    .line</span> 39</span><br><span class="line">   <span class="built_in"> add-int/lit8 </span>v1, v1, 0x1</span><br><span class="line"></span><br><span class="line">   <span class="built_in"> goto </span>:goto_4</span><br><span class="line"></span><br><span class="line"><span class="keyword">    .line</span> 43</span><br><span class="line"><span class="keyword">    .end local</span> v0    <span class="comment"># "s":Ljava/lang/String;</span></span><br><span class="line">   <span class="keyword"> :cond_11</span></span><br><span class="line">   <span class="built_in"> return-wide </span>v2</span><br><span class="line"><span class="keyword">.end method</span></span><br></pre></td></tr></table></figure>
+<h2 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h2><p>通过上面的代码对比分析发现：</p>
+<ul>
+<li>1.对于集合中的类，使用foreach循环遍历时，使用的是对应迭代器进行遍历；</li>
+<li>2.对于数组的foreach遍历，最终会被转换成普通的for循环。</li>
+</ul>
+<p>既然如此，使用foreach循环的好处也体现出来了。编译器会自动将集合转换成迭代器进行遍历，省去了手写迭代器循环的麻烦，简单明了。数组遍历同样也是简化代码，所以如果不需要对集合数组中的元素进行修改，建议优先使用foreach循环，避免犯一些低级问题（如，使用普通<code>for i循环</code>来遍历LinkedList，从而导致性能低下）。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/java/">java</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/foreach-bytecode/">foreach bytecode</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://www.jacpy.com/2020/06/20/analyze-java-foreach-by-bytecode.html" data-title="通过java字节码分析java foreach循环 | jacpy&#39;s blog" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2020/06/14/hexo-blog-move-machine-note.html"  title="博客换机迁移问题记录">
+ <strong>下一篇：</strong><br/> 
+ <span>博客换机迁移问题记录
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2020/06/20/analyze-java-foreach-by-bytecode.html" data-title="通过java字节码分析java foreach循环" data-url="http://www.jacpy.com/2020/06/20/analyze-java-foreach-by-bytecode.html"></div>
+</section>
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#〇、前言"><span class="toc-number">1.</span> <span class="toc-text">〇、前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一、集合遍历测试数据对比"><span class="toc-number">2.</span> <span class="toc-text">一、集合遍历测试数据对比</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-LinkedList循环测试数据对比"><span class="toc-number">2.0.1.</span> <span class="toc-text">1.1 LinkedList循环测试数据对比</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-ArrayList循环测试数据对比"><span class="toc-number">2.0.2.</span> <span class="toc-text">1.2 ArrayList循环测试数据对比</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、数组遍历测试数据对比"><span class="toc-number">3.</span> <span class="toc-text">二、数组遍历测试数据对比</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、从字节码看foreach循环"><span class="toc-number">4.</span> <span class="toc-text">三、从字节码看foreach循环</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-LinkedList测试代码的字节码"><span class="toc-number">4.0.1.</span> <span class="toc-text">3.1 LinkedList测试代码的字节码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-ArrayList测试代码的字节码"><span class="toc-number">4.0.2.</span> <span class="toc-text">3.2 ArrayList测试代码的字节码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-数组测试代码的字节码"><span class="toc-number">4.0.3.</span> <span class="toc-text">3.3 数组测试代码的字节码</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、总结"><span class="toc-number">5.</span> <span class="toc-text">四、总结</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Cpp/" title="Cpp">Cpp<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/andfix/" title="andfix">andfix<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android/" title="android">android<sup>23</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android-push/" title="android push">android push<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android-studio/" title="android studio">android studio<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/android-view/" title="android view">android view<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/dvm/" title="dvm">dvm<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/github/" title="github">github<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/go/" title="go">go<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/golang/" title="golang">golang<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/gradle/" title="gradle">gradle<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/hexo/" title="hexo">hexo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/java/" title="java">java<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/js/" title="js">js<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/minizip/" title="minizip">minizip<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/ndk/" title="ndk">ndk<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/opencv/" title="opencv">opencv<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/pay/" title="pay">pay<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/sqlite/" title="sqlite">sqlite<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/sublime/" title="sublime">sublime<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/view/" title="view">view<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/windows/" title="windows">windows<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/SQLite性能优化/" title="SQLite性能优化">SQLite性能优化<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/EventBus-分析/" title="EventBus 分析">EventBus 分析<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/okhttp/" title="okhttp">okhttp<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/packageAllDebugClassesForMultiDex/" title="packageAllDebugClassesForMultiDex">packageAllDebugClassesForMultiDex<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/foreach-bytecode/" title="foreach bytecode">foreach bytecode<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/andfix/" title="andfix">andfix<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/InvocationTargetException-ActivityNotFoundException-android-os-FileUriExposedException/" title="InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException">InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android死锁分析/" title="android死锁分析">android死锁分析<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/getItemViewType/" title="getItemViewType">getItemViewType<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/getViewTypeCount/" title="getViewTypeCount">getViewTypeCount<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Device-or-resource-busy/" title="Device or resource busy">Device or resource busy<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Out-Of-Memory/" title="Out Of Memory">Out Of Memory<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/EXACTLY-AT-MOST-UNSPECIFIED/" title="EXACTLY AT_MOST UNSPECIFIED">EXACTLY AT_MOST UNSPECIFIED<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/fresco初始化设置/" title="fresco初始化设置">fresco初始化设置<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/notification/" title="notification">notification<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gradle配置/" title="gradle配置">gradle配置<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android-security/" title="android security">android security<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/INSTALL-FAILED-TEST-ONLY/" title="INSTALL_FAILED_TEST_ONLY">INSTALL_FAILED_TEST_ONLY<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.jacpy.com" target="_blank" title="jacpy">jacpy</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Jacpy, welcome to my blog. <br/>
+			This is my blog, believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/jacpy" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:jacpy.may@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		
+		<a href="/about" target="_blank" title="jacpy">jacpy</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"maylian7700"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254674300'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s23.cnzz.com/z_stat.php%3Fid%3D1254674300' type='text/javascript'%3E%3C/script%3E"));</script>
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

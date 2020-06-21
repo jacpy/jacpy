@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.jacpy.com/2020/06/20/analyze-java-foreach-by-bytecode.html</loc>
+    
+    <lastmod>2020-06-21T09:45:43.170Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.jacpy.com/2020/06/14/hexo-blog-move-machine-note.html</loc>
     
     <lastmod>2020-06-14T05:37:58.789Z</lastmod>

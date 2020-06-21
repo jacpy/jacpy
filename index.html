@@ -79,6 +79,70 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2020/06/20/analyze-java-foreach-by-bytecode.html" title="通过java字节码分析java foreach循环" itemprop="url">通过java字节码分析java foreach循环</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
+		
+  <p class="article-time">
+    <time datetime="2020-06-20T12:14:27.000Z" itemprop="datePublished"> 发表于 2020-06-20</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h2 id="〇、前言"><a href="#〇、前言" class="headerlink" title="〇、前言"></a>〇、前言</h2><p>前几天看到群里有人发了一篇关于java <code>foreach循环（增强for循环）</code>测试的文章。文章没细看，从别人的发的截图来看是将LinkedList使用<code>for i</code>循环与foreach循环测试的数据做对比，然后得出foreach循环惊人的性能。猜写这文章的人应该是一个初学者，如果是我，会用迭代器来遍历LinkedList，然后再与foreach循环的数据作对比。因为LinkedList是双链表结构，并不适合使用<code>for i</code>循环这种方式进行遍历，实际写代码时也不会这么用。那foreach循环出现是为了解决什么问题？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2020/06/20/analyze-java-foreach-by-bytecode.html#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/java/">java</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/foreach-bytecode/">foreach bytecode</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/2020/06/20/analyze-java-foreach-by-bytecode.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2020/06/20/analyze-java-foreach-by-bytecode.html" data-count-type="comments">&nbsp;</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2020/06/14/hexo-blog-move-machine-note.html" title="博客换机迁移问题记录" itemprop="url">博客换机迁移问题记录</a>
   </h1>
   <p class="article-author">By
@@ -1311,72 +1375,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2017/09/07/android-install-apk-INSTALL-FAILED-UID-CHANGED.html" title="Android命令行安装APK时报错：INSTALL_FAILED_UID_CHANGED" itemprop="url">Android命令行安装APK时报错：INSTALL_FAILED_UID_CHANGED</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="jacpy" target="_blank" itemprop="author">jacpy</a>
-		
-  <p class="article-time">
-    <time datetime="2017-09-07T05:13:24.000Z" itemprop="datePublished"> 发表于 2017-09-07</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>前几天使用命令行<code>adb install</code>安装APK文件时，安装失败，遇到了这个错误提示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INSTALL_FAILED_UID_CHANGED</span><br></pre></td></tr></table></figure>
-<p>突然反应过来了，刚刚使用手机的<code>root</code>权限看app的缓存数据，命令行还在那个<code>/data/data/com.xxx.app</code>目录下，由于命令行的占用，所以这个包名路径没有被删除掉。赶紧退出到<code>/data/data/</code>目录下面，<code>ls</code>一看，这个包名路径还存在，用<code>rm -rf</code>一删除，再安装试下，成功了。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2017/09/07/android-install-apk-INSTALL-FAILED-UID-CHANGED.html#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/android/">android</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/">install apk INSTALL_FAILED_UID_CHANGED</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/2017/09/07/android-install-apk-INSTALL-FAILED-UID-CHANGED.html#comments" class="ds-thread-count comments-count-link" data-thread-key="2017/09/07/android-install-apk-INSTALL-FAILED-UID-CHANGED.html" data-count-type="comments">&nbsp;</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next<span></span></a>
@@ -1447,6 +1445,10 @@
 		  
 		
 		  
+			<li><a href="/categories/java/" title="java">java<sup>1</sup></a></li>
+		  
+		
+		  
 			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
 		  
 		
@@ -1512,11 +1514,19 @@
 			
 		
 			
-				<li><a href="/tags/InvocationTargetException-ActivityNotFoundException-android-os-FileUriExposedException/" title="InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException">InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException<sup>1</sup></a></li>
+				<li><a href="/tags/foreach-bytecode/" title="foreach bytecode">foreach bytecode<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/andfix/" title="andfix">andfix<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/InvocationTargetException-ActivityNotFoundException-android-os-FileUriExposedException/" title="InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException">InvocationTargetException ActivityNotFoundException android.os.FileUriExposedException<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/android死锁分析/" title="android死锁分析">android死锁分析<sup>1</sup></a></li>
 			
 		
 			
@@ -1528,15 +1538,15 @@
 			
 		
 			
-				<li><a href="/tags/android死锁分析/" title="android死锁分析">android死锁分析<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Out-Of-Memory/" title="Out Of Memory">Out Of Memory<sup>1</sup></a></li>
+				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/Device-or-resource-busy/" title="Device or resource busy">Device or resource busy<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Out-Of-Memory/" title="Out Of Memory">Out Of Memory<sup>1</sup></a></li>
 			
 		
 			
@@ -1548,18 +1558,6 @@
 			
 		
 			
-				<li><a href="/tags/android/" title="android">android<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/gradle配置/" title="gradle配置">gradle配置<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/INSTALL-FAILED-TEST-ONLY/" title="INSTALL_FAILED_TEST_ONLY">INSTALL_FAILED_TEST_ONLY<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/install-apk-INSTALL-FAILED-UID-CHANGED/" title="install apk INSTALL_FAILED_UID_CHANGED">install apk INSTALL_FAILED_UID_CHANGED<sup>1</sup></a></li>
 			
 		
@@ -1568,11 +1566,15 @@
 			
 		
 			
+				<li><a href="/tags/gradle配置/" title="gradle配置">gradle配置<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/android-security/" title="android security">android security<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/singleTop-android7-0/" title="singleTop android7.0">singleTop android7.0<sup>1</sup></a></li>
+				<li><a href="/tags/INSTALL-FAILED-TEST-ONLY/" title="INSTALL_FAILED_TEST_ONLY">INSTALL_FAILED_TEST_ONLY<sup>1</sup></a></li>
 			
 		
 		</ul>
